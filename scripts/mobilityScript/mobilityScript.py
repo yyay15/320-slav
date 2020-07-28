@@ -8,7 +8,7 @@ PWMA = 5
 PWMB = 21
 A1 = 13
 A2 = 6
-B1 = 19
+B1 = 20
 B2 = 26
 STBY = 19
 
@@ -16,24 +16,30 @@ STBY = 19
 # Set up GPIO Pins
 GPIO.setmode(GPIO.BCM)				# Set the GPIO pin naming convention
 GPIO.setup(PWMB, GPIO.OUT)			# Set our GPIO pin to output
-GPIO.setup(PWMA , GPIO.OUT)			# Set our GPIO pin to output
-GPIO.setup(STBY , GPIO.OUT)			# Set our GPIO pin to output
+GPIO.setup(PWMA, GPIO.OUT)			# Set our GPIO pin to output
+GPIO.setup(STBY, GPIO.OUT)			# Set our GPIO pin to output
 GPIO.setup(A1 , GPIO.OUT)			# Set our GPIO pin to output
 GPIO.setup(A2 , GPIO.OUT)			# Set our GPIO pin to output
 GPIO.setup(B1 , GPIO.OUT)			# Set our GPIO pin to output
 GPIO.setup(B2 , GPIO.OUT)			# Set our GPIO pin to output
 
-
+GPIO.output(STBY,GPIO.HIGH)
 GPIO.output(A1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
 GPIO.output(B1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
 GPIO.output(A2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
 GPIO.output(B2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
 
-pwmA = GPIO.PWM(PWMA, 0.5)			# Initiate the PWM signal
+pwmA = GPIO.PWM(PWMA, 100)			# Initiate the PWM signal
 pwmA.start(50)					# Start a PWM signal with duty cycle at 50%
-pwmB = GPIO.PWM(PWMB, 0.5)			# Initiate the PWM signal
+pwmB = GPIO.PWM(PWMB, 100)			# Initiate the PWM signal
 pwmB.start(50)					# Start a PWM signal with duty cycle at 50%
 
+while(1): 
+    for dc in range (0, 101, 10):
+        pwmA.ChangeDutyCycle(dc)
+        pwmB.ChangeDutyCycle(dc)
+        time.sleep(0.5)
+ 
 input('Press a key to stop:')		# Kill on keypress
 
 pwmA.stop()					# Stop the PWM signal
