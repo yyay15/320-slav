@@ -101,22 +101,22 @@ while(1):
 
 
     elif key == 'd':
-        GPIO.output(A1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.output(B1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.output(A2,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.output(B2,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+        GPIO.output(A1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+        GPIO.output(B1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+        GPIO.output(A2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+        GPIO.output(B2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
         pwmA.ChangeDutyCycle(0)
         pwmB.ChangeDutyCycle(100)
-        time.sleep(0.2
+        time.sleep(0.2)
 
     elif key == 'a':
-        GPIO.output(A1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.output(B1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.output(A2,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.output(B2,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+        GPIO.output(A1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+        GPIO.output(B1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+        GPIO.output(A2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+        GPIO.output(B2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
         pwmA.ChangeDutyCycle(100)
         pwmB.ChangeDutyCycle(0)
-        time.sleep(0.2
+        time.sleep(0.2)
 
 
     elif key == 'q':
