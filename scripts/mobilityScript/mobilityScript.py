@@ -2,6 +2,7 @@
 import RPi.GPIO as GPIO
 import numpy as np
 import time
+import getch
 
 # Pin configurations
 PWMA = 5
@@ -34,12 +35,12 @@ pwmA.start(0)					# Start a PWM signal with duty cycle at 50%
 pwmB = GPIO.PWM(PWMB, 100)			# Initiate the PWM signal
 pwmB.start(0)					# Start a PWM signal with duty cycle at 50%
 
+
+
+
 while(1):
 
-    pwmA.ChangeDutyCycle(0)
-    pwmB.ChangeDutyCycle(0)
-
-    key = input(">> ") 
+    key = getch.getche() 
 
     if key == 'w':
         GPIO.output(A1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
@@ -71,6 +72,12 @@ while(1):
     else:
         pwmA.ChangeDutyCycle(0)
         pwmB.ChangeDutyCycle(0)
+
+    # Clean
+    char = ""
+    pwmA.ChangeDutyCycle(0)
+    pwmB.ChangeDutyCycle(0)
+
 
     
     # for dc in range (0, 101, 10):
