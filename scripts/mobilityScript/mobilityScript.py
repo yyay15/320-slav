@@ -81,7 +81,7 @@ pwmB.start(0)					# Start a PWM signal with duty cycle at 50%
 
 while(1):
 
-    key = getch.getche() 
+    key = getch() 
 
     if key == 'w':
         GPIO.output(A1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
