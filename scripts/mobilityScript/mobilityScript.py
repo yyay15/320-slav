@@ -63,8 +63,6 @@ GPIO.setup(A2 , GPIO.OUT)			# Set our GPIO pin to output
 GPIO.setup(B1 , GPIO.OUT)			# Set our GPIO pin to output
 GPIO.setup(B2 , GPIO.OUT)			# Set our GPIO pin to output
 
-
-
 GPIO.output(STBY,GPIO.HIGH)
 GPIO.output(A1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
 GPIO.output(B1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
@@ -90,6 +88,7 @@ while(1):
         GPIO.output(B2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
         pwmA.ChangeDutyCycle(100)
         pwmB.ChangeDutyCycle(100)
+        time.sleep(0.2)
 
     elif key == 's':
         GPIO.output(A1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
@@ -98,7 +97,28 @@ while(1):
         GPIO.output(B2,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
         pwmA.ChangeDutyCycle(100)
         pwmB.ChangeDutyCycle(100)
-    
+        time.sleep(0.2)
+
+
+    elif key == 's':
+        GPIO.output(A1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+        GPIO.output(B1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+        GPIO.output(A2,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+        GPIO.output(B2,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+        pwmA.ChangeDutyCycle(0)
+        pwmB.ChangeDutyCycle(100)
+        time.sleep(0.2
+
+    elif key == 's':
+        GPIO.output(A1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+        GPIO.output(B1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+        GPIO.output(A2,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+        GPIO.output(B2,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+        pwmA.ChangeDutyCycle(100)
+        pwmB.ChangeDutyCycle(0)
+        time.sleep(0.2
+
+
     elif key == 'q':
         print("quitting")
         pwmA.stop()					# Stop the PWM signal
