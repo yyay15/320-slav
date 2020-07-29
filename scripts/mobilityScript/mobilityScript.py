@@ -12,8 +12,6 @@ B1 = 20
 B2 = 26
 STBY = 19
 
-
-# Set up GPIO Pins
 GPIO.setmode(GPIO.BCM)				# Set the GPIO pin naming convention
 GPIO.setup(PWMB, GPIO.OUT)			# Set our GPIO pin to output
 GPIO.setup(PWMA, GPIO.OUT)			# Set our GPIO pin to output
@@ -23,6 +21,8 @@ GPIO.setup(A2 , GPIO.OUT)			# Set our GPIO pin to output
 GPIO.setup(B1 , GPIO.OUT)			# Set our GPIO pin to output
 GPIO.setup(B2 , GPIO.OUT)			# Set our GPIO pin to output
 
+
+
 GPIO.output(STBY,GPIO.HIGH)
 GPIO.output(A1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
 GPIO.output(B1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
@@ -30,25 +30,89 @@ GPIO.output(A2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
 GPIO.output(B2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
 
 pwmA = GPIO.PWM(PWMA, 100)			# Initiate the PWM signal
-pwmA.start(50)					# Start a PWM signal with duty cycle at 50%
+pwmA.start(0)					# Start a PWM signal with duty cycle at 50%
 pwmB = GPIO.PWM(PWMB, 100)			# Initiate the PWM signal
-pwmB.start(50)					# Start a PWM signal with duty cycle at 50%
+pwmB.start(0)					# Start a PWM signal with duty cycle at 50%
 
-while(1): 
-    for dc in range (0, 101, 10):
-        pwmA.ChangeDutyCycle(dc)
-        pwmB.ChangeDutyCycle(dc)
-        time.sleep(0.5)
+while(1):
+
+    pwmA.ChangeDutyCycle(0)
+    pwmB.ChangeDutyCycle(0)
+
+    key = input(">> ") 
+
+    if key == 'w':
+        GPIO.output(A1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+        GPIO.output(B1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+        GPIO.output(A2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+        GPIO.output(B2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+        pwmA.ChangeDutyCycle(100)
+        pwmB.ChangeDutyCycle(100)
+
+    elif key == 's':
+        GPIO.output(A1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+        GPIO.output(B1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+        GPIO.output(A2,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+        GPIO.output(B2,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+        pwmA.ChangeDutyCycle(100)
+        pwmB.ChangeDutyCycle(100)
+    
+    elif key == 'q':
+        print("quitting")
+        pwmA.stop()					# Stop the PWM signal
+        pwmB.stop()					# Stop the PWM signal
+        GPIO.output(A1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+        GPIO.output(B1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+        GPIO.output(A2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+        GPIO.output(B2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+        GPIO.cleanup()
+        break
+
+    else:
+        pwmA.ChangeDutyCycle(0)
+        pwmB.ChangeDutyCycle(0)
+
+    
+    # for dc in range (0, 101, 10):
+    #     pwmA.ChangeDutyCycle(dc)
+    #     pwmB.ChangeDutyCycle(dc)
+    #     time.sleep(0.5)
  
-input('Press a key to stop:')		# Kill on keypress
 
-pwmA.stop()					# Stop the PWM signal
-pwmB.stop()					# Stop the PWM signal
+# pwmA.stop()					# Stop the PWM signal
+# pwmB.stop()					# Stop the PWM signal
 
-GPIO.output(A1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
-GPIO.output(B1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+# GPIO.output(A1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+# GPIO.output(B1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
 
-GPIO.cleanup()				# Exit the GPIO session cleanly
+# GPIO.cleanup()
+
+################################################################
+# Custom Functions
+###############################################################
+
+# wip : OOP for mobility
+
+class Mobility:
+
+    def __init__(self):
+        # Set up GPIO Pins
+        GPIO.setmode(GPIO.BCM)				# Set the GPIO pin naming convention
+        GPIO.setup(PWMB, GPIO.OUT)			# Set our GPIO pin to output
+        GPIO.setup(PWMA, GPIO.OUT)			# Set our GPIO pin to output
+        GPIO.setup(STBY, GPIO.OUT)			# Set our GPIO pin to output
+        GPIO.setup(A1 , GPIO.OUT)			# Set our GPIO pin to output
+        GPIO.setup(A2 , GPIO.OUT)			# Set our GPIO pin to output
+        GPIO.setup(B1 , GPIO.OUT)			# Set our GPIO pin to output
+        GPIO.setup(B2 , GPIO.OUT)			# Set our GPIO pin to output
+
+
+    def gpioClean(self):
+        GPIO.cleanup()
+
+
+
+
 
 
 
