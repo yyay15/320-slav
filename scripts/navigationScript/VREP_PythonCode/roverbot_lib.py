@@ -105,6 +105,9 @@ class VREP_RoverRobot(object):
 		vrep.simxGetObjectOrientation(self.clientID, self.robotHandle, -1, vrep.simx_opmode_streaming)
 		vrep.simxGetObjectPosition(self.clientID, self.cameraHandle, -1, vrep.simx_opmode_streaming)
 		vrep.simxGetObjectPosition(self.clientID, self.landerHandle, -1, vrep.simx_opmode_streaming)
+		
+		res,resolution,image=vrep.simxGetVisionSensorImage(self.clientID,self.cameraHandle,0,vrep.simx_opmode_streaming)
+
 
 		for handle in self.obstacleHandles:
 			vrep.simxGetObjectPosition(self.clientID, handle, -1, vrep.simx_opmode_streaming)
@@ -228,6 +231,19 @@ class VREP_RoverRobot(object):
 
 		return sampleRangeBearing, landerRangeBearing, obstaclesRangeBearing, rocksRangeBearing
 
+
+	def GetCameraImage(self):
+
+		if self.cameraHandle == None:
+			None, None
+	
+		res,resolution,image=vrep.simxGetVisionSensorImage(self.clientID,self.cameraHandle,0,vrep.simx_opmode_buffer)
+		
+		if res==vrep.simx_return_ok:
+			return resolution, image    
+		else:
+			return None, None
+			# res=vrep.simxSetVisionSensorImage(clientID,v1,image,0,vrep.simx_opmode_oneshot)
 	
 	# Gets the Range and Bearing to the wall(s)
 	# returns:
@@ -682,7 +698,7 @@ class VREP_RoverRobot(object):
 
 		# rock positions
 		rockPositions = [None, None, None]
-		for index, sample in enumerate(self.rockPositions):
+		for index, rock in enumerate(self.rockPositions):
 			errorCode, rockPositions[index] = vrep.simxGetObjectPosition(self.clientID, self.rockHandles[index], -1, vrep.simx_opmode_buffer)
 			if errorCode == 0:
 				self.rockPositions[index] = rockPositions[index]
@@ -952,21 +968,21 @@ class SceneParameters(object):
 		# sample Starting Position
 
 		# Obstacles Starting Positions - set to none if you do not want a specific obstacle in the scene
-		self.sample0_StartingPosition = -1 # starting position of sample 0 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
-		self.sample1_StartingPosition = -1 # starting position of sample 1 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
-		self.sample2_StartingPosition = -1   # starting position of sample 2 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+		self.sample0_StartingPosition = [0.5, 0]  # starting position of sample 0 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+		self.sample1_StartingPosition = [0, 0.675]   # starting position of sample 1 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+		self.sample2_StartingPosition = None   # starting position of sample 2 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
 
 
 		# Obstacles Starting Positions - set to none if you do not want a specific obstacle in the scene
-		self.obstacle0_StartingPosition = -1 # starting position of obstacle 0 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
-		self.obstacle1_StartingPosition = -1 # starting position of obstacle 1 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
-		self.obstacle2_StartingPosition = -1   # starting position of obstacle 2 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+		self.obstacle0_StartingPosition = [-0.45, 0.5]  # starting position of obstacle 0 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+		self.obstacle1_StartingPosition = [-0.25,-0.675]   # starting position of obstacle 1 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+		self.obstacle2_StartingPosition = None   # starting position of obstacle 2 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
 
 
 		# Obstacles Starting Positions - set to none if you do not want a specific obstacle in the scene
-		self.rock0_StartingPosition = -1 # starting position of rock 0 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
-		self.rock1_StartingPosition = -1   # starting position of rock 1 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
-		self.rock2_StartingPosition = -1 # starting position of rock 2 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+		self.rock0_StartingPosition = [0.675, -0.25]  # starting position of rock 0 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+		self.rock1_StartingPosition = None   # starting position of rock 1 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+		self.rock2_StartingPosition = None   # starting position of rock 2 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
 
 
 ####################################
@@ -1018,12 +1034,12 @@ class lunar_object(IntEnum):
 	sample1 = 1
 	sample2 = 2
 	
-	obstacle0 = 3
-	obstacle1 = 4
-	obstacle2 = 5
+	rock0 = 3
+	rock1 = 4
+	rock2 = 5
 
-	rock0 = 6
-	rock1 = 7
-	rock2 = 8
+	obstacle0 = 6
+	obstacle1 = 7
+	obstacle2 = 8
 
 	lander = 9

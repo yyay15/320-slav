@@ -10,19 +10,19 @@ from roverbot_lib import *
 # SET SCENE PARAMETERS
 sceneParameters = SceneParameters()
 
-sceneParameters.obstacle0_StartingPosition = -1#[-0.45, 0.5]  # starting position of obstacle 0 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+sceneParameters.obstacle0_StartingPosition = [-0.45, 0.5]  # starting position of obstacle 0 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
 # sceneParameters.obstacle0_StartingPosition = None  # starting position of obstacle 0 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
-sceneParameters.obstacle1_StartingPosition = -1 # starting position of obstacle 1 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
-sceneParameters.obstacle2_StartingPosition = -1   # starting position of obstacle 2 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+sceneParameters.obstacle1_StartingPosition = None   # starting position of obstacle 1 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+sceneParameters.obstacle2_StartingPosition = None   # starting position of obstacle 2 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
 
-sceneParameters.sample0_StartingPosition = -1  # starting position of obstacle 0 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+sceneParameters.sample0_StartingPosition = [0.5, 0]  # starting position of obstacle 0 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
 # sceneParameters.sample0_StartingPosition = None  # starting position of obstacle 0 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
-sceneParameters.sample1_StartingPosition = -1   # starting position of obstacle 1 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
-sceneParameters.sample2_StartingPosition = -1  # starting position of obstacle 2 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+sceneParameters.sample1_StartingPosition = None   # starting position of obstacle 1 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+sceneParameters.sample2_StartingPosition = None   # starting position of obstacle 2 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
 
 
 # sceneParameters.rock0_StartingPosition = -1  # starting position of obstacle 0 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
-sceneParameters.rock0_StartingPosition = -1  # starting position of obstacle 0 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+sceneParameters.rock0_StartingPosition = None  # starting position of obstacle 0 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
 sceneParameters.rock1_StartingPosition = None   # starting position of obstacle 1 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
 sceneParameters.rock2_StartingPosition = None   # starting position of obstacle 2 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
 
@@ -46,7 +46,7 @@ robotParameters.maxBallDetectionDistance = 1 # the maximum distance away that yo
 robotParameters.maxLanderDetectionDistance = 2.5 # the maximum distance away that you can detect the goals in metres
 robotParameters.maxObstacleDetectionDistance = 1.5 # the maximum distance away that you can detect the obstacles in metres
 
-# Dribbler Parametesrs
+# Dribbler Parameters
 robotParameters.collectorQuality = 1 # specifies how good your sample collector is from 0 to 1.0 (with 1.0 being awesome and 0 being non-existent)
 robotParameters.autoCollectSample = True #specifies whether the simulator automatically collects samples if near the collector 
 robotParameters.maxCollectDistance = 0.03 #specificies the operating distance of the automatic collector function. Sample needs to be less than this distance to the collector
@@ -66,7 +66,7 @@ if __name__ == '__main__':
 
 		while True:
 			# move the robot at a forward velocity of 0.1m/s with a rotational velocity of 0.5 rad/s.
-			lunarBotSim.SetTargetVelocities(0.2, 0)
+			lunarBotSim.SetTargetVelocities(0.1, 0.5)
 
 			# Get Detected Objects
 			samplesRB, landerRB, obstaclesRB, rocksRB = lunarBotSim.GetDetectedObjects()
@@ -84,25 +84,23 @@ if __name__ == '__main__':
 				for obstacle in obstaclesRB:
 					obstacleRange = obstacle[0]
 					obstacleBearing = obstacle[1]
-					print("obstacle detected")
 
-			# Check to see if any rocks are within the camera's FOV
+			# Check to see if any obstacles are within the camera's FOV
 			if rocksRB != None:
-				# loop through each rock detected using Pythonian way
-				for rock in rocksRB:
-					rockRange = rock[0]
-					rockBearing = rock[1]
-					print ("\tRock (range, bearing): %0.4f, %0.4f"%(rockRange, rockBearing))
+				# loop through each obstacle detected using Pythonian way
+				for obstacle in obstaclesRB:
+					obstacleRange = obstacle[0]
+					obstacleBearing = obstacle[1]
 
 			# Get Detected Wall Points
 			wallPoints = lunarBotSim.GetDetectedWallPoints()
 			if wallPoints == None:
-				print("Too close to the wall")
-			# else:
-				# print("\nDetected Wall Points")
-				# # print the range and bearing to each wall point in the list
-				# for point in wallPoints:
-				# 	print("\tWall Point (range, bearing): %0.4f, %0.4f"%(point[0], point[1]))
+				print("To close to the wall")
+			else:
+				print("\nDetected Wall Points")
+				# print the range and bearing to each wall point in the list
+				for point in wallPoints:
+					print("\tWall Point (range, bearing): %0.4f, %0.4f"%(point[0], point[1]))
 
 
 			#do something here with the robot
