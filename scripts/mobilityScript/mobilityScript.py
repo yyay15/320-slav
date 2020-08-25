@@ -46,13 +46,13 @@ getch = _Getch()
 
 
 # Pin configurations
-PWMA = 5
-PWMB = 21
-A1 = 13
-A2 = 6
-B1 = 20
-B2 = 26
-STBY = 19
+PWMA = 27
+PWMB = 6
+A1 = 10
+A2 = 22
+B1 = 11
+B2 = 5
+STBY = 9
 
 GPIO.setmode(GPIO.BCM)				# Set the GPIO pin naming convention
 GPIO.setup(PWMB, GPIO.OUT)			# Set our GPIO pin to output
