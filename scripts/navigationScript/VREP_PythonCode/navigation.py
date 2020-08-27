@@ -1,3 +1,5 @@
+import time
+
 #Mode 
 SEARCH_SAMPLE = 1
 SEARCH_ROCK = 1
@@ -8,7 +10,8 @@ LIFT_ROCK = 5
 
 class Navigation:
     def __init__(self):
-        self.state = SEARCH_SAMPLE
+        self.stateMode = SEARCH_SAMPLE
+        self.modeStartTime = time.time()
     
     def currentState(self, stateNum):
         switchState = {
@@ -22,21 +25,42 @@ class Navigation:
         }
         return switchState.get(stateNum, self.searchSample)
 
-    def updateVelocities(self):
-        v, w = self.currentState(self.state)()
+    def updateVelocities(self, state):
+        v, w = self.currentState(self.stateMode)(state)
         return v, w
 
 
-    def searchSample(self):
-        print("search sample")
+    def searchSample(self, state):
+        # print("search sample")
         v = 0
-        w = 0.1
-        return v, w
+        w = 0.2
+        if(time.time() - self.modeStartTime >= 20):
+            w = -0.2
+        if (state.sampleRB != None):
+            self.stateMode = 3
         
+        return v, w
+
+    def navSample(self, state):
+        if (state.sampleRB == None):
+            v = 0
+            w = 0
+            self.stateMode = 1
+        else:
+            currSample = state.sampleRB[0]
+            v = 0.5* currSample[0]
+            w = currSample[1]
+
+        #print("navigating to sample")
+        return v, w
+
     def searchRock(self):
         print(1)
-    def navSample(self):
-        print(1)
+
+
+
+
+
     def navRock(self):
         print(1)
     def searchLander(self):
