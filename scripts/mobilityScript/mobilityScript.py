@@ -72,11 +72,14 @@ class Mobility:
         GPIO.setup(B2 , GPIO.OUT)			# Set our GPIO pin to output
         # Set up GPIO Output 
         GPIO.output(STBY,GPIO.HIGH)
-         		
+        GPIO.output(A1,GPIO.HIGH)
+        GPIO.output(A2,GPIO.LOW)
+        GPIO.output(B1,GPIO.HIGH)
+        GPIO.output(B2,GPIO.LOW) 		
         # Initialise PWM
         self.motorPWM = [GPIO.PWM(PWMA, 100),GPIO.PWM(PWMB, 100)]
         # Initialise MotorDir
-        self.motorDIR = [[GPIO.output(A1,GPIO.HIGH),GPIO.output(A2,GPIO.LOW)],[GPIO.output(B1,GPIO.HIGH),GPIO.output(B2,GPIO.LOW)]]
+        self.motorDIR = [[A1,A2],[B1,B2]]
         
         # Zero State
         self.drive(0, 0)
@@ -109,7 +112,7 @@ class Mobility:
         return powerLeft, powerRight
 
     def driveDir(self, powerLeft, powerRight):
-        if powerLeft< 0:
+        if powerLeft < 0:
             GPIO.output(self.motorDIR[0],GPIO.LOW) 	
             GPIO.output(self.motorDIR[1],GPIO.HIGH) 	
         else:
