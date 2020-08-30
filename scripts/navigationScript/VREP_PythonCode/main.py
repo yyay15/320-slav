@@ -52,7 +52,8 @@ if __name__ == '__main__':
         while True:
             sim.UpdateObjectPositions()
             objects = sim.GetDetectedObjects()
-            state.updateState(objects)
+            sampleCollected = sim.SampleCollected()
+            state.updateState(objects, sampleCollected)
             v, w = nav.updateVelocities(state)
             sim.SetTargetVelocities(v, w)
 

@@ -968,21 +968,21 @@ class SceneParameters(object):
 		# sample Starting Position
 
 		# Obstacles Starting Positions - set to none if you do not want a specific obstacle in the scene
-		self.sample0_StartingPosition = [0.5, 0]  # starting position of sample 0 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
-		self.sample1_StartingPosition = [0, 0.675]   # starting position of sample 1 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
-		self.sample2_StartingPosition = None   # starting position of sample 2 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+		self.sample0_StartingPosition = -1 # starting position of sample 0 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+		self.sample1_StartingPosition = -1   # starting position of sample 1 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+		self.sample2_StartingPosition = -1   # starting position of sample 2 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
 
 
 		# Obstacles Starting Positions - set to none if you do not want a specific obstacle in the scene
-		self.obstacle0_StartingPosition = [-0.45, 0.5]  # starting position of obstacle 0 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
-		self.obstacle1_StartingPosition = [-0.25,-0.675]   # starting position of obstacle 1 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
-		self.obstacle2_StartingPosition = None   # starting position of obstacle 2 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+		self.obstacle0_StartingPosition = -1  # starting position of obstacle 0 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+		self.obstacle1_StartingPosition = -1   # starting position of obstacle 1 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+		self.obstacle2_StartingPosition = -1  # starting position of obstacle 2 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
 
 
 		# Obstacles Starting Positions - set to none if you do not want a specific obstacle in the scene
-		self.rock0_StartingPosition = [0.675, -0.25]  # starting position of rock 0 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
-		self.rock1_StartingPosition = None   # starting position of rock 1 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
-		self.rock2_StartingPosition = None   # starting position of rock 2 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+		self.rock0_StartingPosition = -1 # starting position of rock 0 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+		self.rock1_StartingPosition = -1  # starting position of rock 1 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
+		self.rock2_StartingPosition = -1  # starting position of rock 2 [x, y] (in metres), -1 if want to use current vrep position, or none if not wanted in the scene
 
 
 ####################################
