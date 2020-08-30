@@ -21,12 +21,17 @@ SIMULATION = False
 
 # Local modules
 if SIMULATION:
+
+    #drive = vrep.mobility()
     pass
 else:
     from mobilityScript import mobilityScript
     # from navigationScript import 
     # from collectionScript import
     # from visionScript import
+
+    # Initialise Functions and Classes
+    drive = mobilityScript.Mobility()
 
 
 #---------------#
@@ -36,21 +41,19 @@ else:
 if __name__ == '__slavesMain__':
     # Load Objects or Simulation
     if SIMULATION:
-        pass
+        # Load nav tings
     else:
-        drive = mobilityScript.Mobility()
+        
+        # Launch command centre
 
-    # Initialise States
-    vel = 0
-    angVel = 0
+        # Initialise States for All System
+        v = 0
+        w = 0
 
 
-    # Try Loading And running
-    try:
-        while True:
-            if SIMULATION:
-                pass
-            else:
+        # Try Loading And running
+        try:
+            while True:
                 print("""
                 Please select Drive Mode
                 a    Automatic
@@ -59,6 +62,7 @@ if __name__ == '__slavesMain__':
                 """)
                 userSelect = input()
                 if  userSelect == "a":
+                    # CHUCK THAT CHUNK HERE
                     pass
                 elif userSelect == "m":
                     drive.manualControl()
@@ -67,8 +71,7 @@ if __name__ == '__slavesMain__':
                     break
                 else:
                     print("Unknown Command")
-
-    # Clean up when closing        
-    except KeyboardInterrupt:
-        if not SIMULATION:
-            drive.gpioClean()
+        # Clean up when closing        
+        except KeyboardInterrupt:
+            if not SIMULATION:
+                drive.gpioClean()
