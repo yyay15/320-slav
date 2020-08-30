@@ -42,6 +42,7 @@ if __name__ == '__slavesMain__':
     # Load Objects or Simulation
     if SIMULATION:
         # Load nav tings
+        pass
     else:
         
         # Launch command centre
