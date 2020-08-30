@@ -63,7 +63,8 @@ if __name__ == '__main__':
                 print("""
                 Please select Drive Mode
                 a    Automatic
-                m    Manual
+                m    Manual - Discrete (Enter Button)
+                n    Manual - Continuous (Hold button)
                 q    quit
                 """)
                 userSelect = input()
@@ -72,6 +73,8 @@ if __name__ == '__main__':
                     pass
                 elif userSelect == "m":
                     drive.manualControl()
+                elif userSelect == "n":
+                    drive.continuousControl()
                 elif userSelect == "q":
                     drive.gpioClean()
                     break

@@ -48,8 +48,46 @@ FULLSPEED = 100
 # Custom Functions
 ###############################################################
 
-# wip : OOP for mobility
+class _Getch:
+    """Gets a single character from standard input.  Does not echo to the
+screen."""
+    def __init__(self):
+        try:
+            self.impl = _GetchWindows()
+        except ImportError:
+            self.impl = _GetchUnix()
 
+    def __call__(self): return self.impl()
+
+class _GetchUnix:
+    def __init__(self):
+        import tty, sys
+
+    def __call__(self):
+        import sys, tty, termios
+        fd = sys.stdin.fileno()
+        old_settings = termios.tcgetattr(fd)
+        try:
+            tty.setraw(sys.stdin.fileno())
+            ch = sys.stdin.read(1)
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+        return ch
+
+class _GetchWindows:
+    def __init__(self):
+        import msvcrt
+
+    def __call__(self):
+        import msvcrt
+        return msvcrt.getch()
+
+getch = _Getch()
+
+
+################################################################
+# Define Class System
+###############################################################
 class Mobility:
 
     
@@ -142,6 +180,7 @@ class Mobility:
     def manualControl(self):
         print("""
         Manual Control Mode:
+        This control mode allows the user to press a button and enter it whilst the action will run indefintely.
         w     Move Forward
         s     Move Backward
         a     Turn Left
@@ -224,6 +263,97 @@ class Mobility:
                 break
             else:
                 print("Unknown Command")
+
+    def continuousControl(self):
+        print("""
+        Continuous Control Mode:
+        This control system allows user to press and hold to fine tune control.
+        w     Move Forward
+        s     Move Backward
+        a     Turn Left
+        d     Turn Right
+        r     Rotate on spot
+        c     Stop motors
+        i     Custom Speed Setting (v,w)
+        j     Custom Speed Setting (l,r)
+        1     Low Speed Setting (25% PWM)
+        2     Medium Speed Setting (50% PWM)
+        3     Full Speed Setting (100% PWM)
+        q     Exit Mode\n""")
+        while (True):            
+            key = getch() 
+            if key == 'w':
+                self.drivePower(self.speedLeft, self.speedRight)
+                time.sleep(1)
+            elif key == 's':
+                self.drivePower(-self.speedLeft, -self.speedRight)
+                time.sleep(1)
+            elif key == 'a':
+                self.drivePower(0, self.speedRight)
+                time.sleep(1)
+            elif key == 'd':
+                self.drivePower(self.speedLeft, 0)
+                time.sleep(1)
+            elif key == 'r':
+                self.drivePower(-self.speedLeft, self.speedRight)
+                time.sleep(1)
+            elif key == 'c':
+                self.drivePower(0, 0)
+                time.sleep(1)
+            elif key == 'i':
+                print("Input speed in format 'velocity, angular velocity': ", end='')
+                speedInput = input()
+                # Split commas
+                speedInput = speedInput.split(',')
+                if len(speedInput) != 2:
+                    print("Error: Incorrect Input")
+                    continue            
+                # Parse numbers
+                try:
+                    self.speedLeft, self.speedRight = self.veloCalcWheels(int(speedInput[0]), int(speedInput[1]))
+                except ValueError:
+                    print("Error: invalid input.")
+                    continue
+            elif key == 'j':
+                print("Input speed in format 'leftPower, rightPower': ", end='')
+                speedInput = input()
+                # Split commas
+                speedInput = speedInput.split(',')
+                if len(speedInput) != 2:
+                    print("Error: Incorrect Input")
+                    continue            
+                # Parse numbers
+                try:
+                    self.speedLeft = int(speedInput[0])
+                    self.speedRight = int(speedInput[1])
+                except ValueError:
+                    print("Error: invalid input.")
+                    continue
+            elif key == '1':
+                print("Setting LowSpeed")
+                print(LOWSPEED)
+                self.speedLeft = LOWSPEED
+                self.speedRight = LOWSPEED
+                time.sleep(1)
+            elif key == '2':
+                print("Setting MediumSpeed")
+                print(MEDIUMSPEED)
+                self.speedLeft = MEDIUMSPEED
+                self.speedRight = MEDIUMSPEED
+                time.sleep(1)
+            elif key == '3':
+                print("Setting FullSpeed")
+                print(FULLSPEED)
+                self.speedLeft = FULLSPEED
+                self.speedRight = FULLSPEED
+                time.sleep(1)
+            elif key == 'q':
+                print("Quitting ...")
+                GPIO.cleanup()
+                break
+            else:
+                self.drivePower(0, 0)
+
 
     def gpioClean(self):
         self.drive(0, 0)
