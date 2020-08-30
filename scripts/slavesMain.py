@@ -38,7 +38,7 @@ else:
 # MainScript
 #---------------#
 
-if __name__ == '__slavesMain__':
+if __name__ == '__Main__':
     # Load Objects or Simulation
     print("beforeSimCheck...")
 
