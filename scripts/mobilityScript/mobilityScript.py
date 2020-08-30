@@ -79,7 +79,7 @@ class Mobility:
         # Initialise PWM
         self.motorPWM = [GPIO.PWM(PWMA, 100),GPIO.PWM(PWMB, 100)]
         # Initialise MotorDir
-        self.motorDIR = [[A1,A2],[B1,B2]]
+        self.motorDIR = [A1,A2,B1,B2]
         
         # Zero State
         self.drive(0, 0)
