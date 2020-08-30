@@ -206,12 +206,18 @@ class Mobility:
                     print("Error: invalid input.")
                     continue
             elif key == '1':
+                print("Setting LowSpeed")
+                print(LOWSPEED)
                 self.speedLeft = LOWSPEED
                 self.speedRight = LOWSPEED
             elif key == '2':
+                print("Setting MediumSpeed")
+                print(MEDIUMSPEED)
                 self.speedLeft = MEDIUMSPEED
                 self.speedRight = MEDIUMSPEED
             elif key == '3':
+                print("Setting FullSpeed")
+                print(FULLSPEED)
                 self.speedLeft = FULLSPEED
                 self.speedRight = FULLSPEED
             elif key == 'q':
