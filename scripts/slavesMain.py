@@ -54,7 +54,7 @@ if __name__ == '__slavesMain__':
 
         # Try Loading And running
         try:
-            while True:
+            while(1):
                 print("""
                 Please select Drive Mode
                 a    Automatic
