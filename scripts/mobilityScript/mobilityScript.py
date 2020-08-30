@@ -130,8 +130,8 @@ class Mobility:
         # Set Drive Direction
         self.driveDir(powerLeft, powerRight)
         # Turn motors
-        self.turnMotor(self.motorPWM[0], powerLeft)
-        self.turnMotor(self.motorPWM[1], powerRight)
+        self.turnMotor(self.motorPWM[0], int(powerLeft))
+        self.turnMotor(self.motorPWM[1], int(powerRight))
 
 
     def turnMotor(self, pinPWM,PWM):
@@ -184,7 +184,7 @@ class Mobility:
                     continue            
                 # Parse numbers
                 try:
-                    self.speedLeft, self.speedRight = self.veloCalcWheels(speedInput[0], speedInput[1])
+                    self.speedLeft, self.speedRight = self.veloCalcWheels(int(speedInput[0]), int(speedInput[1]))
                 except ValueError:
                     print("Error: invalid input.")
                     continue
@@ -198,8 +198,8 @@ class Mobility:
                     continue            
                 # Parse numbers
                 try:
-                    self.speedLeft = speedInput[0]
-                    self.speedRight = speedInput[1]
+                    self.speedLeft = int(speedInput[0])
+                    self.speedRight = int(speedInput[1])
                 except ValueError:
                     print("Error: invalid input.")
                     continue
