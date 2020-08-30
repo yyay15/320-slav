@@ -132,13 +132,8 @@ class Mobility:
         # Set Drive Direction
         self.driveDir(powerLeft, powerRight)
         # Turn motors
-        self.turnMotor(self.motorPWM[0], int(powerLeft))
-        self.turnMotor(self.motorPWM[1], int(powerRight))
-
-
-    def turnMotor(self, pinPWM,PWM):
-        pinPWM.start(PWM)
-        
+        self.motorPWM[0].start(int(powerLeft))
+        self.motorPWM[1].start(int(powerRight))
 
 
     def manualControl(self):
