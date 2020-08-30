@@ -37,8 +37,8 @@ else:
 #---------------#
 # MainScript
 #---------------#
-
-if __name__ == '__Main__':
+print("beforemain")
+if __name__ == '__main__':
     # Load Objects or Simulation
     print("beforeSimCheck...")
 
