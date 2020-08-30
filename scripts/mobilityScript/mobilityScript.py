@@ -158,22 +158,22 @@ class Mobility:
             key = input(">> ") 
             if key == 'w':
                 print("Moving Forwards")
-                self.drive(self.speedLeft, self.speedRight)
+                self.drivePower(self.speedLeft, self.speedRight)
             elif key == 's':
                 print("Moving Backwards")
-                self.drive(-self.speedLeft, -self.speedRight)
+                self.drivePower(-self.speedLeft, -self.speedRight)
             elif key == 'a':
                 print("Turning Left")
-                self.drive(0, self.speedRight)
+                self.drivePower(0, self.speedRight)
             elif key == 'd':
                 print("Turning Right")
-                self.drive(self.speedLeft, 0)
+                self.drivePower(self.speedLeft, 0)
             elif key == 'r':
                 print("Rotating")
-                self.drive(-self.speedLeft, self.speedRight)
+                self.drivePower(-self.speedLeft, self.speedRight)
             elif key == 'c':
                 print("Stopping Motors")
-                self.drive(0, 0)
+                self.drivePower(0, 0)
             elif key == 'i':
                 print("Input speed in format 'velocity, angular velocity': ", end='')
                 speedInput = input()
