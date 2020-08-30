@@ -42,6 +42,10 @@ LOWSPEED = 25
 MEDIUMSPEED = 50
 FULLSPEED = 100
 
+# Global Speed
+global speedLeft
+global speedRight
+
 ################################################################
 # Custom Functions
 ###############################################################
@@ -74,23 +78,19 @@ class Mobility:
         # Initialise MotorDir
         self.motorDIR = [[GPIO.output(A1,GPIO.HIGH),GPIO.output(A2,GPIO.LOW)],[GPIO.output(B1,GPIO.HIGH),GPIO.output(B2,GPIO.LOW)]]
         
-        # Initialise SpeedStates
-        self.speedLeft = 0
-        self.speedRight = 0 
-
         # Zero State
-        self.drive(self.speedLeft, self.speedRight)
+        self.drive(0, 0)
 
 
     def drive(self, v, w):
-        # Threshold Linear Velocity to max
+        # Threshold Velocity to max
         v = min(v, maxLin)
         w = min(w, maxAng)
 
         # Convert v and w to motor percentages
-        self.speedLeft, self.speedRight = self.veloCalcWheels(v, w)
+        speedLeft, speedRight = self.veloCalcWheels(v, w)
         
-        self.drivePower(self.speedLeft, self.speedRight)
+        self.drivePower(speedLeft, speedRight)
 
     def veloCalcWheels(self, v, w):
 
@@ -158,19 +158,19 @@ class Mobility:
             key = input(">> ") 
             if key == 'w':
                 print("Moving Forwards")
-                self.drive(self.speedLeft, self.speedRight)
+                self.drive(speedLeft, speedRight)
             elif key == 's':
                 print("Moving Backwards")
-                self.drive(-self.speedLeft, -self.speedRight)
+                self.drive(-speedLeft, -speedRight)
             elif key == 'a':
                 print("Turning Left")
-                self.drive(0, self.speedRight)
+                self.drive(0, speedRight)
             elif key == 'd':
                 print("Turning Right")
-                self.drive(self.speedLeft, 0)
+                self.drive(speedLeft, 0)
             elif key == 'r':
                 print("Rotating")
-                self.drive(-self.speedLeft, self.speedRight)
+                self.drive(-speedLeft, speedRight)
             elif key == 'c':
                 print("Stopping Motors")
                 self.drive(0, 0)
@@ -184,7 +184,7 @@ class Mobility:
                     continue            
                 # Parse numbers
                 try:
-                    self.speedLeft, self.speedRight = self.veloCalcWheels(int(speedInput[0]), int(speedInput[1]))
+                    speedLeft, speedRight = self.veloCalcWheels(int(speedInput[0]), int(speedInput[1]))
                 except ValueError:
                     print("Error: invalid input.")
                     continue
@@ -198,20 +198,20 @@ class Mobility:
                     continue            
                 # Parse numbers
                 try:
-                    self.speedLeft = int(speedInput[0])
-                    self.speedRight = int(speedInput[1])
+                    speedLeft = int(speedInput[0])
+                    speedRight = int(speedInput[1])
                 except ValueError:
                     print("Error: invalid input.")
                     continue
             elif key == '1':
-                self.speedLeft = LOWSPEED
-                self.speedRight = LOWSPEED
+                speedLeft = LOWSPEED
+                speedRight = LOWSPEED
             elif key == '2':
-                self.speedLeft = MEDIUMSPEED
-                self.speedRight = MEDIUMSPEED
+                speedLeft = MEDIUMSPEED
+                speedRight = MEDIUMSPEED
             elif key == '3':
-                self.speedLeft = FULLSPEED
-                self.speedRight = FULLSPEED
+                speedLeft = FULLSPEED
+                speedRight = FULLSPEED
             elif key == 'q':
                 print("Quitting ...")
                 GPIO.cleanup()
