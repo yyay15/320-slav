@@ -30,9 +30,12 @@ STBY = 9
 
 # Wheel Parameters
 WHEELRADIUS = 0.03 # Metres
-WHEELBASE = 0.1    # Metres
+WHEELBASE = 0.13    # Metres
 
-
+# Motor Parameters
+maxLin = 0.2
+maxAng = 6.66
+maxRPM = 63.66
 
 #---------------#
 # Definition
@@ -87,86 +90,77 @@ WHEELBASE = 0.1    # Metres
 # GPIO.setup(B2 , GPIO.OUT)			# Set our GPIO pin to output
 
 
+# while(1):
 
-pwmA = GPIO.PWM(PWMA, 100)			# Initiate the PWM signal
-pwmA.start(0)					# Start a PWM signal with duty cycle at 50%
-pwmB = GPIO.PWM(PWMB, 100)			# Initiate the PWM signal
-pwmB.start(0)					# Start a PWM signal with duty cycle at 50%
+#     key = getch() 
 
+#     if key == 'w':
+#         GPIO.output(A1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+#         GPIO.output(B1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+#         GPIO.output(A2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+#         GPIO.output(B2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+#         pwmA.ChangeDutyCycle(100)
+#         pwmB.ChangeDutyCycle(100)
+#         time.sleep(0.2)
 
-
-
-while(1):
-
-    key = getch() 
-
-    if key == 'w':
-        GPIO.output(A1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.output(B1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.output(A2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.output(B2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
-        pwmA.ChangeDutyCycle(100)
-        pwmB.ChangeDutyCycle(100)
-        time.sleep(0.2)
-
-    elif key == 's':
-        GPIO.output(A1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.output(B1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.output(A2,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.output(B2,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
-        pwmA.ChangeDutyCycle(100)
-        pwmB.ChangeDutyCycle(100)
-        time.sleep(0.2)
+#     elif key == 's':
+#         GPIO.output(A1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+#         GPIO.output(B1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+#         GPIO.output(A2,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+#         GPIO.output(B2,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+#         pwmA.ChangeDutyCycle(100)
+#         pwmB.ChangeDutyCycle(100)
+#         time.sleep(0.2)
 
 
-    elif key == 'a':
-        GPIO.output(A1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.output(B1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.output(A2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.output(B2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
-        pwmA.ChangeDutyCycle(0)
-        pwmB.ChangeDutyCycle(100)
-        time.sleep(0.2)
+#     elif key == 'a':
+#         GPIO.output(A1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+#         GPIO.output(B1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+#         GPIO.output(A2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+#         GPIO.output(B2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+#         pwmA.ChangeDutyCycle(0)
+#         pwmB.ChangeDutyCycle(100)
+#         time.sleep(0.2)
 
-    elif key == 'd':
-        GPIO.output(A1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.output(B1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.output(A2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.output(B2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
-        pwmA.ChangeDutyCycle(100)
-        pwmB.ChangeDutyCycle(0)
-        time.sleep(0.2)
-
-
-    elif key == 'r':
-        GPIO.output(A1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.output(B1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.output(A2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.output(B2,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
-        pwmA.ChangeDutyCycle(100)
-        pwmB.ChangeDutyCycle(100)
-        time.sleep(1)
+#     elif key == 'd':
+#         GPIO.output(A1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+#         GPIO.output(B1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+#         GPIO.output(A2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+#         GPIO.output(B2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+#         pwmA.ChangeDutyCycle(100)
+#         pwmB.ChangeDutyCycle(0)
+#         time.sleep(0.2)
 
 
-    elif key == 'q':
-        print("quitting")
-        pwmA.stop()					# Stop the PWM signal
-        pwmB.stop()					# Stop the PWM signal
-        GPIO.output(A1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.output(B1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.output(A2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.output(B2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
-        GPIO.cleanup()
-        break
+#     elif key == 'r':
+#         GPIO.output(A1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+#         GPIO.output(B1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+#         GPIO.output(A2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+#         GPIO.output(B2,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+#         pwmA.ChangeDutyCycle(100)
+#         pwmB.ChangeDutyCycle(100)
+#         time.sleep(1)
 
-    else:
-        pwmA.ChangeDutyCycle(0)
-        pwmB.ChangeDutyCycle(0)
 
-    # Clean
-    char = ""
-    pwmA.ChangeDutyCycle(0)
-    pwmB.ChangeDutyCycle(0)
+#     elif key == 'q':
+#         print("quitting")
+#         pwmA.stop()					# Stop the PWM signal
+#         pwmB.stop()					# Stop the PWM signal
+#         GPIO.output(A1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+#         GPIO.output(B1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+#         GPIO.output(A2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+#         GPIO.output(B2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+#         GPIO.cleanup()
+#         break
+
+#     else:
+#         pwmA.ChangeDutyCycle(0)
+#         pwmB.ChangeDutyCycle(0)
+
+#     # Clean
+#     char = ""
+#     pwmA.ChangeDutyCycle(0)
+#     pwmB.ChangeDutyCycle(0)
 
 
 
@@ -201,6 +195,13 @@ class Mobility:
         GPIO.output(B1,GPIO.HIGH) 		
         GPIO.output(A2,GPIO.LOW) 		
         GPIO.output(B2,GPIO.LOW) 		
+
+        # Initialise PWM
+        pwmA = GPIO.PWM(PWMA, 100)			# Initiate the PWM signal
+        pwmA.start(0)					# Start a PWM signal with duty cycle at 50%
+        pwmB = GPIO.PWM(PWMB, 100)			# Initiate the PWM signal
+        pwmB.start(0)					# Start a PWM signal with duty cycle at 50%
+
         # Zero State
         self.drive(0, 0)
 
@@ -208,20 +209,15 @@ class Mobility:
     def drive(self, velocity, angVelocity):
 
         # Convert v and w to motor percentages
-        speed_l, speed_r = self.veloCalcWheels(v, w)
-        #speed_l *= MULTIPLIER_L
-        #speed_r *= MULTIPLIER_R
+        speedLeft, speedRight = self.veloCalcWheels(v, w)
         
-        # Apply scaling to right motor
-        speed_r = speed_r * SCALING_M + SCALING_C
-
-        self.drivePower(speed_l, speed_r)
+        self.drivePower(speedLeft, speedRight)
 
     def veloCalcWheels(self, velocity, angVelocity):
-        
+                
 		# Calculate linear velocity for each wheel
-        veloLeft = v - w * WHEELBASE
-        veloRight = 2 * v - veloLeft
+        veloLeft = velocity - angVelocity * WHEELBASE
+        veloRight = 2 * velocity - veloLeft
 
 		# Calculate angular velocity for each wheel
         angVeloLeft = veloLeft / WHEELRADIUS
@@ -234,79 +230,62 @@ class Mobility:
         return powerLeft, powerRight
 
 
+    def manualControl(self):
+        print("""
+        Manual Control Mode:
+        w     Move Forward
+        s     Move Backward
+        a     Turn Left
+        d     Turn Right
+        r     Rotate on spot
+        c     Stop motors
+        1,2,3 Preset speed 
+        i     Custom Speed Setting
+        q     Exit Mode\n""")
+        while (True):            
+            key = input() 
+            if key == 'w':
+                GPIO.output(A1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+                GPIO.output(B1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+                GPIO.output(A2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+                GPIO.output(B2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+                pwmA.ChangeDutyCycle(100)
+                pwmB.ChangeDutyCycle(100)
+            elif key == 's':
+                GPIO.output(A1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+                GPIO.output(B1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+                GPIO.output(A2,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+                GPIO.output(B2,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+                pwmA.ChangeDutyCycle(100)
+                pwmB.ChangeDutyCycle(100)
+            elif key == 'a':
+                GPIO.output(A1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+                GPIO.output(B1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+                GPIO.output(A2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+                GPIO.output(B2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+                pwmA.ChangeDutyCycle(0)
+                pwmB.ChangeDutyCycle(100)
+            elif key == 'd':
+                GPIO.output(A1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+                GPIO.output(B1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+                GPIO.output(A2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+                GPIO.output(B2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+                pwmA.ChangeDutyCycle(100)
+                pwmB.ChangeDutyCycle(0)
+            elif key == 'r':
+                GPIO.output(A1,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+                GPIO.output(B1,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+                GPIO.output(A2,GPIO.LOW) 		# Set GPIO pin 21 to digital high (on)
+                GPIO.output(B2,GPIO.HIGH) 		# Set GPIO pin 21 to digital high (on)
+                pwmA.ChangeDutyCycle(100)
+                pwmB.ChangeDutyCycle(100)
+            elif key == 'q':
+                print("Quitting ...")
+                GPIO.cleanup()
+                break
+            else:
+                print("Unknown Command")
+
     def gpioClean(self):
+        self.drive(0, 0)
         GPIO.cleanup()
-
-
-
-
-
-
-
-
-###############################################################
-# Reference
-###############################################################
-
-# # MOTOR_PINS = np.array([[19, 16], [26, 20]])
-
-
-# # Drive parameters
-# WHEEL_RADIUS = 0.042   # metres
-# WHEEL_BASE = 0.1       # metres
-# POWER_TO_RADS = 40     # motor percent per rad/s
-
-# # Right motor scaling function parameters
-# # POWER_R_SCALED = POWER_R * SCALING_M + SCALING_C
-# SCALING_M = 0.75
-# SCALING_C = 25
-
-# class Drive:
-
-#     def __init__(self):
-#         # Setup GPIO
-#         GPIO.setmode(GPIO.BCM)
-#         for pin in np.concatenate([MOTOR_PINS.flatten(), [KICKER_PIN], DRIBBLER_PINS]):
-#             GPIO.setup(int(pin), GPIO.OUT)
-#         # Setup PWM
-#         self.motorPWM = [[GPIO.PWM(MOTOR_PINS[0,0], 100), GPIO.PWM(MOTOR_PINS[0,1], 100)],
-#                          [GPIO.PWM(MOTOR_PINS[1,0], 100), GPIO.PWM(MOTOR_PINS[1,1], 100)]]
-#         # Turn everything off
-#         self.drive(0, 0)
-#     def turnMotor(self, pwms, speed):
-#         #print(speed)
-#         # Constrain speed to 100 and -100
-#         if speed > 100:  speed = 100
-#         if speed < -100: speed = -100
-#         # Forward
-#         if speed >= 0:
-#             pwms[0].start(speed)
-#             pwms[1].stop()
-#         # Backwards
-#         else:
-#             pwms[0].stop()
-#             pwms[1].start(-speed)
-#     def drive(self, v, w):
-#         # Convert v and w to motor percentages
-#         speed_l, speed_r = self.vw2wheels(v, w)
-#         #speed_l *= MULTIPLIER_L
-#         #speed_r *= MULTIPLIER_R        
-#         # Apply scaling to right motor
-#         speed_r = speed_r * SCALING_M + SCALING_C
-#         self.drivePower(speed_l, speed_r)
-#     def drivePower(self, power_l, power_r):
-#         """ Drive speeds from -100 to 100 """
-#         # Turn motors
-#         self.turnMotor(self.motorPWM[0], power_l)
-#         self.turnMotor(self.motorPWM[1], power_r)
-#     def vw2wheels(self, v, w):        
-# 		# Calculate linear velocity for each wheel
-#         v_l = v - w * WHEEL_BASE
-#         v_r = 2 * v - v_l
-# 		# Calculate angular velocity for each wheel
-#         w_l = v_l / WHEEL_RADIUS
-#         w_r = v_r / WHEEL_RADIUS
-#         # Convert to power value from 0 to 100
-#         power_l = w_l * POWER_TO_RADS
-#         power_r = w_r * POWER_TO_RADS
-#         return power_l, power_r

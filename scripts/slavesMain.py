@@ -48,13 +48,27 @@ if __name__ == '__slavesMain__':
     # Try Loading And running
     try:
         while True:
-            
             if SIMULATION:
-                sim.SetTargetVelocities(v, 0, w)
+                pass
             else:
-                drive.drive(v, w)
+                print("""
+                Please select Drive Mode
+                a    Automatic
+                m    Manual
+                q    quit
+                """)
+                userSelect = input()
+                if  userSelect == "a":
+                    pass
+                elif userSelect == "m":
+                    drive.manualControl()
+                elif userSelect == "q":
+                    drive.gpioClean()
+                    break
+                else:
+                    print("Unknown Command")
 
     # Clean up when closing        
     except KeyboardInterrupt:
         if not SIMULATION:
-            drive.cleanup()
+            drive.gpioClean()
