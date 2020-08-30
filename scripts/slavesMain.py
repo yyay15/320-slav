@@ -29,7 +29,7 @@ else:
     # from navigationScript import 
     # from collectionScript import
     # from visionScript import
-
+    print("loadingclass...")
     # Initialise Functions and Classes
     drive = mobilityScript.Mobility()
 
@@ -40,10 +40,13 @@ else:
 
 if __name__ == '__slavesMain__':
     # Load Objects or Simulation
+    print("beforeSimCheck...")
+
     if SIMULATION:
         # Load nav tings
         pass
     else:
+        print("afterSimCheck...")
         
         # Launch command centre
 
@@ -54,6 +57,8 @@ if __name__ == '__slavesMain__':
 
         # Try Loading And running
         try:
+            print("beforeWhile...")
+
             while(1):
                 print("""
                 Please select Drive Mode
@@ -76,3 +81,5 @@ if __name__ == '__slavesMain__':
         except KeyboardInterrupt:
             if not SIMULATION:
                 drive.gpioClean()
+                print("CleanergoVRMMM...")
+
