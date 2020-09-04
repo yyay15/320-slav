@@ -217,21 +217,14 @@ class Mobility:
                 self.drivePower(0, 0)
                 print("Input speed in format 'velocity,angularVelocity': ", end='')
                 speedInput = input()
-                print("========\n")
-                print(speedInput)
-                print("========\n")
                 # Split commas
                 speedInput = speedInput.split(',')
-                print("+++++++++\n")
-                print(speedInput)
-                print("+++++++++\n")
-                print(len(speedInput))
                 if len(speedInput) != 2:
                     print("Error: Incorrect Input")
                     continue            
                 # Parse numbers
                 try:
-                    self.speedLeft, self.speedRight = self.veloCalcWheels(int(speedInput[0]), int(speedInput[1]))
+                    self.speedLeft, self.speedRight = self.veloCalcWheels(float(speedInput[0]), float(speedInput[1]))
                     print("--------\n")
                     print(self.speedLeft)
                     print(self.speedRight)
@@ -325,7 +318,7 @@ class Mobility:
                     continue            
                 # Parse numbers
                 try:
-                    self.speedLeft, self.speedRight = self.veloCalcWheels(int(speedInput[0]), int(speedInput[1]))
+                    self.speedLeft, self.speedRight = self.veloCalcWheels(float(speedInput[0]), float(speedInput[1]))
                 except ValueError:
                     print("Error: Incorrect Input")
                     continue
