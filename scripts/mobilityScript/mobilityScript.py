@@ -225,6 +225,7 @@ class Mobility:
                 print("+++++++++\n")
                 print(speedInput)
                 print("+++++++++\n")
+                print(len(speedInput))
                 if len(speedInput) != 2:
                     print("Error: Incorrect Input")
                     continue            
