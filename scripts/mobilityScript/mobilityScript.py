@@ -166,7 +166,8 @@ class Mobility:
 
     def drivePower(self, powerLeft, powerRight):
         """  Set PWM to drive the motors """
-
+        powerLeft = min(powerLeft, 100)
+        powerRight = min(powerRight, 100)
         # Set Drive Direction
         self.driveDir(powerLeft, powerRight)
         # Print
