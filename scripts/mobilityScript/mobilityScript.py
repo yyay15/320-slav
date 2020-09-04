@@ -214,22 +214,32 @@ class Mobility:
                 print("Stopping Motors")
                 self.drivePower(0, 0)
             elif key == 'i':
+                self.drivePower(0, 0)
                 print("Input speed in format 'velocity,angularVelocity': ", end='')
                 speedInput = input()
+                print("========\n")
+                print(speedInput)
+                print("========\n")
                 # Split commas
                 speedInput = speedInput.split(',')
+                print("+++++++++\n")
+                print(speedInput)
+                print("+++++++++\n")
                 if len(speedInput) != 2:
                     print("Error: Incorrect Input")
                     continue            
                 # Parse numbers
                 try:
-                    print(int(speedInput[0]))
-                    print(int(speedInput[1]))
-                    # self.speedLeft, self.speedRight = self.veloCalcWheels(int(speedInput[0]), int(speedInput[1]))
+                    self.speedLeft, self.speedRight = self.veloCalcWheels(int(speedInput[0]), int(speedInput[1]))
+                    print("--------\n")
+                    print(self.speedLeft)
+                    print(self.speedRight)
+                    print("--------\n")
                 except ValueError:
                     print("Error: Incorrect Input")
                     continue
             elif key == 'j':
+                self.drivePower(0, 0)
                 print("Input speed in format 'leftPower,rightPower': ", end='')
                 speedInput = input()
                 # Split commas
@@ -304,6 +314,7 @@ class Mobility:
                 self.drivePower(0, 0)
                 time.sleep(0.2)
             elif key == 'i':
+                self.drivePower(0, 0)
                 print("Input speed in format 'velocity,angularVelocity': ", end='')
                 speedInput = input()
                 # Split commas
@@ -318,6 +329,7 @@ class Mobility:
                     print("Error: Incorrect Input")
                     continue
             elif key == 'j':
+                self.drivePower(0, 0)
                 print("Input speed in format 'leftPower,rightPower': ", end='')
                 speedInput = input()
                 # Split commas
