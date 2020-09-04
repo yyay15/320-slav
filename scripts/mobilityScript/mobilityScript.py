@@ -146,6 +146,10 @@ class Mobility:
         powerLeft = angVeloLeft / maxAng * 100
         powerRight = angVeloRight / maxAng * 100 
 
+        # Threshold for rounding error
+        powerLeft = min(powerLeft, 100)
+        powerRight = min(powerRight, 100)
+
         return powerLeft, powerRight
 
     def driveDir(self, powerLeft, powerRight):
@@ -166,8 +170,6 @@ class Mobility:
 
     def drivePower(self, powerLeft, powerRight):
         """  Set PWM to drive the motors """
-        powerLeft = min(powerLeft, 100)
-        powerRight = min(powerRight, 100)
         # Set Drive Direction
         self.driveDir(powerLeft, powerRight)
         # Print
