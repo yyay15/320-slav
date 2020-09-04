@@ -38,7 +38,7 @@ maxAng = 6.66
 maxRPM = 63.66
 
 # Speed Constant
-LOWSPEED = 25
+LOWSPEED = 35
 MEDIUMSPEED = 50
 FULLSPEED = 100
 
@@ -146,6 +146,10 @@ class Mobility:
         powerLeft = angVeloLeft / maxAng * 100
         powerRight = angVeloRight / maxAng * 100 
 
+        # Threshold for rounding error
+        powerLeft = min(powerLeft, 100)
+        powerRight = min(powerRight, 100)
+
         return powerLeft, powerRight
 
     def driveDir(self, powerLeft, powerRight):
@@ -166,7 +170,6 @@ class Mobility:
 
     def drivePower(self, powerLeft, powerRight):
         """  Set PWM to drive the motors """
-
         # Set Drive Direction
         self.driveDir(powerLeft, powerRight)
         # Print
@@ -189,7 +192,7 @@ class Mobility:
         c     Stop motors
         i     Custom Speed Setting (v,w)
         j     Custom Speed Setting (l,r)
-        1     Low Speed Setting (25% PWM)
+        1     Low Speed Setting (35% PWM)
         2     Medium Speed Setting (50% PWM)
         3     Full Speed Setting (100% PWM)
         q     Exit Mode\n""")
@@ -214,7 +217,8 @@ class Mobility:
                 print("Stopping Motors")
                 self.drivePower(0, 0)
             elif key == 'i':
-                print("Input speed in format 'velocity, angular velocity': ", end='')
+                self.drivePower(0, 0)
+                print("Input speed in format 'velocity,angularVelocity': ", end='')
                 speedInput = input()
                 # Split commas
                 speedInput = speedInput.split(',')
@@ -223,12 +227,17 @@ class Mobility:
                     continue            
                 # Parse numbers
                 try:
-                    self.speedLeft, self.speedRight = self.veloCalcWheels(int(speedInput[0]), int(speedInput[1]))
+                    self.speedLeft, self.speedRight = self.veloCalcWheels(float(speedInput[0]), float(speedInput[1]))
+                    print("--------\n")
+                    print(self.speedLeft)
+                    print(self.speedRight)
+                    print("--------\n")
                 except ValueError:
-                    print("Error: invalid input.")
+                    print("Error: Incorrect Input")
                     continue
             elif key == 'j':
-                print("Input speed in format 'leftPower, rightPower': ", end='')
+                self.drivePower(0, 0)
+                print("Input speed in format 'leftPower,rightPower': ", end='')
                 speedInput = input()
                 # Split commas
                 speedInput = speedInput.split(',')
@@ -240,7 +249,7 @@ class Mobility:
                     self.speedLeft = int(speedInput[0])
                     self.speedRight = int(speedInput[1])
                 except ValueError:
-                    print("Error: invalid input.")
+                    print("Error: Incorrect Input")
                     continue
             elif key == '1':
                 print("Setting LowSpeed")
@@ -264,6 +273,7 @@ class Mobility:
             else:
                 print("Unknown Command")
 
+
     def continuousControl(self):
         print("""
         Continuous Control Mode:
@@ -276,7 +286,7 @@ class Mobility:
         c     Stop motors
         i     Custom Speed Setting (v,w)
         j     Custom Speed Setting (l,r)
-        1     Low Speed Setting (25% PWM)
+        1     Low Speed Setting (35% PWM)
         2     Medium Speed Setting (50% PWM)
         3     Full Speed Setting (100% PWM)
         q     Exit Mode\n""")
@@ -284,24 +294,25 @@ class Mobility:
             key = getch() 
             if key == 'w':
                 self.drivePower(self.speedLeft, self.speedRight)
-                time.sleep(1)
+                time.sleep(0.2)
             elif key == 's':
                 self.drivePower(-self.speedLeft, -self.speedRight)
-                time.sleep(1)
+                time.sleep(0.2)
             elif key == 'a':
                 self.drivePower(0, self.speedRight)
-                time.sleep(1)
+                time.sleep(0.2)
             elif key == 'd':
                 self.drivePower(self.speedLeft, 0)
-                time.sleep(1)
+                time.sleep(0.2)
             elif key == 'r':
                 self.drivePower(-self.speedLeft, self.speedRight)
-                time.sleep(1)
+                time.sleep(0.2)
             elif key == 'c':
                 self.drivePower(0, 0)
-                time.sleep(1)
+                time.sleep(0.2)
             elif key == 'i':
-                print("Input speed in format 'velocity, angular velocity': ", end='')
+                self.drivePower(0, 0)
+                print("Input speed in format 'velocity,angularVelocity': ", end='')
                 speedInput = input()
                 # Split commas
                 speedInput = speedInput.split(',')
@@ -310,12 +321,13 @@ class Mobility:
                     continue            
                 # Parse numbers
                 try:
-                    self.speedLeft, self.speedRight = self.veloCalcWheels(int(speedInput[0]), int(speedInput[1]))
+                    self.speedLeft, self.speedRight = self.veloCalcWheels(float(speedInput[0]), float(speedInput[1]))
                 except ValueError:
-                    print("Error: invalid input.")
+                    print("Error: Incorrect Input")
                     continue
             elif key == 'j':
-                print("Input speed in format 'leftPower, rightPower': ", end='')
+                self.drivePower(0, 0)
+                print("Input speed in format 'leftPower,rightPower': ", end='')
                 speedInput = input()
                 # Split commas
                 speedInput = speedInput.split(',')
@@ -327,26 +339,26 @@ class Mobility:
                     self.speedLeft = int(speedInput[0])
                     self.speedRight = int(speedInput[1])
                 except ValueError:
-                    print("Error: invalid input.")
+                    print("Error: Incorrect Input")
                     continue
             elif key == '1':
                 print("Setting LowSpeed")
                 print(LOWSPEED)
                 self.speedLeft = LOWSPEED
                 self.speedRight = LOWSPEED
-                time.sleep(1)
+                time.sleep(0.2)
             elif key == '2':
                 print("Setting MediumSpeed")
                 print(MEDIUMSPEED)
                 self.speedLeft = MEDIUMSPEED
                 self.speedRight = MEDIUMSPEED
-                time.sleep(1)
+                time.sleep(0.2)
             elif key == '3':
                 print("Setting FullSpeed")
                 print(FULLSPEED)
                 self.speedLeft = FULLSPEED
                 self.speedRight = FULLSPEED
-                time.sleep(1)
+                time.sleep(0.2)
             elif key == 'q':
                 print("Quitting ...")
                 GPIO.cleanup()
