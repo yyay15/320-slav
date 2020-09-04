@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 
-servoPin = 15
+servoPin = 17
 
 def SetAngle(angle):
     duty = angle / 18 + 2
@@ -12,7 +12,14 @@ def SetAngle(angle):
     pwm.ChangeDutyCycle(0)
 
 
+def sample_uncovered()  # Start sample_retrival 110mm away
+    SetAngle(90)
+    sleep(5)
+    SetAngle(0)
 
-if sample_uncovered:
-    if dis2samp = 100:
+
+def sample_covered()    # 
+    
+
+
 
