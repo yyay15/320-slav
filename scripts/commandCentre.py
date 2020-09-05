@@ -21,7 +21,7 @@ from flask import render_template, request
 
 # Set Global Parameters 
 SIMULATION = False
-app = Flask(__name__)
+app = Flask(__name__, template_folder='commandCentre')
 global command
 
 
@@ -32,7 +32,7 @@ global command
 
 @app.route("/")
 def index():
-    return render_template('commandCentre/commandCentre.html')
+    return render_template('commandCentre.html')
 
 @app.route('/leftTurn')
 def leftTurn():
@@ -58,7 +58,6 @@ def backward():
 def stop():
     # Command to Stop Robot
    return  'true'
-
 
 
 # Local modules
