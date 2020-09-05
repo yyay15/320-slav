@@ -17,12 +17,48 @@ import sys, time
 # Import Python Library for CommandCentre
 from flask import Flask
 from flask import render_template, request
-from views import views_blueprint
+# from views import views_blueprint
 
 # Set Global Parameters 
 SIMULATION = False
 app = Flask(__name__)
 global command
+
+
+
+#---------------#
+# Function Definition
+#---------------#
+
+@app.route("/")
+def index():
+    return render_template('commandCentre/commandCentre.html')
+
+@app.route('/leftTurn')
+def leftTurn():
+    # Command for left turn
+    return 'true'
+
+@app.route('/rightTurn')
+def rightTurn():
+    # Command for right turn
+   return 'true'
+
+@app.route('/forward')
+def forward():
+    # Command for forward
+   return 'true'
+
+@app.route('/backward')
+def backward():
+    # Command to reverse
+   return 'true'
+
+@app.route('/stop')
+def stop():
+    # Command to Stop Robot
+   return  'true'
+
 
 
 # Local modules
