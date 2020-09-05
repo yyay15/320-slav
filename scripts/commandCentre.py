@@ -36,28 +36,28 @@ def index():
 
 @app.route('/leftTurn')
 def leftTurn():
-    # Command for left turn
+    command = 'a'
     return 'true'
 
 @app.route('/rightTurn')
 def rightTurn():
-    # Command for right turn
-   return 'true'
+    command = 'd'
+    return 'true'
 
 @app.route('/forward')
 def forward():
-    # Command for forward
-   return 'true'
+    command = 'w'
+    return 'true'
 
 @app.route('/backward')
 def backward():
-    # Command to reverse
-   return 'true'
+    command = 's'
+    return 'true'
 
 @app.route('/stop')
 def stop():
-    # Command to Stop Robot
-   return  'true'
+    command = 'c'
+    return  'true'
 
 
 # Local modules
