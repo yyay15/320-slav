@@ -146,9 +146,11 @@ class Mobility:
         powerLeft = angVeloLeft / maxAng * 100
         powerRight = angVeloRight / maxAng * 100 
 
-        # Threshold for rounding error
+        # Threshold for rounding and max power
         powerLeft = min(powerLeft, 100)
         powerRight = min(powerRight, 100)
+        powerLeft = max(powerLeft, -100)
+        powerRight = max(powerRight, -100)
 
         return powerLeft, powerRight
 
