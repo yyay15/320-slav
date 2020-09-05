@@ -369,6 +369,85 @@ class Mobility:
                 self.drivePower(0, 0)
 
 
+
+    def commandCentreTest(self):
+        while (True):            
+            if command == 'w':
+                self.drivePower(self.speedLeft, self.speedRight)
+                time.sleep(0.2)
+            elif command == 's':
+                self.drivePower(-self.speedLeft, -self.speedRight)
+                time.sleep(0.2)
+            elif command == 'a':
+                self.drivePower(0, self.speedRight)
+                time.sleep(0.2)
+            elif command == 'd':
+                self.drivePower(self.speedLeft, 0)
+                time.sleep(0.2)
+            elif command == 'r':
+                self.drivePower(-self.speedLeft, self.speedRight)
+                time.sleep(0.2)
+            elif command == 'c':
+                self.drivePower(0, 0)
+                time.sleep(0.2)
+            elif command == 'i':
+                self.drivePower(0, 0)
+                print("Input speed in format 'velocity,angularVelocity': ", end='')
+                speedInput = input()
+                # Split commas
+                speedInput = speedInput.split(',')
+                if len(speedInput) != 2:
+                    print("Error: Incorrect Input")
+                    continue            
+                # Parse numbers
+                try:
+                    self.speedLeft, self.speedRight = self.veloCalcWheels(float(speedInput[0]), float(speedInput[1]))
+                except ValueError:
+                    print("Error: Incorrect Input")
+                    continue
+            elif command == 'j':
+                self.drivePower(0, 0)
+                print("Input speed in format 'leftPower,rightPower': ", end='')
+                speedInput = input()
+                # Split commas
+                speedInput = speedInput.split(',')
+                if len(speedInput) != 2:
+                    print("Error: Incorrect Input")
+                    continue            
+                # Parse numbers
+                try:
+                    self.speedLeft = int(speedInput[0])
+                    self.speedRight = int(speedInput[1])
+                except ValueError:
+                    print("Error: Incorrect Input")
+                    continue
+            elif command == '1':
+                print("Setting LowSpeed")
+                print(LOWSPEED)
+                self.speedLeft = LOWSPEED
+                self.speedRight = LOWSPEED
+                time.sleep(0.2)
+            elif command == '2':
+                print("Setting MediumSpeed")
+                print(MEDIUMSPEED)
+                self.speedLeft = MEDIUMSPEED
+                self.speedRight = MEDIUMSPEED
+                time.sleep(0.2)
+            elif command == '3':
+                print("Setting FullSpeed")
+                print(FULLSPEED)
+                self.speedLeft = FULLSPEED
+                self.speedRight = FULLSPEED
+                time.sleep(0.2)
+            elif command == 'q':
+                print("Quitting ...")
+                GPIO.cleanup()
+                break
+            else:
+                self.drivePower(0, 0)
+
+
+
     def gpioClean(self):
         self.drive(0, 0)
         GPIO.cleanup()

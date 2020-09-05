@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!--This is the CommandCentre html page for Team SLAVES Moon Robot-->
+<!--EGB320 Semester 2, 2020-->
+<!--Group 13, Team SLAVES-->
+
+<!-- Start HTML -->
+<html>
+
+    <!-- Header Document -->
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    </head>
+
+    <!-- Main Body Content -->
+    <body>
+
+        <!-- CameraFeed Output -->
+        <img src="http://10.0.0.241:6969" />
+        <div style="float:right">
+    
+        <!-- Control Input -->
+        </div>
+        <div style=" height:400px; width:300px; float:right;">
+            <center>
+                <h1><span style="color:#5C5C5C;">Team SLAVES</span></h1>
+                <h2>Autonomous Robot</h2><br><br>
+                <a href="#" id="up" style="font-size:30px;text-decoration:none;"><br>Forward</a><br><br>
+            </center>
+
+            <a href="#" id="left" style="font-size:30px;text-decoration:none;">Left</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="#" id="stop" style="font-size:30px;text-decoration:none;">Stop</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="#" id="right" style="font-size:30px; text-decoration:none;">Right</a><br>
+            
+            <center>
+                <a href="#" id="down" style="font-size:30px;text-decoration:none;"><br>Backward</a>
+            </center>
+        </div>
+    
+        <!-- Function Interface Control -->
+        <script>
+            $(document).ready(function () {
+                $("#down").on("click", function () {
+                    $.get('/backward');
+                });
+                $("#up").on("click", function () {
+                    $.get('/forward');
+                });
+                $("#left").on("click", function () {
+                    $.get('/leftTurn');
+                });
+                $("#right").on("click", function () {
+                    $.get('/rightTurn');
+                });
+                $("#stop").on("click", function () {
+                    $.get('/stop');
+                });            });
+        </script>
+    
+    </body>
+
+</html>
