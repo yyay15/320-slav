@@ -374,6 +374,7 @@ class Mobility:
         if (len(command.split(','))>2):
             controlVar1 = command.split(',')[1]
             controlVar2 = command.split(',')[2]
+            command = command.split(',')[0]
 
         if command == 'w':
             print("Im HERE")
