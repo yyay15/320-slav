@@ -49,11 +49,12 @@ else:
 
 @app.route("/")
 def index():
+    print("Our websever has launched!")
     return render_template('commandCentre.html')
 
 
 # Use MobilityScript Method to set command
-@app.route('/mobility/')
+@app.route('/mobility/<command>')
 def mobilityControl(command):
     print(command)
     drive.commandCentreTest(command)
