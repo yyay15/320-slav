@@ -56,7 +56,9 @@ def index():
 # Use MobilityScript Method to set command
 @app.route('/mobility/<command>')
 def mobilityControl(command):
+    print("================")
     print(command)
+    print("================")
     drive.commandCentreTest(command)
     return '{}'
 
