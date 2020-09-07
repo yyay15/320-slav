@@ -55,7 +55,25 @@ def index():
 # Use MobilityScript Method to set command
 @app.route('/<command>', methods=['POST'])
 def reroute(command):
+    print(command)
     drive.commandCentreTest(command)
+
+
+
+@app.route('/forward')
+def forward():
+    command = 'w'
+    return 'true'
+
+@app.route('/backward')
+def backward():
+    command = 's'
+    return 'true'
+
+@app.route('/stop')
+def stop():
+    command = 'c'
+    return  'true'
 
 
 
