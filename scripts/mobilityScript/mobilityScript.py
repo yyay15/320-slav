@@ -417,9 +417,6 @@ class Mobility:
         elif command == 'q':
             print("Quitting ...")
             GPIO.cleanup()
-        else:
-            self.drivePower(0, 0)
-
 
 
     def gpioClean(self):
