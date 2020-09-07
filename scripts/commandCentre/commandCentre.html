@@ -60,7 +60,7 @@
                 $.get('/mobility/c');
             });
             $("#Submit").on('click', function(){
-                $.get('/mobility/j' + ',' + document.getElementById("Lpower")+ ',' + document.getElementById("Rpower"));
+                $.get('/mobility/j' + ',' + $("#Lpower").val()+ ',' + $("#Rpower").val());
             });            
         </script>
     
