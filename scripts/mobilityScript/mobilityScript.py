@@ -372,6 +372,10 @@ class Mobility:
 
     def commandCentreTest(self,command):
         if command == 'w':
+            print("Im HERE")
+            print(self.speedLeft)
+            print(self.speedRight)
+            print("Im HERE")
             self.drivePower(self.speedLeft, self.speedRight)
         elif command == 's':
             self.drivePower(-self.speedLeft, -self.speedRight)
