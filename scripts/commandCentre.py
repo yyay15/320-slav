@@ -49,6 +49,7 @@ else:
 
 @app.route("/")
 def index():
+    GPIO.setmode(GPIO.BCM)				# Set the GPIO pin naming convention
     print("Our websever has launched!")
     return render_template('commandCentre.html')
 
