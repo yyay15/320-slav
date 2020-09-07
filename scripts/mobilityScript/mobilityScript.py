@@ -371,6 +371,10 @@ class Mobility:
 
 
     def commandCentreTest(self,command):
+        if (len(command.split(','))>2):
+            controlVar1 = command.split(',')[1]
+            controlVar2 = command.split(',')[2]
+
         if command == 'w':
             print("Im HERE")
             print(self.speedLeft)
@@ -387,37 +391,13 @@ class Mobility:
             self.drivePower(-self.speedLeft, self.speedRight)
         elif command == 'c':
             self.drivePower(0, 0)
-        # elif command == 'i':
-        #     self.drivePower(0, 0)
-        #     print("Input speed in format 'velocity,angularVelocity': ", end='')
-        #     speedInput = input()
-        #     # Split commas
-        #     speedInput = speedInput.split(',')
-        #     if len(speedInput) != 2:
-        #         print("Error: Incorrect Input")
-        #         continue            
-        #     # Parse numbers
-        #     try:
-        #         self.speedLeft, self.speedRight = self.veloCalcWheels(float(speedInput[0]), float(speedInput[1]))
-        #     except ValueError:
-        #         print("Error: Incorrect Input")
-        #         continue
-        # elif command == 'j':
-        #     self.drivePower(0, 0)
-        #     print("Input speed in format 'leftPower,rightPower': ", end='')
-        #     speedInput = input()
-        #     # Split commas
-        #     speedInput = speedInput.split(',')
-        #     if len(speedInput) != 2:
-        #         print("Error: Incorrect Input")
-        #         continue            
-        #     # Parse numbers
-        #     try:
-        #         self.speedLeft = int(speedInput[0])
-        #         self.speedRight = int(speedInput[1])
-        #     except ValueError:
-        #         print("Error: Incorrect Input")
-        #         continue
+        elif command == 'i':
+            self.drivePower(0, 0)
+            self.speedLeft, self.speedRight = self.veloCalcWheels(float(controlVar1), float(controlVar2))
+        elif command == 'j':
+            self.drivePower(0, 0)
+            self.speedLeft = int(controlVar1)
+            self.speedRight = int(controlVar2)
         elif command == '1':
             print("Setting LowSpeed")
             print(LOWSPEED)

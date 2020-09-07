@@ -24,8 +24,16 @@
             <center>
                 <h1><span style="color:#5C5C5C;">Team SLAVES</span></h1>
                 <h2>Autonomous Robot</h2><br><br>
-            </center> <br>
+            </center> 
+            <br>
 
+            Set speed:<br><br>
+            <input type="range" max="100" value="100"  min="0" id="Lpower"> 
+            Set speed:<br><br>
+            <input type="range" max="100" value="100"  min="0" id="Rpower"> 
+            <input type="submit" value="Submit">
+
+            <br>
             <button type="button" class="btn btn-default" id="left"> < </button>
             <button type="button" class="btn btn-default" id="forward"> ^ </button>
             <button type="button" class="btn btn-default" id="backward"> v </button>
@@ -50,6 +58,9 @@
             });
             $('#stop').on('click', function () {
                 $.get('/mobility/c');
+            });
+            $("set-speed").on('change', function(){
+                $.get('/mobility/j' + ',' + document.getElementById("Lpower")+ ',' + document.getElementById("Rpower"));
             });            
         </script>
     

@@ -47,6 +47,9 @@ else:
 # Flask Function
 #---------------#
 
+a = "pifjd/s,23,24"
+len(a.split(','))
+
 @app.route("/")
 def index():
     print("Our websever has launched!")
@@ -62,7 +65,10 @@ def mobilityControl(command):
     drive.commandCentreTest(command)
     return '{}'
 
-
+@app.route('/setSpeed/')
+def set_speed(speed):
+    ser.write('2,' + speed)
+    return '{}'
 
 
 
