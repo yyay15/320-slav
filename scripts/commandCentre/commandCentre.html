@@ -24,36 +24,33 @@
             <center>
                 <h1><span style="color:#5C5C5C;">Team SLAVES</span></h1>
                 <h2>Autonomous Robot</h2><br><br>
-                <a href="#" id="up" style="font-size:30px;text-decoration:none;"><br>Forward</a><br><br>
-            </center>
+            </center> <br>
 
-            <a href="#" id="left" style="font-size:30px;text-decoration:none;">Left</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="#" id="stop" style="font-size:30px;text-decoration:none;">Stop</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="#" id="right" style="font-size:30px; text-decoration:none;">Right</a><br>
-            
-            <center>
-                <a href="#" id="down" style="font-size:30px;text-decoration:none;"><br>Backward</a>
-            </center>
+            <button type="button" class="btn btn-default" id="left"> < </button>
+            <button type="button" class="btn btn-default" id="forward"> ^ </button>
+            <button type="button" class="btn btn-default" id="backward"> v </button>
+            <button type="button" class="btn btn-default" id="right"> > </button>
+            <button type="button" class="btn btn-danger" id="stop">Stop</button>
+
         </div>
     
         <!-- Function Interface Control -->
         <script>
-            $(document).ready(function () {
-                $("#down").on("click", function () {
-                    $.get('/s');
-                });
-                $("#up").on("click", function () {
-                    $.get('/w');
-                });
-                $("#left").on("click", function () {
-                    $.get('/a');
-                });
-                $("#right").on("click", function () {
-                    $.get('/d');
-                });
-                $("#stop").on("click", function () {
-                    $.get('/c');
-                });            });
+            $("#backward").on("click", function () {
+                $.get('/mobility/s');
+            });
+            $("#forward").on("click", function () {
+                $.get('/mobility/w');
+            });
+            $("#left").on("click", function () {
+                $.get('/mobility/a');
+            });
+            $("#right").on("click", function () {
+                $.get('/mobility/d');
+            });
+            $("#stop").on("click", function () {
+                $.get('/mobility/c');
+            });            
         </script>
     
     </body>

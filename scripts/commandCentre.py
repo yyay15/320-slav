@@ -53,27 +53,13 @@ def index():
 
 
 # Use MobilityScript Method to set command
-@app.route('/<command>', methods=['POST'])
-def reroute(command):
+@app.route('/mobility/')
+def mobilityControl(command):
     print(command)
     drive.commandCentreTest(command)
+    return '{}'
 
 
-
-@app.route('/forward')
-def forward():
-    command = 'w'
-    return 'true'
-
-@app.route('/backward')
-def backward():
-    command = 's'
-    return 'true'
-
-@app.route('/stop')
-def stop():
-    command = 'c'
-    return  'true'
 
 
 
@@ -121,7 +107,7 @@ if __name__ == '__main__':
                     drive.continuousControl()
                 elif userSelect == "c":
                     print("Starting Command Centre ...")
-                    app.run(host='0.0.0.0',port=6969,debug=True)
+                    app.run(host='0.0.0.0',port=6969,debug=False)
                 elif userSelect == "q":
                     drive.gpioClean()
                     break
