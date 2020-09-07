@@ -40,19 +40,19 @@
         <script>
             $(document).ready(function () {
                 $("#down").on("click", function () {
-                    $.get('/backward');
+                    $.get('/s');
                 });
                 $("#up").on("click", function () {
-                    $.get('/forward');
+                    $.get('/w');
                 });
                 $("#left").on("click", function () {
-                    $.get('/leftTurn');
+                    $.get('/a');
                 });
                 $("#right").on("click", function () {
-                    $.get('/rightTurn');
+                    $.get('/d');
                 });
                 $("#stop").on("click", function () {
-                    $.get('/stop');
+                    $.get('/c');
                 });            });
         </script>
     

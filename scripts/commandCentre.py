@@ -26,38 +26,6 @@ global command
 
 
 
-#---------------#
-# Function Definition
-#---------------#
-
-@app.route("/")
-def index():
-    return render_template('commandCentre.html')
-
-@app.route('/leftTurn')
-def leftTurn():
-    command = 'a'
-    return 'true'
-
-@app.route('/rightTurn')
-def rightTurn():
-    command = 'd'
-    return 'true'
-
-@app.route('/forward')
-def forward():
-    command = 'w'
-    return 'true'
-
-@app.route('/backward')
-def backward():
-    command = 's'
-    return 'true'
-
-@app.route('/stop')
-def stop():
-    command = 'c'
-    return  'true'
 
 
 # Local modules
@@ -73,6 +41,23 @@ else:
     print("loadingclass...")
     # Initialise Functions and Classes
     drive = mobilityScript.Mobility()
+
+
+#---------------#
+# Flask Function
+#---------------#
+
+@app.route("/")
+def index():
+    return render_template('commandCentre.html')
+
+
+# Use MobilityScript Method to set command
+@app.route('/<command>', methods=['POST'])
+def reroute(command):
+    drive.commandCentreTest(command)
+
+
 
 #---------------#
 # MainScript
