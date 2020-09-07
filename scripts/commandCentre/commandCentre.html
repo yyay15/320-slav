@@ -59,7 +59,7 @@
             $('#stop').on('click', function () {
                 $.get('/mobility/c');
             });
-            $("set-speed").on('change', function(){
+            $("#Submit").on('click', function(){
                 $.get('/mobility/j' + ',' + document.getElementById("Lpower")+ ',' + document.getElementById("Rpower"));
             });            
         </script>
