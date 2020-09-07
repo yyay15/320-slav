@@ -49,7 +49,6 @@ else:
 
 @app.route("/")
 def index():
-    GPIO.setmode(GPIO.BCM)				# Set the GPIO pin naming convention
     print("Our websever has launched!")
     return render_template('commandCentre.html')
 
@@ -111,7 +110,7 @@ if __name__ == '__main__':
                     drive.continuousControl()
                 elif userSelect == "c":
                     print("Starting Command Centre ...")
-                    app.run(host='0.0.0.0',port=6969,debug=False)
+                    app.run(host='0.0.0.0',port=6969,debug=True)
                 elif userSelect == "q":
                     drive.gpioClean()
                     break
