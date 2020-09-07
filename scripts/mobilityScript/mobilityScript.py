@@ -369,6 +369,56 @@ class Mobility:
                 self.drivePower(0, 0)
 
 
+
+    def commandCentreTest(self,command):
+        if (len(command.split(','))>2):
+            controlVar1 = command.split(',')[1]
+            controlVar2 = command.split(',')[2]
+            command = command.split(',')[0]
+
+        if command == 'w':
+            print("Im HERE")
+            print(self.speedLeft)
+            print(self.speedRight)
+            print("Im HERE")
+            self.drivePower(self.speedLeft, self.speedRight)
+        elif command == 's':
+            self.drivePower(-self.speedLeft, -self.speedRight)
+        elif command == 'a':
+            self.drivePower(0, self.speedRight)
+        elif command == 'd':
+            self.drivePower(self.speedLeft, 0)
+        elif command == 'r':
+            self.drivePower(-self.speedLeft, self.speedRight)
+        elif command == 'c':
+            self.drivePower(0, 0)
+        elif command == 'i':
+            self.drivePower(0, 0)
+            self.speedLeft, self.speedRight = self.veloCalcWheels(float(controlVar1), float(controlVar2))
+        elif command == 'j':
+            self.drivePower(0, 0)
+            self.speedLeft = int(controlVar1)
+            self.speedRight = int(controlVar2)
+        elif command == '1':
+            print("Setting LowSpeed")
+            print(LOWSPEED)
+            self.speedLeft = LOWSPEED
+            self.speedRight = LOWSPEED
+        elif command == '2':
+            print("Setting MediumSpeed")
+            print(MEDIUMSPEED)
+            self.speedLeft = MEDIUMSPEED
+            self.speedRight = MEDIUMSPEED
+        elif command == '3':
+            print("Setting FullSpeed")
+            print(FULLSPEED)
+            self.speedLeft = FULLSPEED
+            self.speedRight = FULLSPEED
+        elif command == 'q':
+            print("Quitting ...")
+            GPIO.cleanup()
+
+
     def gpioClean(self):
         self.drive(0, 0)
         GPIO.cleanup()
