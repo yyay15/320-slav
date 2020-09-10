@@ -12,13 +12,13 @@ def SetAngle(angle):
     pwm.ChangeDutyCycle(0)
 
 
-def sample_uncovered()  # Start sample_retrival 110mm away
+def sample_uncovered():  # Start sample_retrival 110mm away
     SetAngle(90)
     sleep(5)
     SetAngle(0)
 
 
-def sample_covered()    # 
+#def sample_covered()    # 
     
 
 
