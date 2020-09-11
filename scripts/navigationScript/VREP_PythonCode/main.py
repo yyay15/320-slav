@@ -33,7 +33,7 @@ if SIMULATION:
     robotParameters.cameraOrientation = 'landscape' # specifies the orientation of the camera, either landscape or portrait
     robotParameters.cameraDistanceFromRobotCenter = 0.1 # distance between the camera and the center of the robot in the direction of the kicker/dribbler in metres
     robotParameters.cameraHeightFromFloor = 0.15 # height of the camera relative to the floor in metres
-    robotParameters.cameraTilt = 0.29 # tilt of the camera in radians
+    robotParameters.cameraTilt = 0.35 # tilt of the camera in radians
 
     # Vision Processing Parameters
     robotParameters.maxBallDetectionDistance = 1 # the maximum distance away that you can detect the ball in metres

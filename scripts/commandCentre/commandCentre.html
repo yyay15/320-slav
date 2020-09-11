@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!--This is the CommandCentre html page for Team SLAVES Moon Robot-->
+<!--EGB320 Semester 2, 2020-->
+<!--Group 13, Team SLAVES-->
+
+<!-- Start HTML -->
+<html>
+
+    <!-- Header Document -->
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    </head>
+
+    <!-- Main Body Content -->
+    <body>
+
+        <!-- CameraFeed Output -->
+        <!-- <img src="http://10.0.0.241:6969" /> -->
+        <!-- <div style="float:right"> -->
+    
+        <!-- Control Input -->
+        </div>
+        <div style=" height:400px; width:300px; float:right;">
+            <center>
+                <h1><span style="color:#5C5C5C;">Team SLAVES</span></h1>
+                <h2>Autonomous Robot</h2><br><br>
+            </center> 
+            <br>
+
+            Set speed:<br><br>
+            <input type="range" max="100" value="100"  min="0" id="Lpower"> 
+            Set speed:<br><br>
+            <input type="range" max="100" value="100"  min="0" id="Rpower"> 
+            <button type="button" id="Submit">Submit</button> <br>
+
+            <br>
+            <button type="button" class="btn btn-default" id="left"> < </button>
+            <button type="button" class="btn btn-default" id="forward"> ^ </button>
+            <button type="button" class="btn btn-default" id="backward"> v </button>
+            <button type="button" class="btn btn-default" id="right"> > </button>
+            <button type="button" class="btn btn-danger" id="stop">Stop</button>
+
+        </div>
+    
+        <!-- Function Interface Control -->
+        <script>
+            $('#backward').on('click', function () {
+                $.get('/mobility/s');
+            });
+            $('#forward').on('click', function () {
+                $.get('/mobility/w');
+            });
+            $('#left').on('click', function () {
+                $.get('/mobility/a');
+            });
+            $('#right').on('click', function () {
+                $.get('/mobility/d');
+            });
+            $('#stop').on('click', function () {
+                $.get('/mobility/c');
+            });
+            $("#Submit").on('click', function(){
+                $.get('/mobility/j' + ',' + $("#Lpower").val()+ ',' + $("#Rpower").val());
+            });            
+        </script>
+    
+    </body>
+
+</html>
