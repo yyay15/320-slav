@@ -1,7 +1,12 @@
 import RPi.GPIO as GPIO
 import time
 
+
 servoPin = 17
+GPIO.setmode(GPIO.bcm)
+GPIO.setup(servoPin, GPIO.out)
+
+#GPIO.output
 
 def SetAngle(angle):
     duty = angle / 18 + 2
@@ -17,9 +22,18 @@ def sample_uncovered():  # Start sample_retrival 110mm away
     sleep(5)
     SetAngle(0)
 
+def sample_covered():  # Start sample_retrival 110mm away
+    SetAngle(0)
+    sleep(5)
+    SetAngle(90)
+
+while True:
+    sample_uncovered()
+    sample_covered()
 
 #def sample_covered()    # 
     
 
 
 
+#sample_uncovered()
