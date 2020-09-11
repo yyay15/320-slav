@@ -418,6 +418,9 @@ class Mobility:
             print("Quitting ...")
             GPIO.cleanup()
 
+        print("TEST \n")
+        print(self.speedLeft)
+
 
     def gpioClean(self):
         self.drive(0, 0)
