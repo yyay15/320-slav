@@ -1,6 +1,6 @@
 #====================================#
 # EGB320
-# Main Script
+# Command Centre Interface Script
 # Group SLAVES: Group 13
 # 2020 Semester 2
 # Alan Yu
@@ -14,9 +14,19 @@
 # Import Python Library for main
 import sys, time
 
+# Import Python Library for CommandCentre
+from flask import Flask
+from flask import render_template, request
+# from views import views_blueprint
 
 # Set Global Parameters 
 SIMULATION = False
+app = Flask(__name__, template_folder='commandCentre')
+global command
+
+
+
+
 
 # Local modules
 if SIMULATION:
@@ -31,6 +41,35 @@ else:
     print("loadingclass...")
     # Initialise Functions and Classes
     drive = mobilityScript.Mobility()
+
+
+#---------------#
+# Flask Function
+#---------------#
+
+a = "pifjd/s,23,24"
+len(a.split(','))
+
+@app.route("/")
+def index():
+    print("Our websever has launched!")
+    return render_template('commandCentre.html')
+
+
+# Use MobilityScript Method to set command
+@app.route('/mobility/<command>')
+def mobilityControl(command):
+    print("================")
+    print(command)
+    print("================")
+    drive.commandCentreTest(command)
+    return '{}'
+
+@app.route('/setSpeed/')
+def set_speed(speed):
+    ser.write('2,' + speed)
+    return '{}'
+
 
 
 #---------------#
@@ -64,6 +103,7 @@ if __name__ == '__main__':
                 a    Automatic
                 m    Manual - Discrete (Enter Button)
                 n    Manual - Continuous (Hold button)
+                c    CommandCentre (TESTING)
                 q    quit
                 """)
                 userSelect = input()
@@ -74,6 +114,9 @@ if __name__ == '__main__':
                     drive.manualControl()
                 elif userSelect == "n":
                     drive.continuousControl()
+                elif userSelect == "c":
+                    print("Starting Command Centre ...")
+                    app.run(host='0.0.0.0',port=6969,debug=True)
                 elif userSelect == "q":
                     drive.gpioClean()
                     break
@@ -84,4 +127,5 @@ if __name__ == '__main__':
             if not SIMULATION:
                 drive.gpioClean()
                 print("CleanergoVRMMM...")
+
 
