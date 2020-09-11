@@ -7,6 +7,7 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(servoPin, GPIO.OUT)
 
 #GPIO.output
+pwm = GPIO.PWM(servoPin, 100)
 
 def SetAngle(angle):
     duty = angle / 18 + 2
