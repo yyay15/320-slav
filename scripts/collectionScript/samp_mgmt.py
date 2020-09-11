@@ -3,8 +3,8 @@ import time
 
 
 servoPin = 17
-GPIO.setmode(GPIO.bcm)
-GPIO.setup(servoPin, GPIO.out)
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(servoPin, GPIO.OUT)
 
 #GPIO.output
 
