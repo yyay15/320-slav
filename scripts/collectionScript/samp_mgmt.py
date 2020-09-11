@@ -1,3 +1,4 @@
+
 import RPi.GPIO as GPIO
 import time
 
@@ -7,7 +8,8 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(servoPin, GPIO.OUT)
 
 #GPIO.output
-pwm = GPIO.PWM(servoPin, 100)
+pwm = GPIO.PWM(servoPin, 50)
+pwm.start(2.5) # In
 
 #def SetAngle(angle):
   #  duty = angle / 18 + 2
@@ -27,7 +29,7 @@ def sample_covered():  # Start sample_retrival 110mm away
     time.sleep(3)
     pwm.ChangeDutyCycle(12.5)
 
-while True:
+while (1):
     sample_uncovered()
     sample_covered()
 
