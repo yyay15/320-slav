@@ -112,13 +112,14 @@ if __name__ == '__main__':
                     pass
                 elif userSelect == "m":
                     drive.manualControl()
-                    print("Starting Command Centre ...")
-                    app.run(host='0.0.0.0',port=6969,debug=True)
                 elif userSelect == "n":
                     drive.continuousControl()
                 elif userSelect == "c":
                     print("Starting Command Centre ...")
                     app.run(host='0.0.0.0',port=6969,debug=True)
+                elif userSelect == "v":
+                    print("Starting Command Centre ...")
+                    app.run(host='0.0.0.0',port=6969,debug=False)
                 elif userSelect == "q":
                     drive.gpioClean()
                     break
