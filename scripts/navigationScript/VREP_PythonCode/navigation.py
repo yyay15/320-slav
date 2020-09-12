@@ -10,7 +10,9 @@ NAV_LANDER = 6
 ACQUIRE_SAMPLE = 7
 DRIVE_UP = 8
 
-camera_blind = 0.1
+CAMERA_BLIND = 0.1
+DRIVE_OFF_TIME = 6
+FULL_ROTATION = 32
 
 class Navigation:
     def __init__(self):
@@ -39,13 +41,16 @@ class Navigation:
         # print("search sample")
         # v = 0
         # w = 0
-        if (state.onLander):
+                            
+        if (state.onLander): # change this to false in real life
             v,w = self.driveOffLander(state)
         else:
-            v = 0
-            w = 0.2
-            # if (time.time() -self.modeStartTime >= 5):
-            #     w = w * -1
+            if (time.time() -self.modeStartTime >= FULL_ROTATION):
+                v, w = self.driveForward()
+            else:
+                v = 0
+                w = 0.2
+
 
         if (state.sampleRB != None):
             self.stateMode = 3
@@ -60,7 +65,7 @@ class Navigation:
                 w = 0
                 print("returing to sample search")
                 self.stateMode = SEARCH_SAMPLE
-            elif(state.prevSampleRB[0][0] < camera_blind):
+            elif(state.prevSampleRB[0][0] < CAMERA_BLIND):
                 print ("acquiring sample")
                 v = 0
                 w = 0
@@ -136,6 +141,8 @@ class Navigation:
             print("searching for lander")
             self.stateMode = SEARCH_LANDER
         return v, w
+
+
     def driveUpLander(self,state):
         v = 0.5
         w = 0
@@ -143,9 +150,31 @@ class Navigation:
     def driveOffLander(self, state):
         v = 0.2
         w = 0
-        if(time.time() - self.modeStartTime >= 6):
+        if(time.time() - self.modeStartTime >= DRIVE_OFF_TIME):
             v = 0
             w = 0
             self.modeStartTime = time.time()
             state.onLander = False
         return v, w
+    def avoidObstacles(self,state, v, w):
+        if state.obstaclesRB != None:
+            for obstacle in obstaclesRB:
+                if obstacle[0] < 1:
+                    v = v -(0.5 - obstacle[0]) * 0.1
+                    w = w - np.si
+        
+
+    def driveForward(self):
+        print("drive forward")
+        driveStart = time.time()
+        if (time.time() - driveStart < 2):
+            v = 0.5
+            w = 0
+        else:
+            v = 0
+            w = 0
+        return v, w
+
+    
+
+    
