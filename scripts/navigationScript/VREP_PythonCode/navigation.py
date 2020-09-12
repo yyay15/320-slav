@@ -1,4 +1,6 @@
 import time
+import numpy as np
+import math
 
 #Mode 
 SEARCH_SAMPLE = 1
@@ -13,6 +15,12 @@ DRIVE_UP = 8
 CAMERA_BLIND = 0.1
 DRIVE_OFF_TIME = 6
 FULL_ROTATION = 32
+
+KV_ATTRACT = 5
+KW_ATTRACT = 2
+KV_REPULSE = 0.1
+KW_REPULSE = 0.2
+
 
 class Navigation:
     def __init__(self):
@@ -58,7 +66,6 @@ class Navigation:
         return v, w
 
     def navSample(self, state):
-        print(state.sampleRB)
         if (state.sampleRB == None):
             if (state.prevSampleRB == None):
                 v = 0
@@ -76,8 +83,13 @@ class Navigation:
 
         else:
             currSample = state.sampleRB[0]
-            v = 0.5* currSample[0]
-            w = currSample[1]
+            #print(currSample)
+            vA, wA = self.attractivePotential(currSample)
+            vR, wR = self.repulsivePotential(state)
+            v = vA - vR
+            w = wA - wR
+            # v = 0.5* currSample[0]
+            # w = currSample[1]
 
         #print("navigating to sample")
         return v, w
@@ -124,11 +136,15 @@ class Navigation:
                 w = 0
 
         else:
-            if (state.landerRB[0] < 0.4):
-                v = state.landerRB[0]
-            else:
-                v = 0.5* state.landerRB[0]
-            w = state.landerRB[1]
+            # if (state.landerRB[0] < 0.4):
+            #     v = state.landerRB[0]
+            # else:
+            #     v = 0.5* state.landerRB[0]
+            # w = state.landerRB[1]
+            vA, wA = self.attractivePotential(state.landerRB)
+            vR, wR = self.repulsivePotential(state)
+            v = vA - vR
+            w = wA - wR*10
         return v,w
     def acquireSample(self, state):
         if (not state.sampleCollected):
@@ -156,13 +172,7 @@ class Navigation:
             self.modeStartTime = time.time()
             state.onLander = False
         return v, w
-    def avoidObstacles(self,state, v, w):
-        if state.obstaclesRB != None:
-            for obstacle in obstaclesRB:
-                if obstacle[0] < 1:
-                    v = v -(0.5 - obstacle[0]) * 0.1
-                    w = w - np.si
-        
+
 
     def driveForward(self):
         print("drive forward")
@@ -175,6 +185,21 @@ class Navigation:
             w = 0
         return v, w
 
-    
-
-    
+    def attractivePotential(self, goal):
+        v = 0.5 * KV_ATTRACT * goal[0]**2 
+        w = 0.5 * KW_ATTRACT * goal[1]**2  
+        return v, w
+    def repulsivePotential(self, state):
+        v = 0 
+        w = 0
+        obstacles = state.obstaclesRB
+        if obstacles != None:
+            for obstacle in obstacles:
+                if obstacle[0] < 0.5:
+                    v = 0.5 * KV_REPULSE * obstacle[0]**2
+                    #w = obstacle[1] * (0.5 - obstacle[0])* (3-abs(obstacle[1])) * KW_REPULSE
+                    #w = 0.5 * KW_REPULSE * obstacle[1]**2
+                    w = KW_REPULSE * obstacle[1]
+            v = 0
+            w = 0
+        return v, w
