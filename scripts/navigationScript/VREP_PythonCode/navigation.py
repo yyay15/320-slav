@@ -15,18 +15,20 @@ DRIVE_UP = 8
 
 CAMERA_BLIND = 0.1
 DRIVE_OFF_TIME = 6
-FULL_ROTATION = 32
+FULL_ROTATION = 15
 
 KV_ATTRACT = 0.5
 KW_ATTRACT = 0.8
 KV_REPULSE = 0.3
 KW_REPULSE = 0.8
+
 class Navigation:
     def __init__(self):
         self.stateMode = SEARCH_SAMPLE
         self.modeStartTime = time.time()
         self.prevstate = SEARCH_SAMPLE
         self.turnDir = 1
+        self.rock_obstacle = True
         
     
     def currentState(self, stateNum):
@@ -47,29 +49,45 @@ class Navigation:
         return v, w
 
 
-    def searchSample(self, state):
-        # print("search sample")
-        # v = 0
-        # w = 0
-                            
+    def searchSample(self, state):          
         if (state.onLander): # change this to false in real life
             v,w = self.driveOffLander(state)
         else:
-            if (time.time() -self.modeStartTime >= FULL_ROTATION):
-                v, w = self.driveForward()
+            if (state.sampleRB != None and state.sampleRB):
+                v, w = 0, 0
+                self.rock_obstacle = True
+                self.prevstate = self.stateMode
+                self.stateMode = 3
+            elif (time.time() -self.modeStartTime >= FULL_ROTATION):
+                #v, w = self.driveForward()
+                #vRep, wRep = self.avoidObstacles(state)
+                # v = v - vRep
+                # w = w- wRep
+                if (state.rocksRB != None and state.rocksRB):
+                    print("nav to rock")
+                    self.rock_obstacle = False
+                    v, w = self.navigate(state.rocksRB[0], state)
+                    if state.rocksRB[0][0] < 0.2:
+                        self.modeStartTime = time.time()
+                else:
+                    print("moving around")
+                    v = 0.01
+                    w = 0.1
+                    # vRep, wRep = self.avoidObstacles(state)
+                    # v = v - vRep
+                    # w = w - wRep
             else:
                 v = 0
-                w = 1 * self.turnDir
+                w = 0.3 * self.turnDir
 
 
-        if (state.sampleRB != None):
-            self.prevstate = self.stateMode
-            self.stateMode = 3
+
         
         return v, w
 
     def navSample(self, state):
-        if (state.sampleRB == None):
+        print("searching ")
+        if (state.sampleRB == None or not state.sampleRB):
             if (state.prevSampleRB == None):
                 v = 0
                 w = 0
@@ -88,7 +106,7 @@ class Navigation:
                 print("returing to sample search")
                 self.stateMode = SEARCH_SAMPLE
         else:
-            if state.sampleRB != None:
+            if state.sampleRB != None and state.sampleRB:
                 currSample = state.sampleRB[0]
                 print(currSample)
                 v, w = self.navigate(currSample, state)
@@ -186,7 +204,7 @@ class Navigation:
         print("drive forward")
         driveStart = time.time()
         if (time.time() - driveStart < 2):
-            v = 0.5
+            v = 0.2
             w = 0
         else:
             v = 0
@@ -213,11 +231,13 @@ class Navigation:
 
     def avoidObstacles(self, state):
         obstacles = state.obstaclesRB
+        rocks = state.rocksRB
         vRep = 0
         wRep = 0
         if obstacles != None:
+            if rocks != None:
+                obstacles = obstacles + rocks
             closeObs = self.closestObstacle(obstacles)
-            #print(closeObs)
             if closeObs[0] < 0.5:
                 wRep =  (np.sign(closeObs[1]) * (0.5 - closeObs[0]) * (3 - abs(closeObs[1]))* KW_REPULSE)
                 vRep =  (0.5 - closeObs[0]) * 0.2
@@ -227,7 +247,6 @@ class Navigation:
 
     def closestObstacle(self, obstacles):
         minObstacle = obstacles[0]
-        print(minObstacle)
         for obstacle in obstacles:
             if (obstacle[0] < minObstacle[0]):
                 minObstacle = obstacle
