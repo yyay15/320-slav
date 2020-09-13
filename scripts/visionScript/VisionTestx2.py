@@ -10,13 +10,13 @@ from cv2 import cv2
 Center=np.array([])
 f=3.04/(1.12*10**-3)
 img=cv2.imread("MultipleCovers.jpg")
-sample_parameters={"hue":[0,12],"sat":[100,255],"value":[100,255],"Width":40,"OR_MASK":True,
+sample_parameters={"hue":[0,12],"sat":[100,255],"value":[100,255],"Height":40,"OR_MASK":True,
 "Kernel":True}
-lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Width":570,"OR_MASK":False,
+lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":570,"OR_MASK":False,
 "Kernel":False}
-obstacle_parameters={"hue":[40,70],"sat":[50,255],"value":[40,255],"Width":150,"OR_MASK":False,
+obstacle_parameters={"hue":[40,70],"sat":[50,255],"value":[40,255],"Height":150,"OR_MASK":False,
 "Kernel":False}
-cover_parameters={"hue":[95,107],"sat":[60,255],"value":[0,255],"Width":70,"OR_MASK":False,
+cover_parameters={"hue":[95,107],"sat":[60,255],"value":[0,255],"Height":70,"OR_MASK":False,
 "Kernel":False}
 def Detection(image,parameters_dict):
     image=cv2.resize(image,(640,480))
@@ -61,11 +61,12 @@ def Range(img,parameters_dict):
             Centroid=np.array([Lx,Ly])
             Center=np.append(Center,Centroid)
             Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-            Distance=parameters_dict["Width"]*(f/LWidth)/2
+            Distance=parameters_dict["Height"]*(f/LHeight)/2
             ZDistance=np.append(ZDistance,Distance)
             Bearing=np.append(Bearing,(Lx-320)*(31.1/320))
             Range=np.vstack((ZDistance,Bearing)).T#Put Bearing and ZDistance into one array and arrange
             #columnwise
+            Range=Range[Range[:,0].argsort()] 
             #if positive then it's to the right if negative then to left of center 
     #ZDistance=np.sort(ZDistance)   
     return Range
