@@ -13,7 +13,7 @@ NAV_LANDER = 6
 ACQUIRE_SAMPLE = 7
 DRIVE_UP = 8
 
-CAMERA_BLIND = 0.2
+CAMERA_BLIND = 0.1
 DRIVE_OFF_TIME = 6
 FULL_ROTATION = 32
 
@@ -92,7 +92,9 @@ class Navigation:
                 currSample = state.sampleRB[0]
                 print(currSample)
                 v, w = self.navigate(currSample, state)
-                if (currSample[0] < 0.2):
+                if (currSample[0] < CAMERA_BLIND):
+                    print("acquiring sample")
+                    v, w = 0, 0
                     self.stateMode = ACQUIRE_SAMPLE
         #print("navigating to sample")
         return v, w
@@ -118,7 +120,7 @@ class Navigation:
         print(1)
 
     def navLander(self, state):
-        print(state.landerRB)
+        #print(state.landerRB)
         if (not state.sampleCollected):
             v = 0 
             w = 0
@@ -140,19 +142,23 @@ class Navigation:
 
         else:
             v, w = self.navigate(state.landerRB, state)
+            w = w
 
         return v,w
     
     def acquireSample(self, state):
-        if (not state.sampleCollected):
-            v = 0.1
-            w = 0
-            v, w = self.avoidObstacles(state)
-            v = 0.1
-        elif (time.time() - self.modeStartTime >= 2):
+        if (state.sampleRB != None and not (-0.01 <= state.sampleRB[0][1] <= 0.01)):
+            sample = state.sampleRB[0]
+            w = sample[1]
             v = 0
+        elif (not state.sampleCollected):
+            print("here")
+            v = 0.1
             w = 0
-            self.stateMode = SEARCH_SAMPLE
+        # elif (time.time() - self.modeStartTime >= 7):
+        #     v = 0
+        #     w = 0
+        #     self.stateMode = SEARCH_SAMPLE
         else:
             v = 0
             w = 0
@@ -215,10 +221,13 @@ class Navigation:
             if closeObs[0] < 0.5:
                 wRep =  (np.sign(closeObs[1]) * (0.5 - closeObs[0]) * (3 - abs(closeObs[1]))* KW_REPULSE)
                 vRep =  (0.5 - closeObs[0]) * 0.2
+                if closeObs[0] < 0.4:
+                    wRep = 2 * wRep
         return vRep, wRep
 
     def closestObstacle(self, obstacles):
         minObstacle = obstacles[0]
+        print(minObstacle)
         for obstacle in obstacles:
             if (obstacle[0] < minObstacle[0]):
                 minObstacle = obstacle
