@@ -14,23 +14,22 @@
 # Import Python Library for main
 import sys, time
 
+# Import Python Library for CommandCentre
+from flask import Flask
+from flask import render_template, request
+app = Flask(__name__, template_folder='commandCentre')
+global command
 
-# Set Global Parameters 
-SIMULATION = False
+
 
 # Local modules
-if SIMULATION:
-
-    #drive = vrep.mobility()
-    pass
-else:
-    from mobilityScript import mobilityScript
-    from navigationScript import navigation, state
-    # from collectionScript import
-    # from visionScript import
-    print("loadingclass...")
-    # Initialise Functions and Classes
-    drive = mobilityScript.Mobility()
+from mobilityScript import mobilityScript
+from navigationScript import navigation, state
+# from collectionScript import
+# from visionScript import
+print("loadingclass...")
+# Initialise Functions and Classes
+drive = mobilityScript.Mobility()
 
 
 #---------------#
