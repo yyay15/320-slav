@@ -28,11 +28,68 @@ global command
 
 # Local modules
 from mobilityScript import mobilityScript
-from navigationScript import navigation, state
+from navigationScript.VREP_PythonCode import navigation, state
 from visionScript import vision
-
 # from collectionScript import
-# from visionScript import
+
+#---------------#
+# Function definitions
+#---------------#
+
+def ledIndicator(state):
+    if (state == 1):
+        GPIO.output(LED_RED, HIGH)
+        GPIO.output(LED_YELLOW, LOW)
+        GPIO.output(LED_GREEN, LOW)
+    elif (state == 3 or state == 7):
+        GPIO.output(LED_YELLOW, HIGH)
+        GPIO.output(LED_GREEN, LOW)
+        GPIO.output(LED_RED, LOW)
+    elif (state == 5 or state == 6):
+        GPIO.output(LED_GREEN, HIGH)
+        GPIO.output(LED_RED, LOW)
+        GPIO.output(LED_YELLOW, LOW)
+    else:
+        GPIO.output(LED_RED, LOW)
+        GPIO.output(LED_YELLOW, LOW)
+        GPIO.output(LED_GREEN, LOW)
+
+def ledSetup():
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(LED_GREEN, GPIO.OUT)
+    GPIO.setup(LED_YELLOW, GPIO.OUT)
+    GPIO.setup(LED_RED, GPIO.OUT) 
+
+
+
+#---------------#
+# Flask Function
+#---------------#
+
+@app.route("/")
+def index():
+    print("Our websever has launched!")
+    return render_template('commandCentre.html')
+
+
+# Use MobilityScript Method to set command
+@app.route('/mobility/<command>')
+def mobilityControl(command):
+    print("================")
+    print(command)
+    print("================")
+    drive.commandCentreTest(command)
+    return '{}'
+
+@app.route('/setSpeed/')
+def set_speed(speed):
+    ser.write('2,' + speed)
+    return '{}'
+
+
+#---------------#
+# Initialise
+#---------------#
 
 # Initialise Functions and Classes
 # Subsystem
@@ -94,58 +151,3 @@ if __name__ == '__main__':
         print("CleanergoVRMMM...")
 
 
-
-
-#---------------#
-# Function definitions
-#---------------#
-
-def ledIndicator(state):
-    if (state == 1):
-        GPIO.output(LED_RED, HIGH)
-        GPIO.output(LED_YELLOW, LOW)
-        GPIO.output(LED_GREEN, LOW)
-    elif (state == 3 or state == 7):
-        GPIO.output(LED_YELLOW, HIGH)
-        GPIO.output(LED_GREEN, LOW)
-        GPIO.output(LED_RED, LOW)
-    elif (state == 5 or state == 6):
-        GPIO.output(LED_GREEN, HIGH)
-        GPIO.output(LED_RED, LOW)
-        GPIO.output(LED_YELLOW, LOW)
-    else:
-        GPIO.output(LED_RED, LOW)
-        GPIO.output(LED_YELLOW, LOW)
-        GPIO.output(LED_GREEN, LOW)
-
-def ledSetup():
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(LED_GREEN, GPIO.OUT)
-    GPIO.setup(LED_YELLOW, GPIO.OUT)
-    GPIO.setup(LED_RED, GPIO.OUT) 
-
-
-
-#---------------#
-# Flask Function
-#---------------#
-
-@app.route("/")
-def index():
-    print("Our websever has launched!")
-    return render_template('commandCentre.html')
-
-
-# Use MobilityScript Method to set command
-@app.route('/mobility/<command>')
-def mobilityControl(command):
-    print("================")
-    print(command)
-    print("================")
-    drive.commandCentreTest(command)
-    return '{}'
-
-@app.route('/setSpeed/')
-def set_speed(speed):
-    ser.write('2,' + speed)
-    return '{}'
