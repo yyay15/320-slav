@@ -129,11 +129,11 @@ class Mobility:
         w = min(w, maxAngBase)
 
         # Convert v and w to motor percentages
-        self.speedLeft, self.speedRight = self.veloCalcWheels(v, w)
+        self.speedLeft, self.speedRight = self.SetTargetVelocities(v, w)
         
         self.drivePower(self.speedLeft, self.speedRight)
 
-    def veloCalcWheels(self, v, w):
+    def SetTargetVelocities(self, v, w):
 
 		# Calculate linear velocity for each wheel
         veloLeft = (v - 0.5 * w * WHEELBASE) 
@@ -230,7 +230,7 @@ class Mobility:
                     continue            
                 # Parse numbers
                 try:
-                    self.speedLeft, self.speedRight = self.veloCalcWheels(float(speedInput[0]), float(speedInput[1]))
+                    self.speedLeft, self.speedRight = self.SetTargetVelocities(float(speedInput[0]), float(speedInput[1]))
                     print("--------\n")
                     print(self.speedLeft)
                     print(self.speedRight)
@@ -324,7 +324,7 @@ class Mobility:
                     continue            
                 # Parse numbers
                 try:
-                    self.speedLeft, self.speedRight = self.veloCalcWheels(float(speedInput[0]), float(speedInput[1]))
+                    self.speedLeft, self.speedRight = self.SetTargetVelocities(float(speedInput[0]), float(speedInput[1]))
                 except ValueError:
                     print("Error: Incorrect Input")
                     continue
@@ -395,7 +395,7 @@ class Mobility:
             self.drivePower(0, 0)
         elif command == 'i':
             self.drivePower(0, 0)
-            self.speedLeft, self.speedRight = self.veloCalcWheels(float(controlVar1), float(controlVar2))
+            self.speedLeft, self.speedRight = self.SetTargetVelocities(float(controlVar1), float(controlVar2))
         elif command == 'j':
             self.drivePower(0, 0)
             self.speedLeft = int(controlVar1)
