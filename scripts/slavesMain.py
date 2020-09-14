@@ -28,7 +28,7 @@ global command
 
 # Local modules
 from mobilityScript import mobilityScript
-from navigationScript import navigation, state
+from navigationScript.VREP_PythonCode import navigation, state
 from visionScript import vision
 
 # from collectionScript import
