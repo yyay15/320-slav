@@ -23,12 +23,15 @@ LED_YELLOW = 2
 
 from mobilityScript import mobilityScript
 from navigationScript import navigation, state
+from visionScript import vision
 
 # from collectionScript import
 # from visionScript import
 print("loadingclass...")
 # Initialise Functions and Classes
 drive = mobilityScript.Mobility()
+vision = vision.Vision()
+# nav
 nav = navigation.Navigation() 
 state = state.State()
 ledSetup() #nav
@@ -69,7 +72,7 @@ if __name__ == '__main__':
                 while True:
                     vision.UpdateObjectPositions()
                     objects = vision.GetDetectedObjects()
-                    #sampleCollected = vision.SampleCollected()
+                    sampleCollected = vision.SampleCollected()
                     state.updateState(objects, sampleCollected)
                     v, w = nav.updateVelocities(state)
                     drive.SetTargetVelocities(v, w)
