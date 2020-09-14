@@ -34,7 +34,9 @@ WHEELBASE = 0.13    # Metres
 
 # Motor Parameters
 maxLin = 0.15
-maxAng = 5
+maxAngWheel = maxLin/WHEELRADIUS 
+maxAngBase = (maxLin)/(WHEELBASE/2)
+
 
 # Speed Constant
 LOWSPEED = 35
@@ -124,7 +126,7 @@ class Mobility:
     def drive(self, v, w):
         # Threshold Velocity to max
         v = min(v, maxLin)
-        w = min(w, maxAng)
+        w = min(w, maxAngBase)
 
         # Convert v and w to motor percentages
         self.speedLeft, self.speedRight = self.veloCalcWheels(v, w)
@@ -142,8 +144,8 @@ class Mobility:
         angVeloRight = veloRight / WHEELRADIUS
                 
         # Convert to power value from 0 to 100
-        powerLeft = angVeloLeft / maxAng * 100
-        powerRight = angVeloRight / maxAng * 100 
+        powerLeft = angVeloLeft / maxAngWheel * 100
+        powerRight = angVeloRight / maxAngWheel * 100 
 
         # Threshold for rounding and max power
         powerLeft = min(powerLeft, 100)
