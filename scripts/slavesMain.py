@@ -14,20 +14,26 @@
 # Import Python Library for main
 import sys, time
 import RPi.GPIO as GPIO
+
+# Import Python Library for CommandCentre
+from flask import Flask
+from flask import render_template, request
+app = Flask(__name__, template_folder='commandCentre')
+
 # Set Global Parameters 
 LED_GREEN = 0
 LED_RED = 1
 LED_YELLOW = 2
+global command
 
 # Local modules
-
 from mobilityScript import mobilityScript
 from navigationScript import navigation, state
-
 # from collectionScript import
 # from visionScript import
-print("loadingclass...")
+
 # Initialise Functions and Classes
+# Subsystem
 drive = mobilityScript.Mobility()
 nav = navigation.Navigation() 
 state = state.State()
@@ -39,17 +45,9 @@ ledSetup() #nav
 #---------------#
 print("beforemain")
 if __name__ == '__main__':
-    # Load Objects or Simulation
-    # print("beforeSimCheck...")
-
-    # print("afterSimCheck...")
-    
-    # Launch command centre
-
     # Initialise States for All System
     v = 0
     w = 0
-
 
     # Try Loading And running
     try:
@@ -61,6 +59,7 @@ if __name__ == '__main__':
             a    Automatic
             m    Manual - Discrete (Enter Button)
             n    Manual - Continuous (Hold button)
+            c    CommandCentre (TESTING)
             q    quit
             """)
             userSelect = input()
@@ -78,6 +77,9 @@ if __name__ == '__main__':
                 drive.manualControl()
             elif userSelect == "n":
                 drive.continuousControl()
+            elif userSelect == "c":
+                print("Starting Command Centre ...")
+                app.run(host='0.0.0.0',port=6969,debug=False)
             elif userSelect == "q":
                 drive.gpioClean()
                 break
@@ -85,9 +87,8 @@ if __name__ == '__main__':
                 print("Unknown Command")
     # Clean up when closing        
     except KeyboardInterrupt:
-        if not SIMULATION:
-            drive.gpioClean()
-            print("CleanergoVRMMM...")
+        drive.gpioClean()
+        print("CleanergoVRMMM...")
 
 
 
@@ -119,3 +120,29 @@ def ledSetup():
     GPIO.setup(LED_GREEN, GPIO.OUT)
     GPIO.setup(LED_YELLOW, GPIO.OUT)
     GPIO.setup(LED_RED, GPIO.OUT) 
+
+
+
+#---------------#
+# Flask Function
+#---------------#
+
+@app.route("/")
+def index():
+    print("Our websever has launched!")
+    return render_template('commandCentre.html')
+
+
+# Use MobilityScript Method to set command
+@app.route('/mobility/<command>')
+def mobilityControl(command):
+    print("================")
+    print(command)
+    print("================")
+    drive.commandCentreTest(command)
+    return '{}'
+
+@app.route('/setSpeed/')
+def set_speed(speed):
+    ser.write('2,' + speed)
+    return '{}'
