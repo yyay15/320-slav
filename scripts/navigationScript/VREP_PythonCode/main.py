@@ -44,7 +44,8 @@ if __name__ == '__main__':
             sampleCollected = sim.SampleCollected()
             state.updateState(objects, sampleCollected)
             v, w = nav.updateVelocities(state)
-            sim.SetTargetVelocities(v, w)
+
+            sim.SetTargetVelocities(v, w) #don't copy this line
             if not SIMULATION:
                 ledIndicator(nav.stateMode)
 
