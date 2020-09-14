@@ -33,9 +33,8 @@ WHEELRADIUS = 0.03 # Metres
 WHEELBASE = 0.13    # Metres
 
 # Motor Parameters
-maxLin = 0.2
-maxAng = 6.66
-maxRPM = 63.66
+maxLin = 0.15
+maxAng = 5
 
 # Speed Constant
 LOWSPEED = 35
