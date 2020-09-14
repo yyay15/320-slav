@@ -25,7 +25,7 @@ if SIMULATION:
     pass
 else:
     from mobilityScript import mobilityScript
-    # from navigationScript import 
+    from navigationScript import navigation, state
     # from collectionScript import
     # from visionScript import
     print("loadingclass...")
@@ -69,6 +69,7 @@ if __name__ == '__main__':
                 userSelect = input()
                 if  userSelect == "a":
                     # CHUCK THAT CHUNK HERE
+                    
                     pass
                 elif userSelect == "m":
                     drive.manualControl()

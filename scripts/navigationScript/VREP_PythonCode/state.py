@@ -12,7 +12,7 @@ class State:
         self.prevRocksRB = None
 
         self.onLander = True
-        self.sampleCollected = False
+        self.sampleCollected = True
 
 
     def updateState(self, objects, sampleCollected):
