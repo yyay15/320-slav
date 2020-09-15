@@ -31,7 +31,7 @@ class Vision:
         #image=cv2.resize(image,(640,480))
         #cv2.imshow("normal",image)
         ogimg=image#store the image given as a parameter for later bitwise and operation
-        image=cv2.cvtColor(np.float32(image), cv2.COLOR_BGR2HSV)
+        image=cv2.cvtColor(cv2.UMAT(image), cv2.COLOR_BGR2HSV)
 
         #image=cv2.GaussianBlur(image, (17, 17), 2) 
         lower=np.array([parameters_dict["hue"][0],parameters_dict["sat"][0],parameters_dict["value"][0]])
