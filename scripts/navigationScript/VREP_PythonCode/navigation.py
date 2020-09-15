@@ -13,7 +13,7 @@ NAV_LANDER = 6
 ACQUIRE_SAMPLE = 7
 DRIVE_UP = 8
 
-CAMERA_BLIND = 0.1
+CAMERA_BLIND = 0.3
 DRIVE_OFF_TIME = 6
 FULL_ROTATION = 15
 
@@ -122,7 +122,6 @@ class Navigation:
         v = 0
         w = 0.2
         if (state.landerRB != []):
-            print(state.landerRB)
             v = 0
             w = 0
             self.stateMode = NAV_LANDER
@@ -177,7 +176,7 @@ class Navigation:
         elif (time.time() - self.modeStartTime >= 20):
             v = 0.1
             w = 0
-            self.stateMode = SEARCH_SAMPLE
+            #self.stateMode = SEARCH_SAMPLE
         else:
             v = 0
             w = 0
