@@ -48,11 +48,11 @@ v = 0
 w = 0
 nav = navigation.Navigation()
 state = state.State()
-vision = vision.Vision()
 # MAIN SCRIPT    
 if __name__ == '__main__':
     try:
         if SIMULATION:
+            #172.19.44.254
             #sim = rbot.VREP_RoverRobot('127.0.0.1', robotParameters, sceneParameters)
             sim = rbot.VREP_RoverRobot('131.181.33.226', robotParameters, sceneParameters)
             sim.StartSimulator()
