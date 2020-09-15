@@ -128,9 +128,10 @@ if __name__ == '__main__':
                 while True:
                     vision.UpdateObjectPositions()
                     objects = vision.GetDetectedObjects()
-                    #sampleCollected = vision.SampleCollected()
-                    state.updateState(objects, True)
+                    sampleCollected = vision.SampleCollected()
+                    state.updateState(objects, sampleCollected)
                     v, w = nav.updateVelocities(state)
+                    ledIndicator(state)
                     drive.drive(v, w*2) # not in navMain
                     print(state.sampleRB)
                 

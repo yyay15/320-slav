@@ -13,7 +13,7 @@ NAV_LANDER = 6
 ACQUIRE_SAMPLE = 7
 DRIVE_UP = 8
 
-CAMERA_BLIND = 0.3
+CAMERA_BLIND = 0.2
 DRIVE_OFF_TIME = 6
 FULL_ROTATION = 30
 
@@ -59,21 +59,10 @@ class Navigation:
                 self.prevstate = self.stateMode
                 self.stateMode = NAV_SAMPLE
             elif (time.time() -self.modeStartTime >= FULL_ROTATION):
-                #v, w = self.driveForward()
-                #vRep, wRep = self.avoidObstacles(state)
-                # v = v - vRep
-                # w = w- wRep
-                # if (state.rocksRB != []):
-                #     print("nav to rock")
-                #     self.rock_obstacle = False
-                #     v, w = self.navigate(state.rocksRB[0], state)
-                #     if state.rocksRB[0][0] < 0.2:
-                #         self.modeStartTime = time.time()
-                #else:
                 print("moving around")
-                v = 0.05
-                w = 0.1
-                if (time.time() - self.modeStartTime - FULL_ROTATION > 10):
+                v = 0.5
+                w = 0
+                if (time.time() - self.modeStartTime - FULL_ROTATION >= 3):
                     print("return to spin")
                     self.modeStartTime = time.time()
                     # vRep, wRep = self.avoidObstacles(state)
@@ -81,7 +70,7 @@ class Navigation:
                     # w = w - wRep
             else:
                 v = 0
-                w = 0.4 * self.turnDir
+                w = 0.5 * self.turnDir
 
 
 
@@ -97,12 +86,6 @@ class Navigation:
                 print("returing to sample search")
                 self.modeStartTime = time.time()
                 self.stateMode = SEARCH_SAMPLE
-            # elif(state.prevSampleRB[0][0] < CAMERA_BLIND):
-            #     print ("acquiring sample")
-            #     v = 0
-            #     w = 0
-            #     self.modeStartTime = time.time()
-            #     self.stateMode = ACQUIRE_SAMPLE
             else:
                 v = 0
                 w = 0
@@ -120,7 +103,7 @@ class Navigation:
                     v, w = 0, 0
                     self.modeStartTime = time.time()
                     self.stateMode = ACQUIRE_SAMPLE
-        #print("navigating to sample")
+
         return v, w
 
     def searchLander(self, state):
@@ -173,19 +156,12 @@ class Navigation:
     def acquireSample(self, state):
         if (state.sampleRB != [] and not (-0.02 <= state.sampleRB[0][1] <= 0.02)):
             sample = state.sampleRB[0]
-            w = sample[1] *1.5
+            w = sample[1] *1
             v = 0
-        # elif (not state.sampleCollected):
-        #     print("here")
-        #     v = 0.1
-        #     w = 0
-        # elif (time.time() - self.modeStartTime >= 20):
-        #     v = 0.1
-        #     w = 0
-        elif (state.sampleRB != []):
-            v = 0.2
+        elif (not state.sampleCollected):
+            print("sample aligned. driving straight")
+            v = 0.1
             w = 0
-            #self.stateMode = SEARCH_SAMPLE
         else:
             v = 0
             w = 0
@@ -210,16 +186,7 @@ class Navigation:
         return v, w
 
 
-    def driveForward(self):
-        print("drive forward")
-        driveStart = time.time()
-        if (time.time() - driveStart < 2):
-            v = 0.2
-            w = 0
-        else:
-            v = 0
-            w = 0
-        return v, w
+
     def navigate(self, goal, state):
         vRep, wRep = 0, 0
         v = KV_ATTRACT * goal[0]
@@ -229,15 +196,6 @@ class Navigation:
         #v = v -vRep
         #w = w-wRep
         return v, w
-
-    # def attractivePotential(self, goal):
-    #     if goal[0] < 0.2:
-    #         v = 0.5 * KV_ATTRACT * 0.2**2 
-    #     else:
-    #         v = 0.5 * KV_ATTRACT * goal[0]**2 
-    #     #attractive = 0.5 * KW_ATTRACT * (goal[1])**2 * (exp(-0.3 * goal[0]) + 0.1)
-    #     attractive = 0.5 * KW_ATTRACT * goal[1]**2
-    #     return v, 4*attractive
 
     def avoidObstacles(self, state):
         obstacles = state.obstaclesRB
@@ -262,23 +220,13 @@ class Navigation:
                 minObstacle = obstacle
         return minObstacle
 
-    # def repulsivePotential(self, state):
-    #     repulsive = 0
-    #     c3 = 2
-    #     c4 = 2
-    #     obstacles = state.obstaclesRB
-
-    #     if obstacles != None:
-    #         minObstacle = obstacles[0]
-    #         # for obstacle in obstacles:
-    #         #     if obstacle[0] < minObstacle[0]:
-    #         #         minObstacle = obstacle
-    #         dO = minObstacle[0]
-    #         hO = minObstacle[1]
-    #         if dO < 0.5:
-                
-    #             #repulsive = 0.1* (1/0.01 - 1/(dO))
-    #             #repulsive =  KW_REPULSE * ((c3 * abs(hO))+1/ c3**2) * exp(-c3*abs(3-hO))* exp(-c4*dO)
-    #             repulsive =  KW_REPULSE * ((c3 * abs(hO))+1/ c3**2) * exp(-c3*abs(hO))* exp(-c4*dO)
-        
-    #     return repulsive
+    def driveForward(self):
+        print("drive forward")
+        driveStart = time.time()
+        if (time.time() - driveStart < 2):
+            v = 0.2
+            w = 0
+        else:
+            v = 0
+            w = 0
+        return v, w
