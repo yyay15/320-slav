@@ -96,17 +96,17 @@ class Vision:
             cv2.waitKey(1)	
             #initiate some variables
 
-        sample_img,SFin=Detection(np.copy(img),sample_parameters)
-        cover_img,CFin=Detection(np.copy(img),cover_parameters)
-        obstacle_img,OFin=Detection(np.copy(img),obstacle_parameters)
-        lander_img,LFin=Detection(np.copy(img),lander_parameters)
+        sample_img,SFin=self.Detection(np.copy(img),sample_parameters)
+        cover_img,CFin=self.Detection(np.copy(img),cover_parameters)
+        obstacle_img,OFin=self.Detection(np.copy(img),obstacle_parameters)
+        lander_img,LFin=self.Detection(np.copy(img),lander_parameters)
         FinalImage=cv2.bitwise_or(SFin,CFin)
         FinalImage=cv2.bitwise_or(FinalImage,OFin)
         FinalImage=cv2.bitwise_or(FinalImage,LFin)
-        sample_Z=Range(sample_img,sample_parameters)
-        lander_Z=Range(lander_img,lander_parameters)
-        cover_Z=Range(cover_img,cover_parameters)
-        obstacle_Z=Range(obstacle_img,obstacle_parameters)
+        sample_Z=self.Range(sample_img,sample_parameters)
+        lander_Z=self.Range(lander_img,lander_parameters)
+        cover_Z=self.Range(cover_img,cover_parameters)
+        obstacle_Z=self.Range(obstacle_img,obstacle_parameters)
         #print(sample_Z)
         # if (i%5)==0:
         #     cv2.imshow("Binary Thresholded Frame",FinalImage)# Display thresholded frame
