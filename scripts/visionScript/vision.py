@@ -86,7 +86,7 @@ class Vision:
                     Distance=parameters_dict["Height"]*(self.f/LHeight)/4
                     ZDistance=np.append(ZDistance,Distance)
                     Bearing=np.append(Bearing,(Lx-160)*(31.1/320))
-                    Range=np.vstack((ZDistance,Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                    Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                     #columnwise
                     Range=Range[Range[:,0].argsort()] 
                     #if positive then it's to the right if negative then to left of center 
