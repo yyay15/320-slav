@@ -104,6 +104,7 @@ class Navigation:
                 w = 0
                 self.turnDir = np.sign(state.prevSampleRB[0][1])
                 print("returing to sample search")
+                self.modeStartTime = time.time()
                 self.stateMode = SEARCH_SAMPLE
         else:
             if state.sampleRB != None and state.sampleRB:
