@@ -18,7 +18,7 @@ DRIVE_OFF_TIME = 6
 FULL_ROTATION = 15
 
 KV_ATTRACT = 0.4
-KW_ATTRACT = 0.8
+KW_ATTRACT = 1
 KV_REPULSE = 0.3
 KW_REPULSE = 0.8
 
@@ -71,14 +71,14 @@ class Navigation:
                         self.modeStartTime = time.time()
                 else:
                     print("moving around")
-                    v = 0.01
-                    w = 0.1
+                    v = 0.05
+                    w = 0.2
                     # vRep, wRep = self.avoidObstacles(state)
                     # v = v - vRep
                     # w = w - wRep
             else:
                 v = 0
-                w = 0.4 * self.turnDir
+                w = 0.5 * self.turnDir
 
 
 
@@ -119,7 +119,7 @@ class Navigation:
 
     def searchLander(self, state):
         v = 0
-        w = 0.2
+        w = 0.4
         if (state.landerRB != None):
             print(state.landerRB)
             v = 0
