@@ -31,7 +31,7 @@ class Vision:
         #image=cv2.resize(image,(640,480))
         #cv2.imshow("normal",image)
         ogimg=image#store the image given as a parameter for later bitwise and operation
-        image=cv2.cvtColor(cv2.UMAT(image), cv2.COLOR_BGR2HSV)
+        image=cv2.cvtColor(cv2.UMat(image), cv2.COLOR_BGR2HSV)
 
         #image=cv2.GaussianBlur(image, (17, 17), 2) 
         lower=np.array([parameters_dict["hue"][0],parameters_dict["sat"][0],parameters_dict["value"][0]])
@@ -93,15 +93,16 @@ class Vision:
             """ IF the np.array is empty return None"""
         return Range
     def visMain(self, i):
-        ret, img = self.cap.read()	     		# Get a frame from the camera 
+        ret, src = self.cap.read()	     		# Get a frame from the camera 
+        img=np.copy(src)
         if ret == True:	
             cv2.waitKey(1)	
             #initiate some variables
 
-        sample_img,SFin=self.Detection(np.copy(img),self.sample_parameters)
-        cover_img,CFin=self.Detection(np.copy(img),self.cover_parameters)
-        obstacle_img,OFin=self.Detection(np.copy(img),self.obstacle_parameters)
-        lander_img,LFin=self.Detection(np.copy(img),self.lander_parameters)
+        sample_img,SFin=self.Detection(img,self.sample_parameters)
+        cover_img,CFin=self.Detection(img,self.cover_parameters)
+        obstacle_img,OFin=self.Detection(img,self.obstacle_parameters)
+        lander_img,LFin=self.Detection(img,self.lander_parameters)
         FinalImage=cv2.bitwise_or(SFin,CFin)
         FinalImage=cv2.bitwise_or(FinalImage,OFin)
         FinalImage=cv2.bitwise_or(FinalImage,LFin)
