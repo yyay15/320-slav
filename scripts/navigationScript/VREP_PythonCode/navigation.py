@@ -58,7 +58,7 @@ class Navigation:
                 self.rock_obstacle = True
                 self.prevstate = self.stateMode
                 self.stateMode = NAV_SAMPLE
-            elif (time.time() -self.modeStartTime >= FULL_ROTATION):
+            elif (time.time() -self.modeStartTime >= FULL_ROTATION+10):
                 #v, w = self.driveForward()
                 #vRep, wRep = self.avoidObstacles(state)
                 # v = v - vRep
@@ -78,7 +78,7 @@ class Navigation:
                     # w = w - wRep
             else:
                 v = 0
-                w = 0.5 * self.turnDir
+                w = 0.7 * self.turnDir
 
 
 
