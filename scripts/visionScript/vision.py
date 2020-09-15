@@ -117,24 +117,23 @@ class Vision:
         return sample_Z,lander_Z,cover_Z,obstacle_Z
     
     def GetDetectedObjects(self):
-        if __name__=="__main__":
-            sampleRB, landerRB, obstaclesRB, rocksRB = None, None, None, None
-            i=0
-            frequency=10
-            Interval=1/frequency
-            while True:
-                now=time.time()
-                i+=1
-                sampleRB,landerRB,rocksRB,obstaclesRB=main(i)
-                elapsed=time.time()-now
-                #time.sleep(Interval-elapsed)
-                elapsed2=time.time()-now
-                rate2=1/elapsed2
-                print(rate2)
+        sampleRB, landerRB, obstaclesRB, rocksRB = None, None, None, None
+        i=0
+        frequency=10
+        Interval=1/frequency
+        while True:
+            now=time.time()
+            i+=1
+            sampleRB,landerRB,rocksRB,obstaclesRB=main(i)
+            elapsed=time.time()-now
+            #time.sleep(Interval-elapsed)
+            elapsed2=time.time()-now
+            rate2=1/elapsed2
+            print(rate2)
 
-                # sample [[R, B], [R,B]]
-                # lander [R, B]
-            # if nothing sampleRB = None
+            # sample [[R, B], [R,B]]
+            # lander [R, B]
+        # if nothing sampleRB = None
         return sampleRB, landerRB, obstaclesRB, rocksRB
 
 # 
