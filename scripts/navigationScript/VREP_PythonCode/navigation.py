@@ -143,13 +143,13 @@ class Navigation:
         #     v = 0 
         #     w = 0
         #     print("sample lost, searching for sample")
-        if state.landerRB == [] and state.sampleCollected:
-            if(state.prevLanderRB[0]< 0.5):
+        if state.landerRB == []:
+            if(state.prevLanderRB[0]< 0.6):
                 print ("drive up sample")
                 v = 0
                 w = 0
                 self.stateMode = DRIVE_UP
-            elif (state.landerRB == []):
+            elif (state.landerRB[0] == []):
                 v = 0
                 w = 0
                 print("returning to lander search")
@@ -159,7 +159,7 @@ class Navigation:
                 w = 0
 
         else:
-            v, w = self.navigate(state.landerRB, state)
+            v, w = self.navigate(state.landerRB[0], state)
             w = w
 
         return v,w
@@ -189,7 +189,7 @@ class Navigation:
 
 
     def driveUpLander(self,state):
-        v = 0.5
+        v = 1
         w = 0
         return v, w
     def driveOffLander(self, state):
