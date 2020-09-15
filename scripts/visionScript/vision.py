@@ -92,7 +92,8 @@ class Vision:
             """ IF the np.array is empty return None"""
         return Range
     def visMain(self, i):
-        ret, img = self.cap.read()	     		# Get a frame from the camera 
+        ret, img = self.cap.read()
+        print(ret,img)	     		# Get a frame from the camera 
         if ret == True:	
             cv2.waitKey(1)	
             #initiate some variables
