@@ -121,6 +121,7 @@ class Navigation:
         return v, w
 
     def searchLander(self, state):
+        print("search lander")
         v = 0
         w = 0.2
         if (state.landerRB != []):
@@ -179,7 +180,7 @@ class Navigation:
         #     v = 0.1
         #     w = 0
         elif (state.sampleRB != []):
-            v = 0.1
+            v = 0.2
             w = 0
             #self.stateMode = SEARCH_SAMPLE
         else:
