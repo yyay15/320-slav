@@ -118,6 +118,7 @@ class Vision:
     
     def GetDetectedObjects(self):
         if __name__=="__main__":
+            sampleRB, landerRB, obstaclesRB, rocksRB = None, None, None, None
             i=0
             frequency=10
             Interval=1/frequency
