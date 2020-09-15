@@ -48,6 +48,7 @@ v = 0
 w = 0
 nav = navigation.Navigation()
 state = state.State()
+vision = vision.Vision()
 # MAIN SCRIPT    
 if __name__ == '__main__':
     try:
