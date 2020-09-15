@@ -3,7 +3,7 @@ import imutils
 import math
 import time
 import cProfile
-from cv2 import cv2 
+import cv2 
 cap = cv2.VideoCapture(0)  		# Connect to camera 0 (or the only camera)
 cap.set(3, 320)                     	# Set the width to 320
 cap.set(4, 240)                      	# Set the height to 240
