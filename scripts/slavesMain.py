@@ -94,7 +94,7 @@ def set_speed(speed):
 # Initialise Functions and Classes
 # Subsystem
 drive = mobilityScript.Mobility()
-vision = vision.Vision()
+#vision = vision.Vision()
 # nav
 nav = navigation.Navigation() 
 state = state.State()
