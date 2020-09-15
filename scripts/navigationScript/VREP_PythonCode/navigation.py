@@ -15,10 +15,10 @@ DRIVE_UP = 8
 
 CAMERA_BLIND = 0.3
 DRIVE_OFF_TIME = 6
-FULL_ROTATION = 15
+FULL_ROTATION = 30
 
 KV_ATTRACT = 0.5 #0.5
-KW_ATTRACT = 1 #0.8
+KW_ATTRACT = 0.9 #0.8
 KV_REPULSE = 0.3
 KW_REPULSE = 0.8
 
@@ -57,22 +57,22 @@ class Navigation:
                 v, w = 0, 0
                 self.rock_obstacle = True
                 self.prevstate = self.stateMode
-                self.stateMode = 3
+                self.stateMode = NAV_SAMPLE
             elif (time.time() -self.modeStartTime >= FULL_ROTATION):
                 #v, w = self.driveForward()
                 #vRep, wRep = self.avoidObstacles(state)
                 # v = v - vRep
                 # w = w- wRep
-                if (state.rocksRB != []):
-                    print("nav to rock")
-                    self.rock_obstacle = False
-                    v, w = self.navigate(state.rocksRB[0], state)
-                    if state.rocksRB[0][0] < 0.2:
-                        self.modeStartTime = time.time()
-                else:
-                    print("moving around")
-                    v = 0.01
-                    w = 0.1
+                # if (state.rocksRB != []):
+                #     print("nav to rock")
+                #     self.rock_obstacle = False
+                #     v, w = self.navigate(state.rocksRB[0], state)
+                #     if state.rocksRB[0][0] < 0.2:
+                #         self.modeStartTime = time.time()
+                #else:
+                print("moving around")
+                v = 0.01
+                w = 0.1
                     # vRep, wRep = self.avoidObstacles(state)
                     # v = v - vRep
                     # w = w - wRep
@@ -139,10 +139,10 @@ class Navigation:
 
     def navLander(self, state):
         #print(state.landerRB)
-        if (not state.sampleCollected):
-            v = 0 
-            w = 0
-            print("sample lost, searching for sample")
+        # if (not state.sampleCollected):
+        #     v = 0 
+        #     w = 0
+        #     print("sample lost, searching for sample")
         if state.landerRB == [] and state.sampleCollected:
             if(state.prevLanderRB[0]< 0.5):
                 print ("drive up sample")
@@ -169,12 +169,15 @@ class Navigation:
             sample = state.sampleRB[0]
             w = sample[1]
             v = 0
-        elif (not state.sampleCollected):
-            print("here")
-            v = 0.1
-            w = 0
-        elif (time.time() - self.modeStartTime >= 20):
-            v = 0.1
+        # elif (not state.sampleCollected):
+        #     print("here")
+        #     v = 0.1
+        #     w = 0
+        # elif (time.time() - self.modeStartTime >= 20):
+        #     v = 0.1
+        #     w = 0
+        elif (state.sampleRB != []):
+            v = 0.2
             w = 0
             #self.stateMode = SEARCH_SAMPLE
         else:
@@ -214,10 +217,10 @@ class Navigation:
         vRep, wRep = 0, 0
         v = KV_ATTRACT * goal[0]
         w = KW_ATTRACT * goal[1]
-        if (goal[0]> 0.2):
-            vRep, wRep = self.avoidObstacles(state)
-        v = v -vRep
-        w = w-wRep
+        # if (goal[0]> 0.2):
+        #     vRep, wRep = self.avoidObstacles(state)
+        #v = v -vRep
+        #w = w-wRep
         return v, w
 
     # def attractivePotential(self, goal):
