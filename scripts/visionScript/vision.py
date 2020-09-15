@@ -4,20 +4,6 @@ import math
 import time
 import cProfile
 import cv2 
-cap = cv2.VideoCapture(0)  		# Connect to camera 0 (or the only camera)
-cap.set(3, 320)                     	# Set the width to 320
-cap.set(4, 240)                      	# Set the height to 240
-Center=np.array([])
-f=3.04/(1.12*10**-3)
-#img=cv2.imread("20200830_152410.jpg")
-sample_parameters={"hue":[0,6],"sat":[100,255],"value":[100,255],"Height":40,"OR_MASK":True,
-"Kernel":True,"Circle":True}
-lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":570,"OR_MASK":False,
-"Kernel":False,"Circle":False}
-obstacle_parameters={"hue":[40,70],"sat":[50,255],"value":[40,255],"Height":150,"OR_MASK":False,
-"Kernel":False,"Circle":False}
-cover_parameters={"hue":[95,107],"sat":[60,255],"value":[0,255],"Height":70,"OR_MASK":False,
-"Kernel":False,"Circle":False}
 
 
 class Vision: 
@@ -25,6 +11,21 @@ class Vision:
         # parameters that change 
         self.random = 1
         self.changingVariable = 1
+        self.cap = cv2.VideoCapture(0)  		# Connect to camera 0 (or the only camera)
+        self.cap.set(3, 320)                     	# Set the width to 320
+        self.cap.set(4, 240)                      	# Set the height to 240
+        self.Center=np.array([])
+        self.f=3.04/(1.12*10**-3)
+        #img=cv2.imread("20200830_152410.jpg")
+        self.sample_parameters={"hue":[0,6],"sat":[100,255],"value":[100,255],"Height":40,"OR_MASK":True,
+        "Kernel":True,"Circle":True}
+        self.lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":65,"OR_MASK":False,
+        "Kernel":False,"Circle":False}
+        self.obstacle_parameters={"hue":[40,70],"sat":[50,255],"value":[40,255],"Height":150,"OR_MASK":False,
+        "Kernel":False,"Circle":False}
+        self.cover_parameters={"hue":[95,107],"sat":[60,255],"value":[0,255],"Height":70,"OR_MASK":False,
+        "Kernel":False,"Circle":False}
+
 
     def Detection(self, image,parameters_dict):
         #image=cv2.resize(image,(640,480))
@@ -52,7 +53,7 @@ class Vision:
         Range=np.array([])
         ZDistance=np.array([])
         Bearing=np.array([])
-        Center=np.array([])
+        self.Center=np.array([])
         #GrayFiltimg=cv2.cvtColor(img,cv2.COLOR_HSV2BGR)
         #GrayFiltimg=cv2.cvtColor(GrayFiltimg,cv2.COLOR_RGB2GRAY)
         Contour=cv2.findContours(img,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
@@ -68,7 +69,7 @@ class Vision:
                     (x,y),radius=cv2.minEnclosingCircle(a)
                     Centroid=np.array([x,y],dtype=int)
                     cv2.circle(img,tuple(Centroid), 7, (255, 255, 255), -1)
-                    Distance=parameters_dict["Height"]*(f/(2*radius))/8.5
+                    Distance=parameters_dict["Height"]*(self.f/(2*radius))/8.5
                     ZDistance=np.append(ZDistance,Distance)
                     Bearing=np.append(Bearing,(x-160)*(31.1/160))
                     Range=np.vstack((ZDistance,Bearing)).T#Put Bearing and ZDistance into one array and arrange
@@ -79,9 +80,9 @@ class Vision:
                     Ly=int(Moment["m01"]/Moment["m00"])
                     cv2.circle(img, (Lx, Ly), 7, (255, 255, 255), -1)
                     Centroid=np.array([Lx,Ly])
-                    Center=np.append(Center,Centroid)
+                    self.Center=np.append(self.Center,Centroid)
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    Distance=parameters_dict["Height"]*(f/LHeight)/4
+                    Distance=parameters_dict["Height"]*(self.f/LHeight)/4
                     ZDistance=np.append(ZDistance,Distance)
                     Bearing=np.append(Bearing,(Lx-160)*(31.1/320))
                     Range=np.vstack((ZDistance,Bearing)).T#Put Bearing and ZDistance into one array and arrange
@@ -91,22 +92,22 @@ class Vision:
             """ IF the np.array is empty return None"""
         return Range
     def visMain(self, i):
-        ret, img = cap.read()	     		# Get a frame from the camera 
+        ret, img = self.cap.read()	     		# Get a frame from the camera 
         if ret == True:	
             cv2.waitKey(1)	
             #initiate some variables
 
-        sample_img,SFin=self.Detection(np.copy(img),sample_parameters)
-        cover_img,CFin=self.Detection(np.copy(img),cover_parameters)
-        obstacle_img,OFin=self.Detection(np.copy(img),obstacle_parameters)
-        lander_img,LFin=self.Detection(np.copy(img),lander_parameters)
+        sample_img,SFin=self.Detection(np.copy(img),self.sample_parameters)
+        cover_img,CFin=self.Detection(np.copy(img),self.cover_parameters)
+        obstacle_img,OFin=self.Detection(np.copy(img),self.obstacle_parameters)
+        lander_img,LFin=self.Detection(np.copy(img),self.lander_parameters)
         FinalImage=cv2.bitwise_or(SFin,CFin)
         FinalImage=cv2.bitwise_or(FinalImage,OFin)
         FinalImage=cv2.bitwise_or(FinalImage,LFin)
-        sample_Z=self.Range(sample_img,sample_parameters)
-        lander_Z=self.Range(lander_img,lander_parameters)
-        cover_Z=self.Range(cover_img,cover_parameters)
-        obstacle_Z=self.Range(obstacle_img,obstacle_parameters)
+        sample_Z=self.Range(sample_img,self.sample_parameters)
+        lander_Z=self.Range(lander_img,self.lander_parameters)
+        cover_Z=self.Range(cover_img,self.cover_parameters)
+        obstacle_Z=self.Range(obstacle_img,self.obstacle_parameters)
         #print(sample_Z)
         # if (i%5)==0:
         #     cv2.imshow("Binary Thresholded Frame",FinalImage)# Display thresholded frame
