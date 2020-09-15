@@ -53,7 +53,7 @@ class Navigation:
         if (state.onLander): # change this to false in real life
             v,w = self.driveOffLander(state)
         else:
-            if (state.sampleRB != None and state.sampleRB):
+            if (state.sampleRB != []):
                 v, w = 0, 0
                 self.rock_obstacle = True
                 self.prevstate = self.stateMode
@@ -63,7 +63,7 @@ class Navigation:
                 #vRep, wRep = self.avoidObstacles(state)
                 # v = v - vRep
                 # w = w- wRep
-                if (state.rocksRB != None and state.rocksRB):
+                if (state.rocksRB != []):
                     print("nav to rock")
                     self.rock_obstacle = False
                     v, w = self.navigate(state.rocksRB[0], state)
@@ -87,8 +87,8 @@ class Navigation:
 
     def navSample(self, state):
         print("searching ")
-        if (state.sampleRB == None or not state.sampleRB):
-            if (state.prevSampleRB == None):
+        if (state.sampleRB == []):
+            if (state.prevSampleRB == []):
                 v = 0
                 w = 0
                 print("returing to sample search")
@@ -106,13 +106,14 @@ class Navigation:
                 print("returing to sample search")
                 self.stateMode = SEARCH_SAMPLE
         else:
-            if state.sampleRB != None and state.sampleRB:
+            v, w = 0,0
+            if state.sampleRB != []:
                 currSample = state.sampleRB[0]
-                print(currSample)
                 v, w = self.navigate(currSample, state)
                 if (currSample[0] < CAMERA_BLIND):
                     print("acquiring sample")
                     v, w = 0, 0
+                    self.modeStartTime = time.time()
                     self.stateMode = ACQUIRE_SAMPLE
         #print("navigating to sample")
         return v, w
@@ -120,7 +121,7 @@ class Navigation:
     def searchLander(self, state):
         v = 0
         w = 0.2
-        if (state.landerRB != None):
+        if (state.landerRB != []):
             print(state.landerRB)
             v = 0
             w = 0
@@ -143,13 +144,13 @@ class Navigation:
             v = 0 
             w = 0
             print("sample lost, searching for sample")
-        if state.landerRB == None and state.sampleCollected:
+        if state.landerRB == [] and state.sampleCollected:
             if(state.prevLanderRB[0]< 0.5):
                 print ("drive up sample")
                 v = 0
                 w = 0
                 self.stateMode = DRIVE_UP
-            elif (state.landerRB == None):
+            elif (state.landerRB == []):
                 v = 0
                 w = 0
                 print("returning to lander search")
@@ -165,7 +166,7 @@ class Navigation:
         return v,w
     
     def acquireSample(self, state):
-        if (state.sampleRB != None and not (-0.01 <= state.sampleRB[0][1] <= 0.01)):
+        if (state.sampleRB != [] and not (-0.01 <= state.sampleRB[0][1] <= 0.01)):
             sample = state.sampleRB[0]
             w = sample[1]
             v = 0
@@ -173,10 +174,10 @@ class Navigation:
             print("here")
             v = 0.1
             w = 0
-        # elif (time.time() - self.modeStartTime >= 7):
-        #     v = 0
-        #     w = 0
-        #     self.stateMode = SEARCH_SAMPLE
+        elif (time.time() - self.modeStartTime >= 5):
+            v = 0.1
+            w = 0
+            self.stateMode = SEARCH_SAMPLE
         else:
             v = 0
             w = 0
@@ -234,8 +235,8 @@ class Navigation:
         rocks = state.rocksRB
         vRep = 0
         wRep = 0
-        if obstacles != None:
-            if rocks != None:
+        if obstacles != []:
+            if rocks != []:
                 obstacles = obstacles + rocks
             closeObs = self.closestObstacle(obstacles)
             if closeObs[0] < 0.5:

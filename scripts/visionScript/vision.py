@@ -31,7 +31,7 @@ class Vision:
         #image=cv2.resize(image,(640,480))
         #cv2.imshow("normal",image)
         ogimg=image#store the image given as a parameter for later bitwise and operation
-        image=cv2.cvtColor(cv2.UMAT(image), cv2.COLOR_BGR2HSV)
+        image=cv2.cvtColor(cv2.UMat(image), cv2.COLOR_BGR2HSV)
 
         #image=cv2.GaussianBlur(image, (17, 17), 2) 
         lower=np.array([parameters_dict["hue"][0],parameters_dict["sat"][0],parameters_dict["value"][0]])
@@ -135,7 +135,7 @@ class Vision:
             # sample [[R, B], [R,B]]
             # lander [R, B]
         # if nothing sampleRB = None
-        return sampleRB, landerRB, obstaclesRB, rocksRB
+        return sampleRB/1000, landerRB/1000, obstaclesRB/1000, rocksRB/1000
 
 # 
     def sampleCollected(self):

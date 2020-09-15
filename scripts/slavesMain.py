@@ -128,10 +128,11 @@ if __name__ == '__main__':
                 while True:
                     vision.UpdateObjectPositions()
                     objects = vision.GetDetectedObjects()
-                    sampleCollected = vision.SampleCollected()
-                    state.updateState(objects, sampleCollected)
+                    #sampleCollected = vision.SampleCollected()
+                    state.updateState(objects, True)
                     v, w = nav.updateVelocities(state)
                     drive.drive(v, w) # not in navMain
+                    print(state.sampleRB)
                 
             elif userSelect == "m":
                 drive.manualControl()
