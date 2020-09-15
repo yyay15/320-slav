@@ -20,7 +20,7 @@ FULL_ROTATION = 15
 KV_ATTRACT = 0.4
 KW_ATTRACT = 1
 KV_REPULSE = 0.3
-KW_REPULSE = 0.8
+KW_REPULSE = 3
 
 class Navigation:
     def __init__(self):
@@ -239,7 +239,7 @@ class Navigation:
             if rocks != None:
                 obstacles = obstacles + rocks
             closeObs = self.closestObstacle(obstacles)
-            if closeObs[0] < 0.5:
+            if closeObs[0] < 0.7:
                 wRep =  (np.sign(closeObs[1]) * (0.5 - closeObs[0]) * (3 - abs(closeObs[1]))* KW_REPULSE)
                 vRep =  (0.5 - closeObs[0]) * 0.2
                 if closeObs[0] < 0.4:
