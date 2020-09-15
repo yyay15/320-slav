@@ -90,30 +90,30 @@ class Vision:
                     #if positive then it's to the right if negative then to left of center 
             """ IF the np.array is empty return None"""
         return Range
-    def main(i):
+    def visMain(self, i):
         ret, img = cap.read()	     		# Get a frame from the camera 
         if ret == True:	
             cv2.waitKey(1)	
             #initiate some variables
-        if __name__=="__main__":
-            sample_img,SFin=Detection(np.copy(img),sample_parameters)
-            cover_img,CFin=Detection(np.copy(img),cover_parameters)
-            obstacle_img,OFin=Detection(np.copy(img),obstacle_parameters)
-            lander_img,LFin=Detection(np.copy(img),lander_parameters)
-            FinalImage=cv2.bitwise_or(SFin,CFin)
-            FinalImage=cv2.bitwise_or(FinalImage,OFin)
-            FinalImage=cv2.bitwise_or(FinalImage,LFin)
-            sample_Z=Range(sample_img,sample_parameters)
-            lander_Z=Range(lander_img,lander_parameters)
-            cover_Z=Range(cover_img,cover_parameters)
-            obstacle_Z=Range(obstacle_img,obstacle_parameters)
-            print(sample_Z)
-            if (i%5)==0:
-                cv2.imshow("Binary Thresholded Frame",FinalImage)# Display thresholded frame
-                cv2.waitKey(0)
-                cv2.destroyAllWindows()
 
-            #print(Bearing1)
+        sample_img,SFin=Detection(np.copy(img),sample_parameters)
+        cover_img,CFin=Detection(np.copy(img),cover_parameters)
+        obstacle_img,OFin=Detection(np.copy(img),obstacle_parameters)
+        lander_img,LFin=Detection(np.copy(img),lander_parameters)
+        FinalImage=cv2.bitwise_or(SFin,CFin)
+        FinalImage=cv2.bitwise_or(FinalImage,OFin)
+        FinalImage=cv2.bitwise_or(FinalImage,LFin)
+        sample_Z=Range(sample_img,sample_parameters)
+        lander_Z=Range(lander_img,lander_parameters)
+        cover_Z=Range(cover_img,cover_parameters)
+        obstacle_Z=Range(obstacle_img,obstacle_parameters)
+        #print(sample_Z)
+        # if (i%5)==0:
+        #     cv2.imshow("Binary Thresholded Frame",FinalImage)# Display thresholded frame
+        #     cv2.waitKey(0)
+        #     cv2.destroyAllWindows()
+
+        #print(Bearing1)
         return sample_Z,lander_Z,cover_Z,obstacle_Z
     
     def GetDetectedObjects(self):
@@ -121,15 +121,14 @@ class Vision:
         i=0
         frequency=10
         Interval=1/frequency
-        while True:
-            now=time.time()
-            i+=1
-            sampleRB,landerRB,rocksRB,obstaclesRB=main(i)
-            elapsed=time.time()-now
-            #time.sleep(Interval-elapsed)
-            elapsed2=time.time()-now
-            rate2=1/elapsed2
-            print(rate2)
+        now=time.time()
+        #i+=1
+        sampleRB,landerRB,rocksRB,obstaclesRB=visMain(i)
+        elapsed=time.time()-now
+        #time.sleep(Interval-elapsed)
+        elapsed2=time.time()-now
+        rate2=1/elapsed2
+        #print(rate2)
 
             # sample [[R, B], [R,B]]
             # lander [R, B]
