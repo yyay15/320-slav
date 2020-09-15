@@ -86,12 +86,13 @@ class Navigation:
         return v, w
 
     def navSample(self, state):
-        print("searching ")
+        print("nav to  sample ")
         if (state.sampleRB == []):
             if (state.prevSampleRB == []):
                 v = 0
                 w = 0
                 print("returing to sample search")
+                self.modeStartTime = time.time()
                 self.stateMode = SEARCH_SAMPLE
             elif(state.prevSampleRB[0][0] < CAMERA_BLIND):
                 print ("acquiring sample")
@@ -104,6 +105,7 @@ class Navigation:
                 w = 0
                 self.turnDir = np.sign(state.prevSampleRB[0][1])
                 print("returing to sample search")
+                self.modeStartTime = time.time()
                 self.stateMode = SEARCH_SAMPLE
         else:
             v, w = 0,0
