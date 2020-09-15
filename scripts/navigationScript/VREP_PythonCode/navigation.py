@@ -24,7 +24,7 @@ KW_REPULSE = 3
 
 class Navigation:
     def __init__(self):
-        self.stateMode = SEARCH_SAMPLE
+        self.stateMode = SEARCH_ROCK
         self.modeStartTime = time.time()
         self.prevstate = SEARCH_SAMPLE
         self.turnDir = 1
@@ -59,10 +59,7 @@ class Navigation:
                 self.prevstate = self.stateMode
                 self.stateMode = NAV_SAMPLE
             elif (time.time() -self.modeStartTime >= FULL_ROTATION):
-                #v, w = self.driveForward()
-                #vRep, wRep = self.avoidObstacles(state)
-                # v = v - vRep
-                # w = w- wRep
+
                 if (state.rocksRB != None and state.rocksRB):
                     print("nav to rock")
                     self.rock_obstacle = False
@@ -127,6 +124,7 @@ class Navigation:
         return v,w
 
     def searchRock(self,state):
+        print("searching for rock")
         self.rock_obstacle = False
         if (state.onLander): # change this to false in real life
             v,w = self.driveOffLander(state)
@@ -137,13 +135,6 @@ class Navigation:
                 self.prevstate = self.stateMode
                 self.stateMode = NAV_ROCK
             elif (time.time() -self.modeStartTime >= FULL_ROTATION):
-                # if (state.rocksRB != None and state.rocksRB):
-                #     print("nav to rock")
-                #     self.rock_obstacle = False
-                #     v, w = self.navigate(state.rocksRB[0], state)
-                #     if state.rocksRB[0][0] < 0.2:
-                #         self.modeStartTime = time.time()
-                # else:
                 print("moving around")
                 v, w = self.navigate([1, 1], state)
                 if (time.time() - FULL_ROTATION - 4):
@@ -152,30 +143,25 @@ class Navigation:
             else:
                 v = 0
                 w = 0.7 * self.turnDir 
-
+        return v, w
 
 
 
 
     def navRock(self,state):
-        print("searching rock")
+        print("navigating to rock")
         if (state.rocksRB == None or not state.rocksRB):
             if (state.prevRocksRB == None):
                 v = 0
                 w = 0
-                print("returing to rock search")
+                print("retuning to rock search")
+                self.modeStartTime = time.time()
                 self.stateMode = SEARCH_ROCK
-            # elif(state.prevSampleRB[0][0] < CAMERA_BLIND):
-            #     print ("acquiring sample")
-            #     v = 0
-            #     w = 0
-            #     self.modeStartTime = time.time()
-            #     self.stateMode = ACQUIRE_SAMPLE
             else:
                 v = 0
                 w = 0
-                self.turnDir = np.sign(state.prevSampleRB[0][1])
-                print("returing to rock search")
+                self.turnDir = np.sign(state.prevRocksRB[0][1])
+                print("returning to rock search")
                 self.modeStartTime = time.time()
                 self.stateMode = SEARCH_ROCK
         else:
