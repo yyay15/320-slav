@@ -131,7 +131,7 @@ if __name__ == '__main__':
                     #sampleCollected = vision.SampleCollected()
                     state.updateState(objects, True)
                     v, w = nav.updateVelocities(state)
-                    drive.drive(v, w) # not in navMain
+                    drive.drive(v, w*2) # not in navMain
                     print(state.sampleRB)
                 
             elif userSelect == "m":
