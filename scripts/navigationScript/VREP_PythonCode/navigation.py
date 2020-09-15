@@ -71,14 +71,17 @@ class Navigation:
                 #         self.modeStartTime = time.time()
                 #else:
                 print("moving around")
-                v = 0.01
+                v = 0.05
                 w = 0.1
+                if (time.time() - self.modeStartTime - FULL_ROTATION > 10):
+                    print("return to spin")
+                    self.modeStartTime = time.time()
                     # vRep, wRep = self.avoidObstacles(state)
                     # v = v - vRep
                     # w = w - wRep
             else:
                 v = 0
-                w = 0.3 * self.turnDir
+                w = 0.4 * self.turnDir
 
 
 
@@ -170,7 +173,7 @@ class Navigation:
     def acquireSample(self, state):
         if (state.sampleRB != [] and not (-0.02 <= state.sampleRB[0][1] <= 0.02)):
             sample = state.sampleRB[0]
-            w = sample[1]
+            w = sample[1] *1.5
             v = 0
         # elif (not state.sampleCollected):
         #     print("here")
