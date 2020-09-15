@@ -18,7 +18,7 @@ DRIVE_OFF_TIME = 6
 FULL_ROTATION = 30
 
 KV_ATTRACT = 0.5 #0.5
-KW_ATTRACT = 0.9 #0.8
+KW_ATTRACT = 1.5 #0.8
 KV_REPULSE = 0.3
 KW_REPULSE = 0.8
 
@@ -94,12 +94,12 @@ class Navigation:
                 print("returing to sample search")
                 self.modeStartTime = time.time()
                 self.stateMode = SEARCH_SAMPLE
-            elif(state.prevSampleRB[0][0] < CAMERA_BLIND):
-                print ("acquiring sample")
-                v = 0
-                w = 0
-                self.modeStartTime = time.time()
-                self.stateMode = ACQUIRE_SAMPLE
+            # elif(state.prevSampleRB[0][0] < CAMERA_BLIND):
+            #     print ("acquiring sample")
+            #     v = 0
+            #     w = 0
+            #     self.modeStartTime = time.time()
+            #     self.stateMode = ACQUIRE_SAMPLE
             else:
                 v = 0
                 w = 0
@@ -179,13 +179,14 @@ class Navigation:
         #     v = 0.1
         #     w = 0
         elif (state.sampleRB != []):
-            v = 0.2
+            v = 0.1
             w = 0
             #self.stateMode = SEARCH_SAMPLE
         else:
             v = 0
             w = 0
             print("searching for lander")
+            self.modeStartTime = time.time()
             self.stateMode = SEARCH_LANDER
         return v, w
 
