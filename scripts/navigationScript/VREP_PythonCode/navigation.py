@@ -68,15 +68,14 @@ class Navigation:
                     self.rock_obstacle = False
                     v, w = self.navigate(state.rocksRB[0], state)
                     if state.rocksRB[0][0] < 0.2:
+                        self.rock_obstacle = True
                         self.modeStartTime = time.time()
                 else:
                     print("moving around")
                     v, w = self.navigate([1, 1], state)
-                    if (time.time() - FULL_ROTATION - 4):
+                    if (time.time() - FULL_ROTATION -self.modeStartTime >= 5):
+                        print("return to spin search")
                         self.modeStartTime = time.time()
-                    # vRep, wRep = self.avoidObstacles(state)
-                    # v = v - vRep
-                    # w = w - wRep
             else:
                 v = 0
                 w = 0.7 * self.turnDir
@@ -129,12 +128,13 @@ class Navigation:
         return v,w
 
     def searchRock(self,state):
+        self.rock_obstacle = False
         if (state.onLander): # change this to false in real life
             v,w = self.driveOffLander(state)
         else:
             if (state.rocksRB != None and state.rocksRB):
                 v, w = 0, 0
-                self.rock_obstacle = True
+                self.rock_obstacle = False
                 self.prevstate = self.stateMode
                 self.stateMode = NAV_ROCK
             elif (time.time() -self.modeStartTime >= FULL_ROTATION):
