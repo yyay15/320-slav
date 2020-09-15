@@ -17,8 +17,8 @@ CAMERA_BLIND = 0.1
 DRIVE_OFF_TIME = 6
 FULL_ROTATION = 15
 
-KV_ATTRACT = 0.5
-KW_ATTRACT = 0.8
+KV_ATTRACT = 0.5 #0.5
+KW_ATTRACT = 1 #0.8
 KV_REPULSE = 0.3
 KW_REPULSE = 0.8
 
@@ -166,7 +166,7 @@ class Navigation:
         return v,w
     
     def acquireSample(self, state):
-        if (state.sampleRB != [] and not (-0.01 <= state.sampleRB[0][1] <= 0.01)):
+        if (state.sampleRB != [] and not (-0.02 <= state.sampleRB[0][1] <= 0.02)):
             sample = state.sampleRB[0]
             w = sample[1]
             v = 0
@@ -174,7 +174,7 @@ class Navigation:
             print("here")
             v = 0.1
             w = 0
-        elif (time.time() - self.modeStartTime >= 5):
+        elif (time.time() - self.modeStartTime >= 20):
             v = 0.1
             w = 0
             self.stateMode = SEARCH_SAMPLE
