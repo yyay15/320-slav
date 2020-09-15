@@ -123,7 +123,7 @@ class Vision:
         Interval=1/frequency
         now=time.time()
         #i+=1
-        sampleRB,landerRB,rocksRB,obstaclesRB=visMain(i)
+        sampleRB,landerRB,rocksRB,obstaclesRB=self.visMain(i)
         elapsed=time.time()-now
         #time.sleep(Interval-elapsed)
         elapsed2=time.time()-now
