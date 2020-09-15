@@ -72,8 +72,8 @@ class Navigation:
                         self.modeStartTime = time.time()
                 else:
                     print("moving around")
-                    v, w = self.navigate([1, 1], state)
-                    if (time.time() - FULL_ROTATION -self.modeStartTime >= 5):
+                    v, w = self.navigate([0.5, 0], state)
+                    if (time.time() - FULL_ROTATION -self.modeStartTime >= 3):
                         print("return to spin search")
                         self.modeStartTime = time.time()
             else:
@@ -86,7 +86,7 @@ class Navigation:
         return v, w
 
     def navSample(self, state):
-        print("searching sample")
+        print("navigating to sample")
         if (state.sampleRB == None or not state.sampleRB):
             if (state.prevSampleRB == None):
                 v = 0
@@ -109,7 +109,6 @@ class Navigation:
         else:
             if state.sampleRB != None and state.sampleRB:
                 currSample = state.sampleRB[0]
-                print(currSample)
                 v, w = self.navigate(currSample, state)
                 if (currSample[0] < CAMERA_BLIND):
                     print("acquiring sample")
