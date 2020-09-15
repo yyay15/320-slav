@@ -52,6 +52,7 @@ state = state.State()
 if __name__ == '__main__':
     try:
         if SIMULATION:
+            #sim = rbot.VREP_RoverRobot('127.0.0.1', robotParameters, sceneParameters)
             sim = rbot.VREP_RoverRobot('131.181.33.226', robotParameters, sceneParameters)
             sim.StartSimulator()
         else:

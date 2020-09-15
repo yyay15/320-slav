@@ -11,7 +11,7 @@ class State:
         self.prevObstaclesRB = None
         self.prevRocksRB = None
 
-        self.onLander = True
+        self.onLander = False
         self.sampleCollected = True
 
 
