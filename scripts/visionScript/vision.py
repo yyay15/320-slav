@@ -4,6 +4,10 @@ import math
 import time
 import cProfile
 import cv2 
+import board
+import busio
+import adafruit_vcnl4040
+
 
 
 class Vision: 
@@ -11,6 +15,9 @@ class Vision:
         # parameters that change 
         self.random = 1
         self.changingVariable = 1
+        
+        i2c = busio.I2C(board.SCL, board.SDA)
+        sensor = adafruit_vcnl4040.VCNL4040(i2c)
         self.cap = cv2.VideoCapture(0)  		# Connect to camera 0 (or the only camera)
         self.cap.set(3, 320)                     	# Set the width to 320
         self.cap.set(4, 240)                      	# Set the height to 240
@@ -25,6 +32,14 @@ class Vision:
         "Kernel":False,"Circle":False}
         self.cover_parameters={"hue":[95,107],"sat":[60,255],"value":[0,255],"Height":70,"OR_MASK":False,
         "Kernel":False,"Circle":False}
+    def Proximity(self):
+        a=sensor.proximity
+        if a>=13:
+            SamplePresent=True
+        else:
+            SamplePresent=False
+        return SamplePresent    
+        
 
 
     def Detection(self, image,parameters_dict):
@@ -140,8 +155,9 @@ class Vision:
 
 # 
     def sampleCollected(self):
-        #return true if sample in collector
-        pass
+        SamplePresent=self.Proximity()
+        return SamplePresent
+        
     
     def UpdateObjectPositions(self):
         pass
