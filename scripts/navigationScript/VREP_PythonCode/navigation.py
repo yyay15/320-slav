@@ -13,12 +13,12 @@ NAV_LANDER = 6
 ACQUIRE_SAMPLE = 7
 DRIVE_UP = 8
 
-CAMERA_BLIND = 0.2
+CAMERA_BLIND = 0.2 #collect distance 
 DRIVE_OFF_TIME = 6
 FULL_ROTATION = 30
 
 KV_ATTRACT = 0.5 #0.5
-KW_ATTRACT = 1.5 #0.8
+KW_ATTRACT = 3                                                                                                                  #1.5 #0.8
 KV_REPULSE = 0.3
 KW_REPULSE = 0.8
 
@@ -190,7 +190,9 @@ class Navigation:
     def navigate(self, goal, state):
         vRep, wRep = 0, 0
         v = KV_ATTRACT * goal[0]
-        w = KW_ATTRACT * goal[1]
+        #w = KW_ATTRACT * goal[1]
+        attractive = 0.5 * KW_ATTRACT * (goal[1])**2 * (exp(-0.4 * goal[0]) + 0.1)
+        w = attractive 
         # if (goal[0]> 0.2):
         #     vRep, wRep = self.avoidObstacles(state)
         #v = v -vRep
