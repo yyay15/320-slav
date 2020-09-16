@@ -53,7 +53,7 @@ class Navigation:
         if (state.onLander): # change this to false in real life
             v,w = self.driveOffLander(state)
         else:
-            if (state.sampleRB != []):
+            if (not self.isEmpty(state.sampleRB)):
                 v, w = 0, 0
                 self.rock_obstacle = True
                 self.prevstate = self.stateMode
@@ -79,8 +79,8 @@ class Navigation:
 
     def navSample(self, state):
         print("nav to  sample ")
-        if (state.sampleRB == []):
-            if (state.prevSampleRB == []):
+        if (self.isEmpty(state.sampleRB)):
+            if (self.isEmpty(state.prevSampleRB)):
                 v = 0
                 w = 0
                 print("returing to sample search")
@@ -95,7 +95,7 @@ class Navigation:
                 self.stateMode = SEARCH_SAMPLE
         else:
             v, w = 0,0
-            if state.sampleRB != []:
+            if not self.isEmpty(state.sampleRB):
                 currSample = state.sampleRB[0]
                 v, w = self.navigate(currSample, state)
                 if (currSample[0] < CAMERA_BLIND):
@@ -110,7 +110,7 @@ class Navigation:
         print("search lander")
         v = 0
         w = 0.2
-        if (state.landerRB != []):
+        if not self.isEmpty(state.landerRB):
             v = 0
             w = 0
             self.stateMode = NAV_LANDER
@@ -132,7 +132,7 @@ class Navigation:
         #     v = 0 
         #     w = 0
         #     print("sample lost, searching for sample")
-        if state.landerRB == []:
+        if self.isEmpty(state.landerRB):
             if(state.prevLanderRB[0]< 0.6):
                 print ("drive up sample")
                 v = 0
@@ -154,7 +154,7 @@ class Navigation:
         return v,w
     
     def acquireSample(self, state):
-        if (state.sampleRB != [] and not (-0.02 <= state.sampleRB[0][1] <= 0.02)):
+        if (not self.isEmpty(state.sampleRB) and not (-0.02 <= state.sampleRB[0][1] <= 0.02)):
             sample = state.sampleRB[0]
             w = sample[1] *1
             v = 0
@@ -202,8 +202,8 @@ class Navigation:
         rocks = state.rocksRB
         vRep = 0
         wRep = 0
-        if obstacles != []:
-            if rocks != []:
+        if not self.isEmpty(obstacles):
+            if not self.isEmpty(rocks):
                 obstacles = obstacles + rocks
             closeObs = self.closestObstacle(obstacles)
             if closeObs[0] < 0.5:
@@ -231,3 +231,12 @@ class Navigation:
             w = 0
         return v, w
 
+    def isEmpty(self, objectIn):
+        if (type(objectIn) != np.ndarray):
+            if (objectIn is None or objectIn == []):
+                return False
+            else:
+                return True
+        else:
+            empty = objectIn.size == 0
+        return empty
