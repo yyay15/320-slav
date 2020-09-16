@@ -11,8 +11,8 @@ class State:
         self.prevObstaclesRB = None
         self.prevRocksRB = None
 
-        self.onLander = True
-        self.sampleCollected = False
+        self.onLander = False
+        self.sampleCollected = True
 
 
     def updateState(self, objects, sampleCollected):

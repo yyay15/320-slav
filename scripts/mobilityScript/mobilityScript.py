@@ -33,9 +33,10 @@ WHEELRADIUS = 0.03 # Metres
 WHEELBASE = 0.13    # Metres
 
 # Motor Parameters
-maxLin = 0.2
-maxAng = 6.66
-maxRPM = 63.66
+maxLin = 0.15
+maxAngWheel = maxLin/WHEELRADIUS 
+maxAngBase = (maxLin)/(WHEELBASE/2)
+
 
 # Speed Constant
 LOWSPEED = 35
@@ -125,14 +126,14 @@ class Mobility:
     def drive(self, v, w):
         # Threshold Velocity to max
         v = min(v, maxLin)
-        w = min(w, maxAng)
+        w = min(w, maxAngBase)
 
         # Convert v and w to motor percentages
-        self.speedLeft, self.speedRight = self.veloCalcWheels(v, w)
+        self.speedLeft, self.speedRight = self.SetTargetVelocities(v, w)
         
         self.drivePower(self.speedLeft, self.speedRight)
 
-    def veloCalcWheels(self, v, w):
+    def SetTargetVelocities(self, v, w):
 
 		# Calculate linear velocity for each wheel
         veloLeft = (v - 0.5 * w * WHEELBASE) 
@@ -143,8 +144,8 @@ class Mobility:
         angVeloRight = veloRight / WHEELRADIUS
                 
         # Convert to power value from 0 to 100
-        powerLeft = angVeloLeft / maxAng * 100
-        powerRight = angVeloRight / maxAng * 100 
+        powerLeft = angVeloLeft / maxAngWheel * 100
+        powerRight = angVeloRight / maxAngWheel * 100 
 
         # Threshold for rounding and max power
         powerLeft = min(powerLeft, 100)
@@ -229,7 +230,7 @@ class Mobility:
                     continue            
                 # Parse numbers
                 try:
-                    self.speedLeft, self.speedRight = self.veloCalcWheels(float(speedInput[0]), float(speedInput[1]))
+                    self.speedLeft, self.speedRight = self.SetTargetVelocities(float(speedInput[0]), float(speedInput[1]))
                     print("--------\n")
                     print(self.speedLeft)
                     print(self.speedRight)
@@ -323,7 +324,7 @@ class Mobility:
                     continue            
                 # Parse numbers
                 try:
-                    self.speedLeft, self.speedRight = self.veloCalcWheels(float(speedInput[0]), float(speedInput[1]))
+                    self.speedLeft, self.speedRight = self.SetTargetVelocities(float(speedInput[0]), float(speedInput[1]))
                 except ValueError:
                     print("Error: Incorrect Input")
                     continue
@@ -394,7 +395,7 @@ class Mobility:
             self.drivePower(0, 0)
         elif command == 'i':
             self.drivePower(0, 0)
-            self.speedLeft, self.speedRight = self.veloCalcWheels(float(controlVar1), float(controlVar2))
+            self.speedLeft, self.speedRight = self.SetTargetVelocities(float(controlVar1), float(controlVar2))
         elif command == 'j':
             self.drivePower(0, 0)
             self.speedLeft = int(controlVar1)
@@ -417,6 +418,9 @@ class Mobility:
         elif command == 'q':
             print("Quitting ...")
             GPIO.cleanup()
+
+ #       print("TEST \n")
+#        print(self.speedLeft)
 
 
     def gpioClean(self):
