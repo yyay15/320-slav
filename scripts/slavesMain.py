@@ -63,6 +63,10 @@ def ledSetup():
 
 
 
+def action(navStates,distance,bearing,sampleCollected):
+
+
+
 #---------------#
 # Flask Function
 #---------------#
@@ -134,6 +138,8 @@ if __name__ == '__main__':
                     state.updateState(objects,sampleCollected)
                     v, w = nav.updateVelocities(state)
                     ledIndicator(nav.stateMode)
+                    action(nav.currentState)
+
                     drive.drive(v, w*2) # not in navMain
                 
             elif userSelect == "m":
