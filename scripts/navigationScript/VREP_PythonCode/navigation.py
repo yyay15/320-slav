@@ -53,6 +53,7 @@ class Navigation:
         if (state.onLander): # change this to false in real life
             v,w = self.driveOffLander(state)
         else:
+            print(state.sampleRB.size())
             if (state.sampleRB != []):
                 v, w = 0, 0
                 self.rock_obstacle = True

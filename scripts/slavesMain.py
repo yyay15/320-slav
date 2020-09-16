@@ -134,7 +134,6 @@ if __name__ == '__main__':
                     v, w = nav.updateVelocities(state)
                     ledIndicator(nav.stateMode)
                     drive.drive(v, w*2) # not in navMain
-                    print(state.sampleRB)
                 
             elif userSelect == "m":
                 drive.manualControl()
