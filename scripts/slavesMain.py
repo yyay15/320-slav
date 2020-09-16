@@ -21,8 +21,8 @@ from flask import render_template, request
 app = Flask(__name__, template_folder='commandCentre')
 
 # Set Global Parameters 
-LED_GREEN = 13
-LED_RED = 26
+LED_GREEN = 26
+LED_RED = 13
 LED_YELLOW = 19
 global command
 
