@@ -29,7 +29,7 @@ global command
 # Local modules
 from mobilityScript import mobilityScript
 from navigationScript.VREP_PythonCode import navigation, state
-from visionScript import vision
+#from visionScript import vision
 from collectionScript import collection
 
 #---------------#
@@ -63,17 +63,6 @@ def ledSetup():
 
 
 
-def action(navStates,distance,bearing,sampleCollected):
-    switchState = {
-            1: self.searchSample,
-            2: self.searchRock,
-            3: self.navSample, 
-            4: self.navRock, 
-            5: self.searchLander,
-            6: self.navLander,
-            7: self.acquireSample,
-            8: self.driveUpLander
-    }
 
 
 #---------------#
@@ -108,7 +97,7 @@ def set_speed(speed):
 # Initialise Functions and Classes
 # Subsystem
 drive = mobilityScript.Mobility()
-vision = vision.Vision()
+#vision = vision.Vision()
 collection = collection.Collection()
 
 # nav
