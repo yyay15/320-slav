@@ -59,7 +59,7 @@ class Navigation:
                 self.prevstate = self.stateMode
                 self.stateMode = NAV_SAMPLE
             elif (time.time() -self.modeStartTime >= FULL_ROTATION):
-                if (state.rocksRB != None and state.rocksRB):
+                if (not self.isEmpty(state.rocksRB)):
                     print("nav to rock")
                     self.rock_obstacle = False
                     v, w = self.navigate(state.rocksRB[0], state)
