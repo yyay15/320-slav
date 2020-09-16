@@ -64,7 +64,16 @@ def ledSetup():
 
 
 def action(navStates,distance,bearing,sampleCollected):
-
+    switchState = {
+            1: self.searchSample,
+            2: self.searchRock,
+            3: self.navSample, 
+            4: self.navRock, 
+            5: self.searchLander,
+            6: self.navLander,
+            7: self.acquireSample,
+            8: self.driveUpLander
+    }
 
 
 #---------------#
@@ -127,6 +136,7 @@ if __name__ == '__main__':
             m    Manual - Discrete (Enter Button)
             n    Manual - Continuous (Hold button)
             c    CommandCentre (TESTING)
+            t    Playspace ;) 
             q    quit
             """)
             userSelect = input()
@@ -140,7 +150,7 @@ if __name__ == '__main__':
                     state.updateState(objects,sampleCollected)
                     v, w = nav.updateVelocities(state)
                     ledIndicator(nav.stateMode)
-                    action(nav.currentState)
+                    collection.sampleManage(nav.rockState)
 
                     drive.drive(v, w*2) # not in navMain
                 
@@ -150,6 +160,15 @@ if __name__ == '__main__':
                 drive.continuousControl()
             elif userSelect == "c":
                 print("Starting Command Centre ...")
+                app.run(host='0.0.0.0',port=6969,debug=False)
+            elif userSelect == "t":
+                print("testing")
+                while True:
+                    collection.Open_ROT()
+                    time.sleep(2)
+                    collection.Close_ROT()
+                    time.sleep(2)
+
                 app.run(host='0.0.0.0',port=6969,debug=False)
             elif userSelect == "q":
                 drive.gpioClean()

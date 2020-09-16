@@ -21,6 +21,14 @@ import time
 servoPin = 17
 
 
+# State Definition Key
+# State 0 = pass
+# State 1 = Open
+# State 2 = Close
+# State 3 = Slight Open
+
+
+
 ################################################################
 # Define Class System
 ###############################################################
@@ -35,23 +43,37 @@ class Collection:
         self.servoPWM = GPIO.PWM(servoPin, 50)
         # Initial Condition
         self.servoPWM.start(3)
+        self.currentState = 0 
+        self.prevState = 0
 
+
+    def sampleManage(self, navRockState):
+        self.currentState = navRockState
+        if self.currentState == self.prevState:
+            pass
+        else:
+            if self.currentState == 0:
+                pass
+            elif self.currentState == 1:
+                self.Open_ROT()
+            elif self.currentState == 2:
+                self.Close_ROT()
+            elif self.currentState == 3:
+                self.Release_Ball()
+            
 
     def Open_ROT(self):
         self.servoPWM.ChangeDutyCycle(7.5)
-        self.servoPWM.ChangeDutyCycle(0)
         print("Open")
         time.sleep(1)
 
     def Close_ROT(self):
         self.servoPWM.ChangeDutyCycle(3.5)    
-        self.servoPWM.ChangeDutyCycle(0)
         print("Close")
         time.sleep(1)
 
     def Release_Ball(self):
         self.servoPWM.ChangeDutyCycle(5)
-        self.servoPWM.ChangeDutyCycle(0)
         print("Releasing Ball")
         time.sleep(1)
 
