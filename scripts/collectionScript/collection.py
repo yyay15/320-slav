@@ -3,7 +3,7 @@
 # Collection Script
 # Group SLAVES: Group 13
 # 2020 Semester 2
-# Luis Serrano
+# Luis Serrano (Shout out Alan Yu)
 #====================================#
 
 
@@ -47,6 +47,7 @@ class Collection:
         self.prevState = 0
 
 
+
     def sampleManage(self, navRockState):
         self.currentState = navRockState
         if self.currentState == self.prevState:
@@ -79,3 +80,5 @@ class Collection:
         print("Releasing Ball")
         time.sleep(1)
         self.servoPWM.ChangeDutyCycle(0)
+
+
