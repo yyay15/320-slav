@@ -69,7 +69,7 @@ class Navigation:
                 else:
                     print("moving around")
                     v, w = self.navigate([0.5, 0], state)
-                    if (time.time() - FULL_ROTATION -self.modeStartTime >= 1.5):
+                    if (time.time() - FULL_ROTATION -self.modeStartTime >= 2):
                         print("return to spin search")
                         self.modeStartTime = time.time()
             else:
