@@ -21,9 +21,9 @@ from flask import render_template, request
 app = Flask(__name__, template_folder='commandCentre')
 
 # Set Global Parameters 
-LED_GREEN = 0
-LED_RED = 1
-LED_YELLOW = 2
+LED_GREEN = 26
+LED_RED = 13
+LED_YELLOW = 19
 global command
 
 # Local modules
@@ -38,21 +38,22 @@ from visionScript import vision
 
 def ledIndicator(state):
     if (state == 1):
-        GPIO.output(LED_RED, HIGH)
-        GPIO.output(LED_YELLOW, LOW)
-        GPIO.output(LED_GREEN, LOW)
+        GPIO.output(LED_RED, GPIO.HIGH)
+        GPIO.output(LED_YELLOW, GPIO.LOW)
+        GPIO.output(LED_GREEN, GPIO.LOW)
     elif (state == 3 or state == 7):
-        GPIO.output(LED_YELLOW, HIGH)
-        GPIO.output(LED_GREEN, LOW)
-        GPIO.output(LED_RED, LOW)
+        GPIO.output(LED_YELLOW, GPIO.HIGH)
+        GPIO.output(LED_GREEN, GPIO.LOW)
+        GPIO.output(LED_RED, GPIO.LOW)
     elif (state == 5 or state == 6):
-        GPIO.output(LED_GREEN, HIGH)
-        GPIO.output(LED_RED, LOW)
-        GPIO.output(LED_YELLOW, LOW)
+        GPIO.output(LED_GREEN, GPIO.HIGH)
+        GPIO.output(LED_RED, GPIO.LOW)
+        GPIO.output(LED_YELLOW, GPIO.LOW)
     else:
-        GPIO.output(LED_RED, LOW)
-        GPIO.output(LED_YELLOW, LOW)
-        GPIO.output(LED_GREEN, LOW)
+        GPIO.output(LED_GREEN, GPIO.LOW)
+        GPIO.output(LED_RED, GPIO.LOW)
+        GPIO.output(LED_YELLOW, GPIO.LOW)
+
 
 def ledSetup():
     GPIO.setmode(GPIO.BCM)
@@ -128,12 +129,11 @@ if __name__ == '__main__':
                 while True:
                     vision.UpdateObjectPositions()
                     objects = vision.GetDetectedObjects()
-                    sampleCollected = vision.SampleCollected()
-                    state.updateState(objects, sampleCollected)
+                   # sampleCollected = vision.SampleCollected()s
+                    state.updateState(objects, True)
                     v, w = nav.updateVelocities(state)
-                    ledIndicator(state)
+                    ledIndicator(nav.stateMode)
                     drive.drive(v, w*2) # not in navMain
-                    print(state.sampleRB)
                 
             elif userSelect == "m":
                 drive.manualControl()
