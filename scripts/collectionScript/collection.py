@@ -3,7 +3,7 @@
 # Collection Script
 # Group SLAVES: Group 13
 # 2020 Semester 2
-# Alan Yu
+# Luis Serrano
 #====================================#
 
 
