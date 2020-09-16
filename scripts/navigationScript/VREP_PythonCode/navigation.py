@@ -13,7 +13,12 @@ NAV_LANDER = 6
 ACQUIRE_SAMPLE = 7
 DRIVE_UP = 8
 
-CAMERA_BLIND = 0.2 #collect distance 
+#cover open constants
+CLOSED = 1
+FULLY_OPEN = 2
+SLIGHT_OPEN = 3
+
+CAMERA_BLIND = 0.1 #collect distance 
 DRIVE_OFF_TIME = 6
 FULL_ROTATION = 30
 
@@ -29,6 +34,7 @@ class Navigation:
         self.prevstate = SEARCH_SAMPLE
         self.turnDir = 1
         self.rock_obstacle = True
+        self.coverOpen = CLOSED
         
     
     def currentState(self, stateNum):
@@ -156,13 +162,15 @@ class Navigation:
     def acquireSample(self, state):
         if (not self.isEmpty(state.sampleRB) and not (-0.02 <= state.sampleRB[0][1] <= 0.02)):
             sample = state.sampleRB[0]
-            w = sample[1] *1
+            w = sample[1] 
             v = 0
         elif (not state.sampleCollected):
+            self.coverOpen = FULLY_OPEN
             print("sample aligned. driving straight")
             v = 0.1
             w = 0
         else:
+            self.coverOpen = CLOSED
             v = 0
             w = 0
             print("searching for lander")
