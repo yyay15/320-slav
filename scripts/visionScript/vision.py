@@ -85,12 +85,13 @@ class Vision:
                     (x,y),radius=cv2.minEnclosingCircle(a)
                     Centroid=np.array([x,y],dtype=int)
                     cv2.circle(img,tuple(Centroid), 7, (255, 255, 255), -1)
-                    Distance=parameters_dict["Height"]*(self.f/(2*radius))/8.5
+                    Distance=(parameters_dict["Height"]*(f/(2*radius))/8)*math.cos(0.2967)
+                    Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
                     ZDistance=np.append(ZDistance,Distance)
                     Bearing=np.append(Bearing,(x-160)*(31.1/160))
                     Range=np.vstack((ZDistance,Bearing)).T#Put Bearing and ZDistance into one array and arrange
                     #columnwise
-                    Range=Range[Range[:,0].argsort()] 
+                    Range=Range[Range[:,0].argsort()]
                 else:
                     Lx=int(Moment["m10"]/Moment["m00"])
                     Ly=int(Moment["m01"]/Moment["m00"])
@@ -155,8 +156,12 @@ class Vision:
 
 # 
     def sampleCollected(self):
-        #SamplePresent=self.Proximity()
-        #return SamplePresent
+         a=sensor.proximity
+        if a>=13:
+            SamplePresent=True
+        else:
+            SamplePresent=False
+        return SamplePresent 
         pass
     
     def UpdateObjectPositions(self):
