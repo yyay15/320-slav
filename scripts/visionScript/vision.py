@@ -24,7 +24,7 @@ class Vision:
         self.Center=np.array([])
         self.f=3.04/(1.12*10**-3)
         #img=cv2.imread("20200830_152410.jpg")
-        self.sample_parameters={"hue":[0,5],"sat":[100,255],"value":[100,255],"Height":40,"OR_MASK":True,
+        self.sample_parameters={"hue":[0,6],"sat":[100,255],"value":[100,255],"Height":40,"OR_MASK":True,
         "Kernel":True,"Circle":True}
         self.lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":65,"OR_MASK":False,
         "Kernel":False,"Circle":False}
@@ -33,7 +33,12 @@ class Vision:
         self.cover_parameters={"hue":[95,107],"sat":[60,255],"value":[0,255],"Height":70,"OR_MASK":False,
         "Kernel":False,"Circle":False}
     def Proximity(self):
-           
+        a=sensor.proximity
+        if a>=13:
+            SamplePresent=True
+        else:
+            SamplePresent=False
+        return SamplePresent    
         
 
 
@@ -53,7 +58,7 @@ class Vision:
             mask1=cv2.inRange(image,lower_oran,higher_oran)
             mask=cv2.bitwise_or(mask,mask1)
         if parameters_dict["Kernel"]==True:
-            Kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
+            Kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(15,15))
         else:
             Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
         Thresholded_img=cv2.bitwise_and(ogimg,ogimg,mask=mask)
@@ -79,17 +84,17 @@ class Vision:
                 if parameters_dict["Circle"]==True:
                     (x,y),radius=cv2.minEnclosingCircle(a)
                     Centroid=np.array([x,y],dtype=int)
-                    #cv2.circle(img,tuple(Centroid), 7, (255, 255, 255), -1)
-                    Distance=(parameters_dict["Height"]*(f/(2*radius))/8)*math.cos(0.2967)
-                    Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
+                    cv2.circle(img,tuple(Centroid), 7, (255, 255, 255), -1)
+                    Distance=parameters_dict["Height"]*(self.f/(2*radius))/8.5
                     ZDistance=np.append(ZDistance,Distance)
                     Bearing=np.append(Bearing,(x-160)*(31.1/160))
                     Range=np.vstack((ZDistance,Bearing)).T#Put Bearing and ZDistance into one array and arrange
                     #columnwise
+                    Range=Range[Range[:,0].argsort()] 
                 else:
                     Lx=int(Moment["m10"]/Moment["m00"])
                     Ly=int(Moment["m01"]/Moment["m00"])
-                    #cv2.circle(img, (Lx, Ly), 7, (255, 255, 255), -1)
+                    cv2.circle(img, (Lx, Ly), 7, (255, 255, 255), -1)
                     Centroid=np.array([Lx,Ly])
                     self.Center=np.append(self.Center,Centroid)
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
@@ -123,6 +128,10 @@ class Vision:
         #print(sample_Z)
         # if (i%5)==0:
         #     cv2.imshow("Binary Thresholded Frame",FinalImage)# Display thresholded frame
+        #     cv2.waitKey(0)
+        #     cv2.destroyAllWindows()
+
+        #print(Bearing1)
         return sample_Z,lander_Z,cover_Z,obstacle_Z
     
     def GetDetectedObjects(self):
@@ -146,11 +155,7 @@ class Vision:
 
 # 
     def sampleCollected(self):
-        a=sensor.proximity
-        if a>=13:
-            SamplePresent=True
-        else:
-            SamplePresent=False
+        SamplePresent=self.Proximity()
         return SamplePresent
         
     
