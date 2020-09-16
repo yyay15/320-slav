@@ -22,8 +22,8 @@ app = Flask(__name__, template_folder='commandCentre')
 
 # Set Global Parameters 
 LED_GREEN = 13
-LED_RED = 19
-LED_YELLOW = 26
+LED_RED = 26
+LED_YELLOW = 19
 global command
 
 # Local modules
@@ -49,6 +49,11 @@ def ledIndicator(state):
         GPIO.output(LED_GREEN, GPIO.HIGH)
         GPIO.output(LED_RED, GPIO.LOW)
         GPIO.output(LED_YELLOW, GPIO.LOW)
+    else:
+        GPIO.output(LED_GREEN, GPIO.LOW)
+        GPIO.output(LED_RED, GPIO.LOW)
+        GPIO.output(LED_YELLOW, GPIO.LOW)
+
 
 def ledSetup():
     GPIO.setmode(GPIO.BCM)
@@ -127,7 +132,7 @@ if __name__ == '__main__':
                    # sampleCollected = vision.SampleCollected()s
                     state.updateState(objects, True)
                     v, w = nav.updateVelocities(state)
-                    ledIndicator(1)
+                    ledIndicator(nav.stateMode)
                     drive.drive(v, w*2) # not in navMain
                     print(state.sampleRB)
                 
