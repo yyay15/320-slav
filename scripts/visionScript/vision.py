@@ -16,8 +16,8 @@ class Vision:
         self.random = 1
         self.changingVariable = 1
         
-        #i2c = busio.I2C(board.SCL, board.SDA)
-        #sensor = adafruit_vcnl4040.VCNL4040(i2c)
+        i2c = busio.I2C(board.SCL, board.SDA)
+        self.sensor = adafruit_vcnl4040.VCNL4040(i2c)
         self.cap = cv2.VideoCapture(0)  		# Connect to camera 0 (or the only camera)
         self.cap.set(3, 320)                     	# Set the width to 320
         self.cap.set(4, 240)                      	# Set the height to 240
@@ -85,7 +85,7 @@ class Vision:
                     (x,y),radius=cv2.minEnclosingCircle(a)
                     Centroid=np.array([x,y],dtype=int)
                     cv2.circle(img,tuple(Centroid), 7, (255, 255, 255), -1)
-                    Distance=(parameters_dict["Height"]*(f/(2*radius))/8)*math.cos(0.2967)
+                    Distance=(parameters_dict["Height"]*(self.f/(2*radius))/8)*math.cos(0.2967)
                     Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
                     ZDistance=np.append(ZDistance,Distance)
                     Bearing=np.append(Bearing,(x-160)*(31.1/160))
@@ -101,7 +101,7 @@ class Vision:
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     Distance=parameters_dict["Height"]*(self.f/LHeight)/4
                     ZDistance=np.append(ZDistance,Distance)
-                    Bearing=np.append(Bearing,(Lx-160)*(31.1/320))
+                    Bearing=np.append(Bearing,(Lx-160)*(31.1/160))
                     Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                     #columnwise
                     Range=Range[Range[:,0].argsort()] 
@@ -156,7 +156,7 @@ class Vision:
 
 # 
     def sampleCollected(self):
-         a=sensor.proximity
+        a=self.sensor.proximity
         if a>=13:
             SamplePresent=True
         else:

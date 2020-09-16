@@ -29,8 +29,8 @@ global command
 # Local modules
 from mobilityScript import mobilityScript
 from navigationScript.VREP_PythonCode import navigation, state
-from visionScript import vision
-# from collectionScript import
+#from visionScript import vision
+from collectionScript import collection
 
 #---------------#
 # Function definitions
@@ -60,6 +60,8 @@ def ledSetup():
     GPIO.setup(LED_GREEN, GPIO.OUT)
     GPIO.setup(LED_YELLOW, GPIO.OUT)
     GPIO.setup(LED_RED, GPIO.OUT) 
+
+
 
 
 
@@ -95,7 +97,9 @@ def set_speed(speed):
 # Initialise Functions and Classes
 # Subsystem
 drive = mobilityScript.Mobility()
-vision = vision.Vision()
+#vision = vision.Vision()
+collection = collection.Collection()
+
 # nav
 nav = navigation.Navigation() 
 state = state.State()
@@ -121,6 +125,7 @@ if __name__ == '__main__':
             m    Manual - Discrete (Enter Button)
             n    Manual - Continuous (Hold button)
             c    CommandCentre (TESTING)
+            t    Playspace ;) 
             q    quit
             """)
             userSelect = input()
@@ -129,10 +134,13 @@ if __name__ == '__main__':
                 while True:
                     vision.UpdateObjectPositions()
                     objects = vision.GetDetectedObjects()
-                   # sampleCollected = vision.SampleCollected()s
-                    state.updateState(objects, True)
+                    sampleCollected = vision.sampleCollected()
+                    print(state.sampleRB)
+                    state.updateState(objects,sampleCollected)
                     v, w = nav.updateVelocities(state)
                     ledIndicator(nav.stateMode)
+                    collection.sampleManage(nav.rockState)
+
                     drive.drive(v, w*2) # not in navMain
                 
             elif userSelect == "m":
@@ -141,6 +149,15 @@ if __name__ == '__main__':
                 drive.continuousControl()
             elif userSelect == "c":
                 print("Starting Command Centre ...")
+                app.run(host='0.0.0.0',port=6969,debug=False)
+            elif userSelect == "t":
+                print("testing")
+                while True:
+                    collection.Open_ROT()
+                    time.sleep(2)
+                    collection.Close_ROT()
+                    time.sleep(2)
+
                 app.run(host='0.0.0.0',port=6969,debug=False)
             elif userSelect == "q":
                 drive.gpioClean()
