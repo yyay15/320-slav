@@ -1,38 +1,19 @@
 
-<<<<<<< HEAD
-
-import RPi.GPIO as GPIO
-import time
-
-servoPIN = 17
-=======
 import RPi.GPIO as GPIO
 import time
 
 servoPin = 17
->>>>>>> master
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(servoPIN, GPIO.OUT)
 
 pwm = GPIO.PWM(servoPIN, 50) # GPIO 17 for PWM with 50Hz
 pwm.start(3) # Initialization
 
-<<<<<<< HEAD
 
 def Open_ROT():
     pwm.ChangeDutyCycle(7.5)
     pwm.ChangeDutyCycle(0)
     print("Open")
-=======
-#GPIO.output
-pwm = GPIO.PWM(servoPin, 50)
-pwm.start(2.5)
-
-def SetAngle(angle):
-    duty = angle / 18 + 1
-    GPIO.output(servoPin, True)
-    pwm.ChangeDutyCycle(duty)
->>>>>>> master
     time.sleep(1)
 
 def Close_ROT():
@@ -47,9 +28,6 @@ def Release_Ball():
     print("Releasing Ball")
     time.sleep(1)
 
-<<<<<<< HEAD
-
-=======
 def sample_uncovered():  # Start sample_retrival 110mm away
     SetAngle(90)
     time.sleep(2)
@@ -59,7 +37,6 @@ def sample_covered():  # Start sample_retrival 110mm away
     SetAngle(0)
     time.sleep(2)
     SetAngle(90)
->>>>>>> master
 
 # def sample_uncovered():  # Start sample_retrival 110mm away
 #     print("Sample Uncovered")

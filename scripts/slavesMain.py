@@ -30,7 +30,7 @@ global command
 from mobilityScript import mobilityScript
 from navigationScript.VREP_PythonCode import navigation, state
 from visionScript import vision
-# from collectionScript import
+from collectionScript import collection
 
 #---------------#
 # Function definitions
@@ -100,6 +100,8 @@ def set_speed(speed):
 # Subsystem
 drive = mobilityScript.Mobility()
 vision = vision.Vision()
+collection = collection.Collection()
+
 # nav
 nav = navigation.Navigation() 
 state = state.State()
