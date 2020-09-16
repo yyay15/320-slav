@@ -101,7 +101,7 @@ class Vision:
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     Distance=parameters_dict["Height"]*(self.f/LHeight)/4
                     ZDistance=np.append(ZDistance,Distance)
-                    Bearing=np.append(Bearing,(Lx-160)*(31.1/320))
+                    Bearing=np.append(Bearing,(Lx-160)*(31.1/160))
                     Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                     #columnwise
                     Range=Range[Range[:,0].argsort()] 

@@ -130,7 +130,7 @@ if __name__ == '__main__':
                     vision.UpdateObjectPositions()
                     objects = vision.GetDetectedObjects()
                     sampleCollected = vision.sampleCollected()
-                    print(sampleCollected)
+                    print(state.sampleRB)
                     state.updateState(objects,sampleCollected)
                     v, w = nav.updateVelocities(state)
                     ledIndicator(nav.stateMode)
