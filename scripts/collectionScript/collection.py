@@ -42,7 +42,7 @@ class Collection:
         # Initialise PWM
         self.servoPWM = GPIO.PWM(servoPin, 50)
         # Initial Condition
-        self.servoPWM.start(3)
+        self.servoPWM.start(3.5)
         self.currentState = 0 
         self.prevState = 0
 
@@ -57,12 +57,18 @@ class Collection:
                 pass
             elif self.currentState == 1:
                 self.Open_ROT()
+                self.prevState = self.currentState
             elif self.currentState == 2:
                 print("close rot")
                 self.Close_ROT()
+                self.prevState = currentState
             elif self.currentState == 3:
                 self.Release_Ball()
+<<<<<<< Updated upstream
             self.prevState = self.currentState
+=======
+                self.prevState = currentState
+>>>>>>> Stashed changes
             
 
     def Open_ROT(self):
