@@ -83,7 +83,7 @@ class Vision:
                     Distance=Distance/1000
                     ZDistance=np.append(ZDistance,Distance)
                     Bearing=np.append(Bearing,math.radians((x-160)*(31.1/160)))
-                    Range=np.vstack((ZDistance,Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                    Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                     #columnwise
                     Range=Range[Range[:,0].argsort()] 
                 else:
@@ -94,10 +94,11 @@ class Vision:
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
                     parameters_dict["BBoxColour"],2)
-                    Distance=parameters_dict["Height"]*(self.f/LHeight)/4
+                    Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
+                    Distance=((1.2*Distance)-8.7164)/1000
                     ZDistance=np.append(ZDistance,Distance)
-                    Bearing=np.append(Bearing,(Lx-160)*(31.1/160))
-                    Range=np.vstack((ZDistance,Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                    Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
+                    Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                     #columnwise
                     Range=Range[Range[:,0].argsort()] 
                     #if positive then it's to the right if negative then to left of center 
@@ -142,7 +143,7 @@ class Vision:
             # sample [[R, B], [R,B]]
             # lander [R, B]
         # if nothing sampleRB = None
-        return sampleRB/1000, landerRB/1000, obstaclesRB/1000, rocksRB/1000
+        return sampleRB, landerRB, obstaclesRB, rocksRB
 
 # 
     def sampleCollected(self):
