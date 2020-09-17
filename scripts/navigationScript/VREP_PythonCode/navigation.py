@@ -237,6 +237,7 @@ class Navigation:
                 v = 0.07
                 w = 0
             else:
+                v, w = 0, 0
                 self.rotState = CLOSE
                 self.isBlind = False
         elif (not self.isBlind):
@@ -250,6 +251,7 @@ class Navigation:
                 v, w = 0, 0
                 self.modeStartTime = time.time()
                 self.stateMode = SEARCH_SAMPLE
+        return v, w
             
         # open ROT and drive
         # if (not self.isEmpty(state.sampleRB) and not self.isBlind):
@@ -312,7 +314,7 @@ class Navigation:
         #     print("searching for lander")
         #     self.modeStartTime = time.time()
         #    self.stateMode = SEARCH_LANDER
-        return v, w
+        # return v, w
 
 
 
