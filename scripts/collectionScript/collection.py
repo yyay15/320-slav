@@ -61,9 +61,14 @@ class Collection:
             elif self.currentState == 2:
                 print("close rot")
                 self.Close_ROT()
+                self.prevState = currentState
             elif self.currentState == 3:
                 self.Release_Ball()
+<<<<<<< Updated upstream
             self.prevState = self.currentState
+=======
+                self.prevState = currentState
+>>>>>>> Stashed changes
             
 
     def Open_ROT(self):
