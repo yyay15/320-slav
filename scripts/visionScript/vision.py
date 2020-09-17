@@ -83,8 +83,6 @@ class Vision:
                 #Area=cv2.contourArea(a)
                 if parameters_dict["Circle"]==True:
                     (x,y),radius=cv2.minEnclosingCircle(a)
-                    Centroid=np.array([x,y],dtype=int)
-                    cv2.circle(img,tuple(Centroid), 7, (255, 255, 255), -1)
                     Distance=(parameters_dict["Height"]*(self.f/(2*radius))/8)*math.cos(0.2967)
                     Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
                     Distance=Distance/1000
@@ -128,7 +126,7 @@ class Vision:
         lander_Z=self.Range(lander_img,self.lander_parameters)
         cover_Z=self.Range(cover_img,self.cover_parameters)
         obstacle_Z=self.Range(obstacle_img,self.obstacle_parameters)
-        #print(sample_Z)
+        print(sample_Z)
         # if (i%5)==0:
         #     cv2.imshow("Binary Thresholded Frame",FinalImage)# Display thresholded frame
         #     cv2.waitKey(0)
@@ -163,8 +161,9 @@ class Vision:
             SamplePresent=True
         else:
             SamplePresent=False
+        print(SamplePresent)
         return SamplePresent 
-        pass
+        
     
     def UpdateObjectPositions(self):
         pass
