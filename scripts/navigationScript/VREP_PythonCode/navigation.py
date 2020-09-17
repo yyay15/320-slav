@@ -138,6 +138,7 @@ class Navigation:
                 self.stateMode = SEARCH_SAMPLE
         else:
             currSample = state.sampleRB[0]
+            print(currSample)
             v, w = self.navigate(currSample, state)
             if (currSample[0] < ROT_DISTANCE):
                 print("acquiring sample")
@@ -227,8 +228,8 @@ class Navigation:
             sample = state.sampleRB[0]
             w = sample[1] 
             v = 0
-
         elif (not self.isEmpty(state.sampleRB)):
+            v, w = 0, 0
             self.rotState = OPEN
             self.isBlind = True
             self.modeStartTime = time.time()
