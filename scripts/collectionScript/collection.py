@@ -42,7 +42,7 @@ class Collection:
         # Initialise PWM
         self.servoPWM = GPIO.PWM(servoPin, 50)
         # Initial Condition
-        self.servoPWM.start(3)
+        self.servoPWM.start(3.5)
         self.currentState = 0 
         self.prevState = 0
 
@@ -50,18 +50,21 @@ class Collection:
 
     def sampleManage(self, navRockState):
         self.currentState = navRockState
-        if self.currentState == self.prevState:
+        if self.prevState == self.currentState:
             pass
         else:
             if self.currentState == 0:
                 pass
             elif self.currentState == 1:
                 self.Open_ROT()
+                self.prevState = self.currentState
             elif self.currentState == 2:
                 print("close rot")
                 self.Close_ROT()
+                self.prevState = self.currentState
             elif self.currentState == 3:
                 self.Release_Ball()
+            self.prevState = self.currentState
             
 
     def Open_ROT(self):
@@ -71,7 +74,7 @@ class Collection:
         self.servoPWM.ChangeDutyCycle(0)
 
     def Close_ROT(self):
-        self.servoPWM.ChangeDutyCycle(3.5)    
+        self.servoPWM.ChangeDutyCycle(4.5)    
         print("Close")
         time.sleep(1)
         self.servoPWM.ChangeDutyCycle(0)
