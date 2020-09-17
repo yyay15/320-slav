@@ -176,8 +176,8 @@ class Mobility:
     def drivePower(self, powerLeft, powerRight):
         """  Set PWM to drive the motors """
         # Set Drive Direction
-        self.rampPower(powerLeft)
-        self.rampPower(powerRight)
+        self.leftPower = self.rampPower(powerLeft)
+        self.rightPower = self.rampPower(powerRight)
         self.driveDir(powerLeft, powerRight)
         self.rightPower = powerRight
         self.leftPower = powerLeft
@@ -190,11 +190,12 @@ class Mobility:
 
 
     def rampPower(self,powerInput):
-        while(abs(powerInput)<8):
-            if powerInput < 8 and powerInput > 0:
-                powerInput = powerInput + 0.2
-            elif powerInput > -8 and powerInput < 0:
-                powerInput = powerInput - 0.2
+        if powerInput < 8 and powerInput > 0:
+            powerInput = powerInput + 0.2
+        elif powerInput > -8 and powerInput < 0:
+            powerInput = powerInput - 0.2
+
+        return powerInput
 
 
     def manualControl(self):
