@@ -231,7 +231,7 @@ class Navigation:
             sample = state.sampleRB[0]
             w = sample[1] * 1.4
             v = 0
-        elif (not self.isEmpty(state.sampleRB)):
+        elif (not self.isEmpty(state.sampleRB) and not self.isBlind):
             self.centering = False
             print("opening rot")
             v, w = 0, 0
