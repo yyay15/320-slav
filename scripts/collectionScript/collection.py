@@ -58,6 +58,7 @@ class Collection:
             elif self.currentState == 1:
                 self.Open_ROT()
             elif self.currentState == 2:
+                print("close rot")
                 self.Close_ROT()
             elif self.currentState == 3:
                 self.Release_Ball()
