@@ -137,7 +137,7 @@ class Navigation:
                 self.modeStartTime = time.time()
                 self.stateMode = SEARCH_SAMPLE
         else:
-            currSample = state.sampleRB[0]
+            currSample = state.prevSampleRB[0]
             print(currSample)
             v, w = self.navigate(currSample, state)
             if (currSample[0] < ROT_DISTANCE):
