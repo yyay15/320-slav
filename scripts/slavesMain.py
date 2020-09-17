@@ -134,7 +134,7 @@ if __name__ == '__main__':
                     state.updateState(objects,sampleCollected)
                     v, w = nav.updateVelocities(state)
                     ledIndicator(nav.stateMode)
-                    collection.sampleManage(nav.rockState)
+                    collection.sampleManage(nav.rotState)
 
                     drive.drive(v, w) # not in navMain
                 
