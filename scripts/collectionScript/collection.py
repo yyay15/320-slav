@@ -56,6 +56,7 @@ class Collection:
                 pass
             elif self.currentState == 1:
                 self.Open_ROT()
+                self.prevState = self.currentState
             elif self.currentState == 2:
                 self.Close_ROT()
             elif self.currentState == 3:
