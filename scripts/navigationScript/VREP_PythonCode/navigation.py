@@ -25,7 +25,7 @@ CLOSE = 2
 SLIGH_OPEN = 3
 
 # DISTANCE/TIME VARIABLES
-ROT_DISTANCE = 0.1 #collect distance 
+ROT_DISTANCE = 0.15 #collect distance 
 FLIP_DISTANCE = 0.1
 DRIVE_OFF_TIME = 6
 FULL_ROTATION = 15
@@ -225,16 +225,19 @@ class Navigation:
     def acquireSample(self, state):
         # centre sample
         if (not self.isEmpty(state.sampleRB) and not (-0.02 <= state.sampleRB[0][1] <= 0.02)):
+            print("centering")
             sample = state.sampleRB[0]
             w = sample[1] 
             v = 0
         elif (not self.isEmpty(state.sampleRB)):
+            print("opening rot")
             v, w = 0, 0
             self.rotState = OPEN
             self.isBlind = True
             self.modeStartTime = time.time()
         elif (self.isEmpty(state.sampleRB) and self.isBlind):
             if (time.time() - self.modeStartTime > 3):
+                print("trying to drive straight YEEEEETTTT")
                 v = 0.07
                 w = 0
             else:
