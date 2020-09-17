@@ -14,7 +14,7 @@ lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":570,
 "Kernel":False,"Circle":False,"BBoxColour":[0,0,255]}
 obstacle_parameters={"hue":[40,70],"sat":[100,255],"value":[40,255],"Height":150,"OR_MASK":False,
 "Kernel":False,"Circle":False,"BBoxColour":[204,204,0]}
-cover_parameters={"hue":[95,107],"sat":[0,255],"value":[0,255],"Height":70,"OR_MASK":False,
+cover_parameters={"hue":[97,107],"sat":[0,255],"value":[0,255],"Height":70,"OR_MASK":False,
 "Kernel":False,"Circle":False,"BBoxColour":[255,255,255]}
 def Detection(image,parameters_dict):
     ogimg=image#store the image given as a parameter for later bitwise and operation
@@ -31,7 +31,7 @@ def Detection(image,parameters_dict):
     if parameters_dict["Kernel"]==True:
         Kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
     else:
-        Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
+        Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(7,7))
     Thresholded_img=cv2.bitwise_and(ogimg,ogimg,mask=mask)
     filtered_img=cv2.morphologyEx(mask,cv2.MORPH_OPEN,Kernel)
     return filtered_img,Thresholded_img
@@ -72,14 +72,20 @@ def Range(img,parameters_dict,finalimage):
                 Centroid=np.array([Lx,Ly])
                 Center=np.append(Center,Centroid)
                 Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
-                 parameters_dict["BBoxColour"],2)
-                Distance=parameters_dict["Height"]*(f/LHeight)/4
-                ZDistance=np.append(ZDistance,Distance)
-                Bearing=np.append(Bearing,(Lx-160)*(31.1/160))
-                Range=np.vstack((ZDistance,Bearing)).T#Put Bearing and ZDistance into one array and arrange
-                #columnwise
-                Range=Range[Range[:,0].argsort()] 
+                Area=LWidth*LHeight
+                if Area>1000:
+                    cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
+                     parameters_dict["BBoxColour"],2)
+                    Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
+                    ZDistance=np.append(ZDistance,Distance)
+                    Bearing=np.append(Bearing,(Lx-160)*(31.1/160))
+                    Range=np.vstack((ZDistance,Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                    Range=Range[Range[:,0].argsort()] 
+                    #columnwise
+                else:
+                    continue
+                    
+                
                 #if positive then it's to the right if negative then to left of center 
     return Range,finalimage
 
@@ -105,6 +111,7 @@ def main(i):
         Lander_Z,L_Bound_Image=Range(lander_img,lander_parameters,FinalImage)
         print("Sample",sample_Z)
         print("Obstacle",obstacle_Z)
+        print("Cover",cover_Z)
         #print("Cover",cover_Z)
         if (i%5)==0:
             cv2.imshow("Binary Thresholded Frame",FinalImage)# Display thresholded frame
