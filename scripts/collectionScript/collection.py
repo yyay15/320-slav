@@ -3,7 +3,7 @@
 # Collection Script
 # Group SLAVES: Group 13
 # 2020 Semester 2
-# Alan Yu
+# Luis Serrano (Shout out Alan Yu)
 #====================================#
 
 
@@ -47,9 +47,10 @@ class Collection:
         self.prevState = 0
 
 
+
     def sampleManage(self, navRockState):
         self.currentState = navRockState
-        if self.currentState == self.prevState:
+        if self.prevState == self.currentState:
             pass
         else:
             if self.currentState == 0:
@@ -58,32 +59,29 @@ class Collection:
                 self.Open_ROT()
                 self.prevState = self.currentState
             elif self.currentState == 2:
+                print("close rot")
                 self.Close_ROT()
             elif self.currentState == 3:
                 self.Release_Ball()
+            self.prevState = self.currentState
             
 
     def Open_ROT(self):
         self.servoPWM.ChangeDutyCycle(7.5)
         print("Open")
         time.sleep(1)
+        self.servoPWM.ChangeDutyCycle(0)
 
     def Close_ROT(self):
-        self.servoPWM.ChangeDutyCycle(3.5)    
+        self.servoPWM.ChangeDutyCycle(4.5)    
         print("Close")
         time.sleep(1)
+        self.servoPWM.ChangeDutyCycle(0)
 
     def Release_Ball(self):
         self.servoPWM.ChangeDutyCycle(5)
         print("Releasing Ball")
         time.sleep(1)
+        self.servoPWM.ChangeDutyCycle(0)
 
-    # def sample_uncovered(self):  # Start sample_retrival 110mm away
-    #     SetAngle(90)
-    #     time.sleep(2)
-    #     SetAngle(0)
 
-    # def sample_covered(self):  # Start sample_retrival 110mm away
-    #     SetAngle(0)
-    #     time.sleep(2)
-    #     SetAngle(90)

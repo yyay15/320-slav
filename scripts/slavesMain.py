@@ -29,7 +29,7 @@ global command
 # Local modules
 from mobilityScript import mobilityScript
 from navigationScript.VREP_PythonCode import navigation, state
-#from visionScript import vision
+from visionScript import vision
 from collectionScript import collection
 
 #---------------#
@@ -84,11 +84,6 @@ def mobilityControl(command):
     drive.commandCentreTest(command)
     return '{}'
 
-@app.route('/setSpeed/')
-def set_speed(speed):
-    ser.write('2,' + speed)
-    return '{}'
-
 
 #---------------#
 # Initialise
@@ -97,7 +92,7 @@ def set_speed(speed):
 # Initialise Functions and Classes
 # Subsystem
 drive = mobilityScript.Mobility()
-#vision = vision.Vision()
+vision = vision.Vision()
 collection = collection.Collection()
 
 # nav
@@ -135,13 +130,12 @@ if __name__ == '__main__':
                     vision.UpdateObjectPositions()
                     objects = vision.GetDetectedObjects()
                     sampleCollected = vision.sampleCollected()
-                    print(state.sampleRB)
                     state.updateState(objects,sampleCollected)
                     v, w = nav.updateVelocities(state)
                     ledIndicator(nav.stateMode)
-                    collection.sampleManage(nav.rockState)
+                    collection.sampleManage(nav.rotState)
 
-                    drive.drive(v, w*2) # not in navMain
+                    drive.drive(v, w) # not in navMain
                 
             elif userSelect == "m":
                 drive.manualControl()
@@ -154,9 +148,13 @@ if __name__ == '__main__':
                 print("testing")
                 while True:
                     collection.Open_ROT()
-                    time.sleep(2)
+                    drive.drive(0.07, 0)
+                    time.sleep(1)
+                    drive.drive(0, 0)
                     collection.Close_ROT()
-                    time.sleep(2)
+                    drive.drive(0.1, 0)
+                    time.sleep(1)
+                    drive.drive(0, 0)
 
                 app.run(host='0.0.0.0',port=6969,debug=False)
             elif userSelect == "q":

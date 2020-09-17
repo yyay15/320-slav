@@ -12,9 +12,9 @@ sample_parameters={"hue":[0,5],"sat":[100,255],"value":[100,255],"Height":40,"OR
 "Kernel":True,"Circle":True,"BBoxColour":[204,0,204]}
 lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":570,"OR_MASK":False,
 "Kernel":False,"Circle":False,"BBoxColour":[0,0,255]}
-obstacle_parameters={"hue":[40,70],"sat":[100,255],"value":[40,255],"Height":150,"OR_MASK":False,
+obstacle_parameters={"hue":[40,70],"sat":[50,255],"value":[40,255],"Height":150,"OR_MASK":False,
 "Kernel":False,"Circle":False,"BBoxColour":[204,204,0]}
-cover_parameters={"hue":[100,109],"sat":[0,255],"value":[0,255],"Height":70,"OR_MASK":False,
+cover_parameters={"hue":[95,107],"sat":[60,255],"value":[0,255],"Height":70,"OR_MASK":False,
 "Kernel":False,"Circle":False,"BBoxColour":[255,255,255]}
 def Detection(image,parameters_dict):
     ogimg=image#store the image given as a parameter for later bitwise and operation
@@ -72,21 +72,14 @@ def Range(img,parameters_dict,finalimage):
                 Centroid=np.array([Lx,Ly])
                 Center=np.append(Center,Centroid)
                 Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                Area=LWidth*LHeight
-                if Area>1000:
-                    cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
-                     parameters_dict["BBoxColour"],2)
-                    Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
-                    Distance=(1.2*Distance)-8.7164
-                    ZDistance=np.append(ZDistance,Distance)
-                    Bearing=np.append(Bearing,(Lx-160)*(31.1/160))
-                    Range=np.vstack((ZDistance,Bearing)).T#Put Bearing and ZDistance into one array and arrange
-                    Range=Range[Range[:,0].argsort()] 
-                    #columnwise
-                else:
-                    continue
-                    
-                
+                cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
+                 parameters_dict["BBoxColour"],2)
+                Distance=parameters_dict["Height"]*(f/LHeight)/4
+                ZDistance=np.append(ZDistance,Distance)
+                Bearing=np.append(Bearing,(Lx-160)*(31.1/160))
+                Range=np.vstack((ZDistance,Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                #columnwise
+                Range=Range[Range[:,0].argsort()] 
                 #if positive then it's to the right if negative then to left of center 
     return Range,finalimage
 
@@ -95,8 +88,8 @@ def main(i):
     if ret == True:	
         cv2.waitKey(1)	
         #initiate some variables 
-    """ img=cv2.imread("MultipleCovers.jpg")
-    img=cv2.resize(img,(320,240)) """
+    #img=cv2.imread("lunar_field.jpg")
+    #img=cv2.resize(img,(320,240))
     if __name__=="__main__":
         sample_img,SFin=Detection(np.copy(img),sample_parameters)
         cover_img,CFin=Detection(np.copy(img),cover_parameters)
@@ -112,11 +105,10 @@ def main(i):
         Lander_Z,L_Bound_Image=Range(lander_img,lander_parameters,FinalImage)
         print("Sample",sample_Z)
         print("Obstacle",obstacle_Z)
-        print("Cover",cover_Z)
         #print("Cover",cover_Z)
         if (i%5)==0:
             cv2.imshow("Binary Thresholded Frame",FinalImage)# Display thresholded frame
-            cv2.waitKey(1)
+            cv2.waitKey(5)
             pass
     
 
