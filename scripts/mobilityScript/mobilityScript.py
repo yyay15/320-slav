@@ -176,6 +176,10 @@ class Mobility:
     def drivePower(self, powerLeft, powerRight):
         """  Set PWM to drive the motors """
         # Set Drive Direction
+        # Print
+        print(powerLeft)
+        print(powerRight)
+
         powerLeft = self.rampPower(powerLeft)
         powerRight = self.rampPower(powerRight)
         self.driveDir(powerLeft, powerRight)
