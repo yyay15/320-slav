@@ -49,7 +49,7 @@ class Vision:
                 mask1=cv2.inRange(image,lower_oran,higher_oran)
                 mask=cv2.bitwise_or(mask,mask1)
             if parameters_dict["Kernel"]==True:
-                Kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(15,15))
+                Kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
             else:
                 Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
             Thresholded_img=cv2.bitwise_and(ogimg,ogimg,mask=mask)
