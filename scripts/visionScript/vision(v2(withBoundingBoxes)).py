@@ -13,7 +13,7 @@ import adafruit_vcnl4040
 class Vision: 
     def __init__(self):
         # parameters that change 
-        self.random = 1
+        """ self.random = 1
         self.changingVariable = 1
         
         i2c = busio.I2C(board.SCL, board.SDA)
@@ -21,9 +21,9 @@ class Vision:
         self.cap = cv2.VideoCapture(0)  		# Connect to camera 0 (or the only camera)
         self.cap.set(3, 320)                     	# Set the width to 320
         self.cap.set(4, 240)                      	# Set the height to 240
-        self.Center=np.array([])
+        self.Center=np.array([]) """
         self.f=3.04/(1.12*10**-3)
-        #img=cv2.imread("MultipleCovers.jpg")
+        img=cv2.imread("MultipleCovers.jpg")
         self.sample_parameters={"hue":[0,5],"sat":[100,255],"value":[100,255],"Height":40,"OR_MASK":True,
          "Kernel":True,"Circle":True,"BBoxColour":[204,0,204]}
         self.lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":570,"OR_MASK":False,
@@ -34,7 +34,7 @@ class Vision:
          "Kernel":False,"Circle":False,"BBoxColour":[255,255,255]} 
 
     def Detection(self, image,parameters_dict):
-            #image=cv2.resize(image,(640,480))
+            image=cv2.resize(image,(640,480))
             #cv2.imshow("normal",image)
             ogimg=image#store the image given as a parameter for later bitwise and operation
             image=cv2.cvtColor(cv2.UMat(image), cv2.COLOR_BGR2HSV)
@@ -56,7 +56,7 @@ class Vision:
             filtered_img=cv2.morphologyEx(mask,cv2.MORPH_OPEN,Kernel)
             return filtered_img,Thresholded_img
 
-    def Range(self,img,parameters_dict,finalimage):
+    def Range(img,parameters_dict,finalimage):
         Range=np.array([])
         ZDistance=np.array([])
         Bearing=np.array([])
@@ -78,7 +78,7 @@ class Vision:
                     (x,y),radius=cv2.minEnclosingCircle(a)
                     cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
                     parameters_dict["BBoxColour"],2)
-                    Distance=(parameters_dict["Height"]*(self.f/(2*radius))/8)*math.cos(0.2967)
+                    Distance=(parameters_dict["Height"]*(f/(2*radius))/8)*math.cos(0.2967)
                     Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
                     Distance=Distance/1000
                     ZDistance=np.append(ZDistance,Distance)
@@ -104,7 +104,8 @@ class Vision:
         return Range,finalimage
 
     def visMain(self, i):
-        ret, img = self.cap.read()	     		# Get a frame from the camera
+        ret, src = self.cap.read()	     		# Get a frame from the camera 
+        img=np.copy(src)
         if ret == True:	
             cv2.waitKey(1)	
             #initiate some variables
@@ -116,10 +117,10 @@ class Vision:
         FinalImage=cv2.bitwise_or(SFin,CFin)
         FinalImage=cv2.bitwise_or(FinalImage,OFin)
         FinalImage=cv2.bitwise_or(FinalImage,LFin)
-        sample_Z,S_Bound_Image=self.Range(sample_img,self.sample_parameters,FinalImage)
-        cover_Z,C_Bound_Image=self.Range(cover_img,self.cover_parameters,FinalImage)
-        obstacle_Z,O_Bound_Image=self.Range(obstacle_img,self.obstacle_parameters,FinalImage)
-        lander_Z,L_Bound_Image=self.Range(lander_img,self.lander_parameters,FinalImage)
+        sample_Z,S_Bound_Image=self.Range(sample_img,sample_parameters,FinalImage)
+        cover_Z,C_Bound_Image=self.Range(cover_img,cover_parameters,FinalImage)
+        obstacle_Z,O_Bound_Image=self.Range(obstacle_img,obstacle_parameters,FinalImage)
+        Lander_Z,L_Bound_Image=self.Range(lander_img,lander_parameters,FinalImage)
         print(sample_Z)
         if (i%5)==0:
              cv2.imshow("Binary Thresholded Frame",FinalImage)# Display thresholded frame
@@ -137,7 +138,7 @@ class Vision:
         #time.sleep(Interval-elapsed)
         elapsed2=time.time()-now
         rate2=1/elapsed2
-        print(rate2)
+        #print(rate2)
 
             # sample [[R, B], [R,B]]
             # lander [R, B]
