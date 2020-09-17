@@ -120,7 +120,7 @@ class Mobility:
         self.speedLeft  = MEDIUMSPEED
         self.speedRight = MEDIUMSPEED
         # Zero State
-        self.drive(0, 0)
+        self.drive(0, 0,False)
 
 
     def drive(self, v, w, centreState):
@@ -216,24 +216,24 @@ class Mobility:
             key = input(">> ") 
             if key == 'w':
                 print("Moving Forwards")
-                self.drivePower(self.speedLeft, self.speedRight)
+                self.drivePower(self.speedLeft, self.speedRight,False)
             elif key == 's':
                 print("Moving Backwards")
-                self.drivePower(-self.speedLeft, -self.speedRight)
+                self.drivePower(-self.speedLeft, -self.speedRight,False)
             elif key == 'a':
                 print("Turning Left")
-                self.drivePower(0, self.speedRight)
+                self.drivePower(0, self.speedRight,False)
             elif key == 'd':
                 print("Turning Right")
-                self.drivePower(self.speedLeft, 0)
+                self.drivePower(self.speedLeft, 0,False)
             elif key == 'r':
                 print("Rotating")
-                self.drivePower(-self.speedLeft, self.speedRight)
+                self.drivePower(-self.speedLeft, self.speedRight,False)
             elif key == 'c':
                 print("Stopping Motors")
-                self.drivePower(0, 0)
+                self.drivePower(0, 0,False)
             elif key == 'i':
-                self.drivePower(0, 0)
+                self.drivePower(0, 0,False)
                 print("Input speed in format 'velocity,angularVelocity': ", end='')
                 speedInput = input()
                 # Split commas
@@ -252,7 +252,7 @@ class Mobility:
                     print("Error: Incorrect Input")
                     continue
             elif key == 'j':
-                self.drivePower(0, 0)
+                self.drivePower(0, 0,False)
                 print("Input speed in format 'leftPower,rightPower': ", end='')
                 speedInput = input()
                 # Split commas
@@ -309,25 +309,25 @@ class Mobility:
         while (True):            
             key = getch() 
             if key == 'w':
-                self.drivePower(self.speedLeft, self.speedRight)
+                self.drivePower(self.speedLeft, self.speedRight,False)
                 time.sleep(0.2)
             elif key == 's':
-                self.drivePower(-self.speedLeft, -self.speedRight)
+                self.drivePower(-self.speedLeft, -self.speedRight,False)
                 time.sleep(0.2)
             elif key == 'a':
-                self.drivePower(0, self.speedRight)
+                self.drivePower(0, self.speedRight,False)
                 time.sleep(0.2)
             elif key == 'd':
-                self.drivePower(self.speedLeft, 0)
+                self.drivePower(self.speedLeft, 0,False)
                 time.sleep(0.2)
             elif key == 'r':
-                self.drivePower(-self.speedLeft, self.speedRight)
+                self.drivePower(-self.speedLeft, self.speedRight,False)
                 time.sleep(0.2)
             elif key == 'c':
-                self.drivePower(0, 0)
+                self.drivePower(0, 0,False)
                 time.sleep(0.2)
             elif key == 'i':
-                self.drivePower(0, 0)
+                self.drivePower(0, 0,False)
                 print("Input speed in format 'velocity,angularVelocity': ", end='')
                 speedInput = input()
                 # Split commas
@@ -342,7 +342,7 @@ class Mobility:
                     print("Error: Incorrect Input")
                     continue
             elif key == 'j':
-                self.drivePower(0, 0)
+                self.drivePower(0, 0,False)
                 print("Input speed in format 'leftPower,rightPower': ", end='')
                 speedInput = input()
                 # Split commas
@@ -395,22 +395,22 @@ class Mobility:
             print(self.speedLeft)
             print(self.speedRight)
             print("Im HERE")
-            self.drivePower(self.speedLeft, self.speedRight)
+            self.drivePower(self.speedLeft, self.speedRight,False)
         elif command == 's':
-            self.drivePower(-self.speedLeft, -self.speedRight)
+            self.drivePower(-self.speedLeft, -self.speedRight,False)
         elif command == 'a':
-            self.drivePower(0, self.speedRight)
+            self.drivePower(0, self.speedRight,False)
         elif command == 'd':
-            self.drivePower(self.speedLeft, 0)
+            self.drivePower(self.speedLeft, 0,False)
         elif command == 'r':
-            self.drivePower(-self.speedLeft, self.speedRight)
+            self.drivePower(-self.speedLeft, self.speedRight,False)
         elif command == 'c':
-            self.drivePower(0, 0)
+            self.drivePower(0, 0,False)
         elif command == 'i':
-            self.drivePower(0, 0)
+            self.drivePower(0, 0,False)
             self.speedLeft, self.speedRight = self.SetTargetVelocities(float(controlVar1), float(controlVar2))
         elif command == 'j':
-            self.drivePower(0, 0)
+            self.drivePower(0, 0,False)
             self.speedLeft = int(controlVar1)
             self.speedRight = int(controlVar2)
         elif command == '1':
@@ -437,5 +437,5 @@ class Mobility:
 
 
     def gpioClean(self):
-        self.drive(0, 0)
+        self.drive(0, 0, False)
         GPIO.cleanup()
