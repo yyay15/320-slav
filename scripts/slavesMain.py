@@ -135,7 +135,7 @@ if __name__ == '__main__':
                     ledIndicator(nav.stateMode)
                     collection.sampleManage(nav.rotState)
 
-                    drive.drive(v, w) # not in navMain
+                    drive.drive(v, w, nav.centering) # not in navMain
                 
             elif userSelect == "m":
                 drive.manualControl()
