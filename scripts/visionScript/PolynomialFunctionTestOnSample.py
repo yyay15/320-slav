@@ -8,11 +8,11 @@ cap.set(3, 320)                     	# Set the width to 320
 cap.set(4, 240)                      	# Set the height to 240
 Center=np.array([])
 f=3.04/(1.12*10**-3) 
-sample_parameters={"hue":[0,5],"sat":[0,255],"value":[100,255],"Height":40,"OR_MASK":True,
+sample_parameters={"hue":[0,5],"sat":[100,255],"value":[100,255],"Height":40,"OR_MASK":True,
 "Kernel":True,"Circle":True,"BBoxColour":[204,0,204]}
-lander_parameters={"hue":[15,30],"sat":[0,255],"value":[100,255],"Height":570,"OR_MASK":False,
+lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":570,"OR_MASK":False,
 "Kernel":False,"Circle":False,"BBoxColour":[0,0,255]}
-obstacle_parameters={"hue":[40,70],"sat":[50,255],"value":[40,255],"Height":150,"OR_MASK":False,
+obstacle_parameters={"hue":[40,70],"sat":[100,255],"value":[40,255],"Height":150,"OR_MASK":False,
 "Kernel":False,"Circle":False,"BBoxColour":[204,204,0]}
 cover_parameters={"hue":[95,107],"sat":[0,255],"value":[0,255],"Height":70,"OR_MASK":False,
 "Kernel":False,"Circle":False,"BBoxColour":[255,255,255]}
