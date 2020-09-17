@@ -119,6 +119,8 @@ class Mobility:
         self.motorDIR = [A1,A2,B1,B2]
         self.speedLeft  = MEDIUMSPEED
         self.speedRight = MEDIUMSPEED
+        self.leftPower = 0
+        self.rightPower = 0
         # Zero State
         self.drive(0, 0)
 
@@ -174,13 +176,24 @@ class Mobility:
     def drivePower(self, powerLeft, powerRight):
         """  Set PWM to drive the motors """
         # Set Drive Direction
+        rampPower(powerLeft)
+        rampPower(powerRight)
         self.driveDir(powerLeft, powerRight)
+        self.rightPower = powerRight
+        self.leftPower = powerLeft
         # Print
         print(powerLeft)
         print(powerRight)
         # Turn motors
         self.motorPWM[0].start(abs(powerLeft))
         self.motorPWM[1].start(abs(powerRight))
+
+
+    def rampPower(self,powerInput):
+        if powerInput < 5 and powerInput > 0:
+            powerInput = powerInput + 0.2
+        elif powerInput > -5 and powerInput < 0:
+            powerInput = powerInput - 0.2
 
 
     def manualControl(self):
