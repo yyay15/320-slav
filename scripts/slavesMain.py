@@ -130,7 +130,6 @@ if __name__ == '__main__':
                     vision.UpdateObjectPositions()
                     objects = vision.GetDetectedObjects()
                     sampleCollected = vision.sampleCollected()
-                    print(state.sampleRB)
                     state.updateState(objects,sampleCollected)
                     v, w = nav.updateVelocities(state)
                     ledIndicator(nav.stateMode)
@@ -149,13 +148,13 @@ if __name__ == '__main__':
                 print("testing")
                 while True:
                     collection.Open_ROT()
-                    time.sleep(5)
+                    drive.drive(0.07, 0)
+                    time.sleep(1)
+                    drive.drive(0, 0)
                     collection.Close_ROT()
-                    time.sleep(2)
-                    collection.Release_Ball()
-                    time.sleep(5)
-                    collection.Close_ROT()
-                    time.sleep(2)
+                    drive.drive(0.1, 0)
+                    time.sleep(1)
+                    drive.drive(0, 0)
 
                 app.run(host='0.0.0.0',port=6969,debug=False)
             elif userSelect == "q":
