@@ -27,17 +27,30 @@
             </center> 
             <br>
 
-            Set speed:<br><br>
-            <input type="range" max="100" value="100"  min="0" id="Lpower"> 
-            Set speed:<br><br>
+            Set Left Speed:<br><br>
+            <input type="range" max="100" value="100"  min="0" id="Lpower"> <br>
+            Set Right speed:<br><br>
             <input type="range" max="100" value="100"  min="0" id="Rpower"> 
-            <button type="button" id="Submit">Submit</button> <br>
+            <button type="button" id="Submitlr">Submit</button> <br>
 
+            <hr size=2>
+            Set Velocity:<br><br>
+            <input type="range" max="0.15" value="100" step="0.0015"  min="0" id="LinVelo"> <br>
+            Set Angular Velocity:<br><br>
+            <input type="range" max="2.31" step="0.0231" value="100"  min="0" id="AngVelo"> 
+            <button type="button" id="Submitvw">Submit</button> <br>
+            <hr size=2>
+            <button type="button" class="btn btn-default" id="speed1"> S1 </button>
+            <button type="button" class="btn btn-default" id="speed2"> S2 </button>
+            <button type="button" class="btn btn-default" id="speed3"> S3 </button>
+            <br>
+            <hr size=2>
             <br>
             <button type="button" class="btn btn-default" id="left"> < </button>
             <button type="button" class="btn btn-default" id="forward"> ^ </button>
             <button type="button" class="btn btn-default" id="backward"> v </button>
             <button type="button" class="btn btn-default" id="right"> > </button>
+            <button type="button" class="btn btn-default" id="rotate"> R </button>
             <button type="button" class="btn btn-danger" id="stop">Stop</button>
 
         </div>
@@ -59,9 +72,26 @@
             $('#stop').on('click', function () {
                 $.get('/mobility/c');
             });
-            $("#Submit").on('click', function(){
+            $('#rotate').on('click', function () {
+                $.get('/mobility/r');
+            });
+            $('#speed1').on('click', function () {
+                $.get('/mobility/1');
+            });
+            $('#speed2').on('click', function () {
+                $.get('/mobility/2');
+            });
+            $('#speed3').on('click', function () {
+                $.get('/mobility/3');
+            });
+            $("#Submitlr").on('click', function(){
                 $.get('/mobility/j' + ',' + $("#Lpower").val()+ ',' + $("#Rpower").val());
             });            
+            $("#Submitvw").on('click', function(){
+                $.get('/mobility/i' + ',' + $("#LinVelo").val()+ ',' + $("#AngVelo").val());
+            });            
+
+
         </script>
     
     </body>

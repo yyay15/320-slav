@@ -84,11 +84,6 @@ def mobilityControl(command):
     drive.commandCentreTest(command)
     return '{}'
 
-@app.route('/setSpeed/')
-def set_speed(speed):
-    ser.write('2,' + speed)
-    return '{}'
-
 
 #---------------#
 # Initialise
