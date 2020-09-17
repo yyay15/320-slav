@@ -92,7 +92,7 @@ def mobilityControl(command):
 # Initialise Functions and Classes
 # Subsystem
 drive = mobilityScript.Mobility()
-#vision = vision.Vision()
+vision = vision.Vision()
 collection = collection.Collection()
 
 # nav
@@ -136,7 +136,7 @@ if __name__ == '__main__':
                     ledIndicator(nav.stateMode)
                     collection.sampleManage(nav.rockState)
 
-                    drive.drive(v, w*2) # not in navMain
+                    drive.drive(v, w) # not in navMain
                 
             elif userSelect == "m":
                 drive.manualControl()
