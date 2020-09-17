@@ -44,6 +44,7 @@ class Navigation:
         self.turnDir = 1                 # turn clockwise or anticlockwise
         self.rock_obstacle = True        # check if rocks should be avoided
         self.rotState = CLOSE            # state for sample collection
+        self.isBlind = False
         
     
     def currentState(self, stateNum):
@@ -74,8 +75,8 @@ class Navigation:
         elif (time.time() - self.modeStartTime >= FULL_ROTATION): 
             # search rock
             print("moving around")
-            v, w = self.navigate([0.5, 0], state)
-            if (time.time() - self.modeStartTime - FULL_ROTATION >= 2):
+            v, w = self.navigate([0.2, 0], state)
+            if (time.time() - self.modeStartTime - FULL_ROTATION >= 1.5):
                 print("return to spin")
                 self.modeStartTime = time.time()
         else:
@@ -93,8 +94,8 @@ class Navigation:
             self.stateMode = NAV_LANDER
         elif (time.time() - self.modeStartTime >= FULL_ROTATION): 
             print("moving around")
-            v, w = self.navigate([0.5, 0], state)
-            if (time.time() - self.modeStartTime - FULL_ROTATION >= 2):
+            v, w = self.navigate([0.2, 0], state)
+            if (time.time() - self.modeStartTime - FULL_ROTATION >= 1.5):
                 print("return to spin")
                 self.modeStartTime = time.time()
         else:
@@ -169,20 +170,38 @@ class Navigation:
         return v, w
     
     def flipRock(self, state):
+        print("flipping rock")
         self.rotState = OPEN
-        self.rotState = CLOSE
-        if (state.sampleCollected): # ball got flicked in
-            self.modeStartTime = time.time()
-            self.stateMode = SEARCH_LANDER
-        else:
-            # reverse if ball not visible
-            if (self.isEmpty(state.sampleRB)):
-                v = -0.5
+        self.modeStartTime = time.time()
+        self.isBlind = True
+        if (self.isBlind):
+            print("cover open, driving straight")
+            if (time.time() - self.modeStartTime < ROT_ACQUIRE_SAMPLE):
+                v = 0.07
                 w = 0
             else:
-                v, w = 0, 0
+                print("closing cover")
+                self.isBlind = False
+                self.rotStateClose = CLOSE
+        else:
+            if (state.sampleCollected):
                 self.modeStartTime = time.time()
-                self.stateMode = ACQUIRE_SAMPLE
+                self.stateMode = SEARCH_LANDER
+            else:
+                self.modeStartTime = time.time()
+                self.stateMode = SEARCH_SAMPLE
+        # if (state.sampleCollected): # ball got flicked in
+        #     self.modeStartTime = time.time()
+        #     self.stateMode = SEARCH_LANDER
+        # else:
+        #     # reverse if ball not visible
+        #     if (self.isEmpty(state.sampleRB)):
+        #         v = -0.5
+        #         w = 0
+        #     else:
+        #         v, w = 0, 0
+        #         self.modeStartTime = time.time()
+        #         self.stateMode = ACQUIRE_SAMPLE
         return v, w
 
     def navLander(self, state):
@@ -209,37 +228,54 @@ class Navigation:
         #     w = sample[1] 
         #     v = 0
         # open ROT and drive
-        if (not self.isEmpty(state.sampleRB)):
+        if (not self.isEmpty(state.sampleRB) and not self.isBlind):
             if (not (-0.02 <= state.sampleRB[0][1] <= 0.02)):
+                print("centering sample")
                 sample = state.sampleRB[0]
                 w = sample[1]
                 v = 0
             else:
-                # v, w = 0, 0
-                # self.rotState = OPEN
-                # print("rot open camera blind")
-                # self.modeStartTime = time.time()
-                w = 0
-                v = 0.1
-                if (state.sampleCollected):
-                    v, w = 0, 0
-                    self.modeStartTime = time.time()
-                    self.stateMode = SEARCH_LANDER
-        else: 
+                v, w = 0, 0
+                self.isBlind = True
+                self.rotState = OPEN
+                print("rot open camera blind")
+                self.modeStartTime = time.time()
+                # w = 0
+                # v = 0.1
+                # if (state.sampleCollected):
+                #     v, w = 0, 0
+                #     self.modeStartTime = time.time()
+                #     self.stateMode = SEARCH_LANDER
+        elif (self.isBlind): 
             if (time.time() - self.modeStartTime < ROT_ACQUIRE_SAMPLE):
                 print("camera blind")
-                v = 0.1
+                v = 0.07
                 w = 0
             else:
+                print("close rot")
+                v, w = 0, 0
+                self.isBlind = False
                 self.rotState = CLOSE
-                if (state.sampleCollected):
-                    v, w = 0, 0
-                    self.modeStartTime = time.time()
-                    self.stateMode = SEARCH_LANDER
-                else:
-                    v, w = 0, 0
-                    self.modeStartTime = time.time()
-                    self.stateMode = SEARCH_SAMPLE
+                # if (state.sampleCollected):
+                #     v, w = 0, 0
+                #     self.modeStartTime = time.time()
+                #     self.stateMode = SEARCH_LANDER
+                # else:
+                #     v, w = 0, 0
+                #     self.modeStartTime = time.time()
+                #     self.stateMode = SEARCH_SAMPLE
+        else: 
+            if (state.sampleCollected):
+                print("sample collected, search lander")
+                v, w = 0, 0
+                self.modeStartTime = time.time()
+                self.stateMode = SEARCH_LANDER
+            else:
+                print("sample lost, searching sample")
+                v, w = 0, 0
+                self.modeStartTime = time.time()
+                self.stateMode = SEARCH_SAMPLE
+
         # elif (not state.sampleCollected): 
         #     print("sample aligned. ROT open,  driving straight")
         #     self.rotState = OPEN
