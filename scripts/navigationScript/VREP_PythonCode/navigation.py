@@ -45,6 +45,7 @@ class Navigation:
         self.rock_obstacle = True        # check if rocks should be avoided
         self.rotState = CLOSE            # state for sample collection
         self.isBlind = False
+        self.centering = False
         
     
     def currentState(self, stateNum):
@@ -226,10 +227,12 @@ class Navigation:
         # centre sample
         if (not self.isEmpty(state.sampleRB) and not (-0.05 <= state.sampleRB[0][1] <= 0.05)):
             print("centering")
+            self.centering = True
             sample = state.sampleRB[0]
             w = sample[1] * 1.4
             v = 0
         elif (not self.isEmpty(state.sampleRB)):
+            self.centering = False
             print("opening rot")
             v, w = 0, 0
             self.rotState = OPEN
