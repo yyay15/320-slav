@@ -25,7 +25,7 @@ CLOSE = 2
 SLIGH_OPEN = 3
 
 # DISTANCE/TIME VARIABLES
-ROT_DISTANCE = 0.15 #collect distance 
+ROT_DISTANCE = 0.2 #collect distance 
 FLIP_DISTANCE = 0.1
 DRIVE_OFF_TIME = 6
 FULL_ROTATION = 15
@@ -224,7 +224,7 @@ class Navigation:
     
     def acquireSample(self, state):
         # centre sample
-        if (not self.isEmpty(state.sampleRB) and not (-0.02 <= state.sampleRB[0][1] <= 0.02)):
+        if (not self.isEmpty(state.sampleRB) and not (-0.03 <= state.sampleRB[0][1] <= 0.03)):
             print("centering")
             sample = state.sampleRB[0]
             w = sample[1] 
