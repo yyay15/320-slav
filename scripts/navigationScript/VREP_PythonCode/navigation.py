@@ -29,6 +29,7 @@ ROT_DISTANCE = 0.1 #collect distance
 FLIP_DISTANCE = 0.1
 DRIVE_OFF_TIME = 6
 FULL_ROTATION = 30
+ROT_ACQUIRE_SAMPLE = 1
 
 # OBSTACLE AVOIDANCE GAINS 
 KV_ATTRACT = 0.5 #0.5
@@ -203,23 +204,46 @@ class Navigation:
     
     def acquireSample(self, state):
         # centre sample
-        if (not self.isEmpty(state.sampleRB) and not (-0.02 <= state.sampleRB[0][1] <= 0.02)):
-            sample = state.sampleRB[0]
-            w = sample[1] 
-            v = 0
+        # if (not self.isEmpty(state.sampleRB) and not (-0.02 <= state.sampleRB[0][1] <= 0.02)):
+        #     sample = state.sampleRB[0]
+        #     w = sample[1] 
+        #     v = 0
         # open ROT and drive
-        elif (not state.sampleCollected): 
-            print("sample aligned. ROT open,  driving straight")
-            self.rotState = OPEN
-            v = 0.1
-            w = 0
-        else:
-            print("sample collected, closing ROT")
-            self.rotState = CLOSE
-            v, w = 0, 0
-            print("searching for lander")
-            self.modeStartTime = time.time()
-            self.stateMode = SEARCH_LANDER
+        if (not self.isEmpty(state.sampleRB)):
+            if (not (-0.02 <= state.sampleRB[0][1] <= 0.02)):
+                sample = state.sampleRB[0]
+                w = sample[1]
+                v = 0
+            else:
+                self.rotState = OPEN
+                print("rot open camera blind")
+                self.modeStartTime = time.time()
+        else: 
+            if (time.time() - self.modeStartTime < ROT_ACQUIRE_SAMPLE):
+                print("camera blind")
+                v = 0.05
+                w = 0
+            else:
+                self.rotState = CLOSE
+                if (state.sampleCollected):
+                    v, w = 0, 0
+                    self.modeStartTime = time.time()
+                    self.stateMode = SEARCH_LANDER
+                else:
+                    self.modeStartTime = time.time()
+                    self.stateMode = SEARCH_SAMPLE
+        # elif (not state.sampleCollected): 
+        #     print("sample aligned. ROT open,  driving straight")
+        #     self.rotState = OPEN
+        #     v = 0.05
+        #     w = 0
+        # else:
+        #     print("sample collected, closing ROT")
+        #     self.rotState = CLOSE
+        #     v, w = 0, 0
+        #     print("searching for lander")
+        #     self.modeStartTime = time.time()
+        #    self.stateMode = SEARCH_LANDER
         return v, w
 
 
@@ -274,7 +298,12 @@ class Navigation:
             empty = objectIn.size == 0
         return empty
 
+    def ROTCollect(self, state):
+        self.rotState = OPEN
+        v = 0.05
+        w = 0
 
+        return v, w
 
 
 
