@@ -238,7 +238,7 @@ class Navigation:
             self.rotState = OPEN
             self.isBlind = True
             self.modeStartTime = time.time()
-        elif (self.isEmpty(state.sampleRB) and self.isBlind):
+        elif (self.isBlind):
             print("----\n")
             print(time.time())
             print(self.modeStartTime)
