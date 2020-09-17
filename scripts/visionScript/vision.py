@@ -87,9 +87,10 @@ class Vision:
                     cv2.circle(img,tuple(Centroid), 7, (255, 255, 255), -1)
                     Distance=(parameters_dict["Height"]*(self.f/(2*radius))/8)*math.cos(0.2967)
                     Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
+                    Distance=Distance/1000
                     ZDistance=np.append(ZDistance,Distance)
-                    Bearing=np.append(Bearing,(x-160)*(31.1/160))
-                    Range=np.vstack((ZDistance,Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                    Bearing=np.append(Bearing,math.radians((x-160)*(31.1/160)))
+                    Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                     #columnwise
                     Range=Range[Range[:,0].argsort()]
                 else:
@@ -100,8 +101,9 @@ class Vision:
                     self.Center=np.append(self.Center,Centroid)
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     Distance=parameters_dict["Height"]*(self.f/LHeight)/4
+                    Distance=Distance/1000
                     ZDistance=np.append(ZDistance,Distance)
-                    Bearing=np.append(Bearing,(Lx-160)*(31.1/160))
+                    Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
                     Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                     #columnwise
                     Range=Range[Range[:,0].argsort()] 
