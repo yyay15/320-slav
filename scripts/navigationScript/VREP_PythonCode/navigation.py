@@ -224,7 +224,7 @@ class Navigation:
     
     def acquireSample(self, state):
         # centre sample
-        if (not self.isEmpty(state.sampleRB) and not (-0.07 <= state.sampleRB[0][1] <= 0.07)):
+        if (not self.isEmpty(state.sampleRB) and not (-0.05 <= state.sampleRB[0][1] <= 0.05)):
             print("centering")
             sample = state.sampleRB[0]
             w = sample[1] 
@@ -240,7 +240,7 @@ class Navigation:
             print(time.time())
             print(self.modeStartTime)
             print("----\n")
-            if (time.time() - self.modeStartTime < 10):
+            if (time.time() - self.modeStartTime < 2):
                 print("trying to drive straight YEEEEETTTT")
                 v = 0.07
                 w = 0
