@@ -215,6 +215,7 @@ class Navigation:
                 w = sample[1]
                 v = 0
             else:
+                v, w = 0, 0
                 self.rotState = OPEN
                 print("rot open camera blind")
                 self.modeStartTime = time.time()
@@ -230,6 +231,7 @@ class Navigation:
                     self.modeStartTime = time.time()
                     self.stateMode = SEARCH_LANDER
                 else:
+                    v, w = 0, 0
                     self.modeStartTime = time.time()
                     self.stateMode = SEARCH_SAMPLE
         # elif (not state.sampleCollected): 
