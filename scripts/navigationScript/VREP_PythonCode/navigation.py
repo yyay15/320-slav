@@ -252,6 +252,7 @@ class Navigation:
                 self.rotState = CLOSE
                 self.isBlind = False
         elif (not self.isBlind):
+            self.rotState = CLOSE
             if (state.sampleCollected):
                 print("sample collected, search lander")
                 v, w = 0, 0
