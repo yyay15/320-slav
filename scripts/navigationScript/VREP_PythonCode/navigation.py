@@ -243,7 +243,7 @@ class Navigation:
             print(time.time())
             print(self.modeStartTime)
             print("----\n")
-            if (time.time() - self.modeStartTime < 1.5):
+            if (time.time() - self.modeStartTime < 2):
                 print("trying to drive straight YEEEEETTTT")
                 v = 0.07
                 w = 0
