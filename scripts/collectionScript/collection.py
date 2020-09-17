@@ -42,7 +42,7 @@ class Collection:
         # Initialise PWM
         self.servoPWM = GPIO.PWM(servoPin, 50)
         # Initial Condition
-        self.servoPWM.start(3)
+        self.servoPWM.start(3.5)
         self.currentState = 0 
         self.prevState = 0
 
