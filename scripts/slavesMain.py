@@ -149,7 +149,11 @@ if __name__ == '__main__':
                 print("testing")
                 while True:
                     collection.Open_ROT()
+                    time.sleep(5)
+                    collection.Close_ROT()
                     time.sleep(2)
+                    collection.Release_Ball()
+                    time.sleep(5)
                     collection.Close_ROT()
                     time.sleep(2)
 
