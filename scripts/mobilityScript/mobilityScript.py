@@ -190,9 +190,9 @@ class Mobility:
 
 
     def rampPower(self,powerInput):
-        if powerInput < 5 and powerInput > 0:
+        if powerInput < 8 and powerInput > 0:
             powerInput = powerInput + 0.2
-        elif powerInput > -5 and powerInput < 0:
+        elif powerInput > -8 and powerInput < 0:
             powerInput = powerInput - 0.2
 
 
