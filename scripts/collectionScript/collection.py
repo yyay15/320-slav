@@ -50,7 +50,7 @@ class Collection:
 
     def sampleManage(self, navRockState):
         self.currentState = navRockState
-        if self.currentState == self.prevState:
+        if self.prevState == self.currentState:
             pass
         else:
             if self.currentState == 0:
@@ -62,6 +62,7 @@ class Collection:
                 self.Close_ROT()
             elif self.currentState == 3:
                 self.Release_Ball()
+            self.prevState = self.currentState
             
 
     def Open_ROT(self):
