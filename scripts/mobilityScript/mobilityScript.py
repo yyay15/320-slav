@@ -119,13 +119,11 @@ class Mobility:
         self.motorDIR = [A1,A2,B1,B2]
         self.speedLeft  = MEDIUMSPEED
         self.speedRight = MEDIUMSPEED
-        self.leftPower = 0
-        self.rightPower = 0
         # Zero State
         self.drive(0, 0)
 
 
-    def drive(self, v, w):
+    def drive(self, v, w, centreState):
         # Threshold Velocity to max
         v = min(v, maxLin)
         w = min(w, maxAngBase)
@@ -133,7 +131,7 @@ class Mobility:
         # Convert v and w to motor percentages
         self.speedLeft, self.speedRight = self.SetTargetVelocities(v, w)
         
-        self.drivePower(self.speedLeft, self.speedRight)
+        self.drivePower(self.speedLeft, self.speedRight, centreState)
 
     def SetTargetVelocities(self, v, w):
 
@@ -173,18 +171,14 @@ class Mobility:
             GPIO.output(self.motorDIR[3],GPIO.LOW) 	
 
 
-    def drivePower(self, powerLeft, powerRight):
+    def drivePower(self, powerLeft, powerRight, centreState):
         """  Set PWM to drive the motors """
-        # Set Drive Direction
-        # Print
-        print(powerLeft)
-        print(powerRight)
+        if centreState == True:
+            powerLeft = self.rampPower(powerLeft)
+            powerRight = self.rampPower(powerRight)
 
-        powerLeft = self.rampPower(powerLeft)
-        powerRight = self.rampPower(powerRight)
+        # Set Drive Direction
         self.driveDir(powerLeft, powerRight)
-        self.rightPower = powerRight
-        self.leftPower = powerLeft
         # Print
         print(powerLeft)
         print(powerRight)
@@ -192,14 +186,14 @@ class Mobility:
         self.motorPWM[0].start(abs(powerLeft))
         self.motorPWM[1].start(abs(powerRight))
 
+    def rampPower(self, powerAbs):
+        if powerAbs > 0 and powerAbs < 10:
+            powerAbs = 10
+        elif powerAbs < 0 and powerAbs >-10:
+            powerAbs = -10
 
-    def rampPower(self,powerInput):
-        if powerInput < 8 and powerInput > 0:
-            powerInput = powerInput + 0.2
-        elif powerInput > -8 and powerInput < 0:
-            powerInput = powerInput - 0.2
+        return powerAbs
 
-        return powerInput
 
 
     def manualControl(self):
