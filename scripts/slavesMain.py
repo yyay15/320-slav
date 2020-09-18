@@ -100,16 +100,20 @@ def collectionControl(command):
 def navVis():
     return Response(gen(),mimetype='multipart/x-mixed-replace; boundary=frame')
 
+vc = cv2.VideoCapture(0)
 def gen():
-    camera = cv2.VideoCapture(0)
+    """Video streaming generator function."""
     while True:
-        ret, img = camera.read()
+        rval, frame = vc.read()
+        cv2.imwrite('t.jpg', frame)
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + open('t.jpg', 'rb').read() + b'\r\n')
 
-        if ret:
-            frame = cv2.imencode('.jpg', img)[1].tobytes()
-            yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-        else:
-            break
+@app.route('/video_feed')
+def video_feed():
+    """Video streaming route. Put this in the src attribute of an img tag."""
+    return Response(gen(),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 #---------------#
