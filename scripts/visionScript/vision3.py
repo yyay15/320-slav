@@ -158,6 +158,8 @@ class Vision:
     def UpdateObjectPositions(self):
         pass
 
+
+    # Alan Testing for Commandcentre integration
     def commandCentreVideoFeed(self,img):
         frame = cv2.imencode('.jpg', img)[1].tobytes()
             yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
