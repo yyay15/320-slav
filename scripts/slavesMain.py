@@ -18,7 +18,10 @@ import RPi.GPIO as GPIO
 # Import Python Library for CommandCentre
 from flask import Flask
 from flask import render_template, request
+from flask import Response
 app = Flask(__name__, template_folder='commandCentre')
+
+import cv2
 
 # Set Global Parameters 
 LED_GREEN = 26
@@ -93,6 +96,20 @@ def collectionControl(command):
     collection.commandCentreCollectionControl(command)
     return '{}'
 
+@app.route('/navVis')
+def navVis():
+    return Response(vision.commandCentreVideo(),mimetype='multipart/x-mixed-replace; boundary=frame')
+
+def gen():
+    camera = cv2.VideoCapture(0)
+    while True:
+        ret, img = camera.read()
+
+        if ret:
+            frame = cv2.imencode('.jpg', img)[1].tobytes()
+            yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        else:
+            break
 
 
 #---------------#
