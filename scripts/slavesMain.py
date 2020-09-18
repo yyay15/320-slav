@@ -98,7 +98,7 @@ def collectionControl(command):
 
 @app.route('/navVis')
 def navVis():
-    return Response(vision.commandCentreVideo(),mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(gen(),mimetype='multipart/x-mixed-replace; boundary=frame')
 
 def gen():
     camera = cv2.VideoCapture(0)
