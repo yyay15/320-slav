@@ -86,3 +86,11 @@ class Collection:
         self.servoPWM.ChangeDutyCycle(0)
 
 
+    def commandCentreCollectionControl(self,command):
+        if command == "o":
+            self.Open_ROT()
+        elif command == "p":
+            self.Close_ROT()
+        elif command == "l":
+            self.Release_Ball()
+

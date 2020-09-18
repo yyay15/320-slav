@@ -81,8 +81,18 @@ def mobilityControl(command):
     print("================")
     print(command)
     print("================")
-    drive.commandCentreTest(command)
+    drive.commandCentreMobilityControl(command)
     return '{}'
+
+# Use MobilityScript Method to set command
+@app.route('/collection/<command>')
+def collectionControl(command):
+    print("================")
+    print(command)
+    print("================")
+    collection.commandCentreCollectionControl(command)
+    return '{}'
+
 
 
 #---------------#
