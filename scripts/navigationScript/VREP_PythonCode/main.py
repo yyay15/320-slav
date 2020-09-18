@@ -53,8 +53,8 @@ if __name__ == '__main__':
     try:
         if SIMULATION:
             #172.19.44.254
-            sim = rbot.VREP_RoverRobot('127.0.0.1', robotParameters, sceneParameters)
-            #sim = rbot.VREP_RoverRobot('172.19.44.254', robotParameters, sceneParameters)
+            #sim = rbot.VREP_RoverRobot('127.0.0.1', robotParameters, sceneParameters)
+            sim = rbot.VREP_RoverRobot('172.19.44.254', robotParameters, sceneParameters)
             sim.StartSimulator()
         else:
             ledSetup()
