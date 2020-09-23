@@ -9,11 +9,12 @@ import busio
 import adafruit_vcnl4040
 
 
-imgCounter = 0
 
 
 class Vision: 
     def __init__(self):
+        # Camera capture integration with command centre
+        self.imgCounter = 0
         # parameters that change 
         self.random = 1
         self.changingVariable = 1
@@ -134,8 +135,8 @@ class Vision:
 
     def imageCap(self,img):
         print("IMCALLED")
-        cv2.imwrite("data/manCap" + str(imgCounter) + ".jpg", img)
-        imgCounter += 1
+        cv2.imwrite("data/manCap" + str(self.imgCounter) + ".jpg", img)
+        self.imgCounter += 1
 
 
     def GetDetectedObjects(self):
