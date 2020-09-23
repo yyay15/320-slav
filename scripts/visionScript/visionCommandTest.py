@@ -106,9 +106,7 @@ class Vision:
 
     def visMain(self, i):
         ret, img = self.cap.read()	     		# Get a frame from the camera
-        
         self.imageCap(img)
-
         if ret == True:	
             cv2.waitKey(1)	
             #initiate some variables
@@ -130,9 +128,12 @@ class Vision:
 
         #print(Bearing1)
         return sample_Z,lander_Z,cover_Z,obstacle_Z
-    
+
+
     def imageCap(self,img):
-        cv2.imwrite("temp/temp.jpg", img)
+        print("IMCALLED")
+        cv2.imwrite("temp.jpg", img)
+
 
     def GetDetectedObjects(self):
         sampleRB, landerRB, obstaclesRB, rocksRB = None, None, None, None
