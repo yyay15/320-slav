@@ -96,6 +96,16 @@ def collectionControl(command):
     collection.commandCentreCollectionControl(command)
     return '{}'
 
+# Use MobilityScript Method to set command
+@app.route('/vision/<command>')
+def collectionControl(command):
+    print("================")
+    print(command)
+    print("================")
+    vision.commandCentreVisionControl(command)
+    return '{}'
+
+
 
 
 #---------------#

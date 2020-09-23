@@ -106,6 +106,8 @@ class Vision:
 
     def visMain(self, i):
         ret, img = self.cap.read()	     		# Get a frame from the camera
+        
+        self.imageCap(img)
 
         if ret == True:	
             cv2.waitKey(1)	
@@ -130,7 +132,7 @@ class Vision:
         return sample_Z,lander_Z,cover_Z,obstacle_Z
     
     def imageCap(self,img):
-        cv2.imwrite("temp/temp.jpg", frame)
+        cv2.imwrite("temp/temp.jpg", img)
 
     def GetDetectedObjects(self):
         sampleRB, landerRB, obstaclesRB, rocksRB = None, None, None, None
@@ -164,6 +166,7 @@ class Vision:
 
 
     # Alan Testing for Commandcentre integration
-    def commandCentreVideoFeed(self,img):
-        frame = cv2.imencode('.jpg', img)[1].tobytes()
-        yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+    def commandCentreVisionControl(self,command):
+        if command == "h":
+            ret, img = self.cap.read()	     		# Get a frame from the camera        
+            self.imageCap(img)

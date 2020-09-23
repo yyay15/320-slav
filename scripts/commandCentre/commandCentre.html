@@ -61,6 +61,10 @@
             <button type="button" class="btn btn-default" id="Close"> Close </button>
             <button type="button" class="btn btn-default" id="Release"> Release </button>
 
+            <hr size=2>
+            Camera Control:<br><br>
+            <button type="button" class="btn btn-default" id="Capture"> Capture </button>
+
         </div>
     
         <!-- Function Interface Control -->
@@ -106,6 +110,9 @@
             });
             $('#Release').on('click', function () {
                 $.get('/collection/l');
+            });
+            $('#Capture').on('click', function () {
+                $.get('/vision/h');
             });
 
 
