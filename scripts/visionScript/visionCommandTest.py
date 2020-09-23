@@ -135,7 +135,10 @@ class Vision:
     def imageCap(self,img):
         print("IMCALLED")
         cv2.imwrite("data/manCap" + str(self.imgCounter) + ".jpg", img)
-        self.imgCounter += 1
+
+    def videoFeed(self,img):
+        cv2.imwrite("data/temp"  + ".jpg", img)
+
 
 
     def GetDetectedObjects(self):
@@ -172,8 +175,9 @@ class Vision:
     # Alan Testing for Commandcentre integration
     def commandCentreVisionControl(self,command):
         if command == "h":
-            print("Buffer")
-            time.sleep(1.5)
-            print("Smile :)")
-            ret, img = self.cap.read()	     		# Get a frame from the camera        
-            self.imageCap(img)
+            i=0
+            self.imgCounter += 1
+            while (i<10):
+                ret, img = self.cap.read()	     		# Get a frame from the camera        
+                self.imageCap(img)
+                i += 1
