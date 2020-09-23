@@ -125,7 +125,7 @@ class Vision:
         obstacle_Z,O_Bound_Image=self.Range(obstacle_img,self.obstacle_parameters,FinalImage)
         lander_Z,L_Bound_Image=self.Range(lander_img,self.lander_parameters,FinalImage)
         print(sample_Z)
-        if (i%1)==0:
+        if (i%5)==0:
              cv2.imshow("Binary Thresholded Frame",FinalImage)# Display thresholded frame
 
         #print(Bearing1)
@@ -172,5 +172,8 @@ class Vision:
     # Alan Testing for Commandcentre integration
     def commandCentreVisionControl(self,command):
         if command == "h":
+            print("Buffer")
+            time.sleep(1.5)
+            print("Smile :)")
             ret, img = self.cap.read()	     		# Get a frame from the camera        
             self.imageCap(img)
