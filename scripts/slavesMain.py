@@ -105,7 +105,7 @@ def collectionControl(command):
 # Initialise Functions and Classes
 # Subsystem
 drive = mobilityScript.Mobility()
-vision = vision3.Vision()
+vision = visionCommandTest.Vision()
 collection = collection.Collection()
 
 # nav
