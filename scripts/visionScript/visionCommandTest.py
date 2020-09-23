@@ -139,8 +139,7 @@ class Vision:
 
     def selfCapRead(self):
         ret, img = self.cap.read()	     		# Get a frame from the camera
-        ret, jpeg = cv2.imencode('.jpg', img)
-        return ret, jpeg.tobytes()
+        return ret, img
 
 
     def videoFeed(self,img):
