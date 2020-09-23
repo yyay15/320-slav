@@ -138,7 +138,9 @@ class Vision:
 
 
     def selfCapRead(self):
+        print("HEREMATEY")
         ret, img = self.cap.read()	     		# Get a frame from the camera
+        print(img)
         return ret, img
 
 
