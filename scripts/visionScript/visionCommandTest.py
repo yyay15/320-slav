@@ -132,22 +132,6 @@ class Vision:
         return sample_Z,lander_Z,cover_Z,obstacle_Z
 
 
-    def imageCap(self,img):
-        print("IMCALLED")
-        cv2.imwrite("data/manCap" + str(self.imgCounter) + ".jpg", img)
-
-
-    def selfCapRead(self):
-        ret, img = self.cap.read()	     		# Get a frame from the camera
-        ret, img_str = cv2.imencode('.jpg', img)
-        img_str = img_str.tobytes()
-        return img_str
-
-
-    def videoFeed(self,img):
-        return img
-
-
 
     def GetDetectedObjects(self):
         sampleRB, landerRB, obstaclesRB, rocksRB = None, None, None, None
@@ -189,3 +173,28 @@ class Vision:
                 ret, img = self.cap.read()	     		# Get a frame from the camera        
                 self.imageCap(img)
                 i += 1
+
+    
+
+    def imageCap(self,img):
+        print("IMCALLED")
+        cv2.imwrite("data/manCap" + str(self.imgCounter) + ".jpg", img)
+
+
+    def selfCapRead(self):
+        ret, img = self.cap.read()	     		# Get a frame from the camera
+        ret, img_str = cv2.imencode('.jpg', img)
+        img_str = img_str.tobytes()
+        return img_str
+
+    def filteredvideoFeed(self):
+
+        # img = FinalImage
+        ret, img_str = cv2.imencode('.jpg', img)
+        img_str = img_str.tobytes()
+        return img_str
+
+    def videoFeed(self,img):
+        ret, img_str = cv2.imencode('.jpg', img)
+        img_str = img_str.tobytes()
+        return img_str
