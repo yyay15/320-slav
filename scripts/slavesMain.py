@@ -32,7 +32,7 @@ global command
 # Local modules
 from mobilityScript import mobilityScript
 from navigationScript.VREP_PythonCode import navigation, state
-from visionScript import vision3
+from visionScript import visionCommandTest
 from collectionScript import collection
 
 #---------------#
