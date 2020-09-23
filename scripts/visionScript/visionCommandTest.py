@@ -9,6 +9,8 @@ import busio
 import adafruit_vcnl4040
 
 
+imgCounter = 0
+
 
 class Vision: 
     def __init__(self):
@@ -132,7 +134,8 @@ class Vision:
 
     def imageCap(self,img):
         print("IMCALLED")
-        cv2.imwrite("temp.jpg", img)
+        cv2.imwrite("data/manCap" + str(imgCounter) + ".jpg", img)
+        imgCounter += 1
 
 
     def GetDetectedObjects(self):

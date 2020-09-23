@@ -29,6 +29,7 @@ LED_RED = 13
 LED_YELLOW = 19
 global command
 
+
 # Local modules
 from mobilityScript import mobilityScript
 from navigationScript.VREP_PythonCode import navigation, state
