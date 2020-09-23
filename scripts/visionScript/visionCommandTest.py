@@ -141,7 +141,8 @@ class Vision:
         print("HEREMATEY")
         ret, img = self.cap.read()	     		# Get a frame from the camera
         print("converting")
-        img_str = cv2.imencode('.jpg', img).tobytes()
+        ret, img_str = cv2.imencode('.jpg', img)
+        img_str = img_str.tobytes()
         print(img_str)
         return img_str
 
