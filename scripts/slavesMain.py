@@ -98,7 +98,7 @@ def collectionControl(command):
 
 # Use MobilityScript Method to set command
 @app.route('/vision/<command>')
-def collectionControl(command):
+def visionControl(command):
     print("================")
     print(command)
     print("================")
