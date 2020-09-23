@@ -109,7 +109,6 @@ class Vision:
 
     def visMain(self, i):
         ret, img = self.cap.read()	     		# Get a frame from the camera
-        self.imageCap(img)
         if ret == True:	
             cv2.waitKey(1)	
             #initiate some variables
@@ -126,7 +125,7 @@ class Vision:
         obstacle_Z,O_Bound_Image=self.Range(obstacle_img,self.obstacle_parameters,FinalImage)
         lander_Z,L_Bound_Image=self.Range(lander_img,self.lander_parameters,FinalImage)
         print(sample_Z)
-        if (i%5)==0:
+        if (i%1)==0:
              cv2.imshow("Binary Thresholded Frame",FinalImage)# Display thresholded frame
 
         #print(Bearing1)
