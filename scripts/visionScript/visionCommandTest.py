@@ -138,9 +138,7 @@ class Vision:
 
 
     def selfCapRead(self):
-        print("HEREMATEY")
         ret, img = self.cap.read()	     		# Get a frame from the camera
-        print("converting")
         ret, img_str = cv2.imencode('.jpg', img)
         img_str = img_str.tobytes()
         return img_str
