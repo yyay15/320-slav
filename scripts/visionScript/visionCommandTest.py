@@ -136,8 +136,13 @@ class Vision:
         print("IMCALLED")
         cv2.imwrite("data/manCap" + str(self.imgCounter) + ".jpg", img)
 
+
+    def selfCapRead(self):
+        return ret, img = self.cap.read()	     		# Get a frame from the camera
+
+
     def videoFeed(self,img):
-        cv2.imwrite("data/temp"  + ".jpg", img)
+        return img
 
 
 
