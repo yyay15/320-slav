@@ -143,7 +143,6 @@ class Vision:
         print("converting")
         ret, img_str = cv2.imencode('.jpg', img)
         img_str = img_str.tobytes()
-        print(img_str)
         return img_str
 
 
