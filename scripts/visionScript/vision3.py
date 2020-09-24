@@ -124,7 +124,6 @@ class Vision:
         print(sample_Z)
         if (i%5)==0:
              cv2.imshow("Binary Thresholded Frame",FinalImage)# Display thresholded frame
-
         #print(Bearing1)
         return sample_Z,lander_Z,cover_Z,obstacle_Z
     
