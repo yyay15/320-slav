@@ -192,6 +192,8 @@ class Vision:
         FinalImage=cv2.bitwise_or(SFin,CFin)
         FinalImage=cv2.bitwise_or(FinalImage,OFin)
         FinalImage=cv2.bitwise_or(FinalImage,LFin)
+
+
         print("////////PRINT1/////")
         print(np.size(imgOg))
         print("////////PRINT2/////")
@@ -199,6 +201,7 @@ class Vision:
         print("////////PRINT3/////")
         print(np.size(FinalImage))
         print("////////PRINT4/////")
+        FinalImage = cv2.imencode('.jpg', FinalImage)        
         print(FinalImage)
         print("////////PRINT5/////")
 
