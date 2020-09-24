@@ -106,6 +106,26 @@ def visionControl(command):
     vision.commandCentreVisionControl(command)
     return '{}'
 
+@app.route('/navigation/<command>')
+def navigationControl(command):
+    print("================")
+    print(command)
+    print("================")
+    if (command == n):
+        nav.commandNav = True
+    else:
+        nav.commandNav = False
+
+    while nav.commandNav == True:
+        vision.UpdateObjectPositions()
+        objects = vision.GetDetectedObjects()
+        sampleCollected = vision.sampleCollected()
+        state.updateState(objects,sampleCollected)
+        v, w = nav.updateVelocities(state)
+        ledIndicator(nav.stateMode)
+        collection.sampleManage(nav.rotState)
+        drive.drive(v, w, nav.centering) # not in navMain
+    return '{}'
 
 
 

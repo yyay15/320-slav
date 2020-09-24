@@ -52,7 +52,7 @@
             <button type="button" class="btn btn-default" id="backward"> v </button>
             <button type="button" class="btn btn-default" id="right"> > </button>
             <button type="button" class="btn btn-default" id="rotate"> R </button>
-            <button type="button" class="btn btn-danger" id="stop">Stop</button>
+            <button type="button" class="btn btn-danger" id="mstop">Stop</button>
             <br>
             <hr size=2>
             ROT Control:<br><br>
@@ -63,6 +63,12 @@
             <hr size=2>
             Camera Control:<br><br>
             <button type="button" class="btn btn-default" id="Capture"> Capture </button>
+
+            <hr size=2>
+            Navigation:<br><br>
+            <button type="button" class="btn btn-default" id="nstart"> Start </button>
+            <button type="button" class="btn btn-default" id="nstop"> Stop </button>
+
 
         </div>
     
@@ -80,7 +86,7 @@
             $('#right').on('click', function () {
                 $.get('/mobility/d');
             });
-            $('#stop').on('click', function () {
+            $('#mstop').on('click', function () {
                 $.get('/mobility/c');
             });
             $('#rotate').on('click', function () {
@@ -112,6 +118,12 @@
             });
             $('#Capture').on('click', function () {
                 $.get('/vision/h');
+            });
+            $('#nstop').on('click', function () {
+                $.get('/navigation/m');
+            });
+            $('#nstart').on('click', function () {
+                $.get('/navigation/n');
             });
 
 

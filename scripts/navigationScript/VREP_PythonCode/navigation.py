@@ -46,6 +46,7 @@ class Navigation:
         self.rotState = CLOSE            # state for sample collection
         self.isBlind = False
         self.centering = False
+        self.commandnav = False
         
     
     def currentState(self, stateNum):
