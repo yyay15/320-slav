@@ -195,12 +195,19 @@ class Vision:
 
 
         print("////////PRINT1/////")
-        ret, img_str = cv2.imencode('.jpg', imgOg)        
-        ret, FinalImage = cv2.imencode('.jpg', FinalImage)        
+        print(np.size(imgOg))
         print("////////PRINT2/////")
-        imgCombi = np.concatenate((imgOg,FinalImage))
-        img_str = img_str.tobytes()
+        print(imgOg)
+        print("////////PRINT3/////")
+        print(np.size(FinalImage))
+        print("////////PRINT4/////")
+        FinalImage = cv2.cvtColor(FinalImage, cv.CV_GRAY2RGB)
+        print(FinalImage)
+        print("////////PRINT5/////")
 
+        imgCombi = np.hstack((imgOg,FinalImage))
+        ret, img_str = cv2.imencode('.jpg', imgCombi)        
+        img_str = img_str.tobytes()
 
         return img_str
 
