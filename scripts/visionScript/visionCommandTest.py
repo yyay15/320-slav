@@ -201,7 +201,7 @@ class Vision:
         print("////////PRINT3/////")
         print(np.size(FinalImage))
         print("////////PRINT4/////")
-        FinalImage = cv2.imencode('.jpg', FinalImage)        
+        tmp, FinalImage = cv2.imencode('.jpg', FinalImage)        
         print(FinalImage)
         print("////////PRINT5/////")
 
