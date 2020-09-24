@@ -149,7 +149,7 @@ def video_feed():
 
 @app.route('/filter_feed')
 def filter_feed():
-    return Response(gen(),mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(genfilter(),mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 
