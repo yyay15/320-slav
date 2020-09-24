@@ -111,7 +111,7 @@ def navigationControl(command):
     print("================")
     print(command)
     print("================")
-    if (command == n):
+    if (command == "n"):
         nav.commandNav = True
     else:
         nav.commandNav = False
