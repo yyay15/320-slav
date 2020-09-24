@@ -193,8 +193,8 @@ class Vision:
         FinalImage=cv2.bitwise_or(FinalImage,OFin)
         FinalImage=cv2.bitwise_or(FinalImage,LFin)
 
-        print(size(imgOG))
-        print(size(FinalImage))
+        print(np.size(imgOG))
+        print(np.size(FinalImage))
 
         imgCombi = np.hstack((imgOg,FinalImage))
         ret, img_str = cv2.imencode('.jpg', imgCombi)        
