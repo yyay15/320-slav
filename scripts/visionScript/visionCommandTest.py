@@ -198,7 +198,7 @@ class Vision:
         ret, img_str = cv2.imencode('.jpg', imgOg)        
         ret, FinalImage = cv2.imencode('.jpg', FinalImage)        
         print("////////PRINT2/////")
-        imgCombi = np.hstack((imgOg,FinalImage))
+        imgCombi = np.concatenate((imgOg,FinalImage))
         img_str = img_str.tobytes()
 
 
