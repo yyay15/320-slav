@@ -185,6 +185,7 @@ class Vision:
         ret, img = self.cap.read()	     		# Get a frame from the camera
         ret, img_str = cv2.imencode('.jpg', img)        
         img_str = img_str.tobytes()
+        print(img_str)
 
         return img_str
 
