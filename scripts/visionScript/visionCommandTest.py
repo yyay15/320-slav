@@ -194,9 +194,11 @@ class Vision:
         FinalImage=cv2.bitwise_or(FinalImage,LFin)
 
         print("------------")
+        FinalImage = cv2.UMat.get(FinalImage)
         print(FinalImage)
         print("------------")
-
+        img = np.hstack((imgOG, FinalImage))
+        
         ret, img_str = cv2.imencode('.jpg', img)        
         img_str = img_str.tobytes()
  
