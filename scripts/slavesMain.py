@@ -115,6 +115,7 @@ def navigationControl(command):
         nav.commandNav = True
     else:
         nav.commandNav = False
+        drive.drive(0, 0, False) # not in navMain
 
     while nav.commandNav == True:
         vision.UpdateObjectPositions()
@@ -135,9 +136,21 @@ def gen():
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
+def genfilter():
+    while True:
+        frame = vision.selfCapRead()
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+
 @app.route('/video_feed')
 def video_feed():
     return Response(gen(),mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/filter_feed')
+def filter_feed():
+    return Response(gen(),mimetype='multipart/x-mixed-replace; boundary=frame')
+
 
 
 #---------------#
