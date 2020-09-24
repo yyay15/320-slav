@@ -183,10 +183,23 @@ class Vision:
 
     def selfCapRead(self):
         ret, img = self.cap.read()	     		# Get a frame from the camera
+        imgOG = img
+
+        sample_img,SFin=self.Detection(img,self.sample_parameters)
+        cover_img,CFin=self.Detection(img,self.cover_parameters)
+        obstacle_img,OFin=self.Detection(img,self.obstacle_parameters)
+        lander_img,LFin=self.Detection(img,self.lander_parameters)
+        FinalImage=cv2.bitwise_or(SFin,CFin)
+        FinalImage=cv2.bitwise_or(FinalImage,OFin)
+        FinalImage=cv2.bitwise_or(FinalImage,LFin)
+
+        print("------------")
+        print(FinalImage)
+        print("------------")
+
         ret, img_str = cv2.imencode('.jpg', img)        
         img_str = img_str.tobytes()
-        print(img_str)
-
+ 
         return img_str
 
 
