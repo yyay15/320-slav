@@ -195,18 +195,12 @@ class Vision:
 
 
         print("////////PRINT1/////")
-        print(np.size(imgOg))
-        print("////////PRINT2/////")
-        print(imgOg)
-        print("////////PRINT3/////")
         ret, img_str = cv2.imencode('.jpg', imgOg)        
-        print("////////PRINT4/////")
-        print(np.size(img_str))
-        print(img_str)
-        print("////////PRINT5/////")
-
-        # imgCombi = np.hstack((imgOg,FinalImage))
+        ret, FinalImage = cv2.imencode('.jpg', FinalImage)        
+        print("////////PRINT2/////")
+        imgCombi = np.hstack((imgOg,FinalImage))
         img_str = img_str.tobytes()
+
 
         return img_str
 
