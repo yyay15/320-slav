@@ -201,7 +201,7 @@ class Vision:
         print("////////PRINT3/////")
         print(np.size(FinalImage))
         print("////////PRINT4/////")
-        FinalImage = cv2.cvtColor(FinalImage, cv.CV_GRAY2RGB)
+        FinalImage = cv2.cvtColor(FinalImage, cv2.COLOR_GRAY2RGB)
         print(FinalImage)
         print("////////PRINT5/////")
 
