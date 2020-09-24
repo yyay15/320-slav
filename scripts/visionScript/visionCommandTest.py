@@ -193,18 +193,15 @@ class Vision:
         FinalImage=cv2.bitwise_or(FinalImage,OFin)
         FinalImage=cv2.bitwise_or(FinalImage,LFin)
 
+        print(size(imgOG))
+        print(size(FinalImage))
+
         imgCombi = np.hstack((imgOg,FinalImage))
         ret, img_str = cv2.imencode('.jpg', imgCombi)        
         img_str = img_str.tobytes()
 
         return img_str
 
-
-    def filteredvideoFeed(self):
-        # img = FinalImage
-        ret, img_str = cv2.imencode('.jpg', img)
-        img_str = img_str.tobytes()
-        return img_str
 
     def videoFeed(self,img):
         ret, img_str = cv2.imencode('.jpg', img)
