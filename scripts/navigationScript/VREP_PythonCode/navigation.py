@@ -213,14 +213,17 @@ class Navigation:
 
 
     def avoidObstacles(self, state):
+        allObstacles = []
         obstacles = state.obstaclesRB
         rocks = state.rocksRB
         vRep = 0
         wRep = 0
         if not self.isEmpty(obstacles):
-            if not self.isEmpty(rocks) and self.rock_obstacle:
-                obstacles = obstacles + rocks
-            closeObs = self.closestObstacle(obstacles)
+            allObstacles = allObstacles + obstacles
+        if not self.isEmpty(rocks) and self.rock_obstacle:
+            allObstacles = allObstacles + rocks
+        if not self.isEmpty(allObstacles):
+            closeObs = self.closestObstacle(allObstacles)
             if closeObs[0] < 0.5:
                 wRep =  (np.sign(closeObs[1]) * (0.5 - closeObs[0]) * (3 - abs(closeObs[1]))* KW_REPULSE)
                 vRep =  (0.5 - closeObs[0]) * 0.2
