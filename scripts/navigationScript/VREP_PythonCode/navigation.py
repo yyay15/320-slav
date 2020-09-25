@@ -276,7 +276,8 @@ class Navigation:
             print(allObstacles)
         if not self.isEmpty(rocks) and self.rock_obstacle:
             print("adding rocks")
-            allObstacles = allObstacles + rocks
+            allObstacles = allObstacles.np.append(rocks, axis=0)
+            print(allObstacles)
             
         if not self.isEmpty(allObstacles):
             closeObs = self.closestObstacle(allObstacles)
