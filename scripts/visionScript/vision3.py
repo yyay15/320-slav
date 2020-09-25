@@ -13,6 +13,7 @@ import adafruit_vcnl4040
 class Vision: 
     def __init__(self):
         # parameters that change 
+        self.state = 1
         self.random = 1
         self.changingVariable = 1
         
@@ -32,6 +33,11 @@ class Vision:
          "Kernel":False,"Circle":False,"BBoxColour":[204,204,0]}
         self.cover_parameters={"hue":[95,107],"sat":[60,255],"value":[0,255],"Height":70,"OR_MASK":False,
          "Kernel":False,"Circle":False,"BBoxColour":[255,255,255]} 
+
+
+    """ if self.state == 8:
+            use other threshold
+    """
 
     def Detection(self, image,parameters_dict):
             #image=cv2.resize(image,(640,480))
@@ -154,8 +160,8 @@ class Vision:
         return SamplePresent 
         pass
     
-    def UpdateObjectPositions(self):
-        pass
+    def updateVisionState(self, state):
+        self.state = state
 
 
     # Alan Testing for Commandcentre integration

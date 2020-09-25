@@ -185,7 +185,7 @@ if __name__ == '__main__':
             if  userSelect == "a":
                 # CHUCK THAT CHUNK HERE
                 while True:
-                    vision.UpdateObjectPositions()
+                    vision.updateVisionState(nav.stateMode)
                     objects = vision.GetDetectedObjects()
                     sampleCollected = vision.sampleCollected()
                     state.updateState(objects,sampleCollected)
