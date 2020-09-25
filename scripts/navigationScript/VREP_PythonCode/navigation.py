@@ -265,18 +265,20 @@ class Navigation:
         return v, w
 
     def avoidObstacles(self, state):
-        allObstacles = np.array([])
-        obstacles = state.obstaclesRB #[[r,b], [r,b]]
+        allObstacles = []
+        obstacles = state.obstaclesRB#[[r,b], [r,b]]
         rocks = state.rocksRB #[[r,b], [r,b]]
         vRep = 0
         wRep = 0
         if not self.isEmpty(obstacles):
             print("adding obstacles")
-            allObstacles = np.append(allObstacles, obstacles, axis=0)
+            obstacles = obstacles.tolist()
+            allObstacles = allObstacles + obstacles
             print(allObstacles)
         if not self.isEmpty(rocks) and self.rock_obstacle:
             print("adding rocks")
-            allObstacles = np.append(allObstacles, rocks, axis=0)
+            rocks = rocks.tolist()
+            allObstacles = allObstacles + rocks
             print(allObstacles)
             
         if not self.isEmpty(allObstacles):
