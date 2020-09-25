@@ -10,8 +10,11 @@ import adafruit_vcnl4040
 
 
 
+
 class Vision: 
     def __init__(self):
+        # Camera capture integration with command centre
+        self.imgCounter = 0
         # parameters that change 
         self.random = 1
         self.changingVariable = 1
@@ -124,9 +127,12 @@ class Vision:
         print(sample_Z)
         if (i%5)==0:
              cv2.imshow("Binary Thresholded Frame",FinalImage)# Display thresholded frame
+
         #print(Bearing1)
         return sample_Z,lander_Z,cover_Z,obstacle_Z
-    
+
+
+
     def GetDetectedObjects(self):
         sampleRB, landerRB, obstaclesRB, rocksRB = None, None, None, None
         i=0
@@ -159,6 +165,47 @@ class Vision:
 
 
     # Alan Testing for Commandcentre integration
-    def commandCentreVideoFeed(self,img):
-        frame = cv2.imencode('.jpg', img)[1].tobytes()
-        yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+    def commandCentreVisionControl(self,command):
+        if command == "h":
+            i=0
+            self.imgCounter += 1
+            while (i<10):
+                ret, img = self.cap.read()	     		# Get a frame from the camera        
+                self.imageCap(img)
+                i += 1
+
+    
+
+    def imageCap(self,img):
+        print("IMCALLED")
+        cv2.imwrite("data/manCap" + str(self.imgCounter) + ".jpg", img)
+
+
+    def selfCapRead(self):
+        ret, img = self.cap.read()	     		# Get a frame from the camera
+        imgOG = img
+
+        sample_img,SFin=self.Detection(img,self.sample_parameters)
+        cover_img,CFin=self.Detection(img,self.cover_parameters)
+        obstacle_img,OFin=self.Detection(img,self.obstacle_parameters)
+        lander_img,LFin=self.Detection(img,self.lander_parameters)
+        FinalImage=cv2.bitwise_or(SFin,CFin)
+        FinalImage=cv2.bitwise_or(FinalImage,OFin)
+        FinalImage=cv2.bitwise_or(FinalImage,LFin)
+
+        print("------------")
+        FinalImage = cv2.UMat.get(FinalImage)
+        print(FinalImage)
+        print("------------")
+        img = np.hstack((imgOG, FinalImage))
+        
+        ret, img_str = cv2.imencode('.jpg', img)        
+        img_str = img_str.tobytes()
+ 
+        return img_str
+
+
+    def videoFeed(self,img):
+        ret, img_str = cv2.imencode('.jpg', img)
+        img_str = img_str.tobytes()
+        return img_str

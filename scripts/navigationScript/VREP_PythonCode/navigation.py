@@ -27,9 +27,9 @@ SLIGH_OPEN = 3
 # DISTANCE/TIME VARIABLES
 ROT_DISTANCE = 0.27 #collect distance 
 FLIP_DISTANCE = 0.1
-DRIVE_OFF_TIME = 6
 FULL_ROTATION = 15
 ROT_ACQUIRE_SAMPLE = 1
+DRIVE_OFF_TIME = 6
 
 # OBSTACLE AVOIDANCE GAINS 
 KV_ATTRACT = 0.5 #0.5
@@ -46,6 +46,7 @@ class Navigation:
         self.rotState = CLOSE            # state for sample collection
         self.isBlind = False
         self.centering = False
+        self.commandnav = False
         
     
     def currentState(self, stateNum):
@@ -74,7 +75,6 @@ class Navigation:
             self.rock_obstacle = True
             self.stateMode = NAV_SAMPLE
         elif (time.time() - self.modeStartTime >= FULL_ROTATION): 
-            # search rock
             print("moving around")
             v, w = self.navigate([0.2, 0], state)
             if (time.time() - self.modeStartTime - FULL_ROTATION >= 1.5):
@@ -192,18 +192,7 @@ class Navigation:
             else:
                 self.modeStartTime = time.time()
                 self.stateMode = SEARCH_SAMPLE
-        # if (state.sampleCollected): # ball got flicked in
-        #     self.modeStartTime = time.time()
-        #     self.stateMode = SEARCH_LANDER
-        # else:
-        #     # reverse if ball not visible
-        #     if (self.isEmpty(state.sampleRB)):
-        #         v = -0.5
-        #         w = 0
-        #     else:
-        #         v, w = 0, 0
-        #         self.modeStartTime = time.time()
-        #         self.stateMode = ACQUIRE_SAMPLE
+
         return v, w
 
     def navLander(self, state):
@@ -239,10 +228,6 @@ class Navigation:
             self.isBlind = True
             self.modeStartTime = time.time()
         elif (self.isBlind):
-            print("----\n")
-            print(time.time())
-            print(self.modeStartTime)
-            print("----\n")
             if (time.time() - self.modeStartTime < 2):
                 print("trying to drive straight YEEEEETTTT")
                 v = 0.07
@@ -264,70 +249,6 @@ class Navigation:
                 self.modeStartTime = time.time()
                 self.stateMode = SEARCH_SAMPLE
         return v, w
-            
-        # open ROT and drive
-        # if (not self.isEmpty(state.sampleRB) and not self.isBlind):
-        #     if (not (-0.02 <= state.sampleRB[0][1] <= 0.02)):
-        #         print("centering sample")
-        #         sample = state.sampleRB[0]
-        #         w = sample[1]
-        #         v = 0
-        #     else:
-        #         v, w = 0, 0
-        #         self.isBlind = True
-        #         self.rotState = OPEN
-        #         print("rot open camera blind")
-        #         self.modeStartTime = time.time()
-                # w = 0
-                # v = 0.1
-                # if (state.sampleCollected):
-                #     v, w = 0, 0
-                #     self.modeStartTime = time.time()
-                #     self.stateMode = SEARCH_LANDER
-        # elif (self.isBlind): 
-        #     if (time.time() - self.modeStartTime < ROT_ACQUIRE_SAMPLE):
-        #         print("camera blind")
-        #         v = 0.07
-        #         w = 0
-        #     else:
-        #         print("close rot")
-        #         v, w = 0, 0
-        #         self.isBlind = False
-        #         self.rotState = CLOSE
-        #         # if (state.sampleCollected):
-        #         #     v, w = 0, 0
-        #         #     self.modeStartTime = time.time()
-        #         #     self.stateMode = SEARCH_LANDER
-        #         # else:
-        #         #     v, w = 0, 0
-        #         #     self.modeStartTime = time.time()
-        #         #     self.stateMode = SEARCH_SAMPLE
-        # else: 
-        #     if (state.sampleCollected):
-        #         print("sample collected, search lander")
-        #         v, w = 0, 0
-        #         self.modeStartTime = time.time()
-        #         self.stateMode = SEARCH_LANDER
-        #     else:
-        #         print("sample lost, searching sample")
-        #         v, w = 0, 0
-        #         self.modeStartTime = time.time()
-        #         self.stateMode = SEARCH_SAMPLE
-
-        # elif (not state.sampleCollected): 
-        #     print("sample aligned. ROT open,  driving straight")
-        #     self.rotState = OPEN
-        #     v = 0.05
-        #     w = 0
-        # else:
-        #     print("sample collected, closing ROT")
-        #     self.rotState = CLOSE
-        #     v, w = 0, 0
-        #     print("searching for lander")
-        #     self.modeStartTime = time.time()
-        #    self.stateMode = SEARCH_LANDER
-        # return v, w
-
 
 
 #-----------------------#
@@ -344,14 +265,18 @@ class Navigation:
         return v, w
 
     def avoidObstacles(self, state):
+        allObstacles = []
         obstacles = state.obstaclesRB
         rocks = state.rocksRB
         vRep = 0
         wRep = 0
         if not self.isEmpty(obstacles):
-            if not self.isEmpty(rocks) and self.rock_obstacle:
-                obstacles = obstacles + rocks
-            closeObs = self.closestObstacle(obstacles)
+            allObstacles = allObstacles + obstacles
+        if not self.isEmpty(rocks) and self.rock_obstacle:
+            allObstacles = allObstacles + rocks
+            
+        if not self.isEmpty(allObstacles):
+            closeObs = self.closestObstacle(allObstacles)
             if closeObs[0] < 0.5:
                 wRep =  (np.sign(closeObs[1]) * (0.5 - closeObs[0]) * (3 - abs(closeObs[1]))* KW_REPULSE)
                 vRep =  (0.5 - closeObs[0]) * 0.2
