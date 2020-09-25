@@ -265,7 +265,7 @@ class Navigation:
         return v, w
 
     def avoidObstacles(self, state):
-        allObstacles = []
+        allObstacles = np.array([])
         obstacles = state.obstaclesRB #[[r,b], [r,b]]
         rocks = state.rocksRB #[[r,b], [r,b]]
         vRep = 0
