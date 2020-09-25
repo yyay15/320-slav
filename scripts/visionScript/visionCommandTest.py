@@ -29,11 +29,11 @@ class Vision:
         #img=cv2.imread("MultipleCovers.jpg")
         self.sample_parameters={"hue":[0,5],"sat":[100,255],"value":[100,255],"Height":40,"OR_MASK":True,
          "Kernel":True,"Circle":True,"BBoxColour":[204,0,204]}
-        self.lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":570,"OR_MASK":False,
+        self.lander_parameters={"hue":[15,30],"sat":[30,255],"value":[30,255],"Height":570,"OR_MASK":False,
          "Kernel":False,"Circle":False,"BBoxColour":[0,0,255]}
-        self.obstacle_parameters={"hue":[40,70],"sat":[50,255],"value":[40,255],"Height":150,"OR_MASK":False,
+        self.obstacle_parameters={"hue":[40,70],"sat":[40,255],"value":[40,255],"Height":150,"OR_MASK":False,
          "Kernel":False,"Circle":False,"BBoxColour":[204,204,0]}
-        self.cover_parameters={"hue":[95,107],"sat":[60,255],"value":[0,255],"Height":70,"OR_MASK":False,
+        self.cover_parameters={"hue":[95,107],"sat":[0,255],"value":[0,255],"Height":70,"OR_MASK":False,
          "Kernel":False,"Circle":False,"BBoxColour":[255,255,255]} 
 
     def Detection(self, image,parameters_dict):
