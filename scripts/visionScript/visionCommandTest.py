@@ -22,6 +22,7 @@ class Vision:
         i2c = busio.I2C(board.SCL, board.SDA)
         self.sensor = adafruit_vcnl4040.VCNL4040(i2c)
         self.cap = cv2.VideoCapture(0)  		# Connect to camera 0 (or the only camera)
+        self.cap.awb_mode = 'off'
         self.cap.set(3, 320)                     	# Set the width to 320
         self.cap.set(4, 240)                      	# Set the height to 240
         self.Center=np.array([])
@@ -29,7 +30,7 @@ class Vision:
         #img=cv2.imread("MultipleCovers.jpg")
         self.sample_parameters={"hue":[0,5],"sat":[100,255],"value":[100,255],"Height":40,"OR_MASK":True,
          "Kernel":True,"Circle":True,"BBoxColour":[204,0,204]}
-        self.lander_parameters={"hue":[15,30],"sat":[30,255],"value":[30,255],"Height":570,"OR_MASK":False,
+        self.lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":570,"OR_MASK":False,
          "Kernel":False,"Circle":False,"BBoxColour":[0,0,255]}
         self.obstacle_parameters={"hue":[40,70],"sat":[40,255],"value":[40,255],"Height":150,"OR_MASK":False,
          "Kernel":False,"Circle":False,"BBoxColour":[204,204,0]}
