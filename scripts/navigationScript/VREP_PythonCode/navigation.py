@@ -266,13 +266,15 @@ class Navigation:
 
     def avoidObstacles(self, state):
         allObstacles = []
-        obstacles = state.obstaclesRB
-        rocks = state.rocksRB
+        obstacles = state.obstaclesRB #[[r,b], [r,b]]
+        rocks = state.rocksRB #[[r,b], [r,b]]
         vRep = 0
         wRep = 0
         if not self.isEmpty(obstacles):
-            allObstacles = allObstacles + obstacles
+            print("adding obstacles")
+            allObstacles = allObstacles + obstacles 
         if not self.isEmpty(rocks) and self.rock_obstacle:
+            print("adding rocks")
             allObstacles = allObstacles + rocks
             
         if not self.isEmpty(allObstacles):
