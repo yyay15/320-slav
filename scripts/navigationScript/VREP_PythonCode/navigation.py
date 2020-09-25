@@ -272,11 +272,11 @@ class Navigation:
         wRep = 0
         if not self.isEmpty(obstacles):
             print("adding obstacles")
-            allObstacles = allObstacles.np.append(obstacles, axis=0)
+            allObstacles = np.append(allObstacles, obstacles, axis=0)
             print(allObstacles)
         if not self.isEmpty(rocks) and self.rock_obstacle:
             print("adding rocks")
-            allObstacles = allObstacles.np.append(rocks, axis=0)
+            allObstacles = np.append(allObstacles, rocks, axis=0)
             print(allObstacles)
             
         if not self.isEmpty(allObstacles):
