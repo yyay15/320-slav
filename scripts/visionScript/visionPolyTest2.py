@@ -99,7 +99,7 @@ def Range(img,parameters_dict,finalimage):
                         #columnwise
                         Range=Range[Range[:,0].argsort()] 
                         #if positive then it's to the right if negative then to left of center 
-                    elif LHeight/LWidth<1.3
+                    elif LHeight/LWidth<1.3:
                         Lx=int(Moment["m10"]/Moment["m00"])
                         Ly=int(Moment["m01"]/Moment["m00"])
                         Centroid=np.array([Lx,Ly])
