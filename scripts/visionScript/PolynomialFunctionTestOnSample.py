@@ -2,7 +2,7 @@ import numpy as np
 import imutils
 import math
 import time
-from cv2 import cv2 
+import cv2 
 cap = cv2.VideoCapture(0)  		# Connect to camera 0 (or the only camera)
 cap.set(3, 320)                     	# Set the width to 320
 cap.set(4, 240)                      	# Set the height to 240
@@ -92,8 +92,8 @@ def main(i):
     if ret == True:	
         cv2.waitKey(1)	
         #initiate some variables 
-   """  img=cv2.imread("visionScript\MultipleCovers.jpg")
-    img=cv2.resize(img,(320,240)) """
+    """ img=cv2.imread("visionScript\MultipleCovers.jpg")
+    img=cv2.resize(img,(320,240))"""
     if __name__=="__main__":
         sample_img=Detection(np.copy(img),sample_parameters)
         cover_img=Detection(np.copy(img),cover_parameters)
