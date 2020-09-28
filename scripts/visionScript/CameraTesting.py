@@ -131,6 +131,7 @@ def visMain(i):
         cover_parameters,obstacle_parameters,lander_parameters,img)
     if (i%5)==0:
         cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
+        cv2.waitKey(1)
     
 i=0
 frequency=10
