@@ -110,7 +110,7 @@ def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,la
     print(cover_Z)
     print(obstacle_Z)
     print(lander_Z)
-    return sample_Z,cover_Z,obstacle_Z,lander_Z,L_Bound_Image
+    return sample_Z,cover_Z,obstacle_Z,lander_Z,S_Bound_Image
 def visMain(i):
     ret, img = cap.read()	     		# Get a frame from the camera
     if ret == True:	
