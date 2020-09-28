@@ -23,7 +23,7 @@ cover_parameters={"hue":[95,107],"sat":[60,255],"value":[30,255],"Height":70,"OR
         use other threshold
 """
 
-def Detection(self, image,parameters_dict):
+def Detection( image,parameters_dict):
         #image=cv2.resize(image,(640,480))
         #cv2.imshow("normal",image)
         #ogimg=image#store the image given as a parameter for later bitwise and operation
@@ -46,7 +46,7 @@ def Detection(self, image,parameters_dict):
         filtered_img=cv2.morphologyEx(mask,cv2.MORPH_OPEN,Kernel)
         return filtered_img
 
-def Range(self,img,parameters_dict,finalimage):
+def Range(img,parameters_dict,finalimage):
     Range=np.array([])
     ZDistance=np.array([])
     Bearing=np.array([])
@@ -97,7 +97,7 @@ def Range(self,img,parameters_dict,finalimage):
                 else: 
                     continue
     return Range,finalimage
-def DetectandRange(self,img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters,finalImage):
+def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters,finalImage):
     sample_img=Detection(img,sample_parameters)
     cover_img=Detection(img,cover_parameters)
     obstacle_img=Detection(img,obstacle_parameters)
@@ -111,13 +111,13 @@ def DetectandRange(self,img,sample_parameters,cover_parameters,obstacle_paramete
     print(obstacle_Z)
     print(lander_Z)
     return sample_Z,cover_Z,obstacle_Z,lander_Z,L_Bound_Image
-def visMain(self, i):
+def visMain(i):
     ret, img = cap.read()	     		# Get a frame from the camera
     if ret == True:	
         cv2.waitKey(1)	
         #initiate some variables
     if __name__=="__main__":
-        sample_Z,cover_Z,obstacle_Z,lander_Z,FinalImage=DetectandRange(self,img,sample_parameters,
+        sample_Z,cover_Z,obstacle_Z,lander_Z,FinalImage=DetectandRange(img,sample_parameters,
             cover_parameters,obstacle_parameters,lander_parameters,img)
     
     
@@ -134,7 +134,7 @@ if __name__=="__main__":
         try:
             now=time.time()
             i+=1
-            visMain(self,i)
+            visMain(i)
             #if i>30:
              #   break
             
