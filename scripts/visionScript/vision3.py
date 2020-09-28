@@ -169,6 +169,19 @@ class Vision:
     
     def updateVisionState(self, state):
         self.state = state
+        if state==8:
+            Lander_parameter_update={"hue":[15,30],"sat":[0,255],"value":[0,255]}
+            self.lander_parameters.update(Lander_parameter_update)#update dictionary for lander
+            #to change values to adjust for dodge lighting when going up lander
+            
+            #LanderMasklow=np.array([15,0,0],dtype="uint8")
+            #LanderMaskhigh=np.array([30,255,255],dtype="uint8")
+        else:
+            Lander_parameter_update={"hue":[15,30],"sat":[100,255],"value":[100,255]}
+            self.lander_parameters.update(Lander_parameter_update)
+            #revert the changes listed above.
+
+
 
 
     # Alan Testing for Commandcentre integration
