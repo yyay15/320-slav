@@ -12,7 +12,7 @@ sample_parameters={"hue":[0,5],"sat":[100,255],"value":[100,255],"Height":40,"OR
 "Kernel":True,"Circle":True,"BBoxColour":[204,0,204]}
 lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":570,"OR_MASK":False,
 "Kernel":False,"Circle":False,"BBoxColour":[0,0,255]}
-obstacle_parameters={"hue":[40,70],"sat":[100,255],"value":[40,255],"Height":150,"OR_MASK":False,
+obstacle_parameters={"hue":[40,70],"sat":[100,255],"value":[40,255],"Height":113,"OR_MASK":False,
 "Kernel":False,"Circle":False,"BBoxColour":[204,204,0]}
 cover_parameters={"hue":[95,107],"sat":[0,255],"value":[0,255],"Height":70,"OR_MASK":False,
 "Kernel":False,"Circle":False,"BBoxColour":[255,255,255]}
@@ -76,7 +76,7 @@ def Range(img,parameters_dict,finalimage):
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
                      parameters_dict["BBoxColour"],2)
-                    Distance=parameters_dict["Height"]*(f/LHeight)/4
+                    Distance=(parameters_dict["Height"]*(f/LHeight)/4)*math.cos(0.2967)
                     ZDistance=np.append(ZDistance,Distance)
                     Bearing=np.append(Bearing,(Lx-160)*(31.1/160))
                     Range=np.vstack((ZDistance,Bearing)).T#Put Bearing and ZDistance into one array and arrange
