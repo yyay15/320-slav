@@ -41,7 +41,7 @@ def Detection(image,parameters_dict):
         if parameters_dict["Kernel"]==True:
             Kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
         else:
-            Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
+            Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(3,3))
         #Thresholded_img=cv2.bitwise_and(ogimg,ogimg,mask=mask)
         filtered_img=cv2.morphologyEx(mask,cv2.MORPH_OPEN,Kernel)
         return filtered_img
@@ -87,7 +87,7 @@ def Range(img,parameters_dict,finalimage):
                     cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
                     parameters_dict["BBoxColour"],2)
                     Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
-                    Distance=((1.2*Distance)-8.7164)/1000
+                    Distance=((1.04*Distance)-8.7164)/1000
                     ZDistance=np.append(ZDistance,Distance)
                     Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
                     Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
