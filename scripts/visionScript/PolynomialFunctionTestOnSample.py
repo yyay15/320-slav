@@ -96,33 +96,33 @@ def Range(img,parameters_dict,finalimage):
                     #if positive then it's to the right if negative then to left of center 
                 else: 
                     continue
-    return Range,finalimage
+    return Range
 def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters,finalImage):
     sample_img=Detection(img,sample_parameters)
     cover_img=Detection(img,cover_parameters)
     obstacle_img=Detection(img,obstacle_parameters)
     lander_img=Detection(img,lander_parameters)
-    sample_Z,S_Bound_Image=Range(sample_img,sample_parameters,finalImage)
-    cover_Z,C_Bound_Image=Range(cover_img,cover_parameters,finalImage)
-    obstacle_Z,O_Bound_Image=Range(obstacle_img,obstacle_parameters,finalImage)
-    lander_Z,L_Bound_Image=Range(lander_img,lander_parameters,finalImage)
+    sample_Z=Range(sample_img,sample_parameters,finalImage)
+    cover_Z=Range(cover_img,cover_parameters,finalImage)
+    obstacle_Z=Range(obstacle_img,obstacle_parameters,finalImage)
+    lander_Z=Range(lander_img,lander_parameters,finalImage)
     print(sample_Z)
     print(cover_Z)
     print(obstacle_Z)
     print(lander_Z)
-    return sample_Z,cover_Z,obstacle_Z,lander_Z,S_Bound_Image
+    return sample_Z,cover_Z,obstacle_Z,lander_Z
 def visMain(i):
     ret, img = cap.read()	     		# Get a frame from the camera
     if ret == True:	
         cv2.waitKey(1)	
         #initiate some variables
     if __name__=="__main__":
-        sample_Z,cover_Z,obstacle_Z,lander_Z,FinalImage=DetectandRange(img,sample_parameters,
+        sample_Z,cover_Z,obstacle_Z,lander_Z=DetectandRange(img,sample_parameters,
             cover_parameters,obstacle_parameters,lander_parameters,img)
     
     
     if (i%5)==0:
-            cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
+            cv2.imshow("Binary Thresholded Frame",FinalImage)# Display thresholded frame
     #print(Bearing1)
     
 
