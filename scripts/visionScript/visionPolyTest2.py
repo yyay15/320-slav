@@ -3,6 +3,20 @@ import imutils
 import math
 import time
 import cv2 
+from picamera import PiCamera
+from picamera.array import PiRGBArray
+camera=PiCamera(resolution=(320,240),framerate=30)
+time.sleep(2)
+camera.shutter_speed = camera.exposure_speed
+camera.exposure_mode = 'off'
+#for the lines above ensure that the shutter speed and exposure speed are the same as they are related
+g,r = camera.awb_gains
+#print(g,r)
+#g=1.214 and r=2.8125
+#g is camera gain that is adjusted for the current image taken then set the gain value for instead of being
+#automatically adjusted through auto awb
+camera.awb_mode = 'off'
+camera.awb_gains = (1.214,2.8125)
 cap = cv2.VideoCapture(0)  		# Connect to camera 0 (or the only camera)
 cap.set(3, 320)                     	# Set the width to 320
 cap.set(4, 240)                      	# Set the height to 240
