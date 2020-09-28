@@ -66,18 +66,32 @@ def Range(img,parameters_dict,finalimage):
             Area=cv2.contourArea(a)
             if parameters_dict["Circle"]==True:
                 Area=cv2.contourArea(a)
+                Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                 if Area>30:
-                    (x,y),radius=cv2.minEnclosingCircle(a)
-                    cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
-                    parameters_dict["BBoxColour"],2)
-                    Distance=(parameters_dict["Height"]*(f/(2*radius))/8)*math.cos(0.2967)
-                    Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
-                    Distance=Distance/1000
-                    ZDistance=np.append(ZDistance,Distance)
-                    Bearing=np.append(Bearing,math.radians((x-160)*(31.1/160)))
-                    Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
-                    #columnwise
-                    Range=Range[Range[:,0].argsort()]
+                    if LWidth/LHeight<1.3:
+                        (x,y),radius=cv2.minEnclosingCircle(a)
+                        cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
+                        parameters_dict["BBoxColour"],2)
+                        Distance=(parameters_dict["Height"]*(f/(2*radius))/8)*math.cos(0.2967)
+                        Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
+                        Distance=Distance/1000
+                        ZDistance=np.append(ZDistance,Distance)
+                        Bearing=np.append(Bearing,math.radians((x-160)*(31.1/160)))
+                        Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                        #columnwise
+                        Range=Range[Range[:,0].argsort()]
+                    elif LHeight/LWidth<1.3:
+                        (x,y),radius=cv2.minEnclosingCircle(a)
+                        cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
+                        parameters_dict["BBoxColour"],2)
+                        Distance=(parameters_dict["Height"]*(f/(2*radius))/8)*math.cos(0.2967)
+                        Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
+                        Distance=Distance/1000
+                        ZDistance=np.append(ZDistance,Distance)
+                        Bearing=np.append(Bearing,math.radians((x-160)*(31.1/160)))
+                        Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                        #columnwise
+                        Range=Range[Range[:,0].argsort()]
                 else:
                     continue 
             else:
