@@ -6,12 +6,10 @@ import cv2
 cap = cv2.VideoCapture(0)  		# Connect to camera 0 (or the only camera)
 cap.set(3, 320)                     	# Set the width to 320
 cap.set(4, 240)                      	# Set the height to 240
-cap.set(44,-1)
-cap.set(45,(1.214,2.8125))
 Center=np.array([])
 f=3.04/(1.12*10**-3)
 #img=cv2.imread("MultipleCovers.jpg")
-sample_parameters={"hue":[0,5],"sat":[100,255],"value":[100,255],"Height":40,"OR_MASK":True,
+sample_parameters={"hue":[0,5],"sat":[125,255],"value":[125,255],"Height":40,"OR_MASK":True,
     "Kernel":True,"Circle":True,"BBoxColour":[204,0,204]}
 lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":570,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[0,0,255]}
@@ -43,7 +41,7 @@ def Detection(image,parameters_dict):
         if parameters_dict["Kernel"]==True:
             Kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
         else:
-            Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(3,3))
+            Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
         #Thresholded_img=cv2.bitwise_and(ogimg,ogimg,mask=mask)
         filtered_img=cv2.morphologyEx(mask,cv2.MORPH_OPEN,Kernel)
         return filtered_img
@@ -141,7 +139,8 @@ def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,la
     cover_img=Detection(img,cover_parameters)
     obstacle_img=Detection(img,obstacle_parameters)
     lander_img=Detection(img,lander_parameters)
-    sample_Z=Range(sample_img,sample_parameters,finalImage)
+    sample_Z=Range(sample_img,sample_parameters,finalImage)#sample_img is the filtered img finalImage is just 
+    #the plain image
     cover_Z=Range(cover_img,cover_parameters,finalImage)
     obstacle_Z=Range(obstacle_img,obstacle_parameters,finalImage)
     lander_Z=Range(lander_img,lander_parameters,finalImage)
@@ -179,6 +178,8 @@ if __name__=="__main__":
             rate2=1/elapsed2
             print(rate2)
         except KeyboardInterrupt:
+            cap.release()
+            cv2.destroyAllWindows()
             break
                 
     
