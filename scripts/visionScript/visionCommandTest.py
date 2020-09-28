@@ -18,11 +18,10 @@ class Vision:
         # parameters that change 
         self.random = 1
         self.changingVariable = 1
-        
+        self.camera.awb_mode = 'off'
         i2c = busio.I2C(board.SCL, board.SDA)
         self.sensor = adafruit_vcnl4040.VCNL4040(i2c)
         self.cap = cv2.VideoCapture(0)  		# Connect to camera 0 (or the only camera)
-        self.cap.awb_mode = 'off'
         self.cap.set(3, 320)                     	# Set the width to 320
         self.cap.set(4, 240)                      	# Set the height to 240
         self.Center=np.array([])
@@ -112,6 +111,7 @@ class Vision:
         ret, img = self.cap.read()	     		# Get a frame from the camera
         if ret == True:	
             cv2.waitKey(1)	
+        #img=cv2.xphoto_WhiteBalancer.balanceWhite(img)
             #initiate some variables
 
         sample_img,SFin=self.Detection(img,self.sample_parameters)
