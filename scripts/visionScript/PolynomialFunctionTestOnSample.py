@@ -67,7 +67,7 @@ def Range(img,parameters_dict,finalimage):
                 #columnwise
                 Range=Range[Range[:,0].argsort()] 
             else:
-                Area=cv.contourArea(Contour)
+                Area=cv2.contourArea(a)
                 if Area>1250:
                     Lx=int(Moment["m10"]/Moment["m00"])
                     Ly=int(Moment["m01"]/Moment["m00"])
