@@ -82,12 +82,12 @@ def Range(img,parameters_dict,finalimage):
                     continue 
             else:
                 Area=cv2.contourArea(a)
-                if Area>750:
+                Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
+                if Area>300:
                     Lx=int(Moment["m10"]/Moment["m00"])
                     Ly=int(Moment["m01"]/Moment["m00"])
                     Centroid=np.array([Lx,Ly])
-                    Center=np.append(Center,Centroid)
-                    Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
+                    Center=np.append(Center,Centroid)Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
                     parameters_dict["BBoxColour"],2)
                     Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
@@ -98,6 +98,34 @@ def Range(img,parameters_dict,finalimage):
                     #columnwise
                     Range=Range[Range[:,0].argsort()] 
                     #if positive then it's to the right if negative then to left of center 
+                elif LWidth/LHeight<1.75:
+                    Lx=int(Moment["m10"]/Moment["m00"])
+                    Ly=int(Moment["m01"]/Moment["m00"])
+                    Centroid=np.array([Lx,Ly])
+                    Center=np.append(Center,Centroid)Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
+                    cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
+                    parameters_dict["BBoxColour"],2)
+                    Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
+                    Distance=((1.04*Distance)-8.7164)/1000
+                    ZDistance=np.append(ZDistance,Distance)
+                    Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
+                    Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                    #columnwise
+                    Range=Range[Range[:,0].argsort()] 
+                elif LHeight/LWidth<1.75:
+                    Lx=int(Moment["m10"]/Moment["m00"])
+                    Ly=int(Moment["m01"]/Moment["m00"])
+                    Centroid=np.array([Lx,Ly])
+                    Center=np.append(Center,Centroid)Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
+                    cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
+                    parameters_dict["BBoxColour"],2)
+                    Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
+                    Distance=((1.04*Distance)-8.7164)/1000
+                    ZDistance=np.append(ZDistance,Distance)
+                    Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
+                    Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                    #columnwise
+                    Range=Range[Range[:,0].argsort()] 
                 else: 
                     continue
     return Range
