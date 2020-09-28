@@ -29,7 +29,7 @@ def Detection(image,parameters_dict):
         #ogimg=image#store the image given as a parameter for later bitwise and operation
         image=cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
-        image=cv2.GaussianBlur(image, (5, 5), 2) 
+        #image=cv2.GaussianBlur(image, (17, 17), 2) 
         lower=np.array([parameters_dict["hue"][0],parameters_dict["sat"][0],parameters_dict["value"][0]])
         higher=np.array([parameters_dict["hue"][1],parameters_dict["sat"][1],parameters_dict["value"][1]])
         mask=cv2.inRange(image,lower,higher)
@@ -116,11 +116,9 @@ def visMain(i):
     if ret == True:	
         cv2.waitKey(1)	
         #initiate some variables
-    if __name__=="__main__":
-        sample_Z,cover_Z,obstacle_Z,lander_Z=DetectandRange(img,sample_parameters,
-            cover_parameters,obstacle_parameters,lander_parameters,img)
-    
-    
+
+    sample_Z,cover_Z,obstacle_Z,lander_Z=DetectandRange(img,sample_parameters,
+        cover_parameters,obstacle_parameters,lander_parameters,img)
     if (i%5)==0:
             cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
     #print(Bearing1)
