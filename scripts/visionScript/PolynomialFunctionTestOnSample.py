@@ -23,11 +23,11 @@ cover_parameters={"hue":[90,115],"sat":[0,255],"value":[0,255],"Height":70,"OR_M
         use other threshold
 """
 
-def Detection( image,parameters_dict):
+def Detection(image,parameters_dict):
         #image=cv2.resize(image,(640,480))
         #cv2.imshow("normal",image)
         #ogimg=image#store the image given as a parameter for later bitwise and operation
-        image=cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+        image=cv2.cvtColor(cv2.UMat(image), cv2.COLOR_BGR2HSV)
 
         #image=cv2.GaussianBlur(image, (17, 17), 2) 
         lower=np.array([parameters_dict["hue"][0],parameters_dict["sat"][0],parameters_dict["value"][0]])
@@ -110,19 +110,19 @@ def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,la
     print(cover_Z)
     print(obstacle_Z)
     print(lander_Z)
-    return sample_Z,cover_Z,obstacle_Z,lander_Z
+    return sample_Z,cover_Z,obstacle_Z,lander_Z,L_Bound_Image
 def visMain(i):
     ret, img = cap.read()	     		# Get a frame from the camera
     if ret == True:	
         cv2.waitKey(1)	
         #initiate some variables
     if __name__=="__main__":
-        sample_Z,cover_Z,obstacle_Z,lander_Z=DetectandRange(img,sample_parameters,
+        sample_Z,cover_Z,obstacle_Z,lander_Z,FinalImage=DetectandRange(img,sample_parameters,
             cover_parameters,obstacle_parameters,lander_parameters,img)
     
     
     if (i%5)==0:
-            cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
+            cv2.imshow("Binary Thresholded Frame",FinalImage)# Display thresholded frame
     #print(Bearing1)
     
 
