@@ -110,14 +110,14 @@ def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,la
     print(cover_Z)
     print(obstacle_Z)
     print(lander_Z)
-    return sample_Z,cover_Z,obstacle_Z,lander_Z,L_Bound_Image
+    return sample_Z,cover_Z,obstacle_Z,lander_Z
 def visMain(i):
     ret, img = cap.read()	     		# Get a frame from the camera
     if ret == True:	
         cv2.waitKey(1)	
         #initiate some variables
     if __name__=="__main__":
-        sample_Z,cover_Z,obstacle_Z,lander_Z,FinalImage=DetectandRange(img,sample_parameters,
+        sample_Z,cover_Z,obstacle_Z,lander_Z=DetectandRange(img,sample_parameters,
             cover_parameters,obstacle_parameters,lander_parameters,img)
     
     
