@@ -122,7 +122,7 @@ def visMain(i):
     
     
     if (i%5)==0:
-            cv2.imshow("Binary Thresholded Frame",FinalImage)# Display thresholded frame
+            cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
     #print(Bearing1)
     
 
