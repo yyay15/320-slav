@@ -27,7 +27,7 @@ def Detection( image,parameters_dict):
         #image=cv2.resize(image,(640,480))
         #cv2.imshow("normal",image)
         #ogimg=image#store the image given as a parameter for later bitwise and operation
-        image=cv2.cvtColor(cv2.UMat(image), cv2.COLOR_BGR2HSV)
+        image=cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
         #image=cv2.GaussianBlur(image, (17, 17), 2) 
         lower=np.array([parameters_dict["hue"][0],parameters_dict["sat"][0],parameters_dict["value"][0]])
@@ -46,7 +46,7 @@ def Detection( image,parameters_dict):
         filtered_img=cv2.morphologyEx(mask,cv2.MORPH_OPEN,Kernel)
         return filtered_img
 
-def Range(img,parameters_dict,finalimage):
+def Range(img,parameters_dict):
     Range=np.array([])
     ZDistance=np.array([])
     Bearing=np.array([])
@@ -66,7 +66,7 @@ def Range(img,parameters_dict,finalimage):
             #Area=cv2.contourArea(a)
             if parameters_dict["Circle"]==True:
                 (x,y),radius=cv2.minEnclosingCircle(a)
-                cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
+                cv2.rectangle(img,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
                 parameters_dict["BBoxColour"],2)
                 Distance=(parameters_dict["Height"]*(f/(2*radius))/8)*math.cos(0.2967)
                 Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
@@ -84,7 +84,7 @@ def Range(img,parameters_dict,finalimage):
                     Centroid=np.array([Lx,Ly])
                     Center=np.append(Center,Centroid)
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
+                    cv2.rectangle(image,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
                     parameters_dict["BBoxColour"],2)
                     Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
                     Distance=((1.2*Distance)-8.7164)/1000
@@ -97,15 +97,15 @@ def Range(img,parameters_dict,finalimage):
                 else: 
                     continue
     return Range
-def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters,finalImage):
+def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters):
     sample_img=Detection(img,sample_parameters)
     cover_img=Detection(img,cover_parameters)
     obstacle_img=Detection(img,obstacle_parameters)
     lander_img=Detection(img,lander_parameters)
-    sample_Z=Range(sample_img,sample_parameters,finalImage)
-    cover_Z=Range(cover_img,cover_parameters,finalImage)
-    obstacle_Z=Range(obstacle_img,obstacle_parameters,finalImage)
-    lander_Z=Range(lander_img,lander_parameters,finalImage)
+    sample_Z=Range(sample_img,sample_parameters)
+    cover_Z=Range(cover_img,cover_parameters)
+    obstacle_Z=Range(obstacle_img,obstacle_parameters)
+    lander_Z=Range(lander_img,lander_parameters)
     print(sample_Z)
     print(cover_Z)
     print(obstacle_Z)
@@ -118,7 +118,7 @@ def visMain(i):
         #initiate some variables
     if __name__=="__main__":
         sample_Z,cover_Z,obstacle_Z,lander_Z=DetectandRange(img,sample_parameters,
-            cover_parameters,obstacle_parameters,lander_parameters,img)
+            cover_parameters,obstacle_parameters,lander_parameters)
     
     
     if (i%5)==0:
