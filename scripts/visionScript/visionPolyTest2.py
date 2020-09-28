@@ -92,7 +92,7 @@ def Range(img,parameters_dict,finalimage):
                         cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
                         parameters_dict["BBoxColour"],2)
                         Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
-                        
+                        Distance=((-0.0002*Distance**2)+(0.8492*Distance)+51)/1000
                         ZDistance=np.append(ZDistance,Distance)
                         Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
                         Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
@@ -107,7 +107,7 @@ def Range(img,parameters_dict,finalimage):
                         cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
                         parameters_dict["BBoxColour"],2)
                         Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
-                        
+                        Distance=((-0.0002*Distance**2)+(0.8492*Distance)+51)/1000
                         ZDistance=np.append(ZDistance,Distance)
                         Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
                         Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
