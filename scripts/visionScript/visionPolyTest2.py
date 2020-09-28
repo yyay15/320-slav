@@ -83,7 +83,7 @@ def Range(img,parameters_dict,finalimage):
             else:
                 Area=cv2.contourArea(a)
                 Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                if Area>300:
+                if Area>200:
                     if LWidth/LHeight<1.3:
                         Lx=int(Moment["m10"]/Moment["m00"])
                         Ly=int(Moment["m01"]/Moment["m00"])
