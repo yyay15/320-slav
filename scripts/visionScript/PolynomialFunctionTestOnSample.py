@@ -87,7 +87,7 @@ def Range(img,parameters_dict,finalimage):
                     Lx=int(Moment["m10"]/Moment["m00"])
                     Ly=int(Moment["m01"]/Moment["m00"])
                     Centroid=np.array([Lx,Ly])
-                    Center=np.append(Center,Centroid)Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
+                    Center=np.append(Center,Centroid)
                     cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
                     parameters_dict["BBoxColour"],2)
                     Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
@@ -98,11 +98,11 @@ def Range(img,parameters_dict,finalimage):
                     #columnwise
                     Range=Range[Range[:,0].argsort()] 
                     #if positive then it's to the right if negative then to left of center 
-                elif LWidth/LHeight<1.75:
+                elif LWidth/LHeight<1.3:
                     Lx=int(Moment["m10"]/Moment["m00"])
                     Ly=int(Moment["m01"]/Moment["m00"])
                     Centroid=np.array([Lx,Ly])
-                    Center=np.append(Center,Centroid)Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
+                    Center=np.append(Center,Centroid)
                     cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
                     parameters_dict["BBoxColour"],2)
                     Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
@@ -112,11 +112,11 @@ def Range(img,parameters_dict,finalimage):
                     Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                     #columnwise
                     Range=Range[Range[:,0].argsort()] 
-                elif LHeight/LWidth<1.75:
+                elif LHeight/LWidth<1.3:
                     Lx=int(Moment["m10"]/Moment["m00"])
                     Ly=int(Moment["m01"]/Moment["m00"])
                     Centroid=np.array([Lx,Ly])
-                    Center=np.append(Center,Centroid)Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
+                    Center=np.append(Center,Centroid)
                     cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
                     parameters_dict["BBoxColour"],2)
                     Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
