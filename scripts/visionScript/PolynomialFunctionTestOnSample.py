@@ -134,7 +134,7 @@ if __name__=="__main__":
         try:
             now=time.time()
             i+=1
-            main(i)
+            visMain(self,i)
             #if i>30:
              #   break
             
