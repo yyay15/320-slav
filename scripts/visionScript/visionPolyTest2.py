@@ -92,6 +92,8 @@ def Range(img,parameters_dict,finalimage):
                         Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                         #columnwise
                         Range=Range[Range[:,0].argsort()]
+                    else:
+                        continue
                 else:
                     continue 
             else:
@@ -127,6 +129,8 @@ def Range(img,parameters_dict,finalimage):
                         Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                         #columnwise
                         Range=Range[Range[:,0].argsort()] 
+                    else:
+                        continue
                 else: 
                     continue
     return Range
