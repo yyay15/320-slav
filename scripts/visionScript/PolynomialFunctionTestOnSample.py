@@ -2,20 +2,20 @@ import numpy as np
 import imutils
 import math
 import time
-import cv2 
+from cv2 import cv2 
 cap = cv2.VideoCapture(0)  		# Connect to camera 0 (or the only camera)
 cap.set(3, 320)                     	# Set the width to 320
 cap.set(4, 240)                      	# Set the height to 240
 Center=np.array([])
 f=3.04/(1.12*10**-3) 
 sample_parameters={"hue":[0,5],"sat":[100,255],"value":[100,255],"Height":40,"OR_MASK":True,
-"Kernel":True,"Circle":True,"BBoxColour":[204,0,204],"Obstacle":False}
-lander_parameters={"hue":[15,30],"sat":[30,255],"value":[30,255],"Height":65,"OR_MASK":False,
-"Kernel":False,"Circle":False,"BBoxColour":[0,0,255],"Obstacle":False}
-obstacle_parameters={"hue":[40,70],"sat":[100,255],"value":[40,255],"Height":113,"OR_MASK":False,
-"Kernel":False,"Circle":False,"BBoxColour":[204,204,0],"Obstacle":True}
-cover_parameters={"hue":[100,107],"sat":[0,255],"value":[0,255],"Height":70,"OR_MASK":False,
-"Kernel":False,"Circle":False,"BBoxColour":[255,255,255],"Obstacle":False}
+"Kernel":True,"Circle":True,"BBoxColour":[204,0,204]}
+lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":570,"OR_MASK":False,
+"Kernel":False,"Circle":False,"BBoxColour":[0,0,255]}
+obstacle_parameters={"hue":[40,70],"sat":[100,255],"value":[40,255],"Height":150,"OR_MASK":False,
+"Kernel":False,"Circle":False,"BBoxColour":[204,204,0]}
+cover_parameters={"hue":[95,107],"sat":[0,255],"value":[0,255],"Height":70,"OR_MASK":False,
+"Kernel":False,"Circle":False,"BBoxColour":[255,255,255]}
 def Detection(image,parameters_dict):
     ogimg=image#store the image given as a parameter for later bitwise and operation
     image=cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
@@ -32,9 +32,9 @@ def Detection(image,parameters_dict):
         Kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
     else:
         Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
-    Thresholded_img=cv2.bitwise_and(ogimg,ogimg,mask=mask)
+    #Thresholded_img=cv2.bitwise_and(ogimg,ogimg,mask=mask)
     filtered_img=cv2.morphologyEx(mask,cv2.MORPH_OPEN,Kernel)
-    return filtered_img,Thresholded_img
+    return filtered_img
 def Range(img,parameters_dict,finalimage):
     Range=np.array([])
     ZDistance=np.array([])
@@ -72,32 +72,14 @@ def Range(img,parameters_dict,finalimage):
                 Centroid=np.array([Lx,Ly])
                 Center=np.append(Center,Centroid)
                 Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                Area=LWidth*LHeight
-                if Area>1250:
-                    if parameters_dict["Obstacle"]==True:
-                        cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
-                         parameters_dict["BBoxColour"],2)
-                        Distance=(parameters_dict["Height"]*(f/LWidth)/8)
-                        Distance=(1.04*Distance)-8.7164
-                        ZDistance=np.append(ZDistance,Distance)
-                        Bearing=np.append(Bearing,(Lx-160)*(31.1/160))
-                        Range=np.vstack((ZDistance,Bearing)).T#Put Bearing and ZDistance into one array and arrange
-                        Range=Range[Range[:,0].argsort()] 
-                    
-                    else:
-                        cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
-                         parameters_dict["BBoxColour"],2)
-                        Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
-                        ZDistance=np.append(ZDistance,Distance)
-                        Bearing=np.append(Bearing,(Lx-160)*(31.1/160))
-                        Range=np.vstack((ZDistance,Bearing)).T#Put Bearing and ZDistance into one array and arrange
-                        Range=Range[Range[:,0].argsort()] 
-                        #columnwise
-                        
-                else:
-                    continue
-                    
-                
+                cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
+                 parameters_dict["BBoxColour"],2)
+                Distance=parameters_dict["Height"]*(f/LHeight)/4
+                ZDistance=np.append(ZDistance,Distance)
+                Bearing=np.append(Bearing,(Lx-160)*(31.1/160))
+                Range=np.vstack((ZDistance,Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                #columnwise
+                Range=Range[Range[:,0].argsort()] 
                 #if positive then it's to the right if negative then to left of center 
     return Range,finalimage
 
@@ -106,28 +88,22 @@ def main(i):
     if ret == True:	
         cv2.waitKey(1)	
         #initiate some variables 
-    """ img=cv2.imread("MultipleCovers.jpg")
+   """  img=cv2.imread("visionScript\MultipleCovers.jpg")
     img=cv2.resize(img,(320,240)) """
     if __name__=="__main__":
-        sample_img,SFin=Detection(np.copy(img),sample_parameters)
-        cover_img,CFin=Detection(np.copy(img),cover_parameters)
-        obstacle_img,OFin=Detection(np.copy(img),obstacle_parameters)
-        lander_img,LFin=Detection(np.copy(img),lander_parameters)
-        FinalImage=cv2.bitwise_or(SFin,CFin)
-        FinalImage=cv2.bitwise_or(FinalImage,OFin)
-        FinalImage=cv2.bitwise_or(FinalImage,LFin)#get a final image with all 
-        #objects of interest in the image
-        sample_Z,S_Bound_Image=Range(sample_img,sample_parameters,FinalImage)
-        cover_Z,C_Bound_Image=Range(cover_img,cover_parameters,FinalImage)
-        obstacle_Z,O_Bound_Image=Range(obstacle_img,obstacle_parameters,FinalImage)
-        Lander_Z,L_Bound_Image=Range(lander_img,lander_parameters,FinalImage)
+        sample_img=Detection(np.copy(img),sample_parameters)
+        cover_img=Detection(np.copy(img),cover_parameters)
+        obstacle_img=Detection(np.copy(img),obstacle_parameters)
+        lander_img=Detection(np.copy(img),lander_parameters)
+        sample_Z,S_Bound_Image=Range(sample_img,sample_parameters,img)
+        cover_Z,C_Bound_Image=Range(cover_img,cover_parameters,img)
+        obstacle_Z,O_Bound_Image=Range(obstacle_img,obstacle_parameters,img)
+        Lander_Z,L_Bound_Image=Range(lander_img,lander_parameters,img)
         print("Sample",sample_Z)
         print("Obstacle",obstacle_Z)
-        print("Cover",cover_Z)
-        print("Lander",Lander_Z)
         #print("Cover",cover_Z)
         if (i%5)==0:
-            cv2.imshow("Binary Thresholded Frame",FinalImage)# Display thresholded frame
+            cv2.imshow("Binary Thresholded Frame",L_Bound_Image)# Display thresholded frame
             cv2.waitKey(1)
             pass
     
@@ -142,7 +118,7 @@ if __name__=="__main__":
             i+=1
             main(i)
             #if i>30:
-            #    break
+             #   break
             
             elapsed2=time.time()-now
             rate2=1/elapsed2
