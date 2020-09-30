@@ -159,16 +159,16 @@ def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,la
     cover_Z=Range(cover_img,cover_parameters,finalImage)
     obstacle_Z=Range(obstacle_img,obstacle_parameters,finalImage)
     lander_Z=Range(lander_img,lander_parameters,finalImage)
+    return sample_Z,cover_Z,obstacle_Z,lander_Z
+def visMain(i):
+    camera.capture_continuous(rawCapture,format="bgr",use_video_port=True)
+    img=rawCapture.array
+    sample_Z,cover_Z,obstacle_Z,lander_Z=DetectandRange(img,sample_parameters,
+        cover_parameters,obstacle_parameters,lander_parameters,img)
     print(sample_Z)
     print(cover_Z)
     print(obstacle_Z)
     print(lander_Z)
-    return sample_Z,cover_Z,obstacle_Z,lander_Z
-def visMain(i):
-    camera.capture_sequence(rawCapture,format="bgr",use_video_port=True)
-    img=rawCapture.array
-    sample_Z,cover_Z,obstacle_Z,lander_Z=DetectandRange(img,sample_parameters,
-        cover_parameters,obstacle_parameters,lander_parameters,img)
     if (i%5)==0:
         cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
         cv2.waitKey(1)
