@@ -146,7 +146,7 @@ def Range(img,parameters_dict,finalimage):
                         continue
                 else: 
                     continue
-    return Range,finalimage
+    return Range
 def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters,finalImage):
     sample_img=Detection(img,sample_parameters)
     cover_img=Detection(img,cover_parameters)
@@ -154,14 +154,14 @@ def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,la
     lander_img=Detection(img,lander_parameters)
     sample_Z=Range(sample_img,sample_parameters,finalImage)#sample_img is the filtered img finalImage is just 
     #the plain image
-    cover_Z,finalImage=Range(cover_img,cover_parameters,finalImage)
-    obstacle_Z,finalImage=Range(obstacle_img,obstacle_parameters,finalImage)
-    lander_Z,finalImage=Range(lander_img,lander_parameters,finalImage)
+    cover_Z=Range(cover_img,cover_parameters,finalImage)
+    obstacle_Z=Range(obstacle_img,obstacle_parameters,finalImage)
+    lander_Z=Range(lander_img,lander_parameters,finalImage)
     print(sample_Z)
     print(cover_Z)
     print(obstacle_Z)
     print(lander_Z)
-    return sample_Z,cover_Z,obstacle_Z,lander_Z,finalImage
+    return sample_Z,cover_Z,obstacle_Z,lander_Z
 def visMain(i):
     ret, img = cap.read()	     		# Get a frame from the camera
     if ret == True:	
@@ -169,10 +169,10 @@ def visMain(i):
         #initiate some variables
     """ img=cv2.imread("visionScript\MultipleCovers.jpg")
     img=cv2.resize(img,(320,240)) """
-    sample_Z,cover_Z,obstacle_Z,lander_Z,finalimage=DetectandRange(img,sample_parameters,
+    sample_Z,cover_Z,obstacle_Z,lander_Z=DetectandRange(img,sample_parameters,
         cover_parameters,obstacle_parameters,lander_parameters,img)
     if (i%5)==0:
-            cv2.imshow("Binary Thresholded Frame",finalimage)# Display thresholded frame
+            cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
             cv2.waitKey(1)
     #print(Bearing1)
     
