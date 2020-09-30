@@ -119,6 +119,8 @@ class Mobility:
         self.motorDIR = [A1,A2,B1,B2]
         self.speedLeft  = MEDIUMSPEED
         self.speedRight = MEDIUMSPEED
+        self.angVelLeft = 0
+        self.angVelRight = 0
         # Zero State
         self.drive(0, 0,False)
 
@@ -142,6 +144,8 @@ class Mobility:
 		# Calculate angular velocity for each wheel
         angVeloLeft = veloLeft / WHEELRADIUS
         angVeloRight = veloRight / WHEELRADIUS
+        self.angVelLeft = angVeloLeft
+        self.angVelRight = angVeloRight
                 
         # Convert to power value from 0 to 100
         powerLeft = angVeloLeft / maxAngWheel * 100
