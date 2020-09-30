@@ -5,7 +5,7 @@ import time
 import cv2 
 from picamera import PiCamera
 from picamera.array import PiRGBArray
-camera=PiCamera(resolution=(320,240),framerate=30)
+camera=PiCamera(resolution=(320,240),framerate=20)
 #camera.iso=100
 # Wait for the automatic gain control to settle
 time.sleep(2)
@@ -163,13 +163,14 @@ def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,la
     print(lander_Z)
     return sample_Z,cover_Z,obstacle_Z,lander_Z
 def visMain(i):
-    rawCapture=PiRGBArray(camera)#take an image and store it as a RGB array
+    rawCapture=PiRGBArray(camera,size=(320,240))#take an image and store it as a RGB array
     camera.capture_continuous(rawCapture,format="bgr",use_video_port=True)#use the image we took previously 
-    img=rawCapture.array#store it as img in a numpy array
+    img=cv2.imdecode(rawCapture)
     sample_Z,cover_Z,obstacle_Z,lander_Z=DetectandRange(img,sample_parameters,
         cover_parameters,obstacle_parameters,lander_parameters,img)
     if (i%1)==0:
             cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
+            cv2.waitKey(1)
     #print(Bearing1)
     
 
