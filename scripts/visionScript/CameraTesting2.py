@@ -5,6 +5,7 @@ import time
 import cv2 
 from picamera import PiCamera
 from picamera.array import PiRGBArray
+
 camera=PiCamera(resolution=(320,240),framerate=30)
 #camera.iso=100
 # Wait for the automatic gain control to settle
@@ -161,8 +162,11 @@ def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,la
     lander_Z=Range(lander_img,lander_parameters,finalImage)
     return sample_Z,cover_Z,obstacle_Z,lander_Z
 def visMain(i):
-    camera.capture_continuous(rawCapture,format="bgr",use_video_port=True)
-    img=rawCapture.array
+    camera.capture_sequence(rawCapture,format="bgr",use_video_port=True)
+    fwidth=(320+31)//32*32
+    fheight=(240+15)//16*16
+    img=np.frombuffer(rawCapture.getvalue(), dtype=np.uint8).\
+        reshape((fheight, fwidth, 3))[:240, :320, :]
     sample_Z,cover_Z,obstacle_Z,lander_Z=DetectandRange(img,sample_parameters,
         cover_parameters,obstacle_parameters,lander_parameters,img)
     print(sample_Z)
