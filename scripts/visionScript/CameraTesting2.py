@@ -20,8 +20,7 @@ g,r = camera.awb_gains
 #automatically adjusted through auto awb
 camera.awb_mode = 'off'
 camera.awb_gains = (1.214,2.8125)
-rawCapture=PiRGBArray(camera,size=(320,240))#take an image and store it as a RGB array
-time.sleep(0.1)
+
 Center=np.array([])
 f=3.04/(1.12*10**-3)
 #img=cv2.imread("MultipleCovers.jpg")
@@ -162,6 +161,8 @@ def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,la
     lander_Z=Range(lander_img,lander_parameters,finalImage)
     return sample_Z,cover_Z,obstacle_Z,lander_Z
 def visMain(i):
+    rawCapture=PiRGBArray(camera,size=(320,240))#take an image and store it as a RGB array
+    time.sleep(0.1)
     camera.capture_sequence(rawCapture,format="bgr",use_video_port=True)
     fwidth=(320+31)//32*32
     fheight=(240+15)//16*16
