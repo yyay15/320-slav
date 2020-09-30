@@ -5,10 +5,9 @@ import time
 import cv2 
 cap = cv2.VideoCapture(0)  		# Connect to camera 0 (or the only camera)
 cap.set(3, 320)                     	# Set the width to 320
-cap.set(4, 240)                      	# Set the height to 240
+cap.set(4, 240)        	# Set the height to 240
 Center=np.array([])
 f=3.04/(1.12*10**-3)
-#img=cv2.imread("MultipleCovers.jpg")
 sample_parameters={"hue":[0,5],"sat":[125,255],"value":[125,255],"Height":40,"OR_MASK":True,
     "Kernel":True,"Circle":True,"BBoxColour":[204,0,204]}
 lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":570,"OR_MASK":False,
@@ -17,34 +16,39 @@ obstacle_parameters={"hue":[40,70],"sat":[50,255],"value":[40,255],"Height":113,
     "Kernel":False,"Circle":False,"BBoxColour":[204,204,0]}
 cover_parameters={"hue":[100,130],"sat":[0,255],"value":[0,255],"Height":70,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[255,255,255]} 
-
-
 """ if self.state == 8:
         use other threshold
 """
+def MaxMinLocations(c,img):
+    maxleft=tuple(c[c[:,:,0].argmin()][0])
+    maxright=tuple(c[c[:,:,0].argmax()][0])
+    maxtop=tuple(c[c[:,:,1].argmin()][0])
+    maxbot=tuple(c[c[:,:,1].argmax()][0])
+    cv2.line(img,maxbot,maxright,(0,255,0),2)
+
+    
 
 def Detection(image,parameters_dict):
-        #image=cv2.resize(image,(640,480))
-        #cv2.imshow("normal",image)
-        #ogimg=image#store the image given as a parameter for later bitwise and operation
-        image=cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    #cv2.imshow("normal",image)
+    #ogimg=image#store the image given as a parameter for later bitwise and operation
+    image=cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
-        #image=cv2.GaussianBlur(image, (17, 17), 2) 
-        lower=np.array([parameters_dict["hue"][0],parameters_dict["sat"][0],parameters_dict["value"][0]])
-        higher=np.array([parameters_dict["hue"][1],parameters_dict["sat"][1],parameters_dict["value"][1]])
-        mask=cv2.inRange(image,lower,higher)
-        if parameters_dict["OR_MASK"]==True:
-            lower_oran=np.array([175,100,100],dtype="uint8") 
-            higher_oran=np.array([179,255,255],dtype="uint8")
-            mask1=cv2.inRange(image,lower_oran,higher_oran)
-            mask=cv2.bitwise_or(mask,mask1)
-        if parameters_dict["Kernel"]==True:
-            Kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
-        else:
-            Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
-        #Thresholded_img=cv2.bitwise_and(ogimg,ogimg,mask=mask)
-        filtered_img=cv2.morphologyEx(mask,cv2.MORPH_OPEN,Kernel)
-        return filtered_img
+    #image=cv2.GaussianBlur(image, (17, 17), 2) 
+    lower=np.array([parameters_dict["hue"][0],parameters_dict["sat"][0],parameters_dict["value"][0]])
+    higher=np.array([parameters_dict["hue"][1],parameters_dict["sat"][1],parameters_dict["value"][1]])
+    mask=cv2.inRange(image,lower,higher)
+    if parameters_dict["OR_MASK"]==True:
+        lower_oran=np.array([175,100,100],dtype="uint8") 
+        higher_oran=np.array([179,255,255],dtype="uint8")
+        mask1=cv2.inRange(image,lower_oran,higher_oran)
+        mask=cv2.bitwise_or(mask,mask1)
+    if parameters_dict["Kernel"]==True:
+        Kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
+    else:
+        Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
+    #Thresholded_img=cv2.bitwise_and(ogimg,ogimg,mask=mask)
+    filtered_img=cv2.morphologyEx(mask,cv2.MORPH_OPEN,Kernel)
+    return filtered_img
 
 def Range(img,parameters_dict,finalimage):
     Range=np.array([])
@@ -110,6 +114,9 @@ def Range(img,parameters_dict,finalimage):
                         Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
                         Distance=((-0.0002*Distance**2)+(0.8492*Distance)+51)/1000
                         ZDistance=np.append(ZDistance,Distance)
+                        if ZDistance!=[]:
+                            MaxMinLocations(a,finalimage)
+
                         Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
                         Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                         #columnwise
@@ -125,6 +132,8 @@ def Range(img,parameters_dict,finalimage):
                         Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
                         Distance=((-0.0002*Distance**2)+(0.8492*Distance)+51)/1000
                         ZDistance=np.append(ZDistance,Distance)
+                        if ZDistance!=[]:
+                            MaxMinLocations(a,finalimage)
                         Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
                         Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                         #columnwise
@@ -133,7 +142,7 @@ def Range(img,parameters_dict,finalimage):
                         continue
                 else: 
                     continue
-    return Range
+    return Range,finalimage
 def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters,finalImage):
     sample_img=Detection(img,sample_parameters)
     cover_img=Detection(img,cover_parameters)
@@ -141,24 +150,26 @@ def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,la
     lander_img=Detection(img,lander_parameters)
     sample_Z=Range(sample_img,sample_parameters,finalImage)#sample_img is the filtered img finalImage is just 
     #the plain image
-    cover_Z=Range(cover_img,cover_parameters,finalImage)
-    obstacle_Z=Range(obstacle_img,obstacle_parameters,finalImage)
-    lander_Z=Range(lander_img,lander_parameters,finalImage)
+    cover_Z,finalImage=Range(cover_img,cover_parameters,finalImage)
+    obstacle_Z,finalImage=Range(obstacle_img,obstacle_parameters,finalImage)
+    lander_Z,finalImage=Range(lander_img,lander_parameters,finalImage)
     print(sample_Z)
     print(cover_Z)
     print(obstacle_Z)
     print(lander_Z)
-    return sample_Z,cover_Z,obstacle_Z,lander_Z
+    return sample_Z,cover_Z,obstacle_Z,lander_Z,finalImage
 def visMain(i):
     ret, img = cap.read()	     		# Get a frame from the camera
     if ret == True:	
         cv2.waitKey(1)	
         #initiate some variables
-
-    sample_Z,cover_Z,obstacle_Z,lander_Z=DetectandRange(img,sample_parameters,
+    """ img=cv2.imread("visionScript\MultipleCovers.jpg")
+    img=cv2.resize(img,(320,240)) """
+    sample_Z,cover_Z,obstacle_Z,lander_Z,finalimage=DetectandRange(img,sample_parameters,
         cover_parameters,obstacle_parameters,lander_parameters,img)
     if (i%5)==0:
-            cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
+            cv2.imshow("Binary Thresholded Frame",finalimage)# Display thresholded frame
+            cv2.waitKey(1)
     #print(Bearing1)
     
 
@@ -175,7 +186,7 @@ if __name__=="__main__":
             rate2=1/elapsed2
             print(rate2)
         except KeyboardInterrupt:
-            cap.release()
+            #cap.release()
             cv2.destroyAllWindows()
             break
                 
