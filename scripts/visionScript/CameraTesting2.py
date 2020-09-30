@@ -165,7 +165,7 @@ def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,la
     print(lander_Z)
     return sample_Z,cover_Z,obstacle_Z,lander_Z
 def visMain(i):
-    for frame in camera.capture_continuous(rawCapture,format="bgr",use_video_port=True)#use the image we took previously 
+    for frame in camera.capture_continuous(rawCapture,format="bgr",use_video_port=True):
         img=frame.array
         sample_Z,cover_Z,obstacle_Z,lander_Z=DetectandRange(img,sample_parameters,
             cover_parameters,obstacle_parameters,lander_parameters,img)
