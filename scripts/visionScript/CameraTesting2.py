@@ -5,7 +5,6 @@ import time
 import cv2 
 from picamera import PiCamera
 from picamera.array import PiRGBArray
-
 camera=PiCamera(resolution=(320,240),framerate=30)
 #camera.iso=100
 # Wait for the automatic gain control to settle
@@ -20,7 +19,8 @@ g,r = camera.awb_gains
 #automatically adjusted through auto awb
 camera.awb_mode = 'off'
 camera.awb_gains = (1.214,2.8125)
-
+rawCapture=PiRGBArray(camera,size=(320,240))#take an image and store it as a RGB array
+time.sleep(0.1)
 Center=np.array([])
 f=3.04/(1.12*10**-3)
 #img=cv2.imread("MultipleCovers.jpg")
@@ -159,24 +159,24 @@ def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,la
     cover_Z=Range(cover_img,cover_parameters,finalImage)
     obstacle_Z=Range(obstacle_img,obstacle_parameters,finalImage)
     lander_Z=Range(lander_img,lander_parameters,finalImage)
+    
     return sample_Z,cover_Z,obstacle_Z,lander_Z
 def visMain(i):
-    rawCapture=PiRGBArray(camera,size=(320,240))#take an image and store it as a RGB array
-    time.sleep(0.1)
-    camera.capture_sequence(rawCapture,format="bgr",use_video_port=True)
-    fwidth=(320+31)//32*32
-    fheight=(240+15)//16*16
-    img=np.frombuffer(rawCapture.getvalue(), dtype=np.uint8).\
-        reshape((fheight, fwidth, 3))[:240, :320, :]
-    sample_Z,cover_Z,obstacle_Z,lander_Z=DetectandRange(img,sample_parameters,
-        cover_parameters,obstacle_parameters,lander_parameters,img)
-    print(sample_Z)
-    print(cover_Z)
-    print(obstacle_Z)
-    print(lander_Z)
-    if (i%5)==0:
-        cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
-        cv2.waitKey(1)
+    for frame in camera.capture_continuous(rawCapture,format="bgr",use_video_port=True):
+        img=frame.array
+        sample_Z,cover_Z,obstacle_Z,lander_Z=DetectandRange(img,sample_parameters,
+            cover_parameters,obstacle_parameters,lander_parameters,img)
+        print(sample_Z)
+        print(cover_Z)
+        print(obstacle_Z)
+        print(lander_Z)
+        if (i%5)==0:
+            cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
+            cv2.waitKey(1)
+        rawCapture.truncate(0)
+        if (i%1)==0:
+            break
+
     
     
 
