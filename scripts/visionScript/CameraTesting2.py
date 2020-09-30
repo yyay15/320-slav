@@ -30,7 +30,7 @@ lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":570,
     "Kernel":False,"Circle":False,"BBoxColour":[0,0,255]}
 obstacle_parameters={"hue":[40,70],"sat":[50,255],"value":[40,255],"Height":113,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[204,204,0]}
-cover_parameters={"hue":[90,115],"sat":[0,150],"value":[0,150],"Height":70,"OR_MASK":False,
+cover_parameters={"hue":[90,115],"sat":[0,255],"value":[0,255],"Height":70,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[255,255,255]} 
 
 
@@ -165,14 +165,14 @@ def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,la
     print(lander_Z)
     return sample_Z,cover_Z,obstacle_Z,lander_Z
 def visMain(i):
-    for frame in camera.capture_continuous(rawCapture,format="bgr",use_video_port=True):
-        img=frame.array
-        sample_Z,cover_Z,obstacle_Z,lander_Z=DetectandRange(img,sample_parameters,
-            cover_parameters,obstacle_parameters,lander_parameters,img)
-        if (i%1)==0:
-                cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
-                cv2.waitKey(1)
-        rawCapture.truncate(0)
+    camera.capture_continuous(rawCapture,format="bgr",use_video_port=True):
+    img=rawCapture.array
+    sample_Z,cover_Z,obstacle_Z,lander_Z=DetectandRange(img,sample_parameters,
+        cover_parameters,obstacle_parameters,lander_parameters,img)
+    if (i%5)==0:
+        cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
+        cv2.waitKey(1)
+    rawCapture.truncate(0)
     
     
 
