@@ -18,7 +18,7 @@ class Vision:
         # parameters that change 
         self.random = 1
         self.changingVariable = 1
-        
+        self.camera.awb_mode = 'off'
         i2c = busio.I2C(board.SCL, board.SDA)
         self.sensor = adafruit_vcnl4040.VCNL4040(i2c)
         self.cap = cv2.VideoCapture(0)  		# Connect to camera 0 (or the only camera)
@@ -31,9 +31,9 @@ class Vision:
          "Kernel":True,"Circle":True,"BBoxColour":[204,0,204]}
         self.lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":570,"OR_MASK":False,
          "Kernel":False,"Circle":False,"BBoxColour":[0,0,255]}
-        self.obstacle_parameters={"hue":[40,70],"sat":[50,255],"value":[40,255],"Height":150,"OR_MASK":False,
+        self.obstacle_parameters={"hue":[40,70],"sat":[40,255],"value":[40,255],"Height":150,"OR_MASK":False,
          "Kernel":False,"Circle":False,"BBoxColour":[204,204,0]}
-        self.cover_parameters={"hue":[95,107],"sat":[60,255],"value":[0,255],"Height":70,"OR_MASK":False,
+        self.cover_parameters={"hue":[95,107],"sat":[0,255],"value":[0,255],"Height":70,"OR_MASK":False,
          "Kernel":False,"Circle":False,"BBoxColour":[255,255,255]} 
 
     def Detection(self, image,parameters_dict):
@@ -111,15 +111,13 @@ class Vision:
         ret, img = self.cap.read()	     		# Get a frame from the camera
         if ret == True:	
             cv2.waitKey(1)	
+        #img=cv2.xphoto_WhiteBalancer.balanceWhite(img)
             #initiate some variables
 
         sample_img,SFin=self.Detection(img,self.sample_parameters)
         cover_img,CFin=self.Detection(img,self.cover_parameters)
         obstacle_img,OFin=self.Detection(img,self.obstacle_parameters)
         lander_img,LFin=self.Detection(img,self.lander_parameters)
-        FinalImage=cv2.bitwise_or(SFin,CFin)
-        FinalImage=cv2.bitwise_or(FinalImage,OFin)
-        FinalImage=cv2.bitwise_or(FinalImage,LFin)
         sample_Z,S_Bound_Image=self.Range(sample_img,self.sample_parameters,FinalImage)
         cover_Z,C_Bound_Image=self.Range(cover_img,self.cover_parameters,FinalImage)
         obstacle_Z,O_Bound_Image=self.Range(obstacle_img,self.obstacle_parameters,FinalImage)

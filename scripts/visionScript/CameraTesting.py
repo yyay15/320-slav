@@ -3,12 +3,26 @@ import imutils
 import math
 import time
 import cv2 
-cap = cv2.VideoCapture(0)  		# Connect to camera 0 (or the only camera)
-cap.set(3, 320)                     	# Set the width to 320
-cap.set(4, 240)                      	# Set the height to 240
+from picamera import PiCamera
+from picamera.array import PiRGBArray
+
+camera=PiCamera(resolution=(320,240),framerate=30)
+#camera.iso=100
+# Wait for the automatic gain control to settle
+time.sleep(2)
+camera.shutter_speed = camera.exposure_speed
+camera.exposure_mode = 'off'
+#for the lines above ensure that the shutter speed and exposure speed are the same as they are related
+g,r = camera.awb_gains
+#print(g,r)
+#g=1.214 and r=2.8125
+#g is camera gain that is adjusted for the current image taken then set the gain value for instead of being
+#automatically adjusted through auto awb
+camera.awb_mode = 'off'
+camera.awb_gains = (1.214,2.8125)
 Center=np.array([])
-f=3.04/(1.12*10**-3)
-#img=cv2.imread("MultipleCovers.jpg")
+f=3.04/(1.12*10**-3) #focal length in mm
+#setup dictionary parameters 
 sample_parameters={"hue":[0,5],"sat":[100,255],"value":[100,255],"Height":40,"OR_MASK":True,
     "Kernel":True,"Circle":True,"BBoxColour":[204,0,204]}
 lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":570,"OR_MASK":False,
@@ -17,12 +31,6 @@ obstacle_parameters={"hue":[40,70],"sat":[50,255],"value":[40,255],"Height":113,
     "Kernel":False,"Circle":False,"BBoxColour":[204,204,0]}
 cover_parameters={"hue":[90,115],"sat":[0,255],"value":[0,255],"Height":70,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[255,255,255]} 
-
-
-""" if self.state == 8:
-        use other threshold
-"""
-
 def Detection(image,parameters_dict):
         #image=cv2.resize(image,(640,480))
         #cv2.imshow("normal",image)
@@ -63,10 +71,10 @@ def Range(img,parameters_dict,finalimage):
         for a in Contour:
             #find the center of the contour
             Moment=cv2.moments(a)
-            Area=cv2.contourArea(a)
+            #Area=cv2.contourArea(a)
             if parameters_dict["Circle"]==True:
                 Area=cv2.contourArea(a)
-                if Area>30:
+                if Area>20:
                     (x,y),radius=cv2.minEnclosingCircle(a)
                     cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
                     parameters_dict["BBoxColour"],2)
@@ -77,17 +85,17 @@ def Range(img,parameters_dict,finalimage):
                     Bearing=np.append(Bearing,math.radians((x-160)*(31.1/160)))
                     Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                     #columnwise
-                    Range=Range[Range[:,0].argsort()]
+                    Range=Range[Range[:,0].argsort()] 
                 else:
-                    continue 
+                    continue
             else:
                 Area=cv2.contourArea(a)
-                Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                if Area>300:
+                if Area>750:
                     Lx=int(Moment["m10"]/Moment["m00"])
                     Ly=int(Moment["m01"]/Moment["m00"])
                     Centroid=np.array([Lx,Ly])
                     Center=np.append(Center,Centroid)
+                    Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
                     parameters_dict["BBoxColour"],2)
                     Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
@@ -98,34 +106,6 @@ def Range(img,parameters_dict,finalimage):
                     #columnwise
                     Range=Range[Range[:,0].argsort()] 
                     #if positive then it's to the right if negative then to left of center 
-                elif LWidth/LHeight<1.3:
-                    Lx=int(Moment["m10"]/Moment["m00"])
-                    Ly=int(Moment["m01"]/Moment["m00"])
-                    Centroid=np.array([Lx,Ly])
-                    Center=np.append(Center,Centroid)
-                    cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
-                    parameters_dict["BBoxColour"],2)
-                    Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
-                    Distance=((1.04*Distance)-8.7164)/1000
-                    ZDistance=np.append(ZDistance,Distance)
-                    Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
-                    Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
-                    #columnwise
-                    Range=Range[Range[:,0].argsort()] 
-                elif LHeight/LWidth<1.3:
-                    Lx=int(Moment["m10"]/Moment["m00"])
-                    Ly=int(Moment["m01"]/Moment["m00"])
-                    Centroid=np.array([Lx,Ly])
-                    Center=np.append(Center,Centroid)
-                    cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
-                    parameters_dict["BBoxColour"],2)
-                    Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
-                    Distance=((1.04*Distance)-8.7164)/1000
-                    ZDistance=np.append(ZDistance,Distance)
-                    Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
-                    Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
-                    #columnwise
-                    Range=Range[Range[:,0].argsort()] 
                 else: 
                     continue
     return Range
@@ -144,34 +124,28 @@ def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,la
     print(lander_Z)
     return sample_Z,cover_Z,obstacle_Z,lander_Z
 def visMain(i):
-    ret, img = cap.read()	     		# Get a frame from the camera
-    if ret == True:	
-        cv2.waitKey(1)	
-        #initiate some variables
-
+    rawCapture=PiRGBArray(camera)#take an image and store it as a RGB array
+    camera.capture(rawCapture,format="bgr")#use the image we took previously 
+    img=rawCapture.array#store it as img in a numpy array
     sample_Z,cover_Z,obstacle_Z,lander_Z=DetectandRange(img,sample_parameters,
         cover_parameters,obstacle_parameters,lander_parameters,img)
     if (i%5)==0:
-            cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
-    #print(Bearing1)
+        cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
+        cv2.waitKey(1)
     
-
-if __name__=="__main__":
-    i=0
-    frequency=10
-    Interval=1/frequency
-    while True:
-        try:
-            now=time.time()
-            i+=1
-            visMain(i)
-            #if i>30:
-             #   break
-            
-            elapsed2=time.time()-now
-            rate2=1/elapsed2
-            print(rate2)
-        except KeyboardInterrupt:
-            break
-                
-    
+i=0
+frequency=10
+Interval=1/frequency
+while True:
+    try:
+        now=time.time()
+        i+=1
+        visMain(i)
+        #if i>30:
+            #   break
+        
+        elapsed2=time.time()-now
+        rate2=1/elapsed2
+        print(rate2)
+    except KeyboardInterrupt:
+        break

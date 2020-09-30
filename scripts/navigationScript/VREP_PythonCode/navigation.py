@@ -11,7 +11,7 @@ NAV_ROCK = 4
 SEARCH_LANDER = 5
 NAV_LANDER = 6
 ACQUIRE_SAMPLE = 7
-DRIVE_UP = 8
+UP_LANDER = 8
 FLIP_ROCK = 9
 
 #ROT CONSTANTS
@@ -266,14 +266,20 @@ class Navigation:
 
     def avoidObstacles(self, state):
         allObstacles = []
-        obstacles = state.obstaclesRB
-        rocks = state.rocksRB
+        obstacles = state.obstaclesRB#[[r,b], [r,b]]
+        rocks = state.rocksRB #[[r,b], [r,b]]
         vRep = 0
         wRep = 0
         if not self.isEmpty(obstacles):
+            print("adding obstacles")
+            obstacles = obstacles.tolist()
             allObstacles = allObstacles + obstacles
+            print(allObstacles)
         if not self.isEmpty(rocks) and self.rock_obstacle:
+            print("adding rocks")
+            rocks = rocks.tolist()
             allObstacles = allObstacles + rocks
+            print(allObstacles)
             
         if not self.isEmpty(allObstacles):
             closeObs = self.closestObstacle(allObstacles)
