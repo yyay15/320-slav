@@ -30,7 +30,7 @@ lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":570,
     "Kernel":False,"Circle":False,"BBoxColour":[0,0,255]}
 obstacle_parameters={"hue":[40,70],"sat":[50,255],"value":[40,255],"Height":113,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[204,204,0]}
-cover_parameters={"hue":[90,115],"sat":[0,255],"value":[0,255],"Height":70,"OR_MASK":False,
+cover_parameters={"hue":[100,115],"sat":[0,255],"value":[0,255],"Height":70,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[255,255,255]} 
 
 
@@ -54,9 +54,9 @@ def Detection(image,parameters_dict):
             mask1=cv2.inRange(image,lower_oran,higher_oran)
             mask=cv2.bitwise_or(mask,mask1)
         if parameters_dict["Kernel"]==True:
-            Kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
+            Kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(3,3))
         else:
-            Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
+            Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(3,3))
         #Thresholded_img=cv2.bitwise_and(ogimg,ogimg,mask=mask)
         filtered_img=cv2.morphologyEx(mask,cv2.MORPH_OPEN,Kernel)
         return filtered_img
@@ -115,7 +115,7 @@ def Range(img,parameters_dict,finalimage):
                 Area=cv2.contourArea(a)
                 Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                 if Area>150:
-                    if LWidth/LHeight<1.3:
+                    if LWidth/LHeight<1.1:
                         Lx=int(Moment["m10"]/Moment["m00"])
                         Ly=int(Moment["m01"]/Moment["m00"])
                         Centroid=np.array([Lx,Ly])
@@ -130,7 +130,7 @@ def Range(img,parameters_dict,finalimage):
                         #columnwise
                         Range=Range[Range[:,0].argsort()] 
                         #if positive then it's to the right if negative then to left of center 
-                    elif LHeight/LWidth<1.3:
+                    elif LHeight/LWidth<1.1:
                         Lx=int(Moment["m10"]/Moment["m00"])
                         Ly=int(Moment["m01"]/Moment["m00"])
                         Centroid=np.array([Lx,Ly])
