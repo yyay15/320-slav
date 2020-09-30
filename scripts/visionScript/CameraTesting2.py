@@ -168,7 +168,7 @@ def visMain(i):
     img=rawCapture.array#store it as img in a numpy array
     sample_Z,cover_Z,obstacle_Z,lander_Z=DetectandRange(img,sample_parameters,
         cover_parameters,obstacle_parameters,lander_parameters,img)
-    if (i%5)==0:
+    if (i%1)==0:
             cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
     #print(Bearing1)
     
