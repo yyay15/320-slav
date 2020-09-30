@@ -5,7 +5,7 @@ import time
 import cv2 
 from picamera import PiCamera
 from picamera.array import PiRGBArray
-camera=PiCamera(resolution=(320,240),framerate=20)
+camera=PiCamera(resolution=(320,240),framerate=30)
 #camera.iso=100
 # Wait for the automatic gain control to settle
 time.sleep(2)
@@ -30,7 +30,7 @@ lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":570,
     "Kernel":False,"Circle":False,"BBoxColour":[0,0,255]}
 obstacle_parameters={"hue":[40,70],"sat":[50,255],"value":[40,255],"Height":113,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[204,204,0]}
-cover_parameters={"hue":[90,115],"sat":[0,255],"value":[0,255],"Height":70,"OR_MASK":False,
+cover_parameters={"hue":[90,115],"sat":[0,150],"value":[0,150],"Height":70,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[255,255,255]} 
 
 
