@@ -265,6 +265,7 @@ class Vision:
             Lander_parameter_update={"hue":[15,30],"sat":[100,255],"value":[100,255]}
             self.lander_parameters.update(Lander_parameter_update)
             #revert the changes listed above.
+        
 
 
 
