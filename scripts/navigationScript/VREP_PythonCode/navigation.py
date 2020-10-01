@@ -25,7 +25,7 @@ CLOSE = 2
 SLIGH_OPEN = 3
 
 # DISTANCE/TIME VARIABLES
-ROT_DISTANCE = 0.2 #collect distance 
+ROT_DISTANCE = 0.21 #collect distance 
 FLIP_DISTANCE = 0.1
 FULL_ROTATION = 15
 ROT_ACQUIRE_SAMPLE = 1
@@ -228,7 +228,7 @@ class Navigation:
             self.isBlind = True
             self.modeStartTime = time.time()
         elif (self.isBlind):
-            if (time.time() - self.modeStartTime < 2):
+            if (time.time() - self.modeStartTime < 3):
                 print("trying to drive straight YEEEEETTTT")
                 v = 0.07
                 w = 0
