@@ -62,6 +62,7 @@ class Collection:
                 self.Close_ROT()
             elif self.currentState == 3:
                 self.Release_Ball()
+            self.prevState = self.currentState
             
     def Test_ROT(self):
         self.servoPWM.ChangeDutyCycle(7.5)
