@@ -16,7 +16,7 @@ lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":570,
     "Kernel":False,"Circle":False,"BBoxColour":[0,0,255],"type":1}
 obstacle_parameters={"hue":[40,70],"sat":[50,255],"value":[40,255],"Height":80,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[204,204,0],"type":2}
-cover_parameters={"hue":[97,107],"sat":[0,255],"value":[0,255],"Height":70,"OR_MASK":False,
+cover_parameters={"hue":[105,120],"sat":[0,200],"value":[0,200],"Height":70,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[255,255,255],"type":3} 
 
 
