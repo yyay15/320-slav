@@ -150,7 +150,7 @@ def video_feed():
 # Initialise Functions and Classes
 # Subsystem
 drive = mobilityScript.Mobility()
-vision = visionCommandTest.Vision()
+vision = vision3.Vision()
 collection = collection.Collection()
 
 # nav
