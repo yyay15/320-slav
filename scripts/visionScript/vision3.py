@@ -116,7 +116,7 @@ class Vision:
                             continue
                     else:
                         continue 
-                elif parameters_dict["type"]==3 or parameters_dict["type"]==1:
+                elif parameters_dict["type"]==3:
                     Area=cv2.contourArea(a)
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     if Area>150:
@@ -195,6 +195,26 @@ class Vision:
                             continue
                     else: 
                         continue
+                elif parameters_dict["type"]==1:
+                    Area=cv2.contourArea(a)
+                    Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
+                    if Area>500:
+                        Lx=int(Moment["m10"]/Moment["m00"])
+                        Ly=int(Moment["m01"]/Moment["m00"])
+                        Centroid=np.array([Lx,Ly])
+                        Center=np.append(Center,Centroid)
+                        cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
+                        parameters_dict["BBoxColour"],2)
+                        Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
+                        Distance=((1.2*Distance)-8.7164)/1000
+                        ZDistance=np.append(ZDistance,Distance)
+                        #self.MaxMinLocations(a,finalimage)
+                        Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
+                        Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                        #columnwise
+                        Range=Range[Range[:,0].argsort()] 
+
+
 
         return Range
     def DetectandRange(self,img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters,finalImage):
