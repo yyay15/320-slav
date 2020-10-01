@@ -25,11 +25,11 @@ class Vision:
         #img=cv2.imread("MultipleCovers.jpg")
         self.sample_parameters={"hue":[0,5],"sat":[125,255],"value":[125,255],"Height":40,"OR_MASK":True,
             "Kernel":True,"Circle":True,"BBoxColour":[204,0,204],"type":0}
-        self.lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":570,"OR_MASK":False,
+        self.lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":80,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[0,0,255],"type":1}
         self.obstacle_parameters={"hue":[40,70],"sat":[50,255],"value":[40,255],"Height":80,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[204,204,0],"type":2}
-        self.cover_parameters={"hue":[95,107],"sat":[0,150],"value":[0,150],"Height":70,"OR_MASK":False,
+        self.cover_parameters={"hue":[100,120],"sat":[40,200],"value":[40,200],"Height":70,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[255,255,255],"type":3} 
 
 
@@ -41,7 +41,7 @@ class Vision:
         maxright=tuple(c[c[:,:,0].argmax()][0])
         maxtop=tuple(c[c[:,:,1].argmin()][0])
         maxbot=tuple(c[c[:,:,1].argmax()][0])
-        cv2.line(img,maxbot,maxright,(0,255,0),2)
+        #cv2.line(img,maxbot,maxright,(0,255,0),2)
     def Detection(self, image,parameters_dict):
         #image=cv2.resize(image,(640,480))
         #cv2.imshow("normal",image)
@@ -116,7 +116,7 @@ class Vision:
                             continue
                     else:
                         continue 
-                elif parameters_dict["type"]==3 or parameters_dict["type"]==1:
+                elif parameters_dict["type"]==3:
                     Area=cv2.contourArea(a)
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     if Area>150:
@@ -195,6 +195,26 @@ class Vision:
                             continue
                     else: 
                         continue
+                elif parameters_dict["type"]==1:
+                    Area=cv2.contourArea(a)
+                    Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
+                    if Area>500:
+                        Lx=int(Moment["m10"]/Moment["m00"])
+                        Ly=int(Moment["m01"]/Moment["m00"])
+                        Centroid=np.array([Lx,Ly])
+                        Center=np.append(Center,Centroid)
+                        cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
+                        parameters_dict["BBoxColour"],2)
+                        Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
+                        Distance=((1.2*Distance)-8.7164)/1000
+                        ZDistance=np.append(ZDistance,Distance)
+                        #self.MaxMinLocations(a,finalimage)
+                        Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
+                        Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                        #columnwise
+                        Range=Range[Range[:,0].argsort()] 
+
+
 
         return Range
     def DetectandRange(self,img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters,finalImage):
