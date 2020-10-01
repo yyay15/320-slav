@@ -18,7 +18,10 @@ import RPi.GPIO as GPIO
 # Import Python Library for CommandCentre
 from flask import Flask
 from flask import render_template, request
+from flask import Response
 app = Flask(__name__, template_folder='commandCentre')
+
+import cv2
 
 # Set Global Parameters 
 LED_GREEN = 26
@@ -26,10 +29,11 @@ LED_RED = 13
 LED_YELLOW = 19
 global command
 
+
 # Local modules
 from mobilityScript import mobilityScript
 from navigationScript.VREP_PythonCode import navigation, state
-from visionScript import vision3
+from visionScript import visionCommandTest
 from collectionScript import collection
 
 #---------------#
@@ -81,8 +85,62 @@ def mobilityControl(command):
     print("================")
     print(command)
     print("================")
-    drive.commandCentreTest(command)
+    drive.commandCentreMobilityControl(command)
     return '{}'
+
+# Use MobilityScript Method to set command
+@app.route('/collection/<command>')
+def collectionControl(command):
+    print("================")
+    print(command)
+    print("================")
+    collection.commandCentreCollectionControl(command)
+    return '{}'
+
+# Use MobilityScript Method to set command
+@app.route('/vision/<command>')
+def visionControl(command):
+    print("================")
+    print(command)
+    print("================")
+    vision.commandCentreVisionControl(command)
+    return '{}'
+
+@app.route('/navigation/<command>')
+def navigationControl(command):
+    print("================")
+    print(command)
+    print("================")
+    if (command == "n"):
+        nav.commandNav = True
+    else:
+        nav.commandNav = False
+        drive.drive(0, 0, False) # not in navMain
+
+    while nav.commandNav == True:
+        vision.UpdateObjectPositions()
+        objects = vision.GetDetectedObjects()
+        sampleCollected = vision.sampleCollected()
+        state.updateState(objects,sampleCollected)
+        v, w = nav.updateVelocities(state)
+        ledIndicator(nav.stateMode)
+        collection.sampleManage(nav.rotState)
+        drive.drive(v, w, nav.centering) # not in navMain
+    return '{}'
+
+
+
+def gen():
+    while True:
+        frame = vision.selfCapRead()
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+
+@app.route('/video_feed')
+def video_feed():
+    return Response(gen(),mimetype='multipart/x-mixed-replace; boundary=frame')
+
 
 
 #---------------#
@@ -92,7 +150,7 @@ def mobilityControl(command):
 # Initialise Functions and Classes
 # Subsystem
 drive = mobilityScript.Mobility()
-vision = vision3.Vision()
+vision = visionCommandTest.Vision()
 collection = collection.Collection()
 
 # nav
@@ -127,7 +185,7 @@ if __name__ == '__main__':
             if  userSelect == "a":
                 # CHUCK THAT CHUNK HERE
                 while True:
-                    vision.UpdateObjectPositions()
+                    vision.updateVisionState(nav.stateMode)
                     objects = vision.GetDetectedObjects()
                     sampleCollected = vision.sampleCollected()
                     state.updateState(objects,sampleCollected)

@@ -384,7 +384,7 @@ class Mobility:
 
 
 
-    def commandCentreTest(self,command):
+    def commandCentreMobilityControl(self,command):
         if (len(command.split(','))>2):
             controlVar1 = command.split(',')[1]
             controlVar2 = command.split(',')[2]
@@ -431,9 +431,6 @@ class Mobility:
         elif command == 'q':
             print("Quitting ...")
             GPIO.cleanup()
-
- #       print("TEST \n")
-#        print(self.speedLeft)
 
 
     def gpioClean(self):

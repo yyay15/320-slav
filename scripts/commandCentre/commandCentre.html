@@ -15,9 +15,8 @@
     <body>
 
         <!-- CameraFeed Output -->
-        <!-- <img src="http://10.0.0.241:6969" /> -->
-        <!-- <div style="float:right"> -->
-    
+        <img id="bg" src="{{ url_for('video_feed') }}">
+        
         <!-- Control Input -->
         </div>
         <div style=" height:400px; width:300px; float:right;">
@@ -39,19 +38,37 @@
             Set Angular Velocity:<br><br>
             <input type="range" max="2.31" step="0.0231" value="100"  min="0" id="AngVelo"> 
             <button type="button" id="Submitvw">Submit</button> <br>
+
             <hr size=2>
+            Preset Speed Options:<br><br>
             <button type="button" class="btn btn-default" id="speed1"> S1 </button>
             <button type="button" class="btn btn-default" id="speed2"> S2 </button>
             <button type="button" class="btn btn-default" id="speed3"> S3 </button>
             <br>
             <hr size=2>
-            <br>
+            Mobility Control:<br><br>
             <button type="button" class="btn btn-default" id="left"> < </button>
             <button type="button" class="btn btn-default" id="forward"> ^ </button>
             <button type="button" class="btn btn-default" id="backward"> v </button>
             <button type="button" class="btn btn-default" id="right"> > </button>
             <button type="button" class="btn btn-default" id="rotate"> R </button>
-            <button type="button" class="btn btn-danger" id="stop">Stop</button>
+            <button type="button" class="btn btn-danger" id="mstop">Stop</button>
+            <br>
+            <hr size=2>
+            ROT Control:<br><br>
+            <button type="button" class="btn btn-default" id="Open"> Open </button>
+            <button type="button" class="btn btn-default" id="Close"> Close </button>
+            <button type="button" class="btn btn-default" id="Release"> Release </button>
+
+            <hr size=2>
+            Camera Control:<br><br>
+            <button type="button" class="btn btn-default" id="Capture"> Capture </button>
+
+            <hr size=2>
+            Navigation:<br><br>
+            <button type="button" class="btn btn-default" id="nstart"> Start </button>
+            <button type="button" class="btn btn-default" id="nstop"> Stop </button>
+
 
         </div>
     
@@ -69,7 +86,7 @@
             $('#right').on('click', function () {
                 $.get('/mobility/d');
             });
-            $('#stop').on('click', function () {
+            $('#mstop').on('click', function () {
                 $.get('/mobility/c');
             });
             $('#rotate').on('click', function () {
@@ -90,6 +107,24 @@
             $("#Submitvw").on('click', function(){
                 $.get('/mobility/i' + ',' + $("#LinVelo").val()+ ',' + $("#AngVelo").val());
             });            
+            $('#Open').on('click', function () {
+                $.get('/collection/o');
+            });
+            $('#Close').on('click', function () {
+                $.get('/collection/p');
+            });
+            $('#Release').on('click', function () {
+                $.get('/collection/l');
+            });
+            $('#Capture').on('click', function () {
+                $.get('/vision/h');
+            });
+            $('#nstop').on('click', function () {
+                $.get('/navigation/m');
+            });
+            $('#nstart').on('click', function () {
+                $.get('/navigation/n');
+            });
 
 
         </script>
