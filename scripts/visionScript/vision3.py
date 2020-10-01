@@ -29,7 +29,7 @@ class Vision:
             "Kernel":False,"Circle":False,"BBoxColour":[0,0,255],"type":1}
         self.obstacle_parameters={"hue":[40,70],"sat":[50,255],"value":[40,255],"Height":80,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[204,204,0],"type":2}
-        self.cover_parameters={"hue":[95,107],"sat":[0,150],"value":[0,150],"Height":70,"OR_MASK":False,
+        self.cover_parameters={"hue":[97,107],"sat":[0,255],"value":[0,255],"Height":70,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[255,255,255],"type":3} 
 
 
@@ -41,7 +41,7 @@ class Vision:
         maxright=tuple(c[c[:,:,0].argmax()][0])
         maxtop=tuple(c[c[:,:,1].argmin()][0])
         maxbot=tuple(c[c[:,:,1].argmax()][0])
-        cv2.line(img,maxbot,maxright,(0,255,0),2)
+        #cv2.line(img,maxbot,maxright,(0,255,0),2)
     def Detection(self, image,parameters_dict):
         #image=cv2.resize(image,(640,480))
         #cv2.imshow("normal",image)
