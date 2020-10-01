@@ -76,7 +76,7 @@ def Range(img,parameters_dict,finalimage):
                 Area=cv2.contourArea(a)
                 Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                 if Area>30:
-                    if LWidth/LHeight<1.3:
+                    if LWidth/LHeight<1.1:
                         (x,y),radius=cv2.minEnclosingCircle(a)
                         cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
                         parameters_dict["BBoxColour"],2)
@@ -88,7 +88,7 @@ def Range(img,parameters_dict,finalimage):
                         Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                         #columnwise
                         Range=Range[Range[:,0].argsort()]
-                    elif LHeight/LWidth<1.3:
+                    elif LHeight/LWidth<1.1:
                         (x,y),radius=cv2.minEnclosingCircle(a)
                         cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
                         parameters_dict["BBoxColour"],2)
