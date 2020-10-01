@@ -11,13 +11,13 @@ Center=np.array([])
 f=3.04/(1.12*10**-3)
 
 sample_parameters={"hue":[0,5],"sat":[125,255],"value":[125,255],"Height":40,"OR_MASK":True,
-    "Kernel":True,"Circle":True,"BBoxColour":[204,0,204]}
+    "Kernel":True,"Circle":True,"BBoxColour":[204,0,204],"type":0}
 lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":570,"OR_MASK":False,
-    "Kernel":False,"Circle":False,"BBoxColour":[0,0,255]}
+    "Kernel":False,"Circle":False,"BBoxColour":[0,0,255],"type":1}
 obstacle_parameters={"hue":[40,70],"sat":[50,255],"value":[40,255],"Height":80,"OR_MASK":False,
-    "Kernel":False,"Circle":False,"BBoxColour":[204,204,0]}
+    "Kernel":False,"Circle":False,"BBoxColour":[204,204,0],"type":2}
 cover_parameters={"hue":[97,107],"sat":[0,255],"value":[0,255],"Height":70,"OR_MASK":False,
-    "Kernel":False,"Circle":False,"BBoxColour":[255,255,255]} 
+    "Kernel":False,"Circle":False,"BBoxColour":[255,255,255],"type":3} 
 
 
 """ if self.state == 8:
@@ -104,11 +104,11 @@ def Range(img,parameters_dict,finalimage):
                         continue
                 else:
                     continue 
-            else:
+            elif parameters_dict["type"]==3 or parameters_dict["type"]==1:
                 Area=cv2.contourArea(a)
                 Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                 if Area>150:
-                    if LWidth/LHeight<1.3:
+                    if LWidth/LHeight<1.2:
                         Lx=int(Moment["m10"]/Moment["m00"])
                         Ly=int(Moment["m01"]/Moment["m00"])
                         Centroid=np.array([Lx,Ly])
@@ -126,7 +126,7 @@ def Range(img,parameters_dict,finalimage):
                         #columnwise
                         Range=Range[Range[:,0].argsort()] 
                         #if positive then it's to the right if negative then to left of center 
-                    elif LHeight/LWidth<1.3:
+                    elif LHeight/LWidth<1.2:
                         Lx=int(Moment["m10"]/Moment["m00"])
                         Ly=int(Moment["m01"]/Moment["m00"])
                         Centroid=np.array([Lx,Ly])
@@ -146,6 +146,45 @@ def Range(img,parameters_dict,finalimage):
                         continue
                 else: 
                     continue
+            elif parameters_dict["type"]==2:
+                Area=cv2.contourArea(a)
+                Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
+                if Area>150:
+                    if LWidth/LHeight<1.2:
+                        Lx=int(Moment["m10"]/Moment["m00"])
+                        Ly=int(Moment["m01"]/Moment["m00"])
+                        Centroid=np.array([Lx,Ly])
+                        Center=np.append(Center,Centroid)
+                        cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
+                        parameters_dict["BBoxColour"],2)
+                        Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
+                        ZDistance=np.append(ZDistance,Distance)
+                        MaxMinLocations(a,finalimage)
+                        Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
+                        Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                        #columnwise
+                        Range=Range[Range[:,0].argsort()] 
+                        #if positive then it's to the right if negative then to left of center 
+                    elif LHeight/LWidth<1.2:
+                        Lx=int(Moment["m10"]/Moment["m00"])
+                        Ly=int(Moment["m01"]/Moment["m00"])
+                        Centroid=np.array([Lx,Ly])
+                        Center=np.append(Center,Centroid)
+                        cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
+                        parameters_dict["BBoxColour"],2)
+                        Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
+                        ZDistance=np.append(ZDistance,Distance)
+                        
+                        MaxMinLocations(a,finalimage)
+                        Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
+                        Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                        #columnwise
+                        Range=Range[Range[:,0].argsort()] 
+                    else:
+                        continue
+                else: 
+                    continue
+
     return Range
 def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters,finalImage):
     sample_img=Detection(img,sample_parameters)
