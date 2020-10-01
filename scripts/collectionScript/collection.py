@@ -42,7 +42,7 @@ class Collection:
         # Initialise PWM
         self.servoPWM = GPIO.PWM(servoPin, 50)
         # Initial Condition
-        self.servoPWM.start(3.5)
+        self.servoPWM.start(2.5)
         self.currentState = 0 
         self.prevState = 0
 
@@ -50,37 +50,56 @@ class Collection:
 
     def sampleManage(self, navRockState):
         self.currentState = navRockState
-        if self.prevState == self.currentState:
+        if self.currentState == self.prevState:
             pass
         else:
             if self.currentState == 0:
                 pass
             elif self.currentState == 1:
                 self.Open_ROT()
-                self.prevState = self.currentState
             elif self.currentState == 2:
                 print("close rot")
                 self.Close_ROT()
-                self.prevState = self.currentState
             elif self.currentState == 3:
                 self.Release_Ball()
-            self.prevState = self.currentState
             
+    def Test_ROT(self):
+        self.servoPWM.ChangeDutyCycle(7.5)
+        print("Open")
+        time.sleep(1)
+        self.servoPWM.ChangeDutyCycle(0)
+        time.sleep(2)
+        self.servoPWM.ChangeDutyCycle(2.5)    
+        print("Close")
+        time.sleep(1)
+        self.servoPWM.ChangeDutyCycle(0)
+        time.sleep(2)
+        self.servoPWM.ChangeDutyCycle(8)
+        print("Open")
+        time.sleep(1)
+        self.servoPWM.ChangeDutyCycle(0)
+        time.sleep(2)
+        self.servoPWM.ChangeDutyCycle(3.5)
+        print("Releasing Ball")
+        time.sleep(1)
+        self.servoPWM.ChangeDutyCycle(0)
+        
+             
 
     def Open_ROT(self):
-        self.servoPWM.ChangeDutyCycle(7.5)
+        self.servoPWM.ChangeDutyCycle(8.0)
         print("Open")
         time.sleep(1)
         self.servoPWM.ChangeDutyCycle(0)
 
     def Close_ROT(self):
-        self.servoPWM.ChangeDutyCycle(4.5)    
+        self.servoPWM.ChangeDutyCycle(2.25)    
         print("Close")
         time.sleep(1)
         self.servoPWM.ChangeDutyCycle(0)
 
     def Release_Ball(self):
-        self.servoPWM.ChangeDutyCycle(5)
+        self.servoPWM.ChangeDutyCycle(4.0)
         print("Releasing Ball")
         time.sleep(1)
         self.servoPWM.ChangeDutyCycle(0)
