@@ -172,7 +172,7 @@ def Range(img,parameters_dict,finalimage):
                         cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
                         parameters_dict["BBoxColour"],2)
                         Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
-                        Distance=262.22*numpy.log(Distance)-1222.1
+                        Distance=262.22*np.log(Distance)-1222.1
                         ZDistance=np.append(ZDistance,Distance)
                         MaxMinLocations(a,finalimage)
                         Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
