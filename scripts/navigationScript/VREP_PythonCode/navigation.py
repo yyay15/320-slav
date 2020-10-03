@@ -15,6 +15,7 @@ UP_LANDER = 8
 FLIP_ROCK = 9
 HOLE_ALIGN = 10
 SAMPLE_DROP = 11
+ROCK_ALIGN = 12
 
 #ROT CONSTANTS
 # State 0 = pass
@@ -29,6 +30,7 @@ SLIGH_OPEN = 3
 # DISTANCE/TIME VARIABLES
 ROT_DISTANCE = 0.21 #collect distance 
 FLIP_DISTANCE = 0.1
+ROCK_ALIGN_DISTANCE = 0.15
 FULL_ROTATION = 15
 ROT_ACQUIRE_SAMPLE = 1
 DRIVE_OFF_TIME = 6
@@ -50,6 +52,7 @@ class Navigation:
         self.isBlind = False
         self.centering = False
         self.commandnav = False
+        self.attemptCollect = False
         self.numSampleCollected = 0
         
     
@@ -65,7 +68,8 @@ class Navigation:
             8: self.driveUpLander,
             9: self.flipRock,
             10: self.holeAlign,
-            11: self.dropSample
+            11: self.dropSample,
+            12: self.alignRock
         }
         return switchState.get(stateNum, self.searchSample)
 
@@ -201,35 +205,44 @@ class Navigation:
             if not self.isEmpty(state.rocksRB):
                 currRock = state.rocksRB[0]
                 v, w = self.navigate(currRock, state)
-                if (currRock[0] < FLIP_DISTANCE):
-                    print("flipping rock")
+                if (currRock[0] < ROCK_ALIGN_DISTANCE):
+                    print("align rock")
                     v, w = 0, 0
                     self.modeStartTime = time.time()
-                    self.stateMode = FLIP_ROCK
+                    self.stateMode = ROCK_ALIGN
 
         return v, w
     
     def flipRock(self, state):
-        print("flipping rock")
-        self.rotState = OPEN
-        self.modeStartTime = time.time()
-        self.isBlind = True
-        if (self.isBlind):
-            print("cover open, driving straight")
-            if (time.time() - self.modeStartTime < ROT_ACQUIRE_SAMPLE):
-                v = 0.07
-                w = 0
-            else:
-                print("closing cover")
-                self.isBlind = False
-                self.rotStateClose = CLOSE
+        #time to drive to  be in flip position
+        if (time.time - self.modeStartTime <= 1):
+            v = 0.1
+            w = 0
+            self.attemptCollect = False
         else:
-            if (state.sampleCollected):
+            v, w = 0, 0
+            if (not self.isBlind and not self.attemptCollect):
+                print("flipping rock")
+                self.rotState = OPEN
                 self.modeStartTime = time.time()
-                self.stateMode = SEARCH_LANDER
+                self.isBlind = True
+            if (self.isBlind):
+                print("cover open, driving straight")
+                if (time.time() - self.modeStartTime < ROT_ACQUIRE_SAMPLE):
+                    v = 0.07
+                    w = 0
+                else:
+                    print("closing cover")
+                    self.isBlind = False
+                    self.attemptCollect = True
+                    self.rotStateClose = CLOSE
             else:
-                self.modeStartTime = time.time()
-                self.stateMode = SEARCH_SAMPLE
+                if (state.sampleCollected):
+                    self.modeStartTime = time.time()
+                    self.stateMode = SEARCH_LANDER
+                else:
+                    self.modeStartTime = time.time()
+                    self.stateMode = SEARCH_SAMPLE
 
         return v, w
 
@@ -320,6 +333,23 @@ class Navigation:
             self.modeStartTime = time.time()
             self.stateMode = SEARCH_LANDER
 
+        return v, w
+    
+    def alignRock(self, state):
+        print("aligning rock")
+        if (not self.isEmpty(state.rotHoleRB)):
+            v = 0.05
+            w = state.rotHoleRB[0][1] * 1.2
+            if (-0.1 <= state.rotHoleRB[0][1] <= 0.1):
+                if (state.rotHoleRB[0][0] > FLIP_DISTANCE):
+                    v = 0.1
+                    w = 0
+                else:
+                    self.modeStartTime = time.time()
+                    self.stateMode = FLIP_ROCK
+        else:
+            self.modeStartTime = time.time()
+            self.stateMode = SEARCH_ROCK
         return v, w
 
     def holeAlign(self, state):
