@@ -37,5 +37,3 @@ class Localisation:
         transform = np.array([[cos(theta), 0], [sin(theta), 0], [0, 1]])
         self.deltaPos = np.matmul(transform, state)
         self.position = self.position + self.deltaPos * deltaTime
-        print(self.position)
-        
