@@ -3,9 +3,9 @@ import imutils
 import math
 import time
 import cv2 
-""" cap = cv2.VideoCapture(0)  		# Connect to camera 0 (or the only camera)
+cap = cv2.VideoCapture(0)  		# Connect to camera 0 (or the only camera)
 cap.set(3, 320)                     	# Set the width to 320
-cap.set(4, 240)      """               	# Set the height to 240
+cap.set(4, 240)                	# Set the height to 240
 Center=np.array([])
 
 f=3.04/(1.12*10**-3)
