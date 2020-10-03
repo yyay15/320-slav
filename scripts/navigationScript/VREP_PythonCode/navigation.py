@@ -297,11 +297,10 @@ class Navigation:
         v = 0.85
         w = 0
         if (not self.isEmpty(state.sampleRB)):
+            if (state.sampleRB[0][0] < 0.1)
             v, w = 0, 0
             self.modeStartTime = time.time()
             self.stateMode = HOLE_ALIGN
-
-        
 
         return v, w
 
