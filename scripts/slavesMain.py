@@ -32,7 +32,7 @@ global command
 
 # Local modules
 from mobilityScript import mobilityScript
-from navigationScript.VREP_PythonCode import navigation, state
+from navigationScript.VREP_PythonCode import navigation, state, localisation
 from visionScript import vision3
 from collectionScript import collection
 
@@ -183,6 +183,7 @@ if __name__ == '__main__':
             """)
             userSelect = input()
             if  userSelect == "a":
+                loc = localisation.Localisation()
                 # CHUCK THAT CHUNK HERE
                 while True:
                     vision.updateVisionState(nav.stateMode)
@@ -190,6 +191,7 @@ if __name__ == '__main__':
                     sampleCollected = vision.sampleCollected()
                     state.updateState(objects,True)
                     v, w = nav.updateVelocities(state)
+                    loc.getWheelAngVel(v, w)
                     ledIndicator(nav.stateMode)
                     collection.sampleManage(nav.rotState)
 

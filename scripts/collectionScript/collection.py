@@ -65,25 +65,13 @@ class Collection:
             self.prevState = self.currentState
             
     def Test_ROT(self):
-        self.servoPWM.ChangeDutyCycle(7.5)
-        print("Open")
-        time.sleep(1)
-        self.servoPWM.ChangeDutyCycle(0)
-        time.sleep(2)
-        self.servoPWM.ChangeDutyCycle(3.0)    
-        print("Close")
-        time.sleep(1)
-        self.servoPWM.ChangeDutyCycle(0)
-        time.sleep(2)
-        self.servoPWM.ChangeDutyCycle(8)
-        print("Open")
-        time.sleep(1)
-        self.servoPWM.ChangeDutyCycle(0)
-        time.sleep(2)
-        self.servoPWM.ChangeDutyCycle(4.0)
-        print("Releasing Ball")
-        time.sleep(1)
-        self.servoPWM.ChangeDutyCycle(0)
+        for x in range (2.5,12,0.5):
+            self.servoPWM.ChangeDutyCycle(x)
+            time.sleep(1)
+            self.servoPWM.ChangeDutyCycle(0)
+            print(x)
+            time.sleep(2)
+        
         
              
 
