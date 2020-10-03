@@ -187,7 +187,7 @@ if __name__ == '__main__':
                 # CHUCK THAT CHUNK HERE
                 while True:
                     vision.updateVisionState(nav.stateMode)
-                    objects = vision.GetDetectedObjects()
+                    objects = vision.GetDetectedObjects(nav.stateMode)
                     sampleCollected = vision.sampleCollected()
                     state.updateState(objects,True)
                     v, w = nav.updateVelocities(state)
