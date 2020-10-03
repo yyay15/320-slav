@@ -195,6 +195,7 @@ class Vision:
         cover_img=self.Detection(img,self.cover_parameters)
         obstacle_img=self.Detection(img,self.obstacle_parameters)
         lander_img=self.Detection(img,self.lander_parameters)
+
         sample_Z=self.Range(sample_img,self.sample_parameters,finalImage)
         cover_Z=self.Range(cover_img,self.cover_parameters,finalImage)
         obstacle_Z=self.Range(obstacle_img,self.obstacle_parameters,finalImage)
@@ -216,7 +217,7 @@ class Vision:
         if (i%5)==0:
              cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
         #print(Bearing1)
-        return sample_Z,lander_Z,cover_Z,obstacle_Z,img
+        return sample_Z,lander_Z,cover_Z,obstacle_Z
     
     def GetDetectedObjects(self,state):
         sampleRB, landerRB, obstaclesRB, rocksRB, holesRB = None, None, None, None, None
@@ -224,7 +225,8 @@ class Vision:
         now=time.time()
         #i+=1
         sampleRB,landerRB,rocksRB,obstaclesRB,img=self.visMain(i)
-        holesRB=self.updateVisionState(state,img)
+        #self.updateVisionState(state)
+        holes_RB=self.holefinder(img,self.hole_parameters,self.state)
         elapsed=time.time()-now
         #time.sleep(Interval-elapsed)
         elapsed2=time.time()-now
@@ -245,29 +247,29 @@ class Vision:
             SamplePresent=False
         return SamplePresent 
         pass
-    
-    def updateVisionState(self,state,img):
-        self.state = state
-        hole_Z=None
+    def holefinder(self,img,parameters_dict,state):
         if state==8:
             Lander_parameter_update={"hue":[15,30],"sat":[0,255],"value":[30,255]}
             self.lander_parameters.update(Lander_parameter_update)#update dictionary for lander
             #to change values to adjust for dodge lighting when going up lander
             hole_img=self.Detection(img,self.hole_parameters)
-            hole_Z=self.Range(hole_img,self.hole_parameters,finalImage)
-            print(hole_Z)
+            hole_Z=self.Range(hole_img,self.hole_parameters,img)
             #LanderMasklow=np.array([15,0,0],dtype="uint8")
             #LanderMaskhigh=np.array([30,255,255],dtype="uint8")
         elif state==10:
             hole_img=self.Detection(img,self.hole_parameters)
-            hole_Z=self.Range(hole_img,self.hole_parameters,finalImage)
-            print(hole_Z)
+            hole_Z=self.Range(hole_img,self.hole_parameters,img)
 
         else:
             Lander_parameter_update={"hue":[15,30],"sat":[40,255],"value":[40,255]}
             self.lander_parameters.update(Lander_parameter_update)
             #revert the changes listed above.
+        print(hole_Z)
         return hole_Z
+    def updateVisionState(self,state):
+        self.state = state
+        
+       
 
 
 
