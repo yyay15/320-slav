@@ -273,7 +273,7 @@ class Vision:
             self.lander_parameters.update(Lander_parameter_update)#update dictionary for lander
             #to change values to adjust for dodge lighting when going up lander
             hole_img=self.Detection(img,self.hole_parameters)
-            hole_Z,H_fin=self.Range(hole_img,self.hole_parameters,img)
+            hole_Z=self.Range(hole_img,self.hole_parameters,img)
             #LanderMasklow=np.array([15,0,0],dtype="uint8")
             #LanderMaskhigh=np.array([30,255,255],dtype="uint8")
         elif self.state==10:
