@@ -198,7 +198,7 @@ class Vision:
         sample_Z=self.Range(sample_img,self.sample_parameters,finalImage)
         cover_Z=self.Range(cover_img,self.cover_parameters,finalImage)
         obstacle_Z=self.Range(obstacle_img,self.obstacle_parameters,finalImage)
-        lander_Z=self.Range(lander_img,self.lander_parameters,finalImage)SW
+        lander_Z=self.Range(lander_img,self.lander_parameters,finalImage)
         # print(sample_Z)
         # print(cover_Z)
         # print(obstacle_Z)
