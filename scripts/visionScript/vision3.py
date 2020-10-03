@@ -248,6 +248,7 @@ class Vision:
     
     def updateVisionState(self, state):
         self.state = state
+        hole_Z=None
         if state==8:
             Lander_parameter_update={"hue":[15,30],"sat":[0,255],"value":[30,255]}
             self.lander_parameters.update(Lander_parameter_update)#update dictionary for lander
