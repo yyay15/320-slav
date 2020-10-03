@@ -173,7 +173,7 @@ class Vision:
             elif parameters_dict["type"]==4: #for hole on lander
                 Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                 if Area>30 and Area<3000:
-                    if LWidth/LHeight<1.1 and LHeight/LWidth<1.1::
+                    if LWidth/LHeight<1.1 and LHeight/LWidth<1.1:
                         (x,y),radius=cv2.minEnclosingCircle(a)
                         cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
                         parameters_dict["BBoxColour"],2)
