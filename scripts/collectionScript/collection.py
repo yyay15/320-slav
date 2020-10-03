@@ -65,11 +65,11 @@ class Collection:
             self.prevState = self.currentState
             
     def Test_ROT(self):
-        for x in range (2.5,12,0.5):
-            self.servoPWM.ChangeDutyCycle(x)
+        for x in range (5,25):
+            self.servoPWM.ChangeDutyCycle(x/2)
             time.sleep(1)
             self.servoPWM.ChangeDutyCycle(0)
-            print(x)
+            print(x/2)
             time.sleep(2)
         
         

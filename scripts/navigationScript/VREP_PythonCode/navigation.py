@@ -32,7 +32,7 @@ FLIP_DISTANCE = 0.1
 FULL_ROTATION = 15
 ROT_ACQUIRE_SAMPLE = 1
 DRIVE_OFF_TIME = 6
-LANDER_SWITCH_RANGE = 0.4
+LANDER_SWITCH_RANGE = 0.2
 
 # OBSTACLE AVOIDANCE GAINS 
 KV_ATTRACT = 0.5 #0.5
@@ -241,10 +241,10 @@ class Navigation:
         if self.isEmpty(state.landerRB):
             v, w = 0, 0
             if (not self.isEmpty(state.prevLanderRB)):
-                if (state.prevLanderRB[0][0] < LANDER_SWITCH_RANGE): #maybe bearing condition
-                    print("switching lander mask")
-                    self.modeStartTime = time.time()
-                    self.stateMode = UP_LANDER
+                # if (state.prevLanderRB[0][0] < LANDER_SWITCH_RANGE): #maybe bearing condition
+                #     print("switching lander mask")
+                #     self.modeStartTime = time.time()
+                #     self.stateMode = UP_LANDER
                 self.turnDir = np.sign(state.prevLanderRB[0][1])
 
             print("searching for lander")
@@ -252,6 +252,10 @@ class Navigation:
             self.stateMode = SEARCH_LANDER
 
         else:
+            if (state.landerRB[0][0] < LANDER_SWITCH_RANGE):
+                print("switching to drive up lander")
+                self.modeStartTime = time.time()
+                self.stateMode = UP_LANDER
             v, w = self.navigate(state.landerRB[0], state)
 
         return v,w
