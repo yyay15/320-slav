@@ -224,12 +224,12 @@ class Vision:
         return sample_Z,cover_Z,obstacle_Z,lander_Z
     def visMain(self, i):
         ret, img = self.cap.read()	     		# Get a frame from the camera
-        imcopy=np.copy(img)
+        #imcopy=np.copy(img)
         if ret == True:	
             cv2.waitKey(1)	
             #initiate some variables
         sample_Z,cover_Z,obstacle_Z,lander_Z=self.DetectandRange(img,self.sample_parameters,
-            self.cover_parameters,self.obstacle_parameters,self.lander_parameters,imcopy)
+            self.cover_parameters,self.obstacle_parameters,self.lander_parameters,img)
         holes_RB=self.holefinder(img,self.hole_parameters)
         
         if (i%5)==0:
@@ -267,18 +267,18 @@ class Vision:
         pass
     def holefinder(self,img,parameters_dict):
         hole_Z=None
-        imcopy=np.copy(img)
+        #imcopy=np.copy(img)
         if self.state==8:
             Lander_parameter_update={"hue":[15,30],"sat":[0,255],"value":[30,255]}
             self.lander_parameters.update(Lander_parameter_update)#update dictionary for lander
             #to change values to adjust for dodge lighting when going up lander
             hole_img=self.Detection(img,self.hole_parameters)
-            hole_Z,H_fin=self.Range(hole_img,self.hole_parameters,imcopy)
+            hole_Z,H_fin=self.Range(hole_img,self.hole_parameters,img)
             #LanderMasklow=np.array([15,0,0],dtype="uint8")
             #LanderMaskhigh=np.array([30,255,255],dtype="uint8")
         elif self.state==10:
             hole_img=self.Detection(img,self.hole_parameters)
-            hole_Z=self.Range(hole_img,self.hole_parameters,imcopy)
+            hole_Z=self.Range(hole_img,self.hole_parameters,img)
 
         else:
             Lander_parameter_update={"hue":[15,30],"sat":[40,255],"value":[40,255]}
