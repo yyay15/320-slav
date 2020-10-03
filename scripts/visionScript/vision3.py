@@ -248,6 +248,7 @@ class Vision:
         return SamplePresent 
         pass
     def holefinder(self,img,parameters_dict):
+        hole_Z=None
         if self.state==8:
             Lander_parameter_update={"hue":[15,30],"sat":[0,255],"value":[30,255]}
             self.lander_parameters.update(Lander_parameter_update)#update dictionary for lander
