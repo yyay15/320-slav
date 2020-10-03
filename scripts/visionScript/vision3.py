@@ -234,7 +234,7 @@ class Vision:
             # sample [[R, B], [R,B]]
             # lander [R, B]
         # if nothing sampleRB = None
-        return sampleRB, landerRB, obstaclesRB, rocksRB
+        return sampleRB, landerRB, obstaclesRB, rocksRB, holesRB
 
 # 
     def sampleCollected(self):
