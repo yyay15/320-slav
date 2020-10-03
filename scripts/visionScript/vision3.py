@@ -220,7 +220,7 @@ class Vision:
         # print(cover_Z)
         # print(obstacle_Z)
         print("Lander", lander_Z)
-        return sample_Z,cover_Z,obstacle_Z,lander_Z,L_Fin
+        return sample_Z,cover_Z,obstacle_Z,lander_Z
     def visMain(self, i):
         ret, img = self.cap.read()	     		# Get a frame from the camera
         imcopy=np.copy(img)
