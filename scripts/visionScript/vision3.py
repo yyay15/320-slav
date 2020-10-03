@@ -189,7 +189,7 @@ class Vision:
                         continue
                 else:
                     continue 
-    return Range
+        return Range
     def DetectandRange(self,img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters,finalImage):
         sample_img=self.Detection(img,self.sample_parameters)
         cover_img=self.Detection(img,self.cover_parameters)
