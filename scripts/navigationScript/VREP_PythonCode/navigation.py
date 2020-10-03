@@ -234,6 +234,7 @@ class Navigation:
         return v, w
 
     def navLander(self, state):
+        self.rock_obstacle = False
         if (not state.sampleCollected):
             v, w = 0, 0
             print("sample lost, searching for sample")
