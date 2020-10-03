@@ -211,9 +211,9 @@ if __name__ == '__main__':
                     time.sleep(1)
                     collection.Lander()
                     time.sleep(1)
-                    drive.drive(0.08,0)
+                    drive.drive(0.08,0, False)
                     time.sleep(1.5)
-                    drive.drive(0,0)
+                    drive.drive(0,0, False)
                     break
                     drive.drive(0.07, 0, False)
                     time.sleep(1)
