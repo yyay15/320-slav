@@ -5,11 +5,13 @@ class State:
         self.landerRB = None
         self.obstaclesRB = None
         self.rocksRB = None
+        self.holeRB = None
         
         self.prevSampleRB = None
         self.prevLanderRB = None
         self.prevObstaclesRB = None
         self.prevRocksRB = None
+        self.prevHoleRB = None
 
         self.onLander = False
         self.sampleCollected = True
