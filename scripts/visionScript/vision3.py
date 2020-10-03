@@ -43,6 +43,9 @@ class Vision:
         maxright=tuple(c[c[:,:,0].argmax()][0])
         maxtop=tuple(c[c[:,:,1].argmin()][0])
         maxbot=tuple(c[c[:,:,1].argmax()][0])
+        right_diff=maxright[0]-maxbot[0]
+        left_diff=maxbot[0]-maxleft[0]
+        diff_value=max(left_diff,right_diff)
         #cv2.line(img,maxbot,maxright,(0,255,0),2)
     def Detection(self, image,parameters_dict):
         #image=cv2.resize(image,(640,480))
