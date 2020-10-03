@@ -266,6 +266,7 @@ class Vision:
         else:
             Lander_parameter_update={"hue":[15,30],"sat":[40,255],"value":[40,255]}
             self.lander_parameters.update(Lander_parameter_update)
+            HFin=np.zeros((320,240))
             #revert the changes listed above.
         print(hole_Z)
         return hole_Z,H_fin
