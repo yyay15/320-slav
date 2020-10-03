@@ -224,7 +224,7 @@ class Vision:
         now=time.time()
         #i+=1
         sampleRB,landerRB,rocksRB,obstaclesRB=self.visMain(i)
-        holesRB=updateVisionState(state)
+        holesRB=self.updateVisionState(state)
         elapsed=time.time()-now
         #time.sleep(Interval-elapsed)
         elapsed2=time.time()-now
