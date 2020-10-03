@@ -25,11 +25,11 @@ class Vision:
         #img=cv2.imread("MultipleCovers.jpg")
         self.sample_parameters={"hue":[0,5],"sat":[125,255],"value":[125,255],"Height":40,"OR_MASK":True,
             "Kernel":True,"Circle":True,"BBoxColour":[204,0,204],"type":0}
-        self.lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":80,"OR_MASK":False,
+        self.lander_parameters={"hue":[15,30],"sat":[40,255],"value":[100,255],"Height":80,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[0,0,255],"type":1}
         self.obstacle_parameters={"hue":[40,70],"sat":[50,255],"value":[40,255],"Height":80,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[204,204,0],"type":2}
-        self.cover_parameters={"hue":[105,120],"sat":[70,255],"value":[70,255],"Height":70,"OR_MASK":False,
+        self.cover_parameters={"hue":[105,120],"sat":[120,255],"value":[70,255],"Height":70,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[255,255,255],"type":3} 
         self.hole_parameters={"hue":[0,255],"sat":[0,100],"value":[0,80],"Height":50,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[180,0,180],"type":4} 
@@ -89,7 +89,7 @@ class Vision:
                 if parameters_dict["Circle"]==True:
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     if Area>30:
-                        if LWidth/LHeight<1.1 and LHeight/LWidth<1.1:
+                        if LWidth/LHeight<1.3 and LHeight/LWidth<1.3:
                             (x,y),radius=cv2.minEnclosingCircle(a)
                             cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
                             parameters_dict["BBoxColour"],2)
@@ -108,7 +108,7 @@ class Vision:
                 elif parameters_dict["type"]==3:
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     if Area>150 and Area<5000:
-                        if LWidth/LHeight<1.2 and LHeight/LWidth<1.2:
+                        if LWidth/LHeight<1.4 and LHeight/LWidth<1.4:
                             Lx=int(Moment["m10"]/Moment["m00"])
                             Ly=int(Moment["m01"]/Moment["m00"])
                             Centroid=np.array([Lx,Ly])
@@ -131,7 +131,7 @@ class Vision:
                 elif parameters_dict["type"]==2:
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     if Area>150:
-                        if LWidth/LHeight<1.2 and LHeight/LWidth<1.2:
+                        if LWidth/LHeight<1.5 and LHeight/LWidth<1.5:
                             Lx=int(Moment["m10"]/Moment["m00"])#centroids of shapes identified
                             Ly=int(Moment["m01"]/Moment["m00"])
                             Centroid=np.array([Lx,Ly])
@@ -218,12 +218,13 @@ class Vision:
         #print(Bearing1)
         return sample_Z,lander_Z,cover_Z,obstacle_Z
     
-    def GetDetectedObjects(self):
-        sampleRB, landerRB, obstaclesRB, rocksRB = None, None, None, None
+    def GetDetectedObjects(self,state):
+        sampleRB, landerRB, obstaclesRB, rocksRB, holesRB = None, None, None, None, None
         i=0
         now=time.time()
         #i+=1
         sampleRB,landerRB,rocksRB,obstaclesRB=self.visMain(i)
+        holesRB=updateVisionState(state)
         elapsed=time.time()-now
         #time.sleep(Interval-elapsed)
         elapsed2=time.time()-now
@@ -262,7 +263,7 @@ class Vision:
             Lander_parameter_update={"hue":[15,30],"sat":[40,255],"value":[40,255]}
             self.lander_parameters.update(Lander_parameter_update)
             #revert the changes listed above.
-        
+        return hole_Z
 
 
 
