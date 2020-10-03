@@ -215,6 +215,13 @@ if __name__ == '__main__':
                     time.sleep(1.5)
                     drive.drive(0,0)
                     break
+                    drive.drive(0.07, 0, False)
+                    time.sleep(1)
+                    drive.drive(0, 0, False)
+                    collection.Close_ROT()
+                    drive.drive(0.1, 0, False)
+                    time.sleep(1)
+                    drive.drive(0, 0, False)
 
                 app.run(host='0.0.0.0',port=6969,debug=False)
             elif userSelect == "q":
