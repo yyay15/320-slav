@@ -20,10 +20,12 @@ class State:
         self.prevLanderRB = self.landerRB
         self.prevObstaclesRB = self.obstaclesRB
         self.prevRocksRB = self.rocksRB
+        self.prevHoleRB = self.holeRB
 
         self.sampleRB = objects[0]
         self.landerRB = objects[1]
         self.obstaclesRB = objects[2]
         self.rocksRB = objects[3]
+        self.holeRB = object[4]
         
         self.sampleCollected = sampleCollected

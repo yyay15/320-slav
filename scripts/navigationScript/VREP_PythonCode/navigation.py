@@ -234,7 +234,6 @@ class Navigation:
         return v, w
 
     def navLander(self, state):
-        self.rock_obstacle = False
         if (not state.sampleCollected):
             v, w = 0, 0
             print("sample lost, searching for sample")
@@ -300,23 +299,29 @@ class Navigation:
 
     def driveUpLander(self,state):
         print("drive up lander")
-        v = 0.85
-        w = 0
-        if (time.time()- self.modeStartTime >= 1.5):
-            if (not self.isEmpty(state.sampleRB)):
-                if (state.sampleRB[0][0] < 0.1):
-                    v, w = 0, 0
-                    self.modeStartTime = time.time()
-                    self.stateMode = HOLE_ALIGN
+        if (not self.isEmpty(state.landerRB)):
+            v = 0.85
+            w = state.landerRB[0][1] * 0.1
+            if (time.time()- self.modeStartTime >= 1.5):
+                if (not self.isEmpty(state.holeRB)):
+                    if (state.holeRB[0][0] < 0.1):
+                        v, w = 0, 0
+                        self.modeStartTime = time.time()
+                        self.stateMode = HOLE_ALIGN
+        else:
+            v, w = 0, 0
+            self.modeStartTime = time.time()
+            self.stateMode = SEARCH_LANDER
+
         return v, w
 
     def holeAlign(self, state):
         print("centering hole")
-        if (not self.isEmpty(state.sampleRB)):
-            if (not (-0.05 <= state.sampleRB[0][1] <= 0.05)):
+        if (not self.isEmpty(state.holeRB)):
+            if (not (-0.05 <= state.holeRB[0][1] <= 0.05)):
                 print("centering hole")
                 self.centering = True
-                hole = state.sampleRB[0]
+                hole = state.holeRB[0]
                 w = hole[1] * 1.4
                 v = 0
             else:
