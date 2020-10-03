@@ -28,6 +28,6 @@ class State:
         self.landerRB = objects[1]
         self.obstaclesRB = objects[2]
         self.rocksRB = objects[3]
-        self.holeRB = object[4]
+        self.holeRB = objects[4]
         
         self.sampleCollected = sampleCollected
