@@ -252,7 +252,7 @@ class Navigation:
 
         else:
             if (state.landerRB[0][0] < LANDER_SWITCH_RANGE):
-                if (-0.25 <= state.landerRB[0][1] <= 0.25):
+                if (-0.05 <= state.landerRB[0][1] <= 0.05):
                     print("switching to drive up lander")
                     self.modeStartTime = time.time()
                     self.stateMode = UP_LANDER
