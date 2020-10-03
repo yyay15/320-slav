@@ -155,7 +155,7 @@ def Range(img,parameters_dict,finalimage):
                 Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                 if Area>150:
                     if LWidth/LHeight<1.2:
-                        Lx=int(Moment["m10"]/Moment["m00"])
+                        Lx=int(Moment["m10"]/Moment["m00"])#centroids of shapes identified
                         Ly=int(Moment["m01"]/Moment["m00"])
                         Centroid=np.array([Lx,Ly])
                         Center=np.append(Center,Centroid)
@@ -199,7 +199,6 @@ def Range(img,parameters_dict,finalimage):
                         cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
                         parameters_dict["BBoxColour"],2)
                         Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
-                        Distance=((1.2*Distance)-8.7164)/1000
                         ZDistance=np.append(ZDistance,Distance)
                         #self.MaxMinLocations(a,finalimage)
                         Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
@@ -260,12 +259,12 @@ def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,la
     print(hole_Z)
     return sample_Z,cover_Z,obstacle_Z,lander_Z
 def visMain(i):
-    """ ret, img = cap.read()	     		# Get a frame from the camera
+    ret, img = cap.read()	     		# Get a frame from the camera
     if ret == True:	
-        cv2.waitKey(1)	 """
-        #initiate some variables
-    img=cv2.imread("visionScript\manCap9.jpg")
-    img=cv2.resize(img,(320,240))
+        cv2.waitKey(1)	
+        #initiate some variables """
+    """ img=cv2.imread("visionScript\manCap17.jpg")
+    img=cv2.resize(img,(320,240)) """
     sample_Z,cover_Z,obstacle_Z,lander_Z=DetectandRange(img,sample_parameters,
         cover_parameters,obstacle_parameters,lander_parameters,img)
     if (i%5)==0:
