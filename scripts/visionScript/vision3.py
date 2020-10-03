@@ -212,21 +212,21 @@ class Vision:
             #initiate some variables
         sample_Z,cover_Z,obstacle_Z,lander_Z=self.DetectandRange(img,self.sample_parameters,
             self.cover_parameters,self.obstacle_parameters,self.lander_parameters,img)
-    
+        holes_RB=self.holefinder(img,self.hole_parameters)
         
         if (i%5)==0:
              cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
         #print(Bearing1)
-        return sample_Z,lander_Z,cover_Z,obstacle_Z
+        return sample_Z,lander_Z,cover_Z,obstacle_Z,holes_RB
     
     def GetDetectedObjects(self,state):
         sampleRB, landerRB, obstaclesRB, rocksRB, holesRB = None, None, None, None, None
         i=0
         now=time.time()
         #i+=1
-        sampleRB,landerRB,rocksRB,obstaclesRB=self.visMain(i)
+        sampleRB,landerRB,rocksRB,obstaclesRB,holesRB=self.visMain(i)
         #self.updateVisionState(state)
-        holes_RB=self.holefinder(img,self.hole_parameters,self.state)
+        
         elapsed=time.time()-now
         #time.sleep(Interval-elapsed)
         elapsed2=time.time()-now
@@ -247,8 +247,8 @@ class Vision:
             SamplePresent=False
         return SamplePresent 
         pass
-    def holefinder(self,img,parameters_dict,state):
-        if state==8:
+    def holefinder(self,img,parameters_dict):
+        if self.state==8:
             Lander_parameter_update={"hue":[15,30],"sat":[0,255],"value":[30,255]}
             self.lander_parameters.update(Lander_parameter_update)#update dictionary for lander
             #to change values to adjust for dodge lighting when going up lander
@@ -256,7 +256,7 @@ class Vision:
             hole_Z=self.Range(hole_img,self.hole_parameters,img)
             #LanderMasklow=np.array([15,0,0],dtype="uint8")
             #LanderMaskhigh=np.array([30,255,255],dtype="uint8")
-        elif state==10:
+        elif self.state==10:
             hole_img=self.Detection(img,self.hole_parameters)
             hole_Z=self.Range(hole_img,self.hole_parameters,img)
 
