@@ -31,6 +31,8 @@ class Vision:
             "Kernel":False,"Circle":False,"BBoxColour":[204,204,0],"type":2}
         self.cover_parameters={"hue":[100,120],"sat":[40,200],"value":[40,200],"Height":70,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[255,255,255],"type":3} 
+        self.hole_parameters={"hue":[0,255],"sat":[0,100],"value":[0,80],"Height":50,"OR_MASK":False,
+            "Kernel":False,"Circle":False,"BBoxColour":[180,0,180],"type":4} 
 
 
     """ if self.state == 8:
@@ -212,7 +214,38 @@ class Vision:
                         Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
                         Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                         #columnwise
-                        Range=Range[Range[:,0].argsort()] 
+                        Range=Range[Range[:,0].argsort()]
+                elif parameters_dict["type"]==4:
+                    Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
+                    if Area>30 and Area<3000:
+                        if LWidth/LHeight<1.2:
+                            (x,y),radius=cv2.minEnclosingCircle(a)
+                            cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
+                            parameters_dict["BBoxColour"],2)
+                            Distance=(parameters_dict["Height"]*(self.f/(2*radius))/8)*math.cos(0.2967)
+                            Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
+                            Distance=Distance/1000
+                            ZDistance=np.append(ZDistance,Distance)
+                            Bearing=np.append(Bearing,math.radians((x-160)*(31.1/160)))
+                            Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                            #columnwise
+                            Range=Range[Range[:,0].argsort()]
+                        elif LHeight/LWidth<1.2:
+                            (x,y),radius=cv2.minEnclosingCircle(a)
+                            cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
+                            parameters_dict["BBoxColour"],2)
+                            Distance=(parameters_dict["Height"]*(self.f/(2*radius))/8)*math.cos(0.2967)
+                            Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
+                            Distance=Distance/1000
+                            ZDistance=np.append(ZDistance,Distance)
+                            Bearing=np.append(Bearing,math.radians((x-160)*(31.1/160)))
+                            Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                            #columnwise
+                            Range=Range[Range[:,0].argsort()]
+                        else:
+                            continue
+                    else:
+                        continue  
 
 
 
@@ -275,13 +308,18 @@ class Vision:
     def updateVisionState(self, state):
         self.state = state
         if state==8:
-            Lander_parameter_update={"hue":[15,30],"sat":[0,255],"value":[0,255]}
+            Lander_parameter_update={"hue":[15,30],"sat":[0,255],"value":[30,255]}
             self.lander_parameters.update(Lander_parameter_update)#update dictionary for lander
             #to change values to adjust for dodge lighting when going up lander
             #LanderMasklow=np.array([15,0,0],dtype="uint8")
             #LanderMaskhigh=np.array([30,255,255],dtype="uint8")
+        elif state==10:
+            hole_img=self.Detection(img,self.hole_parameters)
+            hole_Z=self.Range(hole_img,self.hole_parameters,finalImage)
+            print(hole_Z)
+
         else:
-            Lander_parameter_update={"hue":[15,30],"sat":[100,255],"value":[100,255]}
+            Lander_parameter_update={"hue":[15,30],"sat":[40,255],"value":[40,255]}
             self.lander_parameters.update(Lander_parameter_update)
             #revert the changes listed above.
         
