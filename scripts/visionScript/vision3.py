@@ -134,7 +134,7 @@ class Vision:
                         Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
                         Distance=((-0.0002*Distance**2)+(0.8492*Distance)+51)/1000
                         ZDistance=np.append(ZDistance,Distance)
-                        New_Lx=self.MaxMinLocations(a,finalimage)
+                        New_Lx=self.MaxMinLocations(a,finalimage,Lx)
                         #NewBearing=np.append(Bearing,math.radians((New_Lx-160)*(31.1/160)))
                         Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
                         Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
