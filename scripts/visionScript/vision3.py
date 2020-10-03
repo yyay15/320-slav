@@ -108,7 +108,7 @@ class Vision:
                 elif parameters_dict["type"]==3:
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     if Area>150 and Area<5000:
-                        if LWidth/LHeight<1.4 and LHeight/LWidth<1.4:
+                        if LWidth/LHeight<=1.5 and LHeight/LWidth<=1.5:
                             Lx=int(Moment["m10"]/Moment["m00"])
                             Ly=int(Moment["m01"]/Moment["m00"])
                             Centroid=np.array([Lx,Ly])
