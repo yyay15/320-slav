@@ -311,7 +311,7 @@ class Navigation:
                 print("hole visible")
                 v = state.holeRB[0][0] * 0.5
                 w = state.holeRB[0][1] 
-                if (state.holeRB[0][0] < 0.1):
+                if (state.holeRB[0][0] < 0.05):
                     v, w = 0, 0
                     self.modeStartTime = time.time()
                     self.stateMode = HOLE_ALIGN
