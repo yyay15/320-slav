@@ -154,8 +154,7 @@ vision = vision3.Vision()
 collection = collection.Collection()
 
 # nav
-nav = navigation.Navigation() 
-state = state.State()
+
 ledSetup() #nav
 
 #---------------#
@@ -184,6 +183,8 @@ if __name__ == '__main__':
             userSelect = input()
             if  userSelect == "a":
                 loc = localisation.Localisation()
+                nav = navigation.Navigation() 
+                state = state.State()
                 # CHUCK THAT CHUNK HERE
                 while True:
                     vision.updateVisionState(nav.stateMode)
