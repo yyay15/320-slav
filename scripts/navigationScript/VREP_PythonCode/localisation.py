@@ -24,10 +24,9 @@ class Localisation:
         # print("Velc", v)
         # w = w1 + w2
         # w = 0.15
-        #deltaTime = time.time() - self.timer
-        deltaTime = 1
+        deltaTime = time.time() - self.timer
         self.calculateTransform(v, w, deltaTime)
-        # self.timer = time.time()
+        self.timer = time.time()
 
         
     
@@ -38,4 +37,5 @@ class Localisation:
         transform = np.array([[cos(theta), 0], [sin(theta), 0], [0, 1]])
         self.deltaPos = np.matmul(transform, state)
         self.position = self.position + self.deltaPos * deltaTime
+        print(self.position)
         
