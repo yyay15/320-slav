@@ -39,6 +39,7 @@ class Vision:
             use other threshold
     """#Lx is obtained in Range function below
     def MaxMinLocations(self,c,img,Lx):
+        total_diff=0
         maxleft=tuple(c[c[:,:,0].argmin()][0])
         maxright=tuple(c[c[:,:,0].argmax()][0])
         maxtop=tuple(c[c[:,:,1].argmin()][0])
