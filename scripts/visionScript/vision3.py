@@ -29,9 +29,9 @@ class Vision:
             "Kernel":False,"Circle":False,"BBoxColour":[0,0,255],"type":1}
         self.obstacle_parameters={"hue":[40,70],"sat":[50,255],"value":[40,255],"Height":80,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[204,204,0],"type":2}
-        self.cover_parameters={"hue":[95,110],"sat":[100,255],"value":[100,255],"Height":70,"OR_MASK":False,
+        self.cover_parameters={"hue":[90,115],"sat":[0,255],"value":[0,255],"Height":70,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[255,255,255],"type":3} 
-        self.hole_parameters={"hue":[0,255],"sat":[0,255],"value":[20,50],"Height":50,"OR_MASK":False,
+        self.hole_parameters={"hue":[0,255],"sat":[0,255],"value":[50,60],"Height":50,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[255,0,0],"type":4} 
 
 
@@ -107,8 +107,8 @@ class Vision:
                         continue 
                 elif parameters_dict["type"]==3:
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>150 and Area<5000:
-                        if LWidth/LHeight<=1.5 and LHeight/LWidth<=1.5:
+                    if Area>150 and Area<6000:
+                        if LWidth/LHeight<=2 and LHeight/LWidth<=2:
                             Lx=int(Moment["m10"]/Moment["m00"])
                             Ly=int(Moment["m01"]/Moment["m00"])
                             Centroid=np.array([Lx,Ly])
@@ -173,7 +173,7 @@ class Vision:
                 elif parameters_dict["type"]==4: #for hole on lander
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     if Area>15 and Area<3000:
-                        if LWidth/LHeight<1.4 and LHeight/LWidth<1.4:
+                        if LWidth/LHeight<1.5 and LHeight/LWidth<1.5:
                             (x,y),radius=cv2.minEnclosingCircle(a)
                             cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
                             parameters_dict["BBoxColour"],2)
