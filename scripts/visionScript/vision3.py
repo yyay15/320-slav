@@ -259,10 +259,10 @@ class Vision:
         cover_Z=self.Range(cover_img,self.cover_parameters,finalImage)
         obstacle_Z=self.Range(obstacle_img,self.obstacle_parameters,finalImage)
         lander_Z=self.Range(lander_img,self.lander_parameters,finalImage)
-        print(sample_Z)
-        print(cover_Z)
-        print(obstacle_Z)
-        print(lander_Z)
+        # print(sample_Z)
+        # print(cover_Z)
+        # print(obstacle_Z)
+        print("Lander", lander_Z)
         return sample_Z,cover_Z,obstacle_Z,lander_Z
     def visMain(self, i):
         ret, img = self.cap.read()	     		# Get a frame from the camera
