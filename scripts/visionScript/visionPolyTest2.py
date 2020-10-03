@@ -191,7 +191,7 @@ def Range(img,parameters_dict,finalimage):
                     continue
             elif parameters_dict["type"]==1:
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>5000:
+                    if Area>3000:
                         Lx=int(Moment["m10"]/Moment["m00"])
                         Ly=int(Moment["m01"]/Moment["m00"])
                         Centroid=np.array([Lx,Ly])
