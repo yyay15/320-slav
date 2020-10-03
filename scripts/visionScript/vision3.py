@@ -216,7 +216,7 @@ class Vision:
         holes_RB,H_Fin=self.holefinder(img,self.hole_parameters)
         
         if (i%5)==0:
-             cv2.imshow("Binary Thresholded Frame",L_Fin)# Display thresholded frame
+             cv2.imshow("Binary Thresholded Frame",H_Fin)# Display thresholded frame
         #print(Bearing1)
         return sample_Z,lander_Z,cover_Z,obstacle_Z,holes_RB
     
