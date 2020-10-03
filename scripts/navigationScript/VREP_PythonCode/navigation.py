@@ -42,7 +42,7 @@ KW_REPULSE = 4
 
 class Navigation:
     def __init__(self):
-        self.stateMode = SEARCH_SAMPLE   # intial start state
+        self.stateMode = 5   # intial start state
         self.modeStartTime = time.time() # timer for each state
         self.turnDir = 1                 # turn clockwise or anticlockwise
         self.rock_obstacle = True        # check if rocks should be avoided
@@ -297,7 +297,7 @@ class Navigation:
         v = 0.85
         w = 0
         if (not self.isEmpty(state.sampleRB)):
-            if (state.sampleRB[0][0] < 0.1)
+            if (state.sampleRB[0][0] < 0.1):
             v, w = 0, 0
             self.modeStartTime = time.time()
             self.stateMode = HOLE_ALIGN
