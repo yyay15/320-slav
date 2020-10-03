@@ -294,6 +294,7 @@ class Navigation:
         return v, w
 
     def driveUpLander(self,state):
+        print("drive up lander")
         v = 0.85
         w = 0
         if (time.time()- self.modeStartTime >= 1.5):
@@ -305,6 +306,7 @@ class Navigation:
         return v, w
 
     def holeAlign(self, state):
+        print("centering hole")
         if (not self.isEmpty(state.sampleRB)):
             if (not (-0.05 <= state.sampleRB[0][1] <= 0.05)):
                 print("centering hole")
