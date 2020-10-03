@@ -198,7 +198,7 @@ class Vision:
         sample_Z=self.Range(sample_img,self.sample_parameters,finalImage)
         cover_Z=self.Range(cover_img,self.cover_parameters,finalImage)
         obstacle_Z=self.Range(obstacle_img,self.obstacle_parameters,finalImage)
-        lander_Z=self.Range(lander_img,self.lander_parameters,finalImage)
+        lander_Z=self.Range(lander_img,self.lander_parameters,finalImage)SW
         # print(sample_Z)
         # print(cover_Z)
         # print(obstacle_Z)
@@ -216,15 +216,15 @@ class Vision:
         if (i%5)==0:
              cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
         #print(Bearing1)
-        return sample_Z,lander_Z,cover_Z,obstacle_Z
+        return sample_Z,lander_Z,cover_Z,obstacle_Z,img
     
     def GetDetectedObjects(self,state):
         sampleRB, landerRB, obstaclesRB, rocksRB, holesRB = None, None, None, None, None
         i=0
         now=time.time()
         #i+=1
-        sampleRB,landerRB,rocksRB,obstaclesRB=self.visMain(i)
-        holesRB=self.updateVisionState(state)
+        sampleRB,landerRB,rocksRB,obstaclesRB,img=self.visMain(i)
+        holesRB=self.updateVisionState(state,img)
         elapsed=time.time()-now
         #time.sleep(Interval-elapsed)
         elapsed2=time.time()-now
@@ -246,7 +246,7 @@ class Vision:
         return SamplePresent 
         pass
     
-    def updateVisionState(self, state):
+    def updateVisionState(self,state,img):
         self.state = state
         hole_Z=None
         if state==8:
