@@ -108,24 +108,24 @@ class Vision:
                 elif parameters_dict["type"]==3:
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     if Area>150 and Area<6000:
-                        if LWidth/LHeight<=2 and LHeight/LWidth<=2:
-                            Lx=int(Moment["m10"]/Moment["m00"])
-                            Ly=int(Moment["m01"]/Moment["m00"])
-                            Centroid=np.array([Lx,Ly])
-                            Center=np.append(Center,Centroid)
-                            cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
-                            parameters_dict["BBoxColour"],2)
-                            Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
-                            Distance=((-0.0002*Distance**2)+(0.8492*Distance)+51)/1000
-                            ZDistance=np.append(ZDistance,Distance)
-                            self.MaxMinLocations(a,finalimage)
-                            Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
-                            Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
-                            #columnwise
-                            Range=Range[Range[:,0].argsort()] 
-                            #if positive then it's to the right if negative then to left of center 
-                        else:
-                            continue
+                        #if LWidth/LHeight<=2 and LHeight/LWidth<=2:
+                        Lx=int(Moment["m10"]/Moment["m00"])
+                        Ly=int(Moment["m01"]/Moment["m00"])
+                        Centroid=np.array([Lx,Ly])
+                        Center=np.append(Center,Centroid)
+                        cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
+                        parameters_dict["BBoxColour"],2)
+                        Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
+                        Distance=((-0.0002*Distance**2)+(0.8492*Distance)+51)/1000
+                        ZDistance=np.append(ZDistance,Distance)
+                        self.MaxMinLocations(a,finalimage)
+                        Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
+                        Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                        #columnwise
+                        Range=Range[Range[:,0].argsort()] 
+                        #if positive then it's to the right if negative then to left of center 
+                        #else:
+                        #    continue
                     else: 
                         continue
                 elif parameters_dict["type"]==2:
@@ -172,7 +172,7 @@ class Vision:
                             continue
                 elif parameters_dict["type"]==4: #for hole on lander
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>15 and Area<3000:
+                    if Area>50 and Area<3000:
                         if LWidth/LHeight<1.5 and LHeight/LWidth<1.5:
                             (x,y),radius=cv2.minEnclosingCircle(a)
                             cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
@@ -189,33 +189,34 @@ class Vision:
                             continue
                     else:
                         continue 
-        return Range
+        return Range,finalimage
     def DetectandRange(self,img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters,finalImage):
         sample_img=self.Detection(img,self.sample_parameters)
         cover_img=self.Detection(img,self.cover_parameters)
         obstacle_img=self.Detection(img,self.obstacle_parameters)
         lander_img=self.Detection(img,self.lander_parameters)
 
-        sample_Z=self.Range(sample_img,self.sample_parameters,finalImage)
-        cover_Z=self.Range(cover_img,self.cover_parameters,finalImage)
-        obstacle_Z=self.Range(obstacle_img,self.obstacle_parameters,finalImage)
-        lander_Z=self.Range(lander_img,self.lander_parameters,finalImage)
+        sample_Z,S_fin=self.Range(sample_img,self.sample_parameters,finalImage)
+        cover_Z,C_fin=self.Range(cover_img,self.cover_parameters,finalImage)
+        obstacle_Z,O_fin=self.Range(obstacle_img,self.obstacle_parameters,finalImage)
+        lander_Z,L_Fin=self.Range(lander_img,self.lander_parameters,finalImage)
         # print(sample_Z)
         # print(cover_Z)
         # print(obstacle_Z)
         print("Lander", lander_Z)
-        return sample_Z,cover_Z,obstacle_Z,lander_Z
+        return sample_Z,cover_Z,obstacle_Z,lander_Z,L_Fin
     def visMain(self, i):
         ret, img = self.cap.read()	     		# Get a frame from the camera
+        imcopy=np.copy(img)
         if ret == True:	
             cv2.waitKey(1)	
             #initiate some variables
-        sample_Z,cover_Z,obstacle_Z,lander_Z=self.DetectandRange(img,self.sample_parameters,
-            self.cover_parameters,self.obstacle_parameters,self.lander_parameters,img)
-        holes_RB=self.holefinder(img,self.hole_parameters)
+        sample_Z,cover_Z,obstacle_Z,lander_Z,L_Fin=self.DetectandRange(img,self.sample_parameters,
+            self.cover_parameters,self.obstacle_parameters,self.lander_parameters,imcopy)
+        holes_RB,H_Fin=self.holefinder(img,self.hole_parameters)
         
         if (i%5)==0:
-             cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
+             cv2.imshow("Binary Thresholded Frame",L_Fin)# Display thresholded frame
         #print(Bearing1)
         return sample_Z,lander_Z,cover_Z,obstacle_Z,holes_RB
     
@@ -249,24 +250,25 @@ class Vision:
         pass
     def holefinder(self,img,parameters_dict):
         hole_Z=None
+        imcopy=np.copy(img)
         if self.state==8:
             Lander_parameter_update={"hue":[15,30],"sat":[0,255],"value":[30,255]}
             self.lander_parameters.update(Lander_parameter_update)#update dictionary for lander
             #to change values to adjust for dodge lighting when going up lander
             hole_img=self.Detection(img,self.hole_parameters)
-            hole_Z=self.Range(hole_img,self.hole_parameters,img)
+            hole_Z,H_fin=self.Range(hole_img,self.hole_parameters,imcopy)
             #LanderMasklow=np.array([15,0,0],dtype="uint8")
             #LanderMaskhigh=np.array([30,255,255],dtype="uint8")
         elif self.state==10:
             hole_img=self.Detection(img,self.hole_parameters)
-            hole_Z=self.Range(hole_img,self.hole_parameters,img)
+            hole_Z,H_fin=self.Range(hole_img,self.hole_parameters,imcopy)
 
         else:
             Lander_parameter_update={"hue":[15,30],"sat":[40,255],"value":[40,255]}
             self.lander_parameters.update(Lander_parameter_update)
             #revert the changes listed above.
         print(hole_Z)
-        return hole_Z
+        return hole_Z,H_fin
     def updateVisionState(self,state):
         self.state = state
         
