@@ -304,8 +304,8 @@ class Navigation:
     def driveUpLander(self,state):
         print("drive up lander")
         if (not self.isEmpty(state.landerRB)):
-            v = 0.85
-            w = state.landerRB[0][1] * 0.1
+            v = 0.7
+            w = state.landerRB[0][1]
             #if (time.time()- self.modeStartTime >= 1.5):
             if (not self.isEmpty(state.holeRB)):
                 print("hole visible")
