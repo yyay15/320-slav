@@ -344,7 +344,7 @@ class Navigation:
         rotHoleBearing = state.rotHoleRB[0][1]
         rotHoleBearing = (rotHoleBearing +0.1)* 1.5
         if (not self.isEmpty(state.rotHoleRB)):
-            if (-0.02 <= rotHoleBearing <= 0.02):
+            if (-0.01 <= rotHoleBearing <= 0.01):
                 #if (-0.005 <= rotHoleBearing <= 0.005):
                 print("changing to flip")
                 v, w = 0, 0
