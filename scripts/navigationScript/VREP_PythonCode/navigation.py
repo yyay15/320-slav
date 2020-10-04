@@ -217,8 +217,8 @@ class Navigation:
         #time to drive to  be in flip position
         v, w = 0, 0
         print("driving to flip pos")
-        if (time.time() - self.modeStartTime <= 1):
-            v = 0.05
+        if (time.time() - self.modeStartTime <= 10):
+            v = 0
             w = 0
             self.attemptCollect = False
         else:
