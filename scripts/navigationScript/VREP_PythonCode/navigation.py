@@ -319,6 +319,7 @@ class Navigation:
     def driveUpLander(self,state):
         print("drive up lander")
         if (not self.isEmpty(state.landerRB)):
+            self.rotState = SLIGHT_OPEN
             v = 0.7
             w = state.landerRB[0][1]
             #if (time.time()- self.modeStartTime >= 1.5):
