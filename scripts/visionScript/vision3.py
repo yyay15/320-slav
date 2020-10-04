@@ -48,19 +48,18 @@ class Vision:
         maxtop=tuple(c[c[:,:,1].argmin()][0])
         maxbot=tuple(c[c[:,:,1].argmax()][0])
         right_diff=maxright[0]-maxbot[0]
-        left_diff=maxleft[0]-maxbot[0] 
-        cv2.line(img,maxbot,maxright,(0,255,0),2)
-        cv2.line(img,maxbot,maxleft,(0,255,0),2)
-        if left_diff>15 and right_diff<15:
-            diff=left_diff/2
+        left_diff=maxleft[0]-maxbot[0]
+        
+        if left_diff>15 or right_diff>15:
+            if abs(right_diff)>abs(left_diff):
+                diff=right_diff/2
+            elif abs(right_diff)<abs(left_diff):
+                diff=left_diff/2
             total_diff=Lx+diff #so total diff will be less than Lx if left difference is greater than 
             #otherwise then we have to angle left if total diff is greater than Lx that 
             # means that we have to angle right:
-        elif left_diff<15 and right_diff>15:
-            
-            diff=right_diff/2
-            total_diff=Lx+diff 
-
+        else:
+            total_diff=0
        
         return total_diff
 
@@ -142,7 +141,7 @@ class Vision:
                         Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
                         Distance=((-0.0002*Distance**2)+(0.8492*Distance)+51)/1000
                         ZDistance=np.append(ZDistance,Distance)
-                        New_Lx=self.MaxMinLocations(a,finalimage,Lx1)
+                        New_Lx=self.MaxMinLocations(a,finalimage,Lx)
                         NewBearing=np.append(NewBearing,math.radians((New_Lx-160)*(31.1/160)))
                         RangeRBC=np.vstack((ZDistance,-NewBearing)).T
                         RangeRBC=RangeRBC[RangeRBC[:,0].argsort()] 
