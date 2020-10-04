@@ -124,28 +124,28 @@ class Vision:
                         continue 
                 elif parameters_dict["type"]==3:
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if (LWidth*LHeight)>150 and (LWidth*LHeight)<5000 :
-                        if (LWidth/LHeight)<=2 and (LHeight/LWidth)<=2:
-                            Lx=int(Moment["m10"]/Moment["m00"])
-                            Ly=int(Moment["m01"]/Moment["m00"])
-                            Centroid=np.array([Lx,Ly])
-                            Center=np.append(Center,Centroid)
-                            cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
-                            parameters_dict["BBoxColour"],2)
-                            Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
-                            Distance=((-0.0002*Distance**2)+(0.8492*Distance)+51)/1000
-                            ZDistance=np.append(ZDistance,Distance)
-                            New_Lx=self.MaxMinLocations(a,finalimage,Lx)
-                            #NewBearing=np.append(Bearing,math.radians((New_Lx-160)*(31.1/160)))
-                            Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
-                            Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
-                            #columnwise
-                            Range=Range[Range[:,0].argsort()] 
-                            #if positive then it's to the right if negative then to left of center 
-                            #else:
-                            #    continue
-                    else: 
-                        continue
+                    #if (LWidth*LHeight)>150 and (LWidth*LHeight)<5000 :
+                        #if (LWidth/LHeight)<=2 and (LHeight/LWidth)<=2:
+                    Lx=int(Moment["m10"]/Moment["m00"])
+                    Ly=int(Moment["m01"]/Moment["m00"])
+                    Centroid=np.array([Lx,Ly])
+                    Center=np.append(Center,Centroid)
+                    cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
+                    parameters_dict["BBoxColour"],2)
+                    Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
+                    Distance=((-0.0002*Distance**2)+(0.8492*Distance)+51)/1000
+                    ZDistance=np.append(ZDistance,Distance)
+                    New_Lx=self.MaxMinLocations(a,finalimage,Lx)
+                    #NewBearing=np.append(Bearing,math.radians((New_Lx-160)*(31.1/160)))
+                    Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
+                    Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                    #columnwise
+                    Range=Range[Range[:,0].argsort()] 
+                    #if positive then it's to the right if negative then to left of center 
+                    #else:
+                    #    continue
+                    #else: 
+                    #    continue
                 elif parameters_dict["type"]==2:
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     if Area>150:
