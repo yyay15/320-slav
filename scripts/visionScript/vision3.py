@@ -33,7 +33,7 @@ class Vision:
             "Kernel":False,"Circle":False,"BBoxColour":[255,255,255],"type":3} 
         self.hole_parameters={"hue":[0,255],"sat":[0,255],"value":[50,60],"Height":50,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[255,0,0],"type":4} 
-        self.wall_parameters={"hue":[0,255],"sat":[0,255],"value":[0,30],"Height":80"OR_MASK":False,
+        self.wall_parameters={"hue":[0,255],"sat":[0,255],"value":[0,30],"Height":80,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[255,0,0],"type":4} 
 
 
