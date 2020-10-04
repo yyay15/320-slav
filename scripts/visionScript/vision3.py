@@ -106,7 +106,7 @@ class Vision:
                 if parameters_dict["Circle"]==True:
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     if Area>30:
-                        if LWidth/LHeight<1.3 and LHeight/LWidth<1.3:
+                        if (LWidth/LHeight)<1.3 and (LHeight/LWidth)<1.3:
                             (x,y),radius=cv2.minEnclosingCircle(a)
                             cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
                             parameters_dict["BBoxColour"],2)
@@ -124,8 +124,8 @@ class Vision:
                         continue 
                 elif parameters_dict["type"]==3:
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>150 :#and Area<6000
-                        #if LWidth/LHeight<=2 and LHeight/LWidth<=2:
+                    if (LWidth*LHeight)>150 and (LWidth*LHeight)<5000 :
+                        if (LWidth/LHeight)<=2 and (LHeight/LWidth)<=2:
                         Lx=int(Moment["m10"]/Moment["m00"])
                         Ly=int(Moment["m01"]/Moment["m00"])
                         Centroid=np.array([Lx,Ly])
