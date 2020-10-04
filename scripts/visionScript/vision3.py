@@ -49,9 +49,11 @@ class Vision:
         maxbot=tuple(c[c[:,:,1].argmax()][0])
         right_diff=maxright[0]-maxbot[0]
         left_diff=maxbot[0]-maxleft[0]
+        print("left diff",left_diff)
+        print("right diff",right_diff)
         cv2.line(img,maxbot,maxright,(0,255,0),2)
         cv2.line(img,maxbot,maxleft,(0,255,0),2)
-        if left_diff>50 and right_diff>50:
+        if left_diff>30 and right_diff>30:
             if right_diff>left_diff:
                 diff=right_diff/2
             elif right_diff<left_diff:
