@@ -124,7 +124,7 @@ class Vision:
                         continue 
                 elif parameters_dict["type"]==3:
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if (LWidth*LHeight)>300 and (LWidth*LHeight)<20000 :
+                    if (LWidth*LHeight)>300:
                         #if (LWidth/LHeight)<=2 and (LHeight/LWidth)<=2:
                         Lx=int(Moment["m10"]/Moment["m00"])
                         Ly=int(Moment["m01"]/Moment["m00"])
@@ -146,29 +146,29 @@ class Vision:
                         #    continue
                     else: 
                         continue
-                elif parameters_dict["type"]==2:
+                elif parameters_dict["type"]==2:#for obstacle
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     if Area>150:
-                        if LWidth/LHeight<1.5 and LHeight/LWidth<1.5:
-                            Lx=int(Moment["m10"]/Moment["m00"])#centroids of shapes identified
-                            Ly=int(Moment["m01"]/Moment["m00"])
-                            Centroid=np.array([Lx,Ly])
-                            Center=np.append(Center,Centroid)
-                            cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
-                            parameters_dict["BBoxColour"],2)
-                            Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
-                            Distance=(262.22*np.log(Distance)-1222.1)/1000
-                            ZDistance=np.append(ZDistance,Distance)
-                            Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
-                            Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
-                            #columnwise
-                            Range=Range[Range[:,0].argsort()] 
-                            #if positive then it's to the right if negative then to left of center 
-                        else:
-                            continue
+                        #f LWidth/LHeight<1.5 and LHeight/LWidth<1.5:
+                        Lx=int(Moment["m10"]/Moment["m00"])#centroids of shapes identified
+                        Ly=int(Moment["m01"]/Moment["m00"])
+                        Centroid=np.array([Lx,Ly])
+                        Center=np.append(Center,Centroid)
+                        cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
+                        parameters_dict["BBoxColour"],2)
+                        Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
+                        Distance=(262.22*np.log(Distance)-1222.1)/1000
+                        ZDistance=np.append(ZDistance,Distance)
+                        Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
+                        Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                        #columnwise
+                        Range=Range[Range[:,0].argsort()] 
+                        #if positive then it's to the right if negative then to left of center 
+                    #else:
+                    #    continue
                     else: 
                         continue
-                elif parameters_dict["type"]==1:
+                elif parameters_dict["type"]==1: #for lander
                         Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                         if Area>3000:
                             Lx=int(Moment["m10"]/Moment["m00"])
@@ -189,21 +189,21 @@ class Vision:
                             continue
                 elif parameters_dict["type"]==4: #for hole on lander
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>50 and Area<3000:
-                        if LWidth/LHeight<1.5 and LHeight/LWidth<1.5:
-                            (x,y),radius=cv2.minEnclosingCircle(a)
-                            cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
-                            parameters_dict["BBoxColour"],2)
-                            Distance=(parameters_dict["Height"]*(self.f/(2*radius))/8)*math.cos(0.2967)
-                            Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
-                            Distance=Distance/1000
-                            ZDistance=np.append(ZDistance,Distance)
-                            Bearing=np.append(Bearing,math.radians((x-160)*(31.1/160)))
-                            Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
-                            #columnwise
-                            Range=Range[Range[:,0].argsort()]
-                        else:
-                            continue
+                    if Area>50 and Area<7000:
+                        #if LWidth/LHeight<1.5 and LHeight/LWidth<1.5:
+                        (x,y),radius=cv2.minEnclosingCircle(a)
+                        cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
+                        parameters_dict["BBoxColour"],2)
+                        Distance=(parameters_dict["Height"]*(self.f/(2*radius))/8)*math.cos(0.2967)
+                        Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
+                        Distance=Distance/1000
+                        ZDistance=np.append(ZDistance,Distance)
+                        Bearing=np.append(Bearing,math.radians((x-160)*(31.1/160)))
+                        Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                        #columnwise
+                        Range=Range[Range[:,0].argsort()]
+                        #else:
+                        #    continue
                     else:
                         continue 
         return Range
