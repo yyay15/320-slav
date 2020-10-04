@@ -337,6 +337,7 @@ class Navigation:
     
     def alignRock(self, state):
         print("aligning rock")
+        v, w = 0, 0
         if (not self.isEmpty(state.rotHoleRB)):
             v = 0.05
             w = state.rotHoleRB[0][1] * 1.2
@@ -365,7 +366,13 @@ class Navigation:
                 v, w = 0, 0
                 self.modeStartTime = time.time()
                 self.stateMode = SAMPLE_DROP
-
+        else:
+            v, w = 0, 0
+            self.modeStartTime = time.time()
+            self.stateMode = SEARCH_LANDER
+        return v, w 
+        
+ 
     def dropSample(self, state):
         if (state.sampleCollected):
             v = 0.1
