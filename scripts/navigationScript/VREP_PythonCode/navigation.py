@@ -30,7 +30,7 @@ SLIGHT_OPEN = 3
 # DISTANCE/TIME VARIABLES
 ROT_DISTANCE = 0.21 #collect distance 
 FLIP_DISTANCE = 0.16
-ROCK_ALIGN_DISTANCE = 0.35
+ROCK_ALIGN_DISTANCE = 0.3
 FULL_ROTATION = 15
 ROT_ACQUIRE_SAMPLE = 1
 DRIVE_OFF_TIME = 6
@@ -203,8 +203,8 @@ class Navigation:
         else:
             if not self.isEmpty(state.rocksRB):
                 currRock = state.rocksRB[0]
-                if not self.isEmpty(state.rotHoleRB):
-                    currRock[1] = state.rotHoleRB[0][1]
+                #if not self.isEmpty(state.rotHoleRB):
+                    #currRock[1] = state.rotHoleRB[0][1]
                 v, w = self.navigate(currRock, state)
                 if (currRock[0] < ROCK_ALIGN_DISTANCE):
                     print("align rock")
@@ -217,8 +217,8 @@ class Navigation:
         #time to drive to  be in flip position
         v, w = 0, 0
         print("driving to flip pos")
-        if (time.time() - self.modeStartTime <= 0.7):
-            v = 0.05
+        if (time.time() - self.modeStartTime <= 10):
+            v = 0
             w = 0
             self.attemptCollect = False
         else:
@@ -342,21 +342,21 @@ class Navigation:
         print("aligning rock")
         v, w = 0, 0
         if (not self.isEmpty(state.rotHoleRB)):
-            print("aligning")
-
             if (-0.05 <= state.rotHoleRB[0][1] <= 0.05):
-                if (state.rotHoleRB[0][0] > 0.18):
-                    print("correcting range before flip")
-                    v = 0.1
-                    w = 0
+                if (-0.005 <= state.rotHoleRB[0][1] <= 0.005):
+                    self.centering = True
+                    v = 0
+                    w = state.rotHoleRB[0][1]
                 else:
                     print("changing to flip")
                     v, w = 0, 0
                     self.modeStartTime = time.time()
                     self.stateMode = FLIP_ROCK
             else:
-                v = 0.05
-                w = state.rotHoleRB[0][1] * 1.05
+                print("large align")
+                v = 0.035
+                w = state.rotHoleRB[0][1] 
+ 
         else:
             self.modeStartTime = time.time()
             self.stateMode = SEARCH_ROCK
