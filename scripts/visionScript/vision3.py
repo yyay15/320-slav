@@ -144,6 +144,7 @@ class Vision:
                         ZDistance=np.append(ZDistance,Distance)
                         New_Lx=self.MaxMinLocations(a,finalimage,Lx)
                         NewBearing=np.append(NewBearing,math.radians((New_Lx-160)*(31.1/160)))
+                        cv2.putText(finalimage, "Range", ((Lx-int(LWidth/2),Ly+int(LHeight/2))), cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
                         RangeRBC=np.vstack((ZDistance,NewBearing)).T
                         RangeRBC=RangeRBC[RangeRBC[:,0].argsort()] 
                         Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
