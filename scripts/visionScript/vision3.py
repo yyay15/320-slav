@@ -124,7 +124,7 @@ class Vision:
                         continue 
                 elif parameters_dict["type"]==3:
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if (LWidth*LHeight)>300 and (LWidth*LHeight)<10000 :
+                    if (LWidth*LHeight)>300 and (LWidth*LHeight)<20000 :
                         #if (LWidth/LHeight)<=2 and (LHeight/LWidth)<=2:
                         Lx=int(Moment["m10"]/Moment["m00"])
                         Ly=int(Moment["m01"]/Moment["m00"])
