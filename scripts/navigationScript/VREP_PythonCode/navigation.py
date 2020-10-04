@@ -52,7 +52,7 @@ class Navigation:
         self.isBlind = False
         self.centering = False
         self.commandnav = False
-        self.attemptCollect = False
+        self.attemptFlip = False
         self.numSampleCollected = 0
         
     
@@ -220,25 +220,24 @@ class Navigation:
         if (time.time() - self.modeStartTime <= 10):
             v = 0
             w = 0
-            self.attemptCollect = False
+            self.attemptFlip = False
         else:
             print("preparing to flip")
             v, w = 0, 0
-            if (not self.isBlind and not self.attemptCollect):
+            if (not self.isBlind and not self.attemptFlip):
                 print("flipping rock")
                 self.rotState = OPEN
                 self.modeStartTime = time.time()
                 self.isBlind = True
             if (self.isBlind):
-                print("cover open, driving straight")
+                print("cover open, reversing)
                 if (time.time() - self.modeStartTime < 1):
                     v = -0.07
                     w = 0
                 else:
                     print("closing cover")
                     self.isBlind = False
-                    self.attemptCollect = True
-                    self.rotStateClose = CLOSE
+                    self.attemptFlip = True
             else:
                 if (state.sampleCollected):
                     self.modeStartTime = time.time()
