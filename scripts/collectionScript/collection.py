@@ -61,7 +61,7 @@ class Collection:
                 print("close rot")
                 self.Close_ROT()
             elif self.currentState == 3:
-                self.Release_Ball()
+                self.Lander()
             self.prevState = self.currentState
             
     def Test_ROT(self):
