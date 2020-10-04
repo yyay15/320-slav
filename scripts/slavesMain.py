@@ -192,7 +192,7 @@ if __name__ == '__main__':
                     sampleCollected = vision.sampleCollected()
                     state.updateState(objects,True)
                     v, w = nav.updateVelocities(state)
-                    loc.getWheelAngVel(v, w)
+                    loc.getWheelAngVel(v, w, state)
                     ledIndicator(nav.stateMode)
                     collection.sampleManage(nav.rotState)
 
