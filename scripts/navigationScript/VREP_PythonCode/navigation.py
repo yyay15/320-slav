@@ -29,8 +29,8 @@ SLIGHT_OPEN = 3
 
 # DISTANCE/TIME VARIABLES
 ROT_DISTANCE = 0.21 #collect distance 
-FLIP_DISTANCE = 0.1
-ROCK_ALIGN_DISTANCE = 0.15
+FLIP_DISTANCE = 0.16
+ROCK_ALIGN_DISTANCE = 0.35
 FULL_ROTATION = 15
 ROT_ACQUIRE_SAMPLE = 1
 DRIVE_OFF_TIME = 6
@@ -192,22 +192,20 @@ class Navigation:
         return v, w
 
     def navRock(self, state):
+        v, w = 0, 0
         print("nav to  rock ")
         if (self.isEmpty(state.rocksRB)):
             if (not self.isEmpty(state.prevRocksRB)):
                 self.turnDir = np.sign(state.prevRocksRB[0][1])
-            v, w = 0, 0
             print("returning to rock search")
             self.modeStartTime = time.time()
             self.stateMode = SEARCH_ROCK
         else:
-            v, w = 0,0
             if not self.isEmpty(state.rocksRB):
                 currRock = state.rocksRB[0]
                 v, w = self.navigate(currRock, state)
                 if (currRock[0] < ROCK_ALIGN_DISTANCE):
                     print("align rock")
-                    v, w = 0, 0
                     self.modeStartTime = time.time()
                     self.stateMode = ROCK_ALIGN
 
@@ -228,8 +226,8 @@ class Navigation:
                 self.isBlind = True
             if (self.isBlind):
                 print("cover open, driving straight")
-                if (time.time() - self.modeStartTime < ROT_ACQUIRE_SAMPLE):
-                    v = 0.07
+                if (time.time() - self.modeStartTime < 1):
+                    v = -0.07
                     w = 0
                 else:
                     print("closing cover")
@@ -340,7 +338,7 @@ class Navigation:
         v, w = 0, 0
         if (not self.isEmpty(state.rotHoleRB)):
             v = 0.05
-            w = state.rotHoleRB[0][1] * 1.2
+            w = state.rotHoleRB[0][1] 
             if (-0.1 <= state.rotHoleRB[0][1] <= 0.1):
                 if (state.rotHoleRB[0][0] > FLIP_DISTANCE):
                     v = 0.1
