@@ -151,7 +151,7 @@ class Navigation:
         if (not self.isEmpty(state.rocksRB)):
             v, w = 0, 0
             self.rock_obstacle = False
-            self.stateMode = NAV_SAMPLE
+            self.stateMode = NAV_ROCK
         elif (time.time() -self.modeStartTime >= FULL_ROTATION):
             print("moving around")
             v = 0.5
