@@ -3,9 +3,9 @@ import imutils
 import math
 import time
 import cv2 
-cap = cv2.VideoCapture(0)  		# Connect to camera 0 (or the only camera)
+""" cap = cv2.VideoCapture(0)  		# Connect to camera 0 (or the only camera)
 cap.set(3, 320)                     	# Set the width to 320
-cap.set(4, 240)                	# Set the height to 240
+cap.set(4, 240)    """             	# Set the height to 240
 Center=np.array([])
 
 f=3.04/(1.12*10**-3)
@@ -16,8 +16,8 @@ lander_parameters={"hue":[15,30],"sat":[0,255],"value":[30,255],"Height":80,"OR_
     "Kernel":False,"Circle":False,"BBoxColour":[0,0,255],"type":1}
 obstacle_parameters={"hue":[40,70],"sat":[50,255],"value":[40,255],"Height":80,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[204,204,0],"type":2}
-cover_parameters={"hue":[100,120],"sat":[40,200],"value":[40,200],"Height":70,"OR_MASK":False,
-    "Kernel":False,"Circle":False,"BBoxColour":[255,255,255],"type":3} 
+cover_parameters={"hue":[95,107],"sat":[100,255],"value":[0,200],"Height":70,"OR_MASK":False,
+    "Kernel":False,"Circle":False,"BBoxColour":[255,255,255],"type":3}
 hole_parameters={"hue":[0,255],"sat":[0,100],"value":[0,80],"Height":50,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[180,0,180],"type":4} 
 
@@ -34,6 +34,8 @@ def MaxMinLocations(c,img):
     cv2.line(img,maxbot,maxleft,(0,255,0),2)
     right_diff=maxright[0]-maxbot[0]
     left_diff=maxbot[0]-maxleft[0]
+    print("right diff",right_diff)
+    print("left diff",left_diff)
     #if left_diff>10:
 
     #elif right_diff>10:
@@ -103,7 +105,7 @@ def Range(img,parameters_dict,finalimage):
             elif parameters_dict["type"]==3:
                 Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                 if Area>150 and Area<5000:
-                    if LWidth/LHeight<1.2 and LHeight/LWidth<1.2::
+                    if LWidth/LHeight<1.2 and LHeight/LWidth<1.2:
                         Lx=int(Moment["m10"]/Moment["m00"])
                         Ly=int(Moment["m01"]/Moment["m00"])
                         Centroid=np.array([Lx,Ly])
@@ -168,7 +170,7 @@ def Range(img,parameters_dict,finalimage):
             elif parameters_dict["type"]==4:
                 Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                 if Area>30 and Area<3000:
-                    if LWidth/LHeight<1.1 and LHeight/LWidth<1.1::
+                    if LWidth/LHeight<1.1 and LHeight/LWidth<1.1:
                         (x,y),radius=cv2.minEnclosingCircle(a)
                         cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
                         parameters_dict["BBoxColour"],2)
@@ -205,12 +207,12 @@ def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,la
     print(hole_Z)
     return sample_Z,cover_Z,obstacle_Z,lander_Z
 def visMain(i):
-    ret, img = cap.read()	     		# Get a frame from the camera
+    """ ret, img = cap.read()	     		# Get a frame from the camera
     if ret == True:	
-        cv2.waitKey(1)	
+        cv2.waitKey(1)	 """
         #initiate some variables """
-    """ img=cv2.imread("visionScript\manCap17.jpg")
-    img=cv2.resize(img,(320,240)) """
+    img=cv2.imread("visionScript\manCap8.jpg")
+    img=cv2.resize(img,(320,240))
     sample_Z,cover_Z,obstacle_Z,lander_Z=DetectandRange(img,sample_parameters,
         cover_parameters,obstacle_parameters,lander_parameters,img)
     if (i%5)==0:
