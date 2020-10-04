@@ -44,7 +44,7 @@ KW_REPULSE = 4
 
 class Navigation:
     def __init__(self):
-        self.stateMode = 5   # intial start state
+        self.stateMode = 2   # intial start state
         self.modeStartTime = time.time() # timer for each state
         self.turnDir = 1                 # turn clockwise or anticlockwise
         self.rock_obstacle = True        # check if rocks should be avoided
@@ -151,7 +151,7 @@ class Navigation:
         if (not self.isEmpty(state.rocksRB)):
             v, w = 0, 0
             self.rock_obstacle = False
-            self.stateMode = NAV_SAMPLE
+            self.stateMode = NAV_ROCK
         elif (time.time() -self.modeStartTime >= FULL_ROTATION):
             print("moving around")
             v = 0.5
@@ -194,12 +194,12 @@ class Navigation:
     def navRock(self, state):
         print("nav to  rock ")
         if (self.isEmpty(state.rocksRB)):
-            if (self.isEmpty(state.prevRocksRB)):
-                v, w = 0, 0
+            if (not self.isEmpty(state.prevRocksRB)):
                 self.turnDir = np.sign(state.prevRocksRB[0][1])
-                print("returning to rock search")
-                self.modeStartTime = time.time()
-                self.stateMode = SEARCH_ROCK
+            v, w = 0, 0
+            print("returning to rock search")
+            self.modeStartTime = time.time()
+            self.stateMode = SEARCH_ROCK
         else:
             v, w = 0,0
             if not self.isEmpty(state.rocksRB):
@@ -337,6 +337,7 @@ class Navigation:
     
     def alignRock(self, state):
         print("aligning rock")
+        v, w = 0, 0
         if (not self.isEmpty(state.rotHoleRB)):
             v = 0.05
             w = state.rotHoleRB[0][1] * 1.2
@@ -365,7 +366,13 @@ class Navigation:
                 v, w = 0, 0
                 self.modeStartTime = time.time()
                 self.stateMode = SAMPLE_DROP
-
+        else:
+            v, w = 0, 0
+            self.modeStartTime = time.time()
+            self.stateMode = SEARCH_LANDER
+        return v, w 
+        
+ 
     def dropSample(self, state):
         if (state.sampleCollected):
             v = 0.1
