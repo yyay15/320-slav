@@ -190,7 +190,7 @@ if __name__ == '__main__':
                     vision.updateVisionState(nav.stateMode)
                     objects = vision.GetDetectedObjects(nav.stateMode)
                     sampleCollected = vision.sampleCollected()
-                    state.updateState(objects,True)
+                    state.updateState(objects,sampleCollected)
                     print(state.rotHoleRB)
                     v, w = nav.updateVelocities(state)
                     loc.getWheelAngVel(v, w, state)

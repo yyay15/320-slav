@@ -213,11 +213,13 @@ class Navigation:
     
     def flipRock(self, state):
         #time to drive to  be in flip position
-        if (time.time - self.modeStartTime <= 1):
-            v = 0.1
+        print("driving to flip pos")
+        if (time.time() - self.modeStartTime <= 1):
+            v = 0.07
             w = 0
             self.attemptCollect = False
         else:
+            print("preparing to flip")
             v, w = 0, 0
             if (not self.isBlind and not self.attemptCollect):
                 print("flipping rock")
@@ -337,13 +339,17 @@ class Navigation:
         print("aligning rock")
         v, w = 0, 0
         if (not self.isEmpty(state.rotHoleRB)):
+            print("aligning")
             v = 0.05
             w = state.rotHoleRB[0][1] 
             if (-0.1 <= state.rotHoleRB[0][1] <= 0.1):
-                if (state.rotHoleRB[0][0] > FLIP_DISTANCE):
+                if (state.rotHoleRB[0][0] > 0.2):
+                    print("correcting range before flip")
                     v = 0.1
                     w = 0
                 else:
+                    print("changing to flip")
+                    v, w = 0, 0
                     self.modeStartTime = time.time()
                     self.stateMode = FLIP_ROCK
         else:
