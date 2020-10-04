@@ -49,7 +49,8 @@ class Vision:
         maxbot=tuple(c[c[:,:,1].argmax()][0])
         right_diff=maxright[0]-maxbot[0]
         left_diff=maxleft[0]-maxbot[0] 
-        
+        cv2.line(img,maxbot,maxright,(0,255,0),2)
+        cv2.line(img,maxbot,maxleft,(0,255,0),2)
         if left_diff>8 or right_diff>8:
             if abs(right_diff)>abs(left_diff):
                 diff=right_diff/2
