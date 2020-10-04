@@ -51,14 +51,15 @@ class Vision:
         left_diff=maxleft[0]-maxbot[0] 
         cv2.line(img,maxbot,maxright,(0,255,0),2)
         cv2.line(img,maxbot,maxleft,(0,255,0),2)
-        if left_diff>8 or right_diff>8:
-            if abs(right_diff)>abs(left_diff):
-                diff=right_diff/2
-            elif abs(right_diff)<abs(left_diff):
-                diff=left_diff/2
+        if left_diff>15 and right_diff<15:
+            diff=left_diff/2
             total_diff=Lx+diff #so total diff will be less than Lx if left difference is greater than 
             #otherwise then we have to angle left if total diff is greater than Lx that 
             # means that we have to angle right:
+        elif left_diff<15 and right_diff>15:
+            
+            diff=right_diff/2
+            total_diff=Lx+diff 
 
        
         return total_diff
