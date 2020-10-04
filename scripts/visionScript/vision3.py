@@ -25,7 +25,7 @@ class Vision:
         #img=cv2.imread("MultipleCovers.jpg")
         self.sample_parameters={"hue":[0,5],"sat":[125,255],"value":[125,255],"Height":40,"OR_MASK":True,
             "Kernel":True,"Circle":True,"BBoxColour":[204,0,204],"type":0}
-        self.lander_parameters={"hue":[15,30],"sat":[40,255],"value":[100,255],"Height":80,"OR_MASK":False,
+        self.lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":80,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[0,0,255],"type":1}
         self.obstacle_parameters={"hue":[40,70],"sat":[50,255],"value":[20,255],"Height":80,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[204,204,0],"type":2}
@@ -42,6 +42,7 @@ class Vision:
     """#Lx is obtained in Range function below
     def MaxMinLocations(self,c,img,Lx):
         total_diff=0
+        diff=0
         maxleft=tuple(c[c[:,:,0].argmin()][0])
         maxright=tuple(c[c[:,:,0].argmax()][0])
         maxtop=tuple(c[c[:,:,1].argmin()][0])
