@@ -194,12 +194,12 @@ class Navigation:
     def navRock(self, state):
         print("nav to  rock ")
         if (self.isEmpty(state.rocksRB)):
-            if (self.isEmpty(state.prevRocksRB)):
-                v, w = 0, 0
+            if (not self.isEmpty(state.prevRocksRB)):
                 self.turnDir = np.sign(state.prevRocksRB[0][1])
-                print("returning to rock search")
-                self.modeStartTime = time.time()
-                self.stateMode = SEARCH_ROCK
+            v, w = 0, 0
+            print("returning to rock search")
+            self.modeStartTime = time.time()
+            self.stateMode = SEARCH_ROCK
         else:
             v, w = 0,0
             if not self.isEmpty(state.rocksRB):
