@@ -47,11 +47,11 @@ class Vision:
         maxright=tuple(c[c[:,:,0].argmax()][0])
         maxtop=tuple(c[c[:,:,1].argmin()][0])
         maxbot=tuple(c[c[:,:,1].argmax()][0])
-        right_diff=maxright[1]-maxbot[1]
-        left_diff=maxleft[1]-maxbot[1]
+        right_diff=maxright[0]-maxbot[0]
+        left_diff=maxleft[0]-maxbot[0]
         cv2.line(img,maxbot,maxright,(0,255,0),2)
         cv2.line(img,maxbot,maxleft,(0,255,0),2)
-        if abs(left_diff)>50 and abs(right_diff)>50:
+        if abs(left_diff)>20 and abs(right_diff)>20:
             if abs(right_diff)>abs(left_diff):
                 diff=right_diff/2
             elif abs(right_diff)<abs(left_diff):
