@@ -51,7 +51,7 @@ class Vision:
         left_diff=maxbot[0]-maxleft[0]
         cv2.line(img,maxbot,maxright,(0,255,0),2)
         cv2.line(img,maxbot,maxleft,(0,255,0),2)
-        if left_diff>20 and right_diff>20:
+        if left_diff>15 and right_diff>15:
             if right_diff>left_diff:
                 diff=right_diff/2
             elif right_diff<left_diff:
