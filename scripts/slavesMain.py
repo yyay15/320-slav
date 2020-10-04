@@ -199,6 +199,7 @@ if __name__ == '__main__':
                     drive.drive(v, w, nav.centering) # not in navMain
                 
             elif userSelect == "m":
+                collection.Lander()
                 drive.manualControl()
             elif userSelect == "n":
                 drive.continuousControl()
