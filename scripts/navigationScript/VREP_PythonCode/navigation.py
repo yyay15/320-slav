@@ -230,7 +230,7 @@ class Navigation:
                 self.modeStartTime = time.time()
                 self.isBlind = True
             if (self.isBlind):
-                print("cover open, reversing)
+                print("cover open, reversing")
                 if (time.time() - self.modeStartTime < 1):
                     v = -0.07
                     w = 0
