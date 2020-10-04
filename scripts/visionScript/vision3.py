@@ -141,7 +141,7 @@ class Vision:
                         ZDistance=np.append(ZDistance,Distance)
                         New_Lx=self.MaxMinLocations(a,finalimage,Lx)
                         NewBearing=np.append(NewBearing,math.radians((New_Lx-160)*(31.1/160)))
-                        RangeRBC=np.vstack((ZDistance,-NewBearing))
+                        RangeRBC=np.vstack((ZDistance,-NewBearing)).T
                         RangeRBC=RangeRBC[RangeRBC[:,0].argsort()] 
                         Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
                         Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
