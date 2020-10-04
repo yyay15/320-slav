@@ -89,8 +89,10 @@ class Vision:
     
     def Range(self,img,parameters_dict,finalimage):
         Range=np.array([])
+        RangeRBC=np.arrau([])
         ZDistance=np.array([])
         Bearing=np.array([])
+        NewBearing=np.array([])
         Center=np.array([])
         #LWidth=np.array([])
         #LHeight=np.array([])
@@ -138,7 +140,8 @@ class Vision:
                         Distance=((-0.0002*Distance**2)+(0.8492*Distance)+51)/1000
                         ZDistance=np.append(ZDistance,Distance)
                         New_Lx=self.MaxMinLocations(a,finalimage,Lx)
-                        #NewBearing=np.append(Bearing,math.radians((New_Lx-160)*(31.1/160)))
+                        NewBearing=np.append(NewBearing,math.radians((New_Lx-160)*(31.1/160)))
+                        RangeRBC=np.vstack((ZDistance,-NewBearing))
                         Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
                         Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                         #columnwise
@@ -208,7 +211,7 @@ class Vision:
                         #    continue
                     else:
                         continue 
-        return Range
+        return Range,RangeRBC
     def DetectandRange(self,img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters,finalImage):
         sample_img=self.Detection(img,self.sample_parameters)
         cover_img=self.Detection(img,self.cover_parameters)
@@ -216,35 +219,35 @@ class Vision:
         lander_img=self.Detection(img,self.lander_parameters)
 
         sample_Z=self.Range(sample_img,self.sample_parameters,finalImage)
-        cover_Z=self.Range(cover_img,self.cover_parameters,finalImage)
+        cover_Z,holeCover_Z=self.Range(cover_img,self.cover_parameters,finalImage)
         obstacle_Z=self.Range(obstacle_img,self.obstacle_parameters,finalImage)
         lander_Z=self.Range(lander_img,self.lander_parameters,finalImage)
         # print(sample_Z)
         # print(cover_Z)
         # print(obstacle_Z)
         print("Lander", lander_Z)
-        return sample_Z,cover_Z,obstacle_Z,lander_Z
+        return sample_Z,cover_Z,obstacle_Z,lander_Z,holeCover_Z
     def visMain(self, i):
         ret, img = self.cap.read()	     		# Get a frame from the camera
         #imcopy=np.copy(img)
         if ret == True:	
             cv2.waitKey(1)	
             #initiate some variables
-        sample_Z,cover_Z,obstacle_Z,lander_Z=self.DetectandRange(img,self.sample_parameters,
+        sample_Z,cover_Z,obstacle_Z,lander_Z,holeCover_Z=self.DetectandRange(img,self.sample_parameters,
             self.cover_parameters,self.obstacle_parameters,self.lander_parameters,img)
         holes_RB=self.holefinder(img,self.hole_parameters)
         
         if (i%5)==0:
              cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
         #print(Bearing1)
-        return sample_Z,lander_Z,cover_Z,obstacle_Z,holes_RB
+        return sample_Z,lander_Z,cover_Z,obstacle_Z,holes_RB,holeCover_Z
     
     def GetDetectedObjects(self,state):
         sampleRB, landerRB, obstaclesRB, rocksRB, holesRB, rotHoleRB = None, None, None, None, None, None
         i=0
         now=time.time()
         #i+=1
-        sampleRB,landerRB,rocksRB,obstaclesRB,holesRB=self.visMain(i)
+        sampleRB,landerRB,rocksRB,obstaclesRB,holesRB,rotHoleRB=self.visMain(i)
         #self.updateVisionState(state)
         
         elapsed=time.time()-now
