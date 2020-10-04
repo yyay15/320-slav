@@ -89,7 +89,7 @@ class Vision:
     
     def Range(self,img,parameters_dict,finalimage):
         Range=np.array([])
-        RangeRBC=np.arrau([])
+        RangeRBC=np.array([])
         ZDistance=np.array([])
         Bearing=np.array([])
         NewBearing=np.array([])
