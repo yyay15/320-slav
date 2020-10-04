@@ -140,7 +140,7 @@ class Vision:
                         Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
                         Distance=((-0.0002*Distance**2)+(0.8492*Distance)+51)/1000
                         ZDistance=np.append(ZDistance,Distance)
-                        New_Lx=self.MaxMinLocations(a,finalimage,Lx)
+                        New_Lx=self.MaxMinLocations(a,finalimage,Lx1)
                         NewBearing=np.append(NewBearing,math.radians((New_Lx-160)*(31.1/160)))
                         RangeRBC=np.vstack((ZDistance,-NewBearing)).T
                         RangeRBC=RangeRBC[RangeRBC[:,0].argsort()] 
