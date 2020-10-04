@@ -33,6 +33,8 @@ class Vision:
             "Kernel":False,"Circle":False,"BBoxColour":[255,255,255],"type":3} 
         self.hole_parameters={"hue":[0,255],"sat":[0,255],"value":[50,60],"Height":50,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[255,0,0],"type":4} 
+        self.wall_parameters={"hue":[0,255],"sat":[0,255],"value":[0,30],"Height":80"OR_MASK":False,
+            "Kernel":False,"Circle":False,"BBoxColour":[255,0,0],"type":4} 
 
 
     """ if self.state == 8:
@@ -170,7 +172,7 @@ class Vision:
                         continue
                 elif parameters_dict["type"]==1: #for lander
                         Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                        if Area>3000:
+                        if Area>3000 and Area<60000:
                             Lx=int(Moment["m10"]/Moment["m00"])
                             Ly=int(Moment["m01"]/Moment["m00"])
                             Centroid=np.array([Lx,Ly])
