@@ -288,7 +288,7 @@ class Vision:
             hole_Z=self.Range(hole_img,self.hole_parameters,img)
 
         else:
-            Lander_parameter_update={"hue":[15,30],"sat":[40,255],"value":[40,255]}
+            Lander_parameter_update={"hue":[15,30],"sat":[100,255],"value":[100,255]}
             self.lander_parameters.update(Lander_parameter_update)
             #revert the changes listed above.
         print(hole_Z)
