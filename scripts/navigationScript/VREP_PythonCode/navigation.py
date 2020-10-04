@@ -203,6 +203,8 @@ class Navigation:
         else:
             if not self.isEmpty(state.rocksRB):
                 currRock = state.rocksRB[0]
+                if not self.isEmpty(state.rotHoleRB):
+                    currRock[1] = state.rotHoleRB[0][1]
                 v, w = self.navigate(currRock, state)
                 if (currRock[0] < ROCK_ALIGN_DISTANCE):
                     print("align rock")
