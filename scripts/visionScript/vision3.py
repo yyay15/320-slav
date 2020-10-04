@@ -51,7 +51,7 @@ class Vision:
         left_diff=maxleft[0]-maxbot[0]
         cv2.line(img,maxbot,maxright,(0,255,0),2)
         cv2.line(img,maxbot,maxleft,(0,255,0),2)
-        if left_diff>50 and right_diff>50:
+        if left_diff>20 and right_diff>20:
             if abs(right_diff)>abs(left_diff):
                 diff=right_diff/2
             elif abs(right_diff)<abs(left_diff):
@@ -146,6 +146,7 @@ class Vision:
                         NewBearing=np.append(NewBearing,math.radians((New_Lx-160)*(31.1/160)))
                         RangeRBC=np.vstack((ZDistance,-NewBearing)).T
                         RangeRBC=RangeRBC[RangeRBC[:,0].argsort()] 
+                        print(RangeRBC)
                         Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
                         Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                         #columnwise
