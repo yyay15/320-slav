@@ -404,7 +404,6 @@ class Navigation:
         rocks = state.rocksRB #[[r,b], [r,b]]
         vRep = 0
         wRep = 0
-        print(obstacles)
         if not self.isEmpty(obstacles):
             print("adding obstacles")
             obstacles = obstacles.tolist()
