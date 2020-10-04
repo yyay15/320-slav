@@ -100,5 +100,5 @@ class Collection:
         elif command == "p":
             self.Close_ROT()
         elif command == "l":
-            self.Release_Ball()
+            self.Lander()
 
