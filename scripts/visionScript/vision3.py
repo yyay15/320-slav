@@ -27,7 +27,7 @@ class Vision:
             "Kernel":True,"Circle":True,"BBoxColour":[204,0,204],"type":0}
         self.lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":80,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[0,0,255],"type":1}
-        self.obstacle_parameters={"hue":[40,70],"sat":[50,255],"value":[20,255],"Height":80,"OR_MASK":False,
+        self.obstacle_parameters={"hue":[40,70],"sat":[30,255],"value":[40,255],"Height":80,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[204,204,0],"type":2}
         self.cover_parameters={"hue":[95,107],"sat":[100,255],"value":[0,200],"Height":70,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[255,255,255],"type":3} 
@@ -50,7 +50,7 @@ class Vision:
         right_diff=maxright[0]-maxbot[0]
         left_diff=maxleft[0]-maxbot[0]
         
-        if left_diff>10 or right_diff>10:
+        if left_diff>5 or right_diff>5:
             if abs(right_diff)>abs(left_diff):
                 diff=right_diff/2
             elif abs(right_diff)<abs(left_diff):
