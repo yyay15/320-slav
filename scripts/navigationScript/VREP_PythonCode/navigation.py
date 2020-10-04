@@ -340,21 +340,24 @@ class Navigation:
     def alignRock(self, state):
         print("aligning rock")
         v, w = 0, 0
+        rotHoleBearing = state.rotHoleRB[0][1]
+        rotHoleBearing = (rotHoleBearing +0.1)* 1.5
         if (not self.isEmpty(state.rotHoleRB)):
-            if (-0.05 <= state.rotHoleRB[0][1] <= 0.05):
-                if (-0.005 <= state.rotHoleRB[0][1] <= 0.005):
-                    self.centering = True
-                    v = 0
-                    w = state.rotHoleRB[0][1]
-                else:
-                    print("changing to flip")
-                    v, w = 0, 0
-                    self.modeStartTime = time.time()
-                    self.stateMode = FLIP_ROCK
+            if (-0.01 <= rotHoleBearing <= 0.01):
+                #if (-0.005 <= rotHoleBearing <= 0.005):
+                print("changing to flip")
+                v, w = 0, 0
+                self.modeStartTime = time.time()
+                self.stateMode = FLIP_ROCK
+                #else:
+                    #self.centering = True
+                    #v = 0
+                    #w = state.rotHoleRB[0][1] + 0.12
+
             else:
                 print("large align")
                 v = 0.035
-                w = state.rotHoleRB[0][1] 
+                w = (state.rotHoleRB[0][1] + 0.1) * 1.5
  
         else:
             self.modeStartTime = time.time()
