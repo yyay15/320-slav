@@ -191,6 +191,7 @@ if __name__ == '__main__':
                     objects = vision.GetDetectedObjects(nav.stateMode)
                     sampleCollected = vision.sampleCollected()
                     state.updateState(objects,True)
+                    print(type(objects[2]))
                     v, w = nav.updateVelocities(state)
                     loc.getWheelAngVel(v, w, state)
                     ledIndicator(nav.stateMode)
