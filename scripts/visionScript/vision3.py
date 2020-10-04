@@ -48,9 +48,9 @@ class Vision:
         maxtop=tuple(c[c[:,:,1].argmin()][0])
         maxbot=tuple(c[c[:,:,1].argmax()][0])
         right_diff=maxright[0]-maxbot[0]
-        left_diff=maxleft[0]-maxbot[0]
+        left_diff=maxleft[0]-maxbot[0] 
         
-        if left_diff>5 or right_diff>5:
+        if left_diff>8 or right_diff>8:
             if abs(right_diff)>abs(left_diff):
                 diff=right_diff/2
             elif abs(right_diff)<abs(left_diff):
