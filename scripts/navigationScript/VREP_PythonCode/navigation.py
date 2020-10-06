@@ -333,9 +333,9 @@ class Navigation:
             v = 0.95
             w = state.holeRB[0][1]
             
-        elif (not self.isEmpty(state.landerRB)):
+        elif (time.time() - self.modeStartTime > 1):
             v = 0.95
-            w = state.landerRB[0][1]
+            w = 0
         else:
             v, w = 0, 0
             self.modeStartTime = time.time()
