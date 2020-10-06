@@ -156,7 +156,7 @@ class Vision:
                         rangeText = "Lx {:.4f} ".format(New_Lx)
                         bearingText = "New Lx: {:.4f}".format(Lx)
                         #bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
-                        cv2.putText(finalimage, rangeText + bearingText, (Lx1-5,Ly1), cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
+                        cv2.putText(finalimage, rangeText + bearingText, (Lx1+10,Ly1), cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
                         RangeRBC=np.vstack((ZDistance,NewBearing)).T
                         RangeRBC=RangeRBC[RangeRBC[:,0].argsort()] 
                         Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
