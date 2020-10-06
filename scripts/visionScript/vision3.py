@@ -259,7 +259,7 @@ class Vision:
         sampleRB, landerRB, obstaclesRB, rocksRB, holesRB, rotHoleRB = None, None, None, None, None, None
         i=0
         now=time.time()
-        #i+=1   holesRB,
+        i+=1   #holesRB,
         sampleRB,landerRB,rocksRB,obstaclesRB,rotHoleRB=self.visMain(i)
         #self.updateVisionState(state)
         
