@@ -91,7 +91,7 @@ class Vision:
         return filtered_img
 
     
-    def Range(self,img,parameters_dict,finalimage):
+    def Range(self,img,parameters_dict,finalimage,i):
         Range=np.array([])
         RangeRBC=np.array([])
         ZDistance=np.array([])
@@ -149,8 +149,9 @@ class Vision:
                         Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
                         Distance=((-0.0002*Distance**2)+(0.8492*Distance)+51)/1000
                         ZDistance=np.append(ZDistance,Distance)
-                        New_Lx,left_diff,right_diff=self.MaxMinLocations(a,finalimage,Lx)
-                        NewBearing=np.append(NewBearing,math.radians((New_Lx-160)*(31.1/160)))
+                        if (i%30)==0:
+                            New_Lx,left_diff,right_diff=self.MaxMinLocations(a,finalimage,Lx)
+                            NewBearing=np.append(NewBearing,math.radians((New_Lx-160)*(31.1/160)))
                         textOrigin = (Lx-int(LWidth/2),Ly-int(LHeight/2)+ 5)
                         rangeText = "R: {:.4f}".format(Distance)
                         #rangeText = "New Lx {:.4f} ".format(New_Lx)
@@ -208,7 +209,6 @@ class Vision:
                             Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
                             Distance=(0.8667*Distance-3)/1000
                             ZDistance=np.append(ZDistance,Distance)
-                            
                             Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
                             #print range bearing
                             textOrigin = (Lx-int(LWidth/2),Ly-int(LHeight/2)+ 5)
@@ -225,16 +225,16 @@ class Vision:
                 else:
                     continue 
         return Range,RangeRBC
-    def DetectandRange(self,img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters,finalImage):
+    def DetectandRange(self,img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters,finalImage,i):
         sample_img=self.Detection(img,self.sample_parameters)
         cover_img=self.Detection(img,self.cover_parameters)
         obstacle_img=self.Detection(img,self.obstacle_parameters)
         lander_img=self.Detection(img,self.lander_parameters)
 
-        sample_Z, abc=self.Range(sample_img,self.sample_parameters,finalImage)
-        cover_Z,holeCover_Z=self.Range(cover_img,self.cover_parameters,finalImage)
-        obstacle_Z, abc=self.Range(obstacle_img,self.obstacle_parameters,finalImage)
-        lander_Z, abc=self.Range(lander_img,self.lander_parameters,finalImage)
+        sample_Z, abc=self.Range(sample_img,self.sample_parameters,finalImage,i)
+        cover_Z,holeCover_Z=self.Range(cover_img,self.cover_parameters,finalImage,i)
+        obstacle_Z, abc=self.Range(obstacle_img,self.obstacle_parameters,finalImage,i)
+        lander_Z, abc=self.Range(lander_img,self.lander_parameters,finalImage,i)
         # print(sample_Z)
         # print(cover_Z)
         # print(obstacle_Z)
@@ -247,7 +247,7 @@ class Vision:
             cv2.waitKey(1)	
             #initiate some variables
         sample_Z,cover_Z,obstacle_Z,lander_Z,holeCover_Z=self.DetectandRange(img,self.sample_parameters,
-            self.cover_parameters,self.obstacle_parameters,self.lander_parameters,img)
+            self.cover_parameters,self.obstacle_parameters,self.lander_parameters,img,i)
         self.holefinder()
         
         if (i%5)==0:
