@@ -62,7 +62,7 @@ class Vision:
         else:
             total_diff=0
        
-        return total_diff
+        return total_diff,right_diff,left_diff
 
 
         #cv2.line(img,maxbot,maxright,(0,255,0),2)
@@ -148,12 +148,12 @@ class Vision:
                         Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
                         Distance=((-0.0002*Distance**2)+(0.8492*Distance)+51)/1000
                         ZDistance=np.append(ZDistance,Distance)
-                        New_Lx=self.MaxMinLocations(a,finalimage,Lx)
+                        New_Lx,left_diff,right_diff=self.MaxMinLocations(a,finalimage,Lx)
                         NewBearing=np.append(NewBearing,math.radians((New_Lx-160)*(31.1/160)))
                         textOrigin = (Lx-int(LWidth/2),Ly-int(LHeight/2)+ 5)
                         #rangeText = "R: {:.4f}".format(Distance)
-                        rangeText = "New_LX: {:.4f} ".format(New_Lx)
-                        bearingText = "Lx: {:.4f}".format(Lx)
+                        rangeText = "New_LX: {:.4f} ".format(left_diff)
+                        bearingText = "Lx: {:.4f}".format(right_diff)
                         #bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
                         cv2.putText(finalimage, rangeText + bearingText, textOrigin, cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
                         RangeRBC=np.vstack((ZDistance,NewBearing)).T
@@ -308,15 +308,15 @@ class Vision:
             hole_Z=self.Range(hole_img,self.hole_parameters,img)
             #LanderMasklow=np.array([15,0,0],dtype="uint8")
             #LanderMaskhigh=np.array([30,255,255],dtype="uint8")
-        elif self.state==10:
-            hole_img=self.Detection(img,self.hole_parameters)
-            hole_Z=self.Range(hole_img,self.hole_parameters,img)
+        #elif self.state==10:
+        #   hole_img=self.Detection(img,self.hole_parameters)
+        #    hole_Z=self.Range(hole_img,self.hole_parameters,img)
 
         else:
             Lander_parameter_update={"hue":[15,30],"sat":[100,255],"value":[100,255]}
             self.lander_parameters.update(Lander_parameter_update)
             #revert the changes listed above.
-        print(hole_Z)
+        hole_Z=None
         return hole_Z
     def updateVisionState(self,state):
         self.state = state
