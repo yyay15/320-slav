@@ -265,7 +265,7 @@ class Vision:
                         continue
 
         return Range,RangeRBC
-    def DetectandRange(self,img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters,finalImage,i):
+    def DetectandRange(self,img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters,finalImage):
         sample_img=self.Detection(img,self.sample_parameters)
         cover_img=self.Detection(img,self.cover_parameters)
         obstacle_img=self.Detection(img,self.obstacle_parameters)
