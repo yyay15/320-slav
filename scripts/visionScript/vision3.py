@@ -47,7 +47,7 @@ class Vision:
         maxright=tuple(c[c[:,:,0].argmax()][0])
         maxtop=tuple(c[c[:,:,1].argmin()][0])
         maxbot=tuple(c[c[:,:,1].argmax()][0])
-        left_diff=maxright[0]-maxbot[0]
+        left_diff=abs(maxright[0]-maxbot[0])
         right_diff=maxleft[0]-maxbot[0]
         cv2.line(img,maxbot,maxright,(0,255,0),2)
         cv2.line(img,maxbot,maxleft,(0,255,0),2)
