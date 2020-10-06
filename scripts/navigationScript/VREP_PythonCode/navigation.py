@@ -336,23 +336,18 @@ class Navigation:
         if (not self.isEmpty(state.rotHoleRB)):
             rotHoleBearing = state.rotHoleRB[0][1]
             rotHoleBearing = (rotHoleBearing) * 1.1
-            if (-0.01 <= rotHoleBearing <= 0.01):
-                #if (-0.005 <= rotHoleBearing <= 0.005):
+            if (-0.03 <= rotHoleBearing <= 0.03):
                 print("changing to flip")
                 v, w = 0, 0
                 self.modeStartTime = time.time()
                 self.stateMode = FLIP_ROCK
-                #else:
-                    #self.centering = True
-                    #v = 0
-                    #w = state.rotHoleRB[0][1] + 0.12
 
             else:
-                print("large align")
-                v = 0
-                if (state.rotHoleRB[0][0]) > 0.1:
-                    v = 0.05
-                w = (state.rotHoleRB[0][1] ) * state.rotHoleRB[0][0] * 4
+                # v = 0
+                # if (state.rotHoleRB[0][0]) > 0.15:
+                #     v = 0.05
+                # w = (state.rotHoleRB[0][1] ) * 1,1#* state.rotHoleRB[0][0] * 4
+                v, w = navAndAvoid(state.rotHoleRB[0], state.rocksRB[0])
  
         else:
             self.modeStartTime = time.time()
@@ -396,6 +391,15 @@ class Navigation:
 #-----------------------#
 # Navigation functions
 #-----------------------#
+    def navAndAvoid(self, goal, obstacle):
+        vRep, wRep = 0, 0
+        v = KV_ATTRACT * goal[0]
+        w = KW_ATTRACT * goal[1]
+        vRep = (0.5 - obstacle[0]) * 0.1
+        wRep = (np.sign(closeObs[1]) * (0.5 - closeObs[0]) * (3 - abs(closeObs[1]))* 2)
+        v = v - vRep
+        w = w - wRep
+
 
     def navigate(self, goal, state):
         vRep, wRep = 0, 0
