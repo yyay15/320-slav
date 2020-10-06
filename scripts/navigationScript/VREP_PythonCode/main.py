@@ -61,8 +61,8 @@ if __name__ == '__main__':
             ledSetup()
         while True:
             sim.UpdateObjectPositions()
-            print(sim.robotPose[0])
-            print(sim.robotPose[1])
+            print("x", sim.robotPose[0])
+            print("y", sim.robotPose[1])
             objects = sim.GetDetectedObjects()
             sampleCollected = sim.SampleCollected()
             state.updateState(objects, sampleCollected)
