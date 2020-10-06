@@ -122,6 +122,12 @@ class Vision:
                             Distance=Distance/1000
                             ZDistance=np.append(ZDistance,Distance)
                             Bearing=np.append(Bearing,math.radians((x-160)*(31.1/160)))
+                            #print range bearing on image
+                            textOrigin = (int(x-radius),int(y-radius)+ 5)
+                            rangeText = "R: {:.4f}".format(Distance)
+                            bearingText = " B: {:.4f}".format((math.radians((x-160)*(31.1/160))))
+                            cv2.putText(finalimage, rangeText + bearingText, textOrigin, cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
+
                             Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                             #columnwise
                             Range=Range[Range[:,0].argsort()]
@@ -144,9 +150,11 @@ class Vision:
                         ZDistance=np.append(ZDistance,Distance)
                         New_Lx=self.MaxMinLocations(a,finalimage,Lx)
                         NewBearing=np.append(NewBearing,math.radians((New_Lx-160)*(31.1/160)))
-                        textOrigin = ((Lx-int(LWidth/2),Ly-int(LHeight/2)))
-                        rangeText = "Range: {:.4f}".format(Distance)
-                        bearingText = "Bearing: {:.4f}".format(-1 *(math.radians((New_Lx-160)*(31.1/160))))
+                        textOrigin = (Lx-int(LWidth/2),Ly-int(LHeight/2)+ 5)
+                        #rangeText = "R: {:.4f}".format(Distance)
+                        rangeText = "New_LX: {:.4f} ".format(New_Lx)
+                        bearingText = "Lx: {:.4f}".format(Lx)
+                        #bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
                         cv2.putText(finalimage, rangeText + bearingText, textOrigin, cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
                         RangeRBC=np.vstack((ZDistance,NewBearing)).T
                         RangeRBC=RangeRBC[RangeRBC[:,0].argsort()] 
@@ -173,6 +181,12 @@ class Vision:
                         Distance=(262.22*np.log(Distance)-1222.1)/1000
                         ZDistance=np.append(ZDistance,Distance)
                         Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
+                        #Print range bearing
+                        textOrigin = (Lx-int(LWidth/2),Ly-int(LHeight/2)+ 5)
+                        rangeText = "R: {:.4f}".format(Distance)
+                        bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
+                        cv2.putText(finalimage, rangeText + bearingText, textOrigin, cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
+                        ##
                         Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                         #columnwise
                         Range=Range[Range[:,0].argsort()] 
@@ -195,6 +209,11 @@ class Vision:
                             ZDistance=np.append(ZDistance,Distance)
                             
                             Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
+                            #print range bearing
+                            textOrigin = (Lx-int(LWidth/2),Ly-int(LHeight/2)+ 5)
+                            rangeText = "R: {:.4f}".format(Distance)
+                            bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
+                            cv2.putText(finalimage, rangeText + bearingText, textOrigin, cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
                             Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                             #columnwise
                             Range=Range[Range[:,0].argsort()] 
