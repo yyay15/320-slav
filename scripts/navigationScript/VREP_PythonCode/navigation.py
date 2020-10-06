@@ -270,7 +270,9 @@ class Navigation:
                 else:
                     v = 0
                     w = w = state.landerRB[0][1] * 0.5
-            v, w = self.navigate(state.landerRB[0], state)
+            landerR = state.landerRB[0][0] * 2
+            landerB = state.landerRB[0][1] * 2
+            v, w = self.navigate([landerR, landerB], state)
 
         return v,w
     
@@ -318,7 +320,7 @@ class Navigation:
         print("drive up lander")
         self.rotState = SLIGHT_OPEN
         v, w = 0, 0
-        if (self.isEmpty(state.holeRB) and time.time() - self.modeStartTime > 1):
+        if (self.isEmpty(state.holeRB) and time.time() - self.modeStartTime > 2.5):
             v = 0 
             if (not self.isEmpty(state.landerRB)):
                 w = 0.5 * np.sign(state.landerRB[0][1])
@@ -333,7 +335,7 @@ class Navigation:
             v = 0.95
             w = state.holeRB[0][1]
             
-        elif (time.time() - self.modeStartTime > 1):
+        elif (time.time() - self.modeStartTime > 2.5):
             v = 0.95
             w = 0
         else:
