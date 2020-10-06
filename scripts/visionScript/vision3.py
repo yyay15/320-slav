@@ -102,7 +102,9 @@ class Vision:
         #LHeight=np.array([])
         #GrayFiltimg=cv2.cvtColor(img,cv2.COLOR_HSV2BGR)
         #GrayFiltimg=cv2.cvtColor(GrayFiltimg,cv2.COLOR_RGB2GRAY)
-        Contour=cv2.findContours(img,cv2.RETR_CCOMP,cv2.CHAIN_APPROX_SIMPLE)
+        AndImage=cv2.bitwise_or(finalimage,img)
+        edges=cv2.Canny(AndImage,100,200)
+        Contour=cv2.findContours(edges,cv2.RETR_CCOMP,cv2.CHAIN_APPROX_SIMPLE)
         if Contour == []:
             print("there is nothing here")
         else:
@@ -138,6 +140,7 @@ class Vision:
                     else:
                         continue 
                 elif parameters_dict["type"]==3:
+                    
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     if (LWidth*LHeight)>300:
                         #if (LWidth/LHeight)<=2 and (LHeight/LWidth)<=2:
