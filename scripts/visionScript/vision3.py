@@ -49,13 +49,13 @@ class Vision:
         maxbot=tuple(c[c[:,:,1].argmax()][0])
         left_diff=maxright[0]-maxbot[0]
         right_diff=maxleft[0]-maxbot[0]
-        #right_diff=-right_diff
+        right_diff=-right_diff
         cv2.line(img,maxbot,maxright,(0,255,0),2)
         cv2.line(img,maxbot,maxleft,(0,255,0),2)
         if left_diff>15 and right_diff>15:
-            if -right_diff>left_diff:
+            if right_diff>left_diff:
                 diff=-right_diff/2
-            elif -right_diff<left_diff:
+            elif right_diff<left_diff:
                 diff=left_diff/2
             total_diff=Lx+diff #so total diff will be less than Lx if left difference is greater than 
             #otherwise then we have to angle left if total diff is greater than Lx that 
