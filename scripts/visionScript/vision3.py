@@ -221,8 +221,8 @@ class Vision:
                             continue
                 elif parameters_dict["type"]==4: #for hole on lander
                     Range=0
-                    else:
-                        continue 
+                else:
+                    continue 
         return Range,RangeRBC
     def DetectandRange(self,img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters,finalImage):
         sample_img=self.Detection(img,self.sample_parameters)
