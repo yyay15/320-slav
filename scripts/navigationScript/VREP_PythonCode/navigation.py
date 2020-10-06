@@ -325,6 +325,7 @@ class Navigation:
             else:
                 w = 0.5 
         elif (not self.isEmpty(state.holeRB)):
+
             if (state.holeRB[0][0] <= 0.06):
                 self.modeStartTime = time.time()
                 self.stateMode = SAMPLE_DROP

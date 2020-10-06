@@ -286,21 +286,21 @@ class Vision:
         if ret == True:	
             cv2.waitKey(1)	
             #initiate some variables
-        sample_Z,cover_Z,obstacle_Z,lander_Z,holeCover_Z,lander_img=self.DetectandRange(img,self.sample_parameters,
+        sample_Z,cover_Z,obstacle_Z,lander_Z,hole_Z,lander_img=self.DetectandRange(img,self.sample_parameters,
             self.cover_parameters,self.obstacle_parameters,self.lander_parameters,img)
-        coverhole_Z=self.holefinder(img,lander_img)
+        coverhole_Z, hole_Z=self.holefinder(img,lander_img)
         
         if (i%5)==0:
              cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
         #print(Bearing1)holes_RB,
-        return sample_Z,lander_Z,cover_Z,obstacle_Z,holeCover_Z,coverhole_Z
+        return sample_Z,lander_Z,cover_Z,obstacle_Z,hole_Z,coverhole_Z
     
     def GetDetectedObjects(self,state):
         sampleRB, landerRB, obstaclesRB, rocksRB, holesRB, rotHoleRB, = None, None, None, None, None, None
         i=0
         now=time.time()
         #i+=1   #holesRB,
-        sampleRB,landerRB,rocksRB,obstaclesRB,rotHoleRB,holesRB=self.visMain(i)
+        sampleRB,landerRB,rocksRB,obstaclesRB,landerHoleRB, coverHoleRB =self.visMain(i)
         #self.updateVisionState(state)
         
         elapsed=time.time()-now
