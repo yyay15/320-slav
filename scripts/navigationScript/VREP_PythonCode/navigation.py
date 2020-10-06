@@ -44,7 +44,7 @@ KW_REPULSE = 4
 
 class Navigation:
     def __init__(self):
-        self.stateMode = 1   # intial start state
+        self.stateMode = 2  # intial start state
         self.modeStartTime = time.time() # timer for each state
         self.turnDir = 1                 # turn clockwise or anticlockwise
         self.rock_obstacle = True        # check if rocks should be avoided
@@ -217,8 +217,8 @@ class Navigation:
         #time to drive to  be in flip position
         v, w = 0, 0
         print("driving to flip pos")
-        if (time.time() - self.modeStartTime <= 0.5):
-            v = 0.07
+        if (time.time() - self.modeStartTime <= 0.2):
+            v = 0.035
             w = 0
             self.attemptFlip = False
         else:
@@ -350,18 +350,21 @@ class Navigation:
         v, w = 0, 0
         if (not self.isEmpty(state.rotHoleRB)):
             rotHoleBearing = state.rotHoleRB[0][1]
-            rotHoleBearing = (rotHoleBearing) * 1.1
+            rotHoleBearing = rotHoleBearing
             if (-0.03 <= rotHoleBearing <= 0.03):
                 print("changing to flip")
                 v, w = 0, 0
                 self.modeStartTime = time.time()
                 self.stateMode = FLIP_ROCK
 
-            else:
-                v, w = self.navAndAvoid(state.rotHoleRB, state.rocksRB)
+                v, w = self.navAndAvoid(state.rotHoleRB, None)
         else:
-            self.modeStartTime = time.time()
-            self.stateMode = SEARCH_ROCK
+            if (not self.isEmpty(state.prevRotHoleRB)):
+                self.modeStartTime = time.time()
+                self.stateMode = FLIP_ROCK
+            else:
+                self.modeStartTime = time.time()
+                self.stateMode = SEARCH_ROCK
         return v, w
 
     def holeAlign(self, state):
@@ -371,7 +374,7 @@ class Navigation:
                 print("centering hole")
                 self.centering = True
                 hole = state.holeRB[0]
-                w = hole[1] * 1.4
+                w = hole[1] * 1.1
                 v = 0
             else:
                 v, w = 0, 0
@@ -409,8 +412,8 @@ class Navigation:
 #-----------------------#
     def navAndAvoid(self, goal, obstacle):
         vRep, wRep = 0, 0
-        v = KV_ATTRACT * goal[0][0]
-        w = KW_ATTRACT * goal[0][1]
+        v = KV_ATTRACT * goal[0][0] * 0.2
+        w = KW_ATTRACT * goal[0][1] * 3
         if not self.isEmpty(obstacle):
             vRep = (0.5 - obstacle[0][0]) * 0.1 
             wRep = np.sign(obstacle[0][1]) * (0.5 - obstacle[0][0]) * (3 - abs(obstacle[0][1]))
@@ -420,7 +423,7 @@ class Navigation:
 
     def navigate(self, goal, state):
         vRep, wRep = 0, 0
-        v = KV_ATTRACT * goal[0]
+        v = KV_ATTRACT * goal[0] 
         w = KW_ATTRACT * goal[1]
         vRep, wRep = self.avoidObstacles(state)
         v = v - vRep
