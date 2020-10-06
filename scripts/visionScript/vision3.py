@@ -247,7 +247,7 @@ class Vision:
             #initiate some variables
         sample_Z,cover_Z,obstacle_Z,lander_Z,holeCover_Z=self.DetectandRange(img,self.sample_parameters,
             self.cover_parameters,self.obstacle_parameters,self.lander_parameters,img)
-        self.holefinder(self)
+        self.holefinder()
         
         if (i%5)==0:
              cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
