@@ -321,7 +321,7 @@ class Navigation:
         if (self.isEmpty(state.holeRB) and time.time() - self.modeStartTime > 1):
             v = 0 
             if (not self.isEmpty(state.landerRB)):
-                w = 0.5 * np.sign(state.prevSampleRB[0][1])
+                w = 0.5 * np.sign(state.landerRB[0][1])
             else:
                 w = 0.5 
         elif (not self.isEmpty(state.holeRB)):
