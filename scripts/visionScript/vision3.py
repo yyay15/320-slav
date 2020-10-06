@@ -160,8 +160,8 @@ class Vision:
                         #bearingText = "Lx: {:.4f}".format(Lx)
                         bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
                         cv2.putText(finalimage, rangeText + bearingText, (Lx1+5,Ly1+10), cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
-                        RangeRBC=np.vstack((ZDistance,NewBearing)).T
-                        RangeRBC=RangeRBC[RangeRBC[:,0].argsort()] 
+                        #RangeRBC=np.vstack((ZDistance,NewBearing)).T
+                        #RangeRBC=RangeRBC[RangeRBC[:,0].argsort()] 
                         Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
                         Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                         #columnwise
