@@ -335,7 +335,7 @@ class Navigation:
         v, w = 0, 0
         if (not self.isEmpty(state.rotHoleRB)):
             rotHoleBearing = state.rotHoleRB[0][1]
-            rotHoleBearing = (rotHoleBearing +0.1)* 1.5
+            rotHoleBearing = (rotHoleBearing) * 1.1
             if (-0.01 <= rotHoleBearing <= 0.01):
                 #if (-0.005 <= rotHoleBearing <= 0.005):
                 print("changing to flip")
@@ -349,8 +349,10 @@ class Navigation:
 
             else:
                 print("large align")
-                v = 0.035
-                w = (state.rotHoleRB[0][1] + 0.1) * 1.5
+                v = 0
+                if (state.rotHoleRB[0][0]) > 0.1:
+                    v = 0.05
+                w = (state.rotHoleRB[0][1] ) * state.rotHoleRB[0][0] * 4
  
         else:
             self.modeStartTime = time.time()
