@@ -183,7 +183,7 @@ class Vision:
                         ZDistance=np.append(ZDistance,Distance)
                         Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
                         #Print range bearing
-                        textOrigin = (Lx-int(LWidth/2),Ly-int(LHeight/2)+ 5)
+                        textOrigin = (Lx-int(LWidth/2),Ly-int(LHeight/2)+ 15)
                         rangeText = "R: {:.4f}".format(Distance)
                         bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
                         cv2.putText(finalimage, rangeText + bearingText, textOrigin, cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
