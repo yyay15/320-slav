@@ -242,8 +242,8 @@ class Vision:
                         Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                         #columnwise
                         Range=Range[Range[:,0].argsort()]
-                else:
-                    continue 
+                    else:
+                        continue 
                 elif parameters_dict["type"]==5:
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     if Area<2000:
