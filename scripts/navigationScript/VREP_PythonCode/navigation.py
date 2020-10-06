@@ -318,7 +318,13 @@ class Navigation:
         print("drive up lander")
         self.rotState = SLIGHT_OPEN
         v, w = 0, 0
-        if (not self.isEmpty(state.holeRB)):
+        if (self.isEmpty(state.holeRB) and time.time() - self.modeStartTime > 1):
+            v = 0 
+            if (not self.isEmpty(state.landerRB)):
+                w = 0.5 * np.sign(state.prevSampleRB[0][1])
+            else:
+                w = 0.5 
+        elif (not self.isEmpty(state.holeRB)):
             if (state.holeRB[0][0] <= 0.06):
                 self.modeStartTime = time.time()
                 self.stateMode = SAMPLE_DROP
@@ -326,7 +332,7 @@ class Navigation:
             v = 0.95
             w = state.holeRB[0][1]
             
-        if (not self.isEmpty(state.landerRB)):
+        elif (not self.isEmpty(state.landerRB)):
             v = 0.95
             w = state.landerRB[0][1]
         else:
