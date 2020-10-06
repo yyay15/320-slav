@@ -62,7 +62,7 @@ class Vision:
         else:
             total_diff=0
        
-        return total_diff,right_diff,-left_diff
+        return total_diff,-right_diff,left_diff
 
 
         #cv2.line(img,maxbot,maxright,(0,255,0),2)
