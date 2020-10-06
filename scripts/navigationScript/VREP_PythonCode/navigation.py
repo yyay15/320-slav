@@ -141,6 +141,8 @@ class Navigation:
         return v, w
 
 
+
+
     def navRock(self,state):
         print("navigating to rock")
         if (self.isEmpty(state.rocksRB)):

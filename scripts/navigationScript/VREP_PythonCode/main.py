@@ -6,7 +6,7 @@ import sys
 
 
 
-import navigation, state, localisation
+import navigation, state
 # change this depending on if Simulation or robot
 SIMULATION = True
 
@@ -56,18 +56,14 @@ if __name__ == '__main__':
             #sim = rbot.VREP_RoverRobot('127.0.0.1', robotParameters, sceneParameters)
             sim = rbot.VREP_RoverRobot('172.19.15.114', robotParameters, sceneParameters)
             sim.StartSimulator()
-            loc = localisation.Localisation()
         else:
             ledSetup()
         while True:
             sim.UpdateObjectPositions()
-            print("x", sim.robotPose[0])
-            print("y", sim.robotPose[1])
             objects = sim.GetDetectedObjects()
             sampleCollected = sim.SampleCollected()
             state.updateState(objects, sampleCollected)
             v, w = nav.updateVelocities(state)
-            loc.getRangeBearing(v, w)
 
             sim.SetTargetVelocities(v, w) #don't copy this line
             if not SIMULATION:
@@ -76,4 +72,3 @@ if __name__ == '__main__':
 
     except KeyboardInterrupt as e:
         sim.StopSimulator()
-
