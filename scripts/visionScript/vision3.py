@@ -155,7 +155,7 @@ class Vision:
                         rangeText = "left diff: {:.4f} ".format(left_diff)
                         bearingText = "right diff: {:.4f}".format(right_diff)
                         #bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
-                        cv2.putText(finalimage, rangeText + bearingText, (Lx,Ly-LHeight+5), cv2.FONT_HERSHEY_SIMPLEX, 
+                        cv2.putText(finalimage, rangeText + bearingText, (Lx,Ly), cv2.FONT_HERSHEY_SIMPLEX, 
                          0.4,  parameters_dict["BBoxColour"] )
                         RangeRBC=np.vstack((ZDistance,NewBearing)).T
                         RangeRBC=RangeRBC[RangeRBC[:,0].argsort()] 
