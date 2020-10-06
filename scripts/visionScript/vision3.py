@@ -48,7 +48,7 @@ class Vision:
         maxtop=tuple(c[c[:,:,1].argmin()][0])
         maxbot=tuple(c[c[:,:,1].argmax()][0])
         right_diff=maxright[0]-maxbot[0]
-        left_diff=maxleft[0]-maxleft[0]
+        left_diff=maxleft[0]-maxbot[0]
         cv2.line(img,maxbot,maxright,(0,255,0),2)
         cv2.line(img,maxbot,maxleft,(0,255,0),2)
         if left_diff>5 and right_diff>5:
@@ -155,7 +155,8 @@ class Vision:
                         rangeText = "left diff: {:.4f} ".format(left_diff)
                         bearingText = "right diff: {:.4f}".format(right_diff)
                         #bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
-                        cv2.putText(finalimage, rangeText + bearingText, textOrigin, cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
+                        cv2.putText(finalimage, rangeText + bearingText, (Lx,Ly-LHeight+5), cv2.FONT_HERSHEY_SIMPLEX, 
+                         0.4,  parameters_dict["BBoxColour"] )
                         RangeRBC=np.vstack((ZDistance,NewBearing)).T
                         RangeRBC=RangeRBC[RangeRBC[:,0].argsort()] 
                         Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
