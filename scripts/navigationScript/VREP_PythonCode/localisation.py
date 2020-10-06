@@ -14,10 +14,8 @@ class Localisation:
         self.timer = time.time()
         self.sampleGlobal = None
         self.rockGlobal = None 
-        self.state = None
     
-    def getWheelAngVel(self, v, w, state):
-        self.state = state
+    def getWheelAngVel(self, v, w):
         deltaTime = time.time() - self.timer
         self.calculateTransform(v, w, deltaTime)
         self.timer = time.time()
@@ -31,7 +29,8 @@ class Localisation:
         transform = np.array([[cos(theta), 0], [sin(theta), 0], [0, 1]])
         self.deltaPos = np.matmul(transform, state)
         self.position = self.position + self.deltaPos * deltaTime
-
+        self.position[2] = self.position[2] % 2
+        print("Robot angle", degrees(self.position[2]))
 
 
     def objectToGlobal(self, objects):

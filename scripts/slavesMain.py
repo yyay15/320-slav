@@ -193,10 +193,9 @@ if __name__ == '__main__':
                     state.updateState(objects,sampleCollected)
                     print("ROT HOLE", state.rotHoleRB)
                     v, w = nav.updateVelocities(state)
-                    loc.getWheelAngVel(v, w, state)
+                    loc.getWheelAngVel(v, w)
                     ledIndicator(nav.stateMode)
                     collection.sampleManage(nav.rotState)
-
                     drive.drive(v, w, nav.centering) # not in navMain
                 
             elif userSelect == "m":

@@ -323,14 +323,6 @@ class Navigation:
             v = 0.7
             w = state.landerRB[0][1]
             #if (time.time()- self.modeStartTime >= 1.5):
-            if (not self.isEmpty(state.holeRB)):
-                print("hole visible")
-                v = state.holeRB[0][0] * 0.5
-                w = state.holeRB[0][1] 
-                if (state.holeRB[0][0] < 0.05):
-                    v, w = 0, 0
-                    self.modeStartTime = time.time()
-                    self.stateMode = HOLE_ALIGN
         else:
             v, w = 0, 0
             self.modeStartTime = time.time()
