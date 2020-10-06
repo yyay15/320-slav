@@ -217,9 +217,9 @@ class Navigation:
         #time to drive to  be in flip position
         v, w = 0, 0
         print("driving to flip pos")
-        if (time.time() - self.modeStartTime <= 10):
-            v = 0
-            w = 0
+        if (time.time() - self.modeStartTime <= 0.5):
+            v = 0.07
+            w = 0S
             self.attemptFlip = False
         else:
             print("preparing to flip")
@@ -316,9 +316,18 @@ class Navigation:
 
     def driveUpLander(self,state):
         print("drive up lander")
+        self.rotState = SLIGHT_OPEN
+        v, w = 0, 0
+        if (not self.isEmpty(state.holeRB)):
+            if (state.holeRB[0][0] <= 0.06):
+                self.modeStartTime = time.time()
+                self.stateMode = SAMPLE_DROP
+            # 60% pwm
+            v = 0.95
+            w = state.holeRB[0][1]
+            
         if (not self.isEmpty(state.landerRB)):
-            self.rotState = SLIGHT_OPEN
-            v = 0.7
+            v = 0.95
             w = state.landerRB[0][1]
         else:
             v, w = 0, 0
@@ -346,34 +355,40 @@ class Navigation:
             self.stateMode = SEARCH_ROCK
         return v, w
 
-    def holeAlign(self, state):
-        print("centering hole")
-        if (not self.isEmpty(state.holeRB)):
-            if (not (-0.05 <= state.holeRB[0][1] <= 0.05)):
-                print("centering hole")
-                self.centering = True
-                hole = state.holeRB[0]
-                w = hole[1] * 1.4
-                v = 0
-            else:
-                v, w = 0, 0
-                self.modeStartTime = time.time()
-                self.stateMode = SAMPLE_DROP
-        else:
-            v, w = 0, 0
-            self.modeStartTime = time.time()
-            self.stateMode = SEARCH_LANDER
-        return v, w 
+    # def holeAlign(self, state):
+    #     print("centering hole")
+    #     if (not self.isEmpty(state.holeRB)):
+    #         if (not (-0.05 <= state.holeRB[0][1] <= 0.05)):
+    #             print("centering hole")
+    #             self.centering = True
+    #             hole = state.holeRB[0]
+    #             w = hole[1] * 1.4
+    #             v = 0
+    #         else:
+    #             v, w = 0, 0
+    #             self.modeStartTime = time.time()
+    #             self.stateMode = SAMPLE_DROP
+    #     else:
+    #         v, w = 0, 0
+    #         self.modeStartTime = time.time()
+    #         self.stateMode = SEARCH_LANDER
+    #     return v, w 
         
  
-    # def dropSample(self, state):
-    #     if (state.sampleCollected):
-    #         v = 0.1
-    #         w = 0
-    #     else:
-    #         v, w = 0,0
-    #         self.numSampleCollected += 1
-    #         self.stateMode = SEARCH_SAMPLE
+    def dropSample(self, state):
+        self.rotState = OPEN
+        if (state.sampleCollected):
+            if (time.time() - self.modeStartTime > 0.5):
+                v = 0.07
+                w = 0
+            elif(0.5 < (time.time()- self.modeStartTime) < 1 ):
+                v = - 0.07
+                w = 0
+        else:
+            v, w = 0,0
+            self.numSampleCollected += 1
+            self.stateMode = SEARCH_SAMPLE
+            self.modeStartTime = time.time()
 
 
 
@@ -390,8 +405,8 @@ class Navigation:
         if not self.isEmpty(obstacle):
             vRep = (0.5 - obstacle[0][0]) * 0.1 
             wRep = np.sign(obstacle[0][1]) * (0.5 - obstacle[0][0]) * (3 - abs(obstacle[0][1]))
-        v = v - vRep
-        w = w - wRep
+        v = v - vRep * 1.2
+        w = w - wRep * 1.2
         return v, w
 
     def navigate(self, goal, state):
