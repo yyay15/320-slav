@@ -388,10 +388,11 @@ class Navigation:
         v = KV_ATTRACT * goal[0][0]
         w = KW_ATTRACT * goal[0][1]
         if (not self.isEmpty(obstacle)):
-            vRep = (0.5 - obstacle[0][0]) * 0.1 * 0.25
-            wRep = (np.sign(obstacle[0][1]) * (0.5 - obstacle[0][0]) * (3 - abs(obstacle[0][1])))
-        v = v - vRep * 0.5
-        w = w - wRep * 0.5
+            vRep = (0.5 - obstacle[0][0]) * 0.1 
+            wRep = (np.sign(obstacle[0][1]) * (0.5 - obstacle[0][0]) * (3 - abs(obstacle[0][1])) * 0.5
+        v = v - vRep 
+        w = w - wRep
+        return v, w
 
 
     def navigate(self, goal, state):
