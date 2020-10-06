@@ -70,7 +70,7 @@ class Vision:
     def Detection(self, image,parameters_dict):
         #image=cv2.resize(image,(640,480))
         #cv2.imshow("normal",image)
-        #ogimg=image#store the image given as a parameter for later bitwise and operation
+        ogimg=image#store the image given as a parameter for later bitwise and operation
         image=cv2.cvtColor(cv2.UMat(image), cv2.COLOR_BGR2HSV)
 
         #image=cv2.GaussianBlur(image, (17, 17), 2) 
@@ -86,9 +86,9 @@ class Vision:
             Kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
         else:
             Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
-        #Thresholded_img=cv2.bitwise_and(ogimg,ogimg,mask=mask)
+        Thresholded_img=cv2.bitwise_and(ogimg,ogimg,mask=mask)
         filtered_img=cv2.morphologyEx(mask,cv2.MORPH_OPEN,Kernel)
-        return filtered_img
+        return filtered_img,Thresholded_img
 
     
     def Range(self,img,parameters_dict,finalimage):
@@ -235,13 +235,13 @@ class Vision:
                     continue 
         return Range,RangeRBC
     def DetectandRange(self,img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters,finalImage):
-        sample_img=self.Detection(img,self.sample_parameters)
-        cover_img=self.Detection(img,self.cover_parameters)
-        obstacle_img=self.Detection(img,self.obstacle_parameters)
-        lander_img=self.Detection(img,self.lander_parameters)
+        sample_img,si=self.Detection(img,self.sample_parameters)
+        cover_img,ci=self.Detection(img,self.cover_parameters)
+        obstacle_img,oi=self.Detection(img,self.obstacle_parameters)
+        lander_img,li=self.Detection(img,self.lander_parameters)
 
         sample_Z, abc=self.Range(sample_img,self.sample_parameters,finalImage)
-        cover_Z,holeCover_Z=self.Range(cover_img,self.cover_parameters,finalImage)
+        cover_Z,holeCover_Z=self.Range(ci,self.cover_parameters,finalImage)
         obstacle_Z, abc=self.Range(obstacle_img,self.obstacle_parameters,finalImage)
         lander_Z, abc=self.Range(lander_img,self.lander_parameters,finalImage)
         # print(sample_Z)
