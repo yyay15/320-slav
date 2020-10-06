@@ -343,7 +343,7 @@ class Vision:
         #   hole_img=self.Detection(img,self.hole_parameters)
         #    hole_Z=self.Range(hole_img,self.hole_parameters,img)
         elif self.state==12:
-             coverhole_img=self.Detection(img,self.coverhole_parameters)
+             coverhole_img=self.Detection(finalImage,self.coverhole_parameters)
              coverhole_Z,ab=self.Range(coverhole_img,self.coverhole_parameters,finalImage)
 
         else:
