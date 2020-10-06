@@ -25,7 +25,7 @@ class Vision:
         #img=cv2.imread("MultipleCovers.jpg")
         self.sample_parameters={"hue":[0,5],"sat":[125,255],"value":[125,255],"Height":40,"OR_MASK":True,
             "Kernel":True,"Circle":True,"BBoxColour":[204,0,204],"type":0}
-        self.lander_parameters={"hue":[15,30],"sat":[75,255],"value":[75,255],"Height":80,"OR_MASK":False,
+        self.lander_parameters={"hue":[15,30],"sat":[30,255],"value":[30,255],"Height":80,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[0,0,255],"type":1}
         self.obstacle_parameters={"hue":[40,70],"sat":[30,255],"value":[40,255],"Height":80,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[204,204,0],"type":2}
