@@ -219,7 +219,7 @@ class Navigation:
         print("driving to flip pos")
         if (time.time() - self.modeStartTime <= 0.5):
             v = 0.07
-            w = 0S
+            w = 0
             self.attemptFlip = False
         else:
             print("preparing to flip")
