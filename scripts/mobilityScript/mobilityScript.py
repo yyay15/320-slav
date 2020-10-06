@@ -30,10 +30,10 @@ STBY = 9
 
 # Wheel Parameters
 WHEELRADIUS = 0.03 # Metres
-WHEELBASE = 0.13    # Metres
+WHEELBASE = 0.14    # Metres
 
 # Motor Parameters
-maxLin = 0.15
+maxLin = 0.1666
 maxAngWheel = maxLin/WHEELRADIUS 
 maxAngBase = (maxLin)/(WHEELBASE/2)
 
