@@ -44,7 +44,7 @@ KW_REPULSE = 4
 
 class Navigation:
     def __init__(self):
-        self.stateMode = 2   # intial start state
+        self.stateMode = 1   # intial start state
         self.modeStartTime = time.time() # timer for each state
         self.turnDir = 1                 # turn clockwise or anticlockwise
         self.rock_obstacle = True        # check if rocks should be avoided
@@ -321,10 +321,11 @@ class Navigation:
         if (self.isEmpty(state.holeRB) and time.time() - self.modeStartTime > 1):
             v = 0 
             if (not self.isEmpty(state.landerRB)):
-                w = 0.5 * np.sign(state.prevSampleRB[0][1])
+                w = 0.5 * np.sign(state.landerRB[0][1])
             else:
                 w = 0.5 
         elif (not self.isEmpty(state.holeRB)):
+
             if (state.holeRB[0][0] <= 0.06):
                 self.modeStartTime = time.time()
                 self.stateMode = SAMPLE_DROP
@@ -332,9 +333,9 @@ class Navigation:
             v = 0.95
             w = state.holeRB[0][1]
             
-        elif (not self.isEmpty(state.landerRB)):
+        elif (time.time() - self.modeStartTime > 1):
             v = 0.95
-            w = state.landerRB[0][1]
+            w = 0
         else:
             v, w = 0, 0
             self.modeStartTime = time.time()
