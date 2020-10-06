@@ -1010,12 +1010,12 @@ class RobotParameters(object):
 		# Camera Parameters
 		self.cameraOrientation = 'landscape' # specifies the orientation of the camera, either landscape or portrait
 		self.cameraDistanceFromRobotCenter = 0.1 # distance between the camera and the center of the robot in the direction of the front of the robot
-		self.cameraHeightFromFloor = 0.15 # height of the camera relative to the floor in metres
-		self.cameraTilt = 0.35 # tilt of the camera in radians
+		self.cameraHeightFromFloor = 0.1 # height of the camera relative to the floor in metres
+		self.cameraTilt = 0.0 # tilt of the camera in radians
 		self.cameraPerspectiveAngle = math.radians(60) # do not change this parameter
 
 		# Vision Processing Parameters
-		self.maxsampleDetectionDistance = 2.5 # the maximum distance away that you can detect the sample in metres
+		self.maxsampleDetectionDistance = 1 # the maximum distance away that you can detect the sample in metres
 		self.maxLanderDetectionDistance = 2.5 # the maximum distance away that you can detect the lander in metres
 		self.maxObstacleDetectionDistance = 1.5 # the maximum distance away that you can detect the obstacles in metres
 		self.maxRockDetectionDistance = 1.5 # the maximum distance away that you can detect the obstacles in metres
