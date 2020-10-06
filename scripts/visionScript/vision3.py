@@ -152,10 +152,10 @@ class Vision:
                         New_Lx,left_diff,right_diff=self.MaxMinLocations(a,finalimage,Lx)
                         NewBearing=np.append(NewBearing,math.radians((New_Lx-160)*(31.1/160)))
                         textOrigin = (Lx-int(LWidth/2),Ly-int(LHeight/2)+ 5)
-                        #rangeText = "R: {:.4f}".format(Distance)
-                        rangeText = "Lx {:.4f} ".format(New_Lx)
-                        bearingText = "New Lx: {:.4f}".format(Lx)
-                        #bearingText = " B: {:.4f}".format((math.radians((New_Lx-160)*(31.1/160))))
+                        rangeText = "R: {:.4f}".format(Distance)
+                        #rangeText = "New Lx {:.4f} ".format(New_Lx)
+                        #bearingText = "Lx: {:.4f}".format(Lx)
+                        bearingText = " B: {:.4f}".format((math.radians((New_Lx-160)*(31.1/160))))
                         cv2.putText(finalimage, rangeText + bearingText, (Lx1+5,Ly1+10), cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
                         RangeRBC=np.vstack((ZDistance,NewBearing)).T
                         RangeRBC=RangeRBC[RangeRBC[:,0].argsort()] 
