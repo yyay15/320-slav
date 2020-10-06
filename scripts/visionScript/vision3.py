@@ -224,8 +224,8 @@ class Vision:
                             continue
                 elif parameters_dict["type"]==4: #for hole on lander
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>30 and Area<5000:
-                        (x,y),radius=cv2.minEnclosingCircle(a)
+                    (x,y),radius=cv2.minEnclosingCircle(a)
+                    if Area>10 and Area<6000:
                         cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
                         parameters_dict["BBoxColour"],2)
                         Distance=(parameters_dict["Height"]*(self.f/(2*radius))/8)*math.cos(0.2967)
@@ -264,29 +264,29 @@ class Vision:
                     else:
                         continue
 
-        return Range,RangeRBC
+        return Range #,RangeRBC
     def DetectandRange(self,img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters,finalImage):
         sample_img=self.Detection(img,self.sample_parameters)
         cover_img=self.Detection(img,self.cover_parameters)
         obstacle_img=self.Detection(img,self.obstacle_parameters)
         lander_img=self.Detection(img,self.lander_parameters)
 
-        sample_Z, abc=self.Range(sample_img,self.sample_parameters,finalImage)
-        cover_Z,holeCover_Z=self.Range(cover_img,self.cover_parameters,finalImage)
-        obstacle_Z, abc=self.Range(obstacle_img,self.obstacle_parameters,finalImage)
-        lander_Z, abc=self.Range(lander_img,self.lander_parameters,finalImage)
+        sample_Z=self.Range(sample_img,self.sample_parameters,finalImage)
+        cover_Z=self.Range(cover_img,self.cover_parameters,finalImage)
+        obstacle_Z=self.Range(obstacle_img,self.obstacle_parameters,finalImage)
+        lander_Z=self.Range(lander_img,self.lander_parameters,finalImage)
         # print(sample_Z)
         # print(cover_Z)
         # print(obstacle_Z)
         print("Lander", lander_Z)
-        return sample_Z,cover_Z,obstacle_Z,lander_Z,holeCover_Z,lander_img
+        return sample_Z,cover_Z,obstacle_Z,lander_Z,lander_img
     def visMain(self, i):
         ret, img = self.cap.read()	     		# Get a frame from the camera
         #imcopy=np.copy(img)
         if ret == True:	
             cv2.waitKey(1)	
             #initiate some variables
-        sample_Z,cover_Z,obstacle_Z,lander_Z,hole_Z,lander_img=self.DetectandRange(img,self.sample_parameters,
+        sample_Z,cover_Z,obstacle_Z,lander_Z,lander_img=self.DetectandRange(img,self.sample_parameters,
             self.cover_parameters,self.obstacle_parameters,self.lander_parameters,img)
         coverhole_Z, hole_Z=self.holefinder(img,lander_img)
         
@@ -344,10 +344,10 @@ class Vision:
         #    hole_Z=self.Range(hole_img,self.hole_parameters,img)
         elif self.state==12:
              coverhole_img=self.Detection(finalImage,self.coverhole_parameters)
-             coverhole_Z,ab=self.Range(coverhole_img,self.coverhole_parameters,finalImage)
+             coverhole_Z=self.Range(coverhole_img,self.coverhole_parameters,finalImage)
 
         else:
-            Lander_parameter_update={"hue":[15,30],"sat":[100,255],"value":[100,255]}
+            Lander_parameter_update={"hue":[15,30],"sat":[100,255],"value":[150,255]}
             self.lander_parameters.update(Lander_parameter_update)
             #revert the changes listed above.
         return coverhole_Z,lander_hole
