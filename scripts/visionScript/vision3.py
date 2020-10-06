@@ -220,22 +220,7 @@ class Vision:
                         else:
                             continue
                 elif parameters_dict["type"]==4: #for hole on lander
-                    Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>50 and Area<7000:
-                        #if LWidth/LHeight<1.5 and LHeight/LWidth<1.5:
-                        (x,y),radius=cv2.minEnclosingCircle(a)
-                        cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
-                        parameters_dict["BBoxColour"],2)
-                        Distance=(parameters_dict["Height"]*(self.f/(2*radius))/8)*math.cos(0.2967)
-                        Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
-                        Distance=Distance/1000
-                        ZDistance=np.append(ZDistance,Distance)
-                        Bearing=np.append(Bearing,math.radians((x-160)*(31.1/160)))
-                        Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
-                        #columnwise
-                        Range=Range[Range[:,0].argsort()]
-                        #else:
-                        #    continue
+                    Range=0
                     else:
                         continue 
         return Range,RangeRBC
@@ -262,7 +247,7 @@ class Vision:
             #initiate some variables
         sample_Z,cover_Z,obstacle_Z,lander_Z,holeCover_Z=self.DetectandRange(img,self.sample_parameters,
             self.cover_parameters,self.obstacle_parameters,self.lander_parameters,img)
-        holes_RB=self.holefinder(img,self.hole_parameters)
+        self.holefinder(img,self.hole_parameters)
         
         if (i%5)==0:
              cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
@@ -304,8 +289,8 @@ class Vision:
             Lander_parameter_update={"hue":[15,30],"sat":[0,255],"value":[30,255]}
             self.lander_parameters.update(Lander_parameter_update)#update dictionary for lander
             #to change values to adjust for dodge lighting when going up lander
-            hole_img=self.Detection(img,self.hole_parameters)
-            hole_Z=self.Range(hole_img,self.hole_parameters,img)
+            #hole_img=self.Detection(img,self.hole_parameters)
+            #hole_Z=self.Range(hole_img,self.hole_parameters,img)
             #LanderMasklow=np.array([15,0,0],dtype="uint8")
             #LanderMaskhigh=np.array([30,255,255],dtype="uint8")
         #elif self.state==10:
@@ -316,8 +301,6 @@ class Vision:
             Lander_parameter_update={"hue":[15,30],"sat":[100,255],"value":[100,255]}
             self.lander_parameters.update(Lander_parameter_update)
             #revert the changes listed above.
-        hole_Z=None
-        return hole_Z
     def updateVisionState(self,state):
         self.state = state
         
