@@ -350,19 +350,19 @@ class Navigation:
         v, w = 0, 0
         if (not self.isEmpty(state.rotHoleRB)):
             rotHoleBearing = state.rotHoleRB[0][1]
-            rotHoleBearing = rotHoleBearing
+            print("ROT HOLE 2", state.rotHoleRB)
             if (-0.03 <= rotHoleBearing <= 0.03):
                 print("changing to flip")
-                v, w = 0, 0
                 self.modeStartTime = time.time()
                 self.stateMode = FLIP_ROCK
-
+            else:
                 v, w = self.navAndAvoid(state.rotHoleRB, None)
         else:
             if (not self.isEmpty(state.prevRotHoleRB)):
                 self.modeStartTime = time.time()
                 self.stateMode = FLIP_ROCK
             else:
+                print(" searching rock")
                 self.modeStartTime = time.time()
                 self.stateMode = SEARCH_ROCK
         return v, w
