@@ -366,14 +366,14 @@ class Navigation:
         return v, w 
         
  
-    def dropSample(self, state):
-        if (state.sampleCollected):
-            v = 0.1
-            w = 0
-        else:
-            v, w = 0,0
-            self.numSampleCollected += 1
-            self.stateMode = SEARCH_SAMPLE
+    # def dropSample(self, state):
+    #     if (state.sampleCollected):
+    #         v = 0.1
+    #         w = 0
+    #     else:
+    #         v, w = 0,0
+    #         self.numSampleCollected += 1
+    #         self.stateMode = SEARCH_SAMPLE
 
 
 
@@ -387,12 +387,12 @@ class Navigation:
         vRep, wRep = 0, 0
         v = KV_ATTRACT * goal[0][0]
         w = KW_ATTRACT * goal[0][1]
-        if (not self.isEmpty(obstacle)):
-            vRep = (0.5 - obstacle[0][0]) * 0.1 * 0.25
-            wRep = (np.sign(obstacle[0][1]) * (0.5 - obstacle[0][0]) * (3 - abs(obstacle[0][1])))
-        v = v - vRep * 0.5
-        w = w - wRep * 0.5
-
+        if not self.isEmpty(obstacle):
+            vRep = (0.5 - obstacle[0][0]) * 0.1 
+            wRep = np.sign(obstacle[0][1]) * (0.5 - obstacle[0][0]) * (3 - abs(obstacle[0][1]))
+        v = v - vRep
+        w = w - wRep
+        return v, w
 
     def navigate(self, goal, state):
         vRep, wRep = 0, 0
@@ -490,3 +490,7 @@ class Navigation:
             self.modeStartTime = time.time()
             state.onLander = False
         return v, w
+
+
+# nav = Navigation()
+# nav.navAndAvoid([[0, 1]], [[1, 2]])
