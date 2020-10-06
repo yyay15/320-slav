@@ -251,15 +251,15 @@ class Vision:
         
         if (i%5)==0:
              cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
-        #print(Bearing1)
-        return sample_Z,lander_Z,cover_Z,obstacle_Z,holes_RB,holeCover_Z
+        #print(Bearing1)holes_RB,
+        return sample_Z,lander_Z,cover_Z,obstacle_Z,holeCover_Z
     
     def GetDetectedObjects(self,state):
         sampleRB, landerRB, obstaclesRB, rocksRB, holesRB, rotHoleRB = None, None, None, None, None, None
         i=0
         now=time.time()
-        #i+=1
-        sampleRB,landerRB,rocksRB,obstaclesRB,holesRB,rotHoleRB=self.visMain(i)
+        #i+=1   holesRB,
+        sampleRB,landerRB,rocksRB,obstaclesRB,rotHoleRB=self.visMain(i)
         #self.updateVisionState(state)
         
         elapsed=time.time()-now
@@ -270,8 +270,8 @@ class Vision:
 
             # sample [[R, B], [R,B]]
             # lander [R, B]
-        # if nothing sampleRB = None
-        return sampleRB, landerRB, obstaclesRB, rocksRB, holesRB, rotHoleRB
+        # if nothing sampleRB = None,holesRB,
+        return sampleRB, landerRB, obstaclesRB, rocksRB,  rotHoleRB
 
 
     def sampleCollected(self):
