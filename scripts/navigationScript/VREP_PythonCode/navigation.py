@@ -130,6 +130,8 @@ class Navigation:
 
     # robot spins, moves forward, spins again
     def searchLander(self, state):
+        if (not self.isEmpty(state.prevLanderRB)):
+           self.turnDir = np.sign(state.prevLanderRB[0][1]) 
         print("search lander")
         if (not self.isEmpty(state.landerRB)):
             v, w = 0, 0
@@ -203,8 +205,6 @@ class Navigation:
         else:
             if not self.isEmpty(state.rocksRB):
                 currRock = state.rocksRB[0]
-                #if not self.isEmpty(state.rotHoleRB):
-                    #currRock[1] = state.rotHoleRB[0][1]
                 v, w = self.navigate(currRock, state)
                 if (currRock[0] < ROCK_ALIGN_DISTANCE):
                     print("align rock")
@@ -255,10 +255,6 @@ class Navigation:
         if self.isEmpty(state.landerRB):
             v, w = 0, 0
             if (not self.isEmpty(state.prevLanderRB)):
-                # if (state.prevLanderRB[0][0] < LANDER_SWITCH_RANGE): #maybe bearing condition
-                #     print("switching lander mask")
-                #     self.modeStartTime = time.time()
-                #     self.stateMode = UP_LANDER
                 self.turnDir = np.sign(state.prevLanderRB[0][1])
 
             print("searching for lander")
@@ -284,7 +280,7 @@ class Navigation:
             print("centering")
             self.centering = True
             sample = state.sampleRB[0]
-            w = sample[1] * 1.4
+            w = sample[1] * 1.15
             v = 0
         elif (not self.isEmpty(state.sampleRB) and not self.isBlind):
             self.centering = False
@@ -312,6 +308,8 @@ class Navigation:
             else:
                 print("sample lost, searching sample")
                 v, w = 0, 0
+                if (not self.isEmpty(state.prevSampleRB)):
+                    self.turnDir = np.sign(state.prevSampleRB[0][1]) 
                 self.modeStartTime = time.time()
                 self.stateMode = SEARCH_SAMPLE
         return v, w
@@ -322,7 +320,6 @@ class Navigation:
             self.rotState = SLIGHT_OPEN
             v = 0.7
             w = state.landerRB[0][1]
-            #if (time.time()- self.modeStartTime >= 1.5):
         else:
             v, w = 0, 0
             self.modeStartTime = time.time()
@@ -343,12 +340,7 @@ class Navigation:
                 self.stateMode = FLIP_ROCK
 
             else:
-                # v = 0
-                # if (state.rotHoleRB[0][0]) > 0.15:
-                #     v = 0.05
-                # w = (state.rotHoleRB[0][1] ) * 1,1#* state.rotHoleRB[0][0] * 4
                 v, w = self.navAndAvoid(state.rotHoleRB, state.rocksRB)
- 
         else:
             self.modeStartTime = time.time()
             self.stateMode = SEARCH_ROCK
@@ -396,10 +388,10 @@ class Navigation:
         v = KV_ATTRACT * goal[0][0]
         w = KW_ATTRACT * goal[0][1]
         if (not self.isEmpty(obstacle)):
-            vRep = (0.5 - obstacle[0][0]) * 0.1
-            wRep = (np.sign(obstacle[0][1]) * (0.5 - obstacle[0][0]) * (3 - abs(obstacle[0][1]))* 2)
-        v = v - vRep
-        w = w - wRep
+            vRep = (0.5 - obstacle[0][0]) * 0.1 * 0.25
+            wRep = (np.sign(obstacle[0][1]) * (0.5 - obstacle[0][0]) * (3 - abs(obstacle[0][1])))
+        v = v - vRep * 0.5
+        w = w - wRep * 0.5
 
 
     def navigate(self, goal, state):
