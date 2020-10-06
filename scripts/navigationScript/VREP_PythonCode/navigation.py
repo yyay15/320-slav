@@ -131,6 +131,8 @@ class Navigation:
     # robot spins, moves forward, spins again
     def searchLander(self, state):
         print("search lander")
+        if (not self.isEmpty(state.prevLanderRB)):
+            self.turnDir = np.sign(state.prevLanderRB[0][1])
         if (not self.isEmpty(state.landerRB)):
             v, w = 0, 0
             self.rock_obstacle = True
@@ -255,12 +257,7 @@ class Navigation:
         if self.isEmpty(state.landerRB):
             v, w = 0, 0
             if (not self.isEmpty(state.prevLanderRB)):
-                # if (state.prevLanderRB[0][0] < LANDER_SWITCH_RANGE): #maybe bearing condition
-                #     print("switching lander mask")
-                #     self.modeStartTime = time.time()
-                #     self.stateMode = UP_LANDER
                 self.turnDir = np.sign(state.prevLanderRB[0][1])
-
             print("searching for lander")
             self.modeStartTime = time.time()
             self.stateMode = SEARCH_LANDER
@@ -284,7 +281,7 @@ class Navigation:
             print("centering")
             self.centering = True
             sample = state.sampleRB[0]
-            w = sample[1] * 1.4
+            w = sample[1] * 1.15
             v = 0
         elif (not self.isEmpty(state.sampleRB) and not self.isBlind):
             self.centering = False
@@ -312,6 +309,8 @@ class Navigation:
             else:
                 print("sample lost, searching sample")
                 v, w = 0, 0
+                if (not self.isEmpty(state.prevSampleRB)):
+                    self.turnDir = np.sign(state.prevRocksRB[0][1])
                 self.modeStartTime = time.time()
                 self.stateMode = SEARCH_SAMPLE
         return v, w
