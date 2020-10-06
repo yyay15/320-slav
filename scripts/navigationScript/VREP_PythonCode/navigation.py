@@ -47,9 +47,48 @@ class Navigation:
             # if (time.time() -self.modeStartTime >= 5):
             #     w = w * -1
 
+<<<<<<< HEAD
         if (state.sampleRB != None):
             self.stateMode = 3
         
+=======
+    # robot spins, moves forward, spins again
+    def searchLander(self, state):
+        print("search lander")
+        if (not self.isEmpty(state.prevLanderRB)):
+            self.turnDir = np.sign(state.prevLanderRB[0][1])
+        if (not self.isEmpty(state.landerRB)):
+            v, w = 0, 0
+            self.rock_obstacle = True
+            self.stateMode = NAV_LANDER
+        elif (time.time() - self.modeStartTime >= FULL_ROTATION): 
+            print("moving around")
+            v, w = self.navigate([0.2, 0], state)
+            if (time.time() - self.modeStartTime - FULL_ROTATION >= 1.5):
+                print("return to spin")
+                self.modeStartTime = time.time()
+        else:
+            v = 0
+            w = 0.5 * self.turnDir
+        return v, w
+
+    def searchRock(self, state):
+        print("searching for rock")
+        if (not self.isEmpty(state.rocksRB)):
+            v, w = 0, 0
+            self.rock_obstacle = False
+            self.stateMode = NAV_ROCK
+        elif (time.time() -self.modeStartTime >= FULL_ROTATION):
+            print("moving around")
+            v = 0.5
+            w = 0
+            if (time.time() - self.modeStartTime - FULL_ROTATION >= 2):
+                print("return to spin")
+                self.modeStartTime = time.time()
+        else:
+            v = 0
+            w = 0.5 * self.turnDir
+>>>>>>> 71c137f058b9a4ea1501c270b0f32cff487bc19a
         return v, w
 
     def navSample(self, state):
@@ -90,23 +129,44 @@ class Navigation:
     def searchRock(self):
         print(1)
 
+<<<<<<< HEAD
 
-
-
-
-    def navRock(self):
-        print(1)
-
+=======
     def navLander(self, state):
-        print(state.landerRB)
         if (not state.sampleCollected):
-            v = 0 
-            w = 0
+            v, w = 0, 0
             print("sample lost, searching for sample")
-        if state.landerRB == None and state.sampleCollected:
-            if(state.prevLanderRB[0]< 0.5):
-                print ("drive up sample")
-                v = 0
+        if self.isEmpty(state.landerRB):
+            v, w = 0, 0
+            if (not self.isEmpty(state.prevLanderRB)):
+                self.turnDir = np.sign(state.prevLanderRB[0][1])
+            print("searching for lander")
+            self.modeStartTime = time.time()
+            self.stateMode = SEARCH_LANDER
+>>>>>>> 71c137f058b9a4ea1501c270b0f32cff487bc19a
+
+
+        return v,w
+    
+    def acquireSample(self, state):
+        # centre sample
+        if (not self.isEmpty(state.sampleRB) and not (-0.05 <= state.sampleRB[0][1] <= 0.05)):
+            print("centering")
+            self.centering = True
+            sample = state.sampleRB[0]
+            w = sample[1] * 1.15
+            v = 0
+        elif (not self.isEmpty(state.sampleRB) and not self.isBlind):
+            self.centering = False
+            print("opening rot")
+            v, w = 0, 0
+            self.rotState = OPEN
+            self.isBlind = True
+            self.modeStartTime = time.time()
+        elif (self.isBlind):
+            if (time.time() - self.modeStartTime < 3):
+                print("trying to drive straight YEEEEETTTT")
+                v = 0.07
                 w = 0
                 self.stateMode = DRIVE_UP
             elif (state.landerRB == None):
@@ -115,8 +175,44 @@ class Navigation:
                 print("returning to lander search")
                 self.stateMode = SEARCH_LANDER
             else:
+<<<<<<< HEAD
                 v = 0
                 w = 0
+=======
+                print("sample lost, searching sample")
+                v, w = 0, 0
+                if (not self.isEmpty(state.prevSampleRB)):
+                    self.turnDir = np.sign(state.prevRocksRB[0][1])
+                self.modeStartTime = time.time()
+                self.stateMode = SEARCH_SAMPLE
+        return v, w
+
+    def driveUpLander(self,state):
+        print("drive up lander")
+        if (not self.isEmpty(state.landerRB)):
+            self.rotState = SLIGHT_OPEN
+            v = 0.7
+            w = state.landerRB[0][1]
+            #if (time.time()- self.modeStartTime >= 1.5):
+        else:
+            v, w = 0, 0
+            self.modeStartTime = time.time()
+            self.stateMode = SEARCH_LANDER
+
+        return v, w
+    
+    def alignRock(self, state):
+        print("aligning rock")
+        v, w = 0, 0
+        if (not self.isEmpty(state.rotHoleRB)):
+            rotHoleBearing = state.rotHoleRB[0][1]
+            rotHoleBearing = (rotHoleBearing) * 1.1
+            if (-0.03 <= rotHoleBearing <= 0.03):
+                print("changing to flip")
+                v, w = 0, 0
+                self.modeStartTime = time.time()
+                self.stateMode = FLIP_ROCK
+>>>>>>> 71c137f058b9a4ea1501c270b0f32cff487bc19a
 
         else:
             if (state.landerRB[0] < 0.4):
