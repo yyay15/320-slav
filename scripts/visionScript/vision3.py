@@ -54,9 +54,9 @@ class Vision:
         cv2.line(img,maxbot,maxleft,(0,255,0),2)
         if left_diff>15 and right_diff>15:
             if right_diff>left_diff:
-                diff=-right_diff/2
+                diff=-right_diff
             elif right_diff<left_diff:
-                diff=left_diff/2
+                diff=left_diff
             total_diff=Lx+diff #so total diff will be less than Lx if left difference is greater than 
             #otherwise then we have to angle left if total diff is greater than Lx that 
             # means that we have to angle right:
@@ -123,6 +123,7 @@ class Vision:
                             Distance=Distance/1000
                             ZDistance=np.append(ZDistance,Distance)
                             Bearing=np.append(Bearing,math.radians((x-160)*(31.1/160)))
+                            cv2.drawContours(finalimage,a,-1,(0,255,0),3)
                             #print range bearing on image
                             textOrigin = (int(x-radius),int(y-radius)+ 5)
                             rangeText = "R: {:.4f}".format(Distance)
@@ -148,6 +149,7 @@ class Vision:
                         parameters_dict["BBoxColour"],2)
                         Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
                         Distance=((-0.0002*Distance**2)+(0.8492*Distance)+51)/1000
+                        cv2.drawContours(finalimage,a,-1,(0,255,0),3)
                         ZDistance=np.append(ZDistance,Distance)
                         New_Lx,left_diff,right_diff=self.MaxMinLocations(a,finalimage,Lx)
                         NewBearing=np.append(NewBearing,math.radians((New_Lx-160)*(31.1/160)))
@@ -178,6 +180,7 @@ class Vision:
                         Center=np.append(Center,Centroid)
                         cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
                         parameters_dict["BBoxColour"],2)
+                        cv2.drawContours(finalimage,a,-1,(0,255,0),3)
                         Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
                         Distance=(262.22*np.log(Distance)-1222.1)/1000
                         ZDistance=np.append(ZDistance,Distance)
@@ -208,7 +211,7 @@ class Vision:
                             Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
                             Distance=(0.8667*Distance-3)/1000
                             ZDistance=np.append(ZDistance,Distance)
-                            
+                            cv2.drawContours(finalimage,a,-1,(0,255,0),3)
                             Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
                             #print range bearing
                             textOrigin = (Lx-int(LWidth/2),Ly-int(LHeight/2)+ 5)
