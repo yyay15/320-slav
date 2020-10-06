@@ -60,7 +60,7 @@ class Vision:
             #otherwise then we have to angle left if total diff is greater than Lx that 
             # means that we have to angle right:
         else:
-            total_diff=Lx
+            total_diff=0
        
         return total_diff
 
