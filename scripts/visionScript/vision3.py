@@ -51,7 +51,7 @@ class Vision:
         right_diff=maxleft[0]-maxbot[0]
         cv2.line(img,maxbot,maxright,(0,255,0),2)
         cv2.line(img,maxbot,maxleft,(0,255,0),2)
-        if left_diff>5 and right_diff>5:
+        if left_diff>15 and right_diff>15:
             if right_diff>left_diff:
                 diff=right_diff/2
             elif right_diff<left_diff:
@@ -60,7 +60,7 @@ class Vision:
             #otherwise then we have to angle left if total diff is greater than Lx that 
             # means that we have to angle right:
         else:
-            total_diff=0
+            total_diff=Lx
        
         return total_diff,-right_diff,left_diff
 
@@ -152,8 +152,8 @@ class Vision:
                         NewBearing=np.append(NewBearing,math.radians((New_Lx-160)*(31.1/160)))
                         textOrigin = (Lx-int(LWidth/2),Ly-int(LHeight/2)+ 5)
                         #rangeText = "R: {:.4f}".format(Distance)
-                        rangeText = "left diff: {:.4f} ".format(left_diff)
-                        bearingText = "right diff: {:.4f}".format(right_diff)
+                        rangeText = "Lx {:.4f} ".format(New_Lx)
+                        bearingText = "New Lx: {:.4f}".format(Lx)
                         #bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
                         cv2.putText(finalimage, rangeText + bearingText, (Lx1-5,Ly1), cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
                         RangeRBC=np.vstack((ZDistance,NewBearing)).T
