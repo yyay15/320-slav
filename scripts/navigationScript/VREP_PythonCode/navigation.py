@@ -292,7 +292,7 @@ class Navigation:
             self.isBlind = True
             self.modeStartTime = time.time()
         elif (self.isBlind):
-            if (time.time() - self.modeStartTime < 3):
+            if (time.time() - self.modeStartTime < 2):
                 print("trying to drive straight YEEEEETTTT")
                 v = 0.07
                 w = 0
@@ -333,7 +333,7 @@ class Navigation:
                 # 60% pwm
                 else:
                     v = 0.135
-                    w = state.holeRB[0][1]
+                    w = state.landerRB[0][1]
         else:
             v, w = 0, 0
             self.modeStartTime = time.time()
