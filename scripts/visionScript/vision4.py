@@ -14,13 +14,14 @@ class Vision:
         self.state = 1
         self.random = 1
         self.changingVariable = 1
-        
+        # https://stackoverflow.com/questions/11420748/setting-camera-parameters-in-opencv-python
         i2c = busio.I2C(board.SCL, board.SDA)
         self.sensor = adafruit_vcnl4040.VCNL4040(i2c)
         self.cap = cv2.VideoCapture(0)  		# Connect to camera 0 (or the only camera)
         self.cap.set(3, 320)                     	# Set the width to 320
         self.cap.set(4, 240)                      	# Set the height to 240
-        self.cap.set(15,0.7)
+        # self.cap.set(12,0.6) # Exposure
+        self.cap.set(17,6005.56)  # White Balance
         self.Center=np.array([])
         self.f=3.04/(1.12*10**-3)
         #img=cv2.imread("MultipleCovers.jpg")
@@ -50,23 +51,31 @@ class Vision:
         maxright=tuple(c[c[:,:,0].argmax()][0])
         maxtop=tuple(c[c[:,:,1].argmin()][0])
         maxbot=tuple(c[c[:,:,1].argmax()][0])
-        left_diff=maxright[0]-maxbot[0]
-        right_diff=maxleft[0]-maxbot[0]
-        right_diff=-right_diff
-        cv2.line(img,maxbot,maxright,(0,255,0),2)
-        cv2.line(img,maxbot,maxleft,(0,255,0),2)
-        if left_diff>15 and right_diff>15:
-            if right_diff>left_diff:
-                diff=-right_diff
-            elif right_diff<left_diff:
-                diff=left_diff
-            total_diff=Lx+diff #so total diff will be less than Lx if left difference is greater than 
+        #left_diff=maxright[0]-maxbot[0]
+        #right_diff=maxleft[0]-maxbot[0]
+        #right_diff=-right_diff
+        #cv2.line(img,maxbot,maxright,(0,255,0),2)
+        #cv2.line(img,maxbot,maxleft,(0,255,0),2)
+        #if left_diff>15 and right_diff>15:
+        #    if right_diff>left_diff:
+        #        diff=-right_diff
+        #    elif right_diff<left_diff:
+        #        diff=left_diff
+        #    total_diff=Lx+diff #so total diff will be less than Lx if left difference is greater than 
             #otherwise then we have to angle left if total diff is greater than Lx that 
             # means that we have to angle right:
         else:
             total_diff=Lx
        
         return total_diff,right_diff,left_diff
+    def LanderUpper(self,c,img):
+        #to be double checked
+        maxtop=tuple(c[c[:,:,1].argmin()][0])
+        cv2.circle(img,maxtop,3,(125,125,125))
+        Lx=maxtop[0]
+        BearingLanderTop=math.radians((Lx-160)*(31.1/160))
+        return BearingLanderTop
+        
 
 
         #cv2.line(img,maxbot,maxright,(0,255,0),2)
@@ -95,7 +104,6 @@ class Vision:
 
     
     def Range(self,img,parameters_dict,finalimage):
-        Range=np.array([])
         RangeRBC=np.array([])
         ZDistance=np.array([])
         Bearing=np.array([])
@@ -132,9 +140,9 @@ class Vision:
                         bearingText = " B: {:.4f}".format((math.radians((x-160)*(31.1/160))))
                         cv2.putText(finalimage, rangeText + bearingText, textOrigin, cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
 
-                        Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                        RangeRBC=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                         #columnwise
-                        Range=Range[Range[:,0].argsort()]
+                        RangeRBC=RangeRBC[RangeRBC[:,0].argsort()]
                         #else:
                         #    continue
                     else:
@@ -161,12 +169,10 @@ class Vision:
                         #bearingText = "Lx: {:.4f}".format(Lx)
                         bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
                         cv2.putText(finalimage, rangeText + bearingText, (Lx1+5,Ly1+10), cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
-                        #RangeRBC=np.vstack((ZDistance,NewBearing)).T
-                        #RangeRBC=RangeRBC[RangeRBC[:,0].argsort()] 
                         Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
-                        Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                        RangeRBC=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                         #columnwise
-                        Range=Range[Range[:,0].argsort()] 
+                        RangeRBC=RangeRBC[RangeRBC[:,0].argsort()] 
                         #if positive then it's to the right if negative then to left of center 
                         #else:
                         #    continue
@@ -175,7 +181,6 @@ class Vision:
                 elif parameters_dict["type"]==2:#for obstacle
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     if Area>150:
-                        #f LWidth/LHeight<1.5 and LHeight/LWidth<1.5:
                         Lx=int(Moment["m10"]/Moment["m00"])#centroids of shapes identified
                         Ly=int(Moment["m01"]/Moment["m00"])
                         Centroid=np.array([Lx,Ly])
@@ -192,41 +197,44 @@ class Vision:
                         bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
                         cv2.putText(finalimage, rangeText + bearingText, textOrigin, cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
                         ##
-                        Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                        RangeRBC=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                         #columnwise
-                        Range=Range[Range[:,0].argsort()] 
+                        RangeRBC=RangeRBC[RangeRBC[:,0].argsort()] 
                         #if positive then it's to the right if negative then to left of center 
                     #else:
                     #    continue
                     else: 
                         continue
                 elif parameters_dict["type"]==1: #for lander
-                        Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                        if Area>2000 and Area<60000:
-                            Lx=int(Moment["m10"]/Moment["m00"])
-                            Ly=int(Moment["m01"]/Moment["m00"])
-                            Centroid=np.array([Lx,Ly])
-                            Center=np.append(Center,Centroid)
-                            cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
-                            parameters_dict["BBoxColour"],2)
-                            Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
-                            Distance=(0.8667*Distance-3)/1000
-                            ZDistance=np.append(ZDistance,Distance)
-                            Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
-                            #print range bearing
-                            textOrigin = (Lx-int(LWidth/2),Ly-int(LHeight/2)+ 5)
-                            rangeText = "R: {:.4f}".format(Distance)
-                            bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
-                            cv2.putText(finalimage, rangeText + bearingText, textOrigin, cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
-                            Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
-                            #columnwise
-                            Range=Range[Range[:,0].argsort()] 
-                        else:
-                            continue
-                elif parameters_dict["type"]==4: #sample hole
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>100 and Area<2000:
-                        #if LWidth/LHeight<1.1 and LHeight/LWidth<1.1:
+                    if Area>2000 and Area<60000:
+                        Lx=int(Moment["m10"]/Moment["m00"])
+                        Ly=int(Moment["m01"]/Moment["m00"])
+                        Centroid=np.array([Lx,Ly])
+                        Center=np.append(Center,Centroid)
+                        cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
+                        parameters_dict["BBoxColour"],2)
+                        Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
+                        Distance=(0.8667*Distance-3)/1000
+                        ZDistance=np.append(ZDistance,Distance)
+                        if self.state==8:
+                            Bearing=np.append(Bearing,LanderUpper(a,finalimage))
+                            bearingText = " B: {:.4f}".format(LanderUpper(a,finalimage))
+                        else:
+                            Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))  
+                            bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
+                        #print range bearing
+                        textOrigin = (Lx-int(LWidth/2),Ly-int(LHeight/2)+ 5)
+                        rangeText = "R: {:.4f}".format(Distance)
+                        cv2.putText(finalimage, rangeText + bearingText, textOrigin, cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
+                        RangeRBC=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                        #columnwise
+                        RangeRBC=RangeRBC[RangeRBC[:,0].argsort()] 
+                    else:
+                        continue
+                elif parameters_dict["type"]==4: #hole
+                    Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
+                    if Area>30 and Area<2000:
                         (x,y),radius=cv2.minEnclosingCircle(a)
                         cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
                         parameters_dict["BBoxColour"],2)
@@ -235,14 +243,14 @@ class Vision:
                         Distance=Distance/1000
                         ZDistance=np.append(ZDistance,Distance)
                         Bearing=np.append(Bearing,math.radians((x-160)*(31.1/160)))
-                        Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                        RangeRBC=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                         #columnwise
-                        Range=Range[Range[:,0].argsort()]
+                        RangeRBC=RangeRBC[RangeRBC[:,0].argsort()]
                         #else:
                         #    continue
                     else:
                         continue  
-                elif parameters_dict["type"]==5:
+                elif parameters_dict["type"]==5: #cover hole
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     if Area>20 and Area<2000:
                         Lx=int(Moment["m10"]/Moment["m00"])
@@ -254,16 +262,15 @@ class Vision:
                         Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
                         Distance=(0.8667*Distance-3)/1000
                         ZDistance=np.append(ZDistance,Distance)
-                        #self.MaxMinLocations(a,finalimage)
                         Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
-                        Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                        RangeRBC=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                         #columnwise
-                        Range=Range[Range[:,0].argsort()] 
+                        RangeRBC=RangeRBC[RangeRBC[:,0].argsort()] 
                     else:
                         continue
 
-        return Range #,RangeRBC
-
+        return RangeRBC
+        
     def DetectandRange(self,img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters,finalImage):
         sample_img=self.Detection(img,self.sample_parameters)
         cover_img=self.Detection(img,self.cover_parameters)
@@ -274,15 +281,12 @@ class Vision:
         cover_Z=self.Range(cover_img,self.cover_parameters,finalImage)
         obstacle_Z=self.Range(obstacle_img,self.obstacle_parameters,finalImage)
         lander_Z=self.Range(lander_img,self.lander_parameters,finalImage)
-        # print(sample_Z)
-        # print(cover_Z)
-        # print(obstacle_Z)
+
         print("Lander", lander_Z)
         return sample_Z,cover_Z,obstacle_Z,lander_Z,lander_img
-
     def visMain(self, i):
         ret, img = self.cap.read()	     		# Get a frame from the camera
-        #imcopy=np.copy(img)
+      
         if ret == True:	
             cv2.waitKey(1)	
             #initiate some variables
@@ -292,29 +296,9 @@ class Vision:
         
         if (i%5)==0:
              cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
-             cv2.imshow("Lander", lander_img)
-        #print(Bearing1)holes_RB,
+     
         return sample_Z,lander_Z,cover_Z,obstacle_Z,hole_Z,coverhole_Z
     
-    def GetDetectedObjects(self,state):
-        sampleRB, landerRB, obstaclesRB, rocksRB, holesRB, rotHoleRB, = None, None, None, None, None, None
-        i=0
-        now=time.time()
-        #i+=1   #holesRB,
-        sampleRB,landerRB,rocksRB,obstaclesRB,landerHoleRB, coverHoleRB =self.visMain(i)
-        #self.updateVisionState(state)
-        
-        elapsed=time.time()-now
-        #time.sleep(Interval-elapsed)
-        elapsed2=time.time()-now
-        rate2=1/elapsed2
-        print(rate2)
-
-            # sample [[R, B], [R,B]]
-            # lander [R, B]
-        # if nothing sampleRB = None,holesRB,
-        return sampleRB, landerRB, obstaclesRB, rocksRB,  holesRB, rotHoleRB
-
 
     def sampleCollected(self):
         a=self.sensor.proximity
@@ -324,7 +308,6 @@ class Vision:
             SamplePresent=False
         return SamplePresent 
         pass
-
     def holefinder(self,finalImage,LanderImage):
         hole_Z=None
         coverhole_img=None
@@ -353,7 +336,6 @@ class Vision:
             self.lander_parameters.update(Lander_parameter_update)
             #revert the changes listed above.
         return coverhole_Z,lander_hole
-        
     def updateVisionState(self,state):
         self.state = state
         
