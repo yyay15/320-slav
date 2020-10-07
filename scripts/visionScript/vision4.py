@@ -223,9 +223,9 @@ class Vision:
                             Range=Range[Range[:,0].argsort()] 
                         else:
                             continue
-                elif parameters_dict["type"]==4:
+                elif parameters_dict["type"]==4: #sample hole
                 Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                if Area>30 and Area<2000:
+                if Area>100 and Area<2000:
                     #if LWidth/LHeight<1.1 and LHeight/LWidth<1.1:
                     (x,y),radius=cv2.minEnclosingCircle(a)
                     cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
