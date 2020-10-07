@@ -305,6 +305,8 @@ class Vision:
         if (i%5)==0:
              cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
         #print(Bearing1)holes_RB,
+
+        #print(i)
         return sample_Z,lander_Z,cover_Z,obstacle_Z,hole_Z,coverhole_Z
     
     def GetDetectedObjects(self,state):
@@ -321,6 +323,7 @@ class Vision:
         rate2=1/elapsed2
         print(rate2)
 
+        print(" This is rotHoleRB", rotHoleRB)
             # sample [[R, B], [R,B]]
             # lander [R, B]
         # if nothing sampleRB = None,holesRB,
