@@ -308,7 +308,7 @@ class Vision:
         return sample_Z,lander_Z,cover_Z,obstacle_Z,hole_Z,coverhole_Z
     
     def GetDetectedObjects(self,state):
-        sampleRB, landerRB, obstaclesRB, rocksRB, holesRB, rotHoleRB, = None, None, None, None, None, None
+        sampleRB, landerRB, obstaclesRB, rocksRB, landerHoleRB, rotHoleRB, = None, None, None, None, None, None
         i=0
         now=time.time()
         #i+=1   #holesRB,
@@ -324,7 +324,7 @@ class Vision:
             # sample [[R, B], [R,B]]
             # lander [R, B]
         # if nothing sampleRB = None,holesRB,
-        return sampleRB, landerRB, obstaclesRB, rocksRB,  holesRB, rotHoleRB
+        return sampleRB, landerRB, obstaclesRB, rocksRB,  landerHoleRB, rotHoleRB
 
 
     def sampleCollected(self):
