@@ -32,7 +32,7 @@ ROT_DISTANCE = 0.21 #collect distance
 FLIP_DISTANCE = 0.16
 ROCK_ALIGN_DISTANCE = 0.3
 FULL_ROTATION = 15
-ROT_ACQUIRE_SAMPLE = 1
+ROT_ACQUIRE_SAMPLE = 0.9
 DRIVE_OFF_TIME = 6
 LANDER_SWITCH_RANGE = 0.32
 
@@ -40,7 +40,7 @@ LANDER_SWITCH_RANGE = 0.32
 KV_ATTRACT = 0.5 #0.5
 KW_ATTRACT = 1.3    #1.5 #0.8
 KV_REPULSE = 0.3
-KW_REPULSE = 4
+KW_REPULSE = 2.4
 
 class Navigation:
     def __init__(self):
@@ -78,7 +78,7 @@ class Navigation:
         v, w = self.currentState(self.stateMode)(state)
         return v, w
 
-    # robot spins, moves forward, spins again
+    # robot spins, moves forward, spins again -- NOT YET IMPLEMENTED
     def searchAll(self, state):
         # search both
         if (not self.isEmpty(state.sampleRB) or not self.isEmpty(state.rocksRB)):
@@ -109,6 +109,7 @@ class Navigation:
         else:
             v = 0
             w = 0.5 * self.turnDir
+        return v, w
 
     def searchSample(self, state):          
         if (not self.isEmpty(state.sampleRB)):
@@ -217,11 +218,13 @@ class Navigation:
         #time to drive to  be in flip position
         v, w = 0, 0
         print("driving to flip pos")
+        # drive straight for 0.2 seconds first 
         if (time.time() - self.modeStartTime <= 0.2):
             v = 0.035
             w = 0
             self.attemptFlip = False
         else:
+            # if the cover hasnt been lifted and not attempted then flip 
             print("preparing to flip")
             v, w = 0, 0
             if (not self.isBlind and not self.attemptFlip):
@@ -229,20 +232,24 @@ class Navigation:
                 self.rotState = OPEN
                 self.modeStartTime = time.time()
                 self.isBlind = True
+            # after flipping rock, reverse slightly (1 second) to get out of way/ not accidentally close on rock
             if (self.isBlind):
                 print("cover open, reversing")
                 if (time.time() - self.modeStartTime < 1):
                     v = -0.07
                     w = 0
                 else:
+                    # after 1 second close cover
                     print("closing cover")
                     self.isBlind = False
                     self.attemptFlip = True
             else:
+                # on the odd chance the sample is collected (UNLIKELY)
                 if (state.sampleCollected):
                     self.modeStartTime = time.time()
                     self.stateMode = SEARCH_LANDER
                 else:
+                    # search sample
                     self.modeStartTime = time.time()
                     self.stateMode = SEARCH_SAMPLE
 
@@ -316,24 +323,27 @@ class Navigation:
                 self.stateMode = SEARCH_SAMPLE
         return v, w
 
+# !!!!!!!!FUNCTION TO DRIVE TO THE TOP OF THE LANDER !!!!!!#
     def driveUpLander(self,state):
         print("drive up lander")
         self.rotState = SLIGHT_OPEN
         v, w = 0, 0
+        # first check that the lander is visible (it should always be when we're on the lander)
         if (not self.isEmpty(state.landerRB)):
-            if (self.isEmpty(state.holeRB)):
-                v = 0.135
-                w = state.landerRB[0][1]
-
-            elif (not self.isEmpty(state.holeRB)):
+            # if the hole is visible and large enough (RB should return none if too small (FROM VISION))
+            if (not self.isEmpty(state.holeRB)):
                 print("Lander hole visible")
-                if (state.holeRB[0][0] <= 0.06):
-                    self.modeStartTime = time.time()
-                    self.stateMode = SAMPLE_DROP
-                # 60% pwm
-                else:
-                    v = 0.135
-                    w = state.landerRB[0][1]
+                self.modeStartTime = time.time()
+                self.stateMode = SAMPLE_DROP
+                # depreciated code from past
+                # if (state.holeRB[0][0] <= 0.06):
+                #     self.modeStartTime = time.time()
+                #     self.stateMode = SAMPLE_DROP
+                
+            else:
+                # 60% pwm with beaing at lander max 
+                v = 0.135
+                w = state.landerRB[0][1] * 1.05
         else:
             v, w = 0, 0
             self.modeStartTime = time.time()
@@ -345,17 +355,25 @@ class Navigation:
         print("aligning rock")
         v, w = 0, 0
         if (not self.isEmpty(state.rotHoleRB)):
+            # THIS VARIABLE (rotHoleBearing) WAS CREATED TO MAKE IT EASIER TO PUT A GAIN ON THE ROT HOLE BEARING FOR THE ALIGNMENT CONDITION
+            # MIGHT NOT BE NEEDE ANYMORE 
+            # NEEDS TESTING
             rotHoleBearing = state.rotHoleRB[0][1]
-            # This is a test
-            print("This is rotHoleBearing", rotHoleBearing)
-            print("ROT HOLE 2", state.rotHoleRB)
+            print("ROT HOLE RB", state.rotHoleRB)
+            # IF Aligned move to flip rock
             if (-0.03 <= rotHoleBearing <= 0.03):
                 print("changing to flip")
                 self.modeStartTime = time.time()
                 self.stateMode = FLIP_ROCK
             else:
+                # this function was used when i was trying out having the rock as a repulsive force
+                # this is not needed hence, the None for avoid 
+                # just navigating to ROT Hole RB
                 v, w = self.navAndAvoid(state.rotHoleRB, None)
         else:
+            # THESE FUNCTIONS MAY BE DEPRECIATED
+            # IF THE ROBOT HAS MOVED TOO CLOSE BUT ROT HOLE WAS SEEN PREVIOUSLY GO TO FLIP ROCK_ALIGN
+            # WAS A BIT ERROR PRONE IDEALLY SHOULDNT NEED THIS
             if (not self.isEmpty(state.prevRotHoleRB)):
                 self.modeStartTime = time.time()
                 self.stateMode = FLIP_ROCK
@@ -364,6 +382,7 @@ class Navigation:
                 self.modeStartTime = time.time()
                 self.stateMode = SEARCH_ROCK
         return v, w
+# DEPRECIATED CODE BEFORE WE KNEW THAT THE SURFACE WAS CONCAVED
 
     def holeAlign(self, state):
         print("centering hole")
@@ -384,9 +403,11 @@ class Navigation:
             self.stateMode = SEARCH_LANDER
         return v, w 
         
- 
+ ## THIS HASNT BEEN TESTED 
     def dropSample(self, state):
         self.rotState = OPEN
+        # GO FORWARD FOR HALF SECOND THEN REVERSE FOR HALF SECOND 
+        # WILL NEED TO TWEAK THESE PARAMETERS
         if (state.sampleCollected):
             if (time.time() - self.modeStartTime > 0.5):
                 v = 0.07
@@ -395,6 +416,7 @@ class Navigation:
                 v = - 0.07
                 w = 0
         else:
+            self.rotState = CLOSE # maybe it needs to be on lander() when driving down? will this affect vision later? 
             v, w = 0,0
             self.numSampleCollected += 1
             self.stateMode = SEARCH_SAMPLE
@@ -407,7 +429,7 @@ class Navigation:
 
 
 #-----------------------#
-# Navigation functions
+# Navigation functions DONT ADJUST THE BELOW FUNCTIONS 
 #-----------------------#
     def navAndAvoid(self, goal, obstacle):
         vRep, wRep = 0, 0
