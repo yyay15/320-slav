@@ -142,7 +142,8 @@ class Vision:
                         cv2.putText(finalimage, rangeText + bearingText, textOrigin, cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
 
                         Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
-                        #columnwise
+                        
+                        #columnwise sorting of Z distance, bearing is sorted accordingly
                         Range=Range[Range[:,0].argsort()]
                         #else:
                         #    continue
@@ -277,6 +278,7 @@ class Vision:
                         continue
 
         return Range #,RangeRBC
+
     def DetectandRange(self,img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters,finalImage):
         sample_img=self.Detection(img,self.sample_parameters)
         cover_img=self.Detection(img,self.cover_parameters)
@@ -314,6 +316,7 @@ class Vision:
         i=0
         now=time.time()
         #i+=1   #holesRB,
+        self.state = state 
         sampleRB,landerRB,rocksRB,obstaclesRB,landerHoleRB,rotHoleRB =self.visMain(i)
         #self.updateVisionState(state)
         
@@ -356,18 +359,20 @@ class Vision:
             #LanderMaskhigh=np.array([30,255,255],dtype="uint8")
         #elif self.state==10:
         #   hole_img=self.Detection(img,self.hole_parameters)
-        #    hole_Z=self.Range(hole_img,self.hole_parameters,img)
+            print("This is self.state 8 ", lander_hole)
+        #   hole_Z=self.Range(hole_img,self.hole_parameters,img)
         elif self.state==12:
-             coverhole_img=self.Detection(finalImage,self.coverhole_parameters)
-             coverhole_Z=self.Range(coverhole_img,self.coverhole_parameters,finalImage)
+            coverhole_img=self.Detection(finalImage,self.coverhole_parameters)
+            coverhole_Z=self.Range(coverhole_img,self.coverhole_parameters,finalImage)
+            print("This is self.state 12 ", coverhole_Z)
 
         else:
             Lander_parameter_update={"hue":[15,30],"sat":[100,255],"value":[150,255]}
             self.lander_parameters.update(Lander_parameter_update)
             #revert the changes listed above.
         return coverhole_Z,lander_hole
-    def updateVisionState(self,state):
-        self.state = state
+    # def updateVisionState(self,state):
+    #     self.state = state
         
        
 
