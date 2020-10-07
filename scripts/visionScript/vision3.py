@@ -68,6 +68,7 @@ class Vision:
             total_diff=Lx
        
         return total_diff,right_diff,left_diff
+
     def LanderUpper(self,c,img):
         #to be double checked
         maxtop=tuple(c[c[:,:,1].argmin()][0])
