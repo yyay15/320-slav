@@ -332,11 +332,11 @@ class Navigation:
                 self.modeStartTime = time.time()
                 self.stateMode = SAMPLE_DROP
             # 60% pwm
-            v = 0.095
+            v = 0.12
             w = state.holeRB[0][1]
             
         elif (time.time() - self.modeStartTime > 2.5):
-            v = 0.95
+            v = 0.16
             w = 0
         else:
             v, w = 0, 0
