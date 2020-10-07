@@ -224,24 +224,24 @@ class Vision:
                         else:
                             continue
                 elif parameters_dict["type"]==4: #sample hole
-                Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                if Area>100 and Area<2000:
-                    #if LWidth/LHeight<1.1 and LHeight/LWidth<1.1:
-                    (x,y),radius=cv2.minEnclosingCircle(a)
-                    cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
-                    parameters_dict["BBoxColour"],2)
-                    Distance=(parameters_dict["Height"]*(self.f/(2*radius))/8)*math.cos(0.2967)
-                    Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
-                    Distance=Distance/1000
-                    ZDistance=np.append(ZDistance,Distance)
-                    Bearing=np.append(Bearing,math.radians((x-160)*(31.1/160)))
-                    Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
-                    #columnwise
-                    Range=Range[Range[:,0].argsort()]
-                    #else:
-                    #    continue
-                else:
-                    continue  
+                    Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
+                    if Area>100 and Area<2000:
+                        #if LWidth/LHeight<1.1 and LHeight/LWidth<1.1:
+                        (x,y),radius=cv2.minEnclosingCircle(a)
+                        cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
+                        parameters_dict["BBoxColour"],2)
+                        Distance=(parameters_dict["Height"]*(self.f/(2*radius))/8)*math.cos(0.2967)
+                        Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
+                        Distance=Distance/1000
+                        ZDistance=np.append(ZDistance,Distance)
+                        Bearing=np.append(Bearing,math.radians((x-160)*(31.1/160)))
+                        Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                        #columnwise
+                        Range=Range[Range[:,0].argsort()]
+                        #else:
+                        #    continue
+                    else:
+                        continue  
                 elif parameters_dict["type"]==5:
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     if Area>20 and Area<2000:
@@ -290,6 +290,7 @@ class Vision:
         
         if (i%5)==0:
              cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
+             cv2.imshow("Lander", lander_img)
         #print(Bearing1)holes_RB,
         return sample_Z,lander_Z,cover_Z,obstacle_Z,hole_Z,coverhole_Z
     
