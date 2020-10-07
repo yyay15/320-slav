@@ -350,6 +350,8 @@ class Navigation:
         v, w = 0, 0
         if (not self.isEmpty(state.rotHoleRB)):
             rotHoleBearing = state.rotHoleRB[0][1]
+            # This is a test
+            print("This is rotHoleBearing", rotHoleBearing)
             print("ROT HOLE 2", state.rotHoleRB)
             if (-0.03 <= rotHoleBearing <= 0.03):
                 print("changing to flip")
