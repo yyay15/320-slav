@@ -51,23 +51,31 @@ class Vision:
         maxright=tuple(c[c[:,:,0].argmax()][0])
         maxtop=tuple(c[c[:,:,1].argmin()][0])
         maxbot=tuple(c[c[:,:,1].argmax()][0])
-        left_diff=maxright[0]-maxbot[0]
-        right_diff=maxleft[0]-maxbot[0]
-        right_diff=-right_diff
-        cv2.line(img,maxbot,maxright,(0,255,0),2)
-        cv2.line(img,maxbot,maxleft,(0,255,0),2)
-        if left_diff>15 and right_diff>15:
-            if right_diff>left_diff:
-                diff=-right_diff
-            elif right_diff<left_diff:
-                diff=left_diff
-            total_diff=Lx+diff #so total diff will be less than Lx if left difference is greater than 
+        #left_diff=maxright[0]-maxbot[0]
+        #right_diff=maxleft[0]-maxbot[0]
+        #right_diff=-right_diff
+        #cv2.line(img,maxbot,maxright,(0,255,0),2)
+        #cv2.line(img,maxbot,maxleft,(0,255,0),2)
+        #if left_diff>15 and right_diff>15:
+        #    if right_diff>left_diff:
+        #        diff=-right_diff
+        #    elif right_diff<left_diff:
+        #        diff=left_diff
+        #    total_diff=Lx+diff #so total diff will be less than Lx if left difference is greater than 
             #otherwise then we have to angle left if total diff is greater than Lx that 
             # means that we have to angle right:
         else:
             total_diff=Lx
        
         return total_diff,right_diff,left_diff
+    def LanderUpper(self,c,img):
+        #to be double checked
+        maxtop=tuple(c[c[:,:,1].argmin()][0])
+        cv2.circle(img,maxtop,3,(125,125,125))
+        Lx=maxtop[0]
+        BearingLanderTop=math.radians((Lx-160)*(31.1/160))
+        return BearingLanderTop
+        
 
 
         #cv2.line(img,maxbot,maxright,(0,255,0),2)
@@ -213,11 +221,16 @@ class Vision:
                             Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
                             Distance=(0.8667*Distance-3)/1000
                             ZDistance=np.append(ZDistance,Distance)
-                            Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
+                            #Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
+                            if self.state==8:
+                                Bearing=np.append(Bearing,LanderUpper(a,finalimage))
+                                bearingText = " B: {:.4f}".format(LanderUpper(a,finalimage))
+                            else:
+                                Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))  
+                                bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
                             #print range bearing
                             textOrigin = (Lx-int(LWidth/2),Ly-int(LHeight/2)+ 5)
                             rangeText = "R: {:.4f}".format(Distance)
-                            bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
                             cv2.putText(finalimage, rangeText + bearingText, textOrigin, cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
                             Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                             #columnwise
