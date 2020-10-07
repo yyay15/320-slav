@@ -187,6 +187,9 @@ if __name__ == '__main__':
                 state = state.State()
                 # CHUCK THAT CHUNK HERE
                 while True:
+                    print("==========================================")
+                    print("This is the state rn lel: ",nav.stateMode)
+                    print("==========================================")
                     # vision.updateVisionState(nav.stateMode)
                     objects = vision.GetDetectedObjects(nav.stateMode)
                     sampleCollected = vision.sampleCollected()
