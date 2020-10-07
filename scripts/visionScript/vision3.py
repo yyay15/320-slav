@@ -222,7 +222,7 @@ class Vision:
                             Range=Range[Range[:,0].argsort()] 
                         else:
                             continue
-                elif parameters_dict["type"]==4:
+                elif parameters_dict["type"]==4: #hole
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     if Area>30 and Area<2000:
                         #if LWidth/LHeight<1.1 and LHeight/LWidth<1.1:
@@ -241,7 +241,7 @@ class Vision:
                         #    continue
                     else:
                         continue  
-                elif parameters_dict["type"]==5: 
+                elif parameters_dict["type"]==5: #cover hole
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     if Area>20 and Area<2000:
                         Lx=int(Moment["m10"]/Moment["m00"])
