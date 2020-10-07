@@ -263,6 +263,7 @@ class Vision:
                         continue
 
         return Range #,RangeRBC
+        
     def DetectandRange(self,img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters,finalImage):
         sample_img=self.Detection(img,self.sample_parameters)
         cover_img=self.Detection(img,self.cover_parameters)
@@ -278,6 +279,7 @@ class Vision:
         # print(obstacle_Z)
         print("Lander", lander_Z)
         return sample_Z,cover_Z,obstacle_Z,lander_Z,lander_img
+
     def visMain(self, i):
         ret, img = self.cap.read()	     		# Get a frame from the camera
         #imcopy=np.copy(img)
@@ -322,6 +324,7 @@ class Vision:
             SamplePresent=False
         return SamplePresent 
         pass
+
     def holefinder(self,finalImage,LanderImage):
         hole_Z=None
         coverhole_img=None
