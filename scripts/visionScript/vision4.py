@@ -14,14 +14,13 @@ class Vision:
         self.state = 1
         self.random = 1
         self.changingVariable = 1
-        # https://stackoverflow.com/questions/11420748/setting-camera-parameters-in-opencv-python
+        
         i2c = busio.I2C(board.SCL, board.SDA)
         self.sensor = adafruit_vcnl4040.VCNL4040(i2c)
         self.cap = cv2.VideoCapture(0)  		# Connect to camera 0 (or the only camera)
         self.cap.set(3, 320)                     	# Set the width to 320
         self.cap.set(4, 240)                      	# Set the height to 240
-        # self.cap.set(12,0.6) # Exposure
-        self.cap.set(17,6005.56)  # White Balance
+        self.cap.set(15,0.7)
         self.Center=np.array([])
         self.f=3.04/(1.12*10**-3)
         #img=cv2.imread("MultipleCovers.jpg")
@@ -224,9 +223,9 @@ class Vision:
                             Range=Range[Range[:,0].argsort()] 
                         else:
                             continue
-                elif parameters_dict["type"]==4: #hole
+                elif parameters_dict["type"]==4: #sample hole
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>30 and Area<2000:
+                    if Area>100 and Area<2000:
                         #if LWidth/LHeight<1.1 and LHeight/LWidth<1.1:
                         (x,y),radius=cv2.minEnclosingCircle(a)
                         cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
@@ -243,7 +242,7 @@ class Vision:
                         #    continue
                     else:
                         continue  
-                elif parameters_dict["type"]==5: #cover hole
+                elif parameters_dict["type"]==5:
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     if Area>20 and Area<2000:
                         Lx=int(Moment["m10"]/Moment["m00"])
@@ -291,6 +290,7 @@ class Vision:
         
         if (i%5)==0:
              cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
+             cv2.imshow("Lander", lander_img)
         #print(Bearing1)holes_RB,
         return sample_Z,lander_Z,cover_Z,obstacle_Z,hole_Z,coverhole_Z
     

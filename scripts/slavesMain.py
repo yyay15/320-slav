@@ -33,7 +33,7 @@ global command
 # Local modules
 from mobilityScript import mobilityScript
 from navigationScript.VREP_PythonCode import navigation, state, localisation
-from visionScript import vision3
+from visionScript import vision4
 from collectionScript import collection
 
 #---------------#
@@ -150,7 +150,7 @@ def video_feed():
 # Initialise Functions and Classes
 # Subsystem
 drive = mobilityScript.Mobility()
-vision = vision3.Vision()
+vision = vision4.Vision()
 collection = collection.Collection()
 
 # nav
