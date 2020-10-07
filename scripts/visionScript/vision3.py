@@ -210,33 +210,33 @@ class Vision:
                     else: 
                         continue
                 elif parameters_dict["type"]==1: #for lander
-                        Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                        if Area>2000 and Area<60000:
-                            Lx=int(Moment["m10"]/Moment["m00"])
-                            Ly=int(Moment["m01"]/Moment["m00"])
-                            Centroid=np.array([Lx,Ly])
-                            Center=np.append(Center,Centroid)
-                            cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
-                            parameters_dict["BBoxColour"],2)
-                            Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
-                            Distance=(0.8667*Distance-3)/1000
-                            ZDistance=np.append(ZDistance,Distance)
-                            #Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
-                            if self.state==8:
-                                Bearing=np.append(Bearing,LanderUpper(a,finalimage))
-                                bearingText = " B: {:.4f}".format(LanderUpper(a,finalimage))
-                            else:
-                                Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))  
-                                bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
-                            #print range bearing
-                            textOrigin = (Lx-int(LWidth/2),Ly-int(LHeight/2)+ 5)
-                            rangeText = "R: {:.4f}".format(Distance)
-                            cv2.putText(finalimage, rangeText + bearingText, textOrigin, cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
-                            Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
-                            #columnwise
-                            Range=Range[Range[:,0].argsort()] 
+                    Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
+                    if Area>2000 and Area<60000:
+                        Lx=int(Moment["m10"]/Moment["m00"])
+                        Ly=int(Moment["m01"]/Moment["m00"])
+                        Centroid=np.array([Lx,Ly])
+                        Center=np.append(Center,Centroid)
+                        cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
+                        parameters_dict["BBoxColour"],2)
+                        Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
+                        Distance=(0.8667*Distance-3)/1000
+                        ZDistance=np.append(ZDistance,Distance)
+                        #Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
+                        if self.state==8:
+                            Bearing=np.append(Bearing,LanderUpper(a,finalimage))
+                            bearingText = " B: {:.4f}".format(LanderUpper(a,finalimage))
                         else:
-                            continue
+                            Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))  
+                            bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
+                        #print range bearing
+                        textOrigin = (Lx-int(LWidth/2),Ly-int(LHeight/2)+ 5)
+                        rangeText = "R: {:.4f}".format(Distance)
+                        cv2.putText(finalimage, rangeText + bearingText, textOrigin, cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
+                        Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                        #columnwise
+                        Range=Range[Range[:,0].argsort()] 
+                    else:
+                        continue
                 elif parameters_dict["type"]==4: #hole
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     if Area>30 and Area<2000:
