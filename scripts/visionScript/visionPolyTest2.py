@@ -12,15 +12,15 @@ f=3.04/(1.12*10**-3)
 
 sample_parameters={"hue":[0,5],"sat":[125,255],"value":[125,255],"Height":40,"OR_MASK":True,
     "Kernel":True,"Circle":True,"BBoxColour":[204,0,204],"type":0}
-lander_parameters={"hue":[15,30],"sat":[0,255],"value":[30,255],"Height":80,"OR_MASK":False,
+lander_parameters={"hue":[15,30],"sat":[0,255],"value":[150,255],"Height":80,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[0,0,255],"type":1}
 obstacle_parameters={"hue":[40,70],"sat":[50,255],"value":[40,255],"Height":80,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[204,204,0],"type":2}
 cover_parameters={"hue":[100,120],"sat":[0,200],"value":[0,200],"Height":70,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[255,255,255],"type":3} 
-hole_parameters={"hue":[0,255],"sat":[0,100],"value":[0,80],"Height":50,"OR_MASK":False,
+hole_parameters={"hue":[0,255],"sat":[95,255],"value":[20,40],"Height":50,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[180,0,180],"type":4} 
-coverhole_parameters={"hue":[0,255],"sat":[0,255],"value":[0,50],"Height":10,"OR_MASK":False,
+coverhole_parameters={"hue":[0,255],"sat":[0,255],"value":[30,80],"Height":10,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[255,0,0],"type":5} 
 
 
@@ -169,26 +169,26 @@ def Range(img,parameters_dict,finalimage):
                         continue
             elif parameters_dict["type"]==4:
                 Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                if Area>30 and Area<3000:
-                    if LWidth/LHeight<1.1 and LHeight/LWidth<1.1:
-                        (x,y),radius=cv2.minEnclosingCircle(a)
-                        cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
-                        parameters_dict["BBoxColour"],2)
-                        Distance=(parameters_dict["Height"]*(f/(2*radius))/8)*math.cos(0.2967)
-                        Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
-                        Distance=Distance/1000
-                        ZDistance=np.append(ZDistance,Distance)
-                        Bearing=np.append(Bearing,math.radians((x-160)*(31.1/160)))
-                        Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
-                        #columnwise
-                        Range=Range[Range[:,0].argsort()]
-                    else:
-                        continue
+                if Area>30 and Area<2000:
+                    #if LWidth/LHeight<1.1 and LHeight/LWidth<1.1:
+                    (x,y),radius=cv2.minEnclosingCircle(a)
+                    cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
+                    parameters_dict["BBoxColour"],2)
+                    Distance=(parameters_dict["Height"]*(f/(2*radius))/8)*math.cos(0.2967)
+                    Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
+                    Distance=Distance/1000
+                    ZDistance=np.append(ZDistance,Distance)
+                    Bearing=np.append(Bearing,math.radians((x-160)*(31.1/160)))
+                    Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                    #columnwise
+                    Range=Range[Range[:,0].argsort()]
+                    #else:
+                    #    continue
                 else:
                     continue 
             elif parameters_dict["type"]==5:
                 Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                if Area<2000:
+                if Area>10 and Area<2000:
                     Lx=int(Moment["m10"]/Moment["m00"])
                     Ly=int(Moment["m01"]/Moment["m00"])
                     Centroid=np.array([Lx,Ly])
@@ -196,7 +196,7 @@ def Range(img,parameters_dict,finalimage):
                     cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
                     parameters_dict["BBoxColour"],2)
                     Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
-                    Distance=0.8667*Distance-3
+                    Distance=(0.8667*Distance-3)/1000
                     ZDistance=np.append(ZDistance,Distance)
                     #self.MaxMinLocations(a,finalimage)
                     Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
@@ -215,6 +215,7 @@ def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,la
     lander_img=Detection(img,lander_parameters)
     hole_img=Detection(img,hole_parameters)
     coverhole_img=Detection(img,coverhole_parameters)
+    inverse_Lander=cv2.bitwise_not(lander_img)
 
     sample_Z=Range(sample_img,sample_parameters,finalImage)#sample_img is the filtered img finalImage is just 
     #the plain image
@@ -227,16 +228,18 @@ def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,la
     print(cover_Z)
     print(obstacle_Z)
     print(lander_Z)
-    return sample_Z,cover_Z,obstacle_Z,lander_Z
+    return sample_Z,cover_Z,obstacle_Z,lander_Z,lander_img,inverse_Lander
 def visMain(i):
     """ ret, img = cap.read()	     		# Get a frame from the camera
     if ret == True:	
         cv2.waitKey(1) """	
         #initiate some variables """
-    img=cv2.imread("visionScript\manCap1.jpg")
+    img=cv2.imread("visionScript\manCap16.jpg")
     img=cv2.resize(img,(320,240))
-    sample_Z,cover_Z,obstacle_Z,lander_Z=DetectandRange(img,sample_parameters,
+    sample_Z,cover_Z,obstacle_Z,lander_Z,lander_img,inverse_Lander=DetectandRange(img,sample_parameters,
         cover_parameters,obstacle_parameters,lander_parameters,img)
+    lander_hole=Range(inverse_Lander,hole_parameters,img)
+    print("lander hole",lander_hole)
     if (i%5)==0:
             cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
             cv2.waitKey(1)
