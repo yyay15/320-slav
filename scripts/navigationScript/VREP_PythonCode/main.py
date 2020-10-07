@@ -6,7 +6,7 @@ import sys
 
 
 
-import navigation, state
+import navigation, state #, localisation
 # change this depending on if Simulation or robot
 SIMULATION = True
 
@@ -48,6 +48,7 @@ v = 0
 w = 0
 nav = navigation.Navigation()
 state = state.State()
+#loc = localisation.Localisation()
 # MAIN SCRIPT    
 if __name__ == '__main__':
     try:
@@ -69,6 +70,7 @@ if __name__ == '__main__':
             sim.SetTargetVelocities(v, w) #don't copy this line
             if not SIMULATION:
                 ledIndicator(nav.stateMode)
+            #loc.getWheelAngVel(v, w)
 
 
     except KeyboardInterrupt as e:
