@@ -33,7 +33,7 @@ global command
 # Local modules
 from mobilityScript import mobilityScript
 from navigationScript.VREP_PythonCode import navigation, state, localisation
-from visionScript import vision4
+from visionScript import vision3
 from collectionScript import collection
 
 #---------------#
@@ -150,7 +150,7 @@ def video_feed():
 # Initialise Functions and Classes
 # Subsystem
 drive = mobilityScript.Mobility()
-vision = vision4.Vision()
+vision = vision3.Vision()
 collection = collection.Collection()
 
 # nav
@@ -187,7 +187,7 @@ if __name__ == '__main__':
                 state = state.State()
                 # CHUCK THAT CHUNK HERE
                 while True:
-                    vision.updateVisionState(nav.stateMode)
+                    # vision.updateVisionState(nav.stateMode)
                     objects = vision.GetDetectedObjects(nav.stateMode)
                     sampleCollected = vision.sampleCollected()
                     state.updateState(objects,sampleCollected)
