@@ -70,6 +70,7 @@ class Vision:
         return total_diff,right_diff,left_diff
     def LanderUpper(self,c,img):
         #to be double checked
+        print("Heyo ... LanderUpper is called!")
         maxtop=tuple(c[c[:,:,1].argmin()][0])
         cv2.circle(img,maxtop,3,(125,125,125))
         Lx=maxtop[0]
@@ -224,7 +225,8 @@ class Vision:
                         ZDistance=np.append(ZDistance,Distance)
                         #Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
                         if self.state==8:
-                            Bearing=np.append(Bearing,LanderUpper(a,finalimage))
+                            BearingLanderTop = LanderUpper(a,finalimage)
+                            Bearing=np.append(Bearing,BearingLanderTop)
                             bearingText = " B: {:.4f}".format(LanderUpper(a,finalimage))
                         else:
                             Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))  
