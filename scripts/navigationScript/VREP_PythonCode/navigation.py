@@ -12,6 +12,7 @@ SEARCH_LANDER = 5
 NAV_LANDER = 6
 ACQUIRE_SAMPLE = 7
 DRIVE_UP = 8
+REVERSE = 9
 
 CAMERA_BLIND = 0.1
 DRIVE_OFF_TIME = 6
@@ -29,6 +30,7 @@ class Navigation:
         self.prevstate = SEARCH_SAMPLE
         self.turnDir = 1
         self.rock_obstacle = True
+        self.dropSample = False
         
     
     def currentState(self, stateNum):
@@ -40,7 +42,8 @@ class Navigation:
             5: self.searchLander,
             6: self.navLander,
             7: self.acquireSample,
-            8: self.driveUpLander
+            8: self.driveUpLander,
+            9: self.reverse
         }
         return switchState.get(stateNum, self.searchSample)
 
@@ -49,7 +52,8 @@ class Navigation:
         return v, w
 
 
-    def searchSample(self, state):          
+    def searchSample(self, state): 
+        self.dropSample = False         
         if (state.onLander): # change this to false in real life
             v,w = self.driveOffLander(state)
         else:
@@ -78,6 +82,7 @@ class Navigation:
         return v, w
 
     def navSample(self, state):
+        self.dropSample = False
         print("navigating to sample")
         if (self.isEmpty(state.sampleRB)):
             if (state.prevSampleRB == None):
@@ -179,15 +184,17 @@ class Navigation:
                 if state.sampleCollected:
                     print("drive up lander")
                     self.stateMode = DRIVE_UP
-            print("returning to lander search")
-            self.modeStartTime = time.time()
-            self.stateMode = SEARCH_LANDER
+            else:
+                print("returning to lander search")
+                self.modeStartTime = time.time()
+                self.stateMode = SEARCH_LANDER
         else:
             v, w = self.navigate(state.landerRB, state)
 
         return v,w
     
     def acquireSample(self, state):
+        self.dropSample = False
         if (state.sampleRB != None and not (-0.01 <= state.sampleRB[0][1] <= 0.01)):
             sample = state.sampleRB[0]
             w = sample[1]
@@ -247,9 +254,17 @@ class Navigation:
         return empty
 
     def driveUpLander(self,state):
-        v = 0.5
-        w = 0
+        self.dropSample = False
+        if not self.isEmpty(state.landerRB):
+            v = 0.5
+            w = state.landerRB[1]
+        else:
+            v, w = 0, 0
+            self.dropSample = True
+            self.modeStartTime = time.time()
+            self.stateMode = REVERSE
         return v, w
+
     def driveOffLander(self, state):
         v = 0.2
         w = 0
@@ -258,6 +273,17 @@ class Navigation:
             w = 0
             self.modeStartTime = time.time()
             state.onLander = False
+        return v, w
+    
+    def reverse(self, state):
+        v, w = 0, 0
+        self.dropSample = True
+        if (time.time() - self.modeStartTime < 1):
+            v = -0.1
+            w = 0
+        else:
+            self.modeStartTime = time.time()
+            self.stateMode = SEARCH_ROCK
         return v, w
 
 
@@ -271,23 +297,3 @@ class Navigation:
             v = 0
             w = 0
         return v, w
-    # def repulsivePotential(self, state):
-    #     repulsive = 0
-    #     c3 = 2
-    #     c4 = 2
-    #     obstacles = state.obstaclesRB
-
-    #     if obstacles != None:
-    #         minObstacle = obstacles[0]
-    #         # for obstacle in obstacles:
-    #         #     if obstacle[0] < minObstacle[0]:
-    #         #         minObstacle = obstacle
-    #         dO = minObstacle[0]
-    #         hO = minObstacle[1]
-    #         if dO < 0.5:
-                
-    #             #repulsive = 0.1* (1/0.01 - 1/(dO))
-    #             #repulsive =  KW_REPULSE * ((c3 * abs(hO))+1/ c3**2) * exp(-c3*abs(3-hO))* exp(-c4*dO)
-    #             repulsive =  KW_REPULSE * ((c3 * abs(hO))+1/ c3**2) * exp(-c3*abs(hO))* exp(-c4*dO)
-        
-    #     return repulsive

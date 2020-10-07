@@ -53,8 +53,8 @@ if __name__ == '__main__':
     try:
         if SIMULATION:
             #172.19.44.254
-            #sim = rbot.VREP_RoverRobot('127.0.0.1', robotParameters, sceneParameters)
-            sim = rbot.VREP_RoverRobot('172.19.15.114', robotParameters, sceneParameters)
+            sim = rbot.VREP_RoverRobot('127.0.0.1', robotParameters, sceneParameters)
+            #sim = rbot.VREP_RoverRobot('172.19.15.114', robotParameters, sceneParameters)
             sim.StartSimulator()
         else:
             ledSetup()
@@ -64,7 +64,8 @@ if __name__ == '__main__':
             sampleCollected = sim.SampleCollected()
             state.updateState(objects, sampleCollected)
             v, w = nav.updateVelocities(state)
-
+            if (nav.dropSample):
+                sim.DropSample()
             sim.SetTargetVelocities(v, w) #don't copy this line
             if not SIMULATION:
                 ledIndicator(nav.stateMode)

@@ -328,8 +328,11 @@ class VREP_RoverRobot(object):
 	
 	def DropSample(self):
 		if self.sampleConnectedToRobot:
-	 			vrep.simxCallScriptFunction(self.clientID, 'Robot', vrep.sim_scripttype_childscript, 'JoinRobotAndSample',[0],[0.0],[],bytearray(),vrep.simx_opmode_blocking)
-	 			self.sampleConnectedToRobot = False
+			vrep.simxCallScriptFunction(self.clientID, 'Robot', vrep.sim_scripttype_childscript, 'JoinRobotAndSample',[0],[0.0],[],bytearray(),vrep.simx_opmode_blocking)
+			for _, samplePosition in enumerate(self.samplePositions):
+				samplePosition[0] = 0
+				samplePosition[1] = 0
+			self.sampleConnectedToRobot = False
 
 	# Use this to force a physical connection between sample and rover
 	# Ideally use this if no collector has been added to your robot model
