@@ -384,13 +384,13 @@ class Navigation:
             if (not self.isEmpty(state.landerRB)):
                 landerDiff = state.landerArea - state.prevLanderArea
                 if (landerDiff < 0 and self.prevLanderAreaDiff > 0):
-                    prevLanderAreaDiff = 0
+                    self.prevLanderAreaDiff = 0
                     self.modeStartTime = time.time()
                     self.stateMode = UP_LANDER
                 else:
                     v = 0
                     w = 0.3
-                    self.prevLanderAreaDiff = prevLanderAreaDiff
+                    self.prevLanderAreaDiff = landerDiff
             else:
                 print("align lander -> search lander")
                 self.modeStartTime = time.time()
