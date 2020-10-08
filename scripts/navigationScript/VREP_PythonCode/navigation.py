@@ -292,8 +292,8 @@ class Navigation:
             v, w = self.navigate([landerR, landerB], state)
 
             # Alan: Adjust for slower velo and faster omega
-            v = v * 0.8
-            w = w * 1.2
+            v = v * 0.7
+            w = w * 1.3
 
         return v,w
     
@@ -341,12 +341,12 @@ class Navigation:
     def driveUpLander(self,state):
         self.rotState = SLIGHT_OPEN
         if (not self.isEmpty(state.holeRB)):
-            v = 0.09
+            v = 0.06
             w = state.holeRB[0][1]
             # self.modeStartTime = time.time()
             # self.stateMode = SAMPLE_DROP
         else:
-            v = 0.09
+            v = 0.06
             w = 0
 
 
