@@ -3,10 +3,10 @@ import imutils
 import math
 import time
 import cv2 
-""" cap = cv2.VideoCapture(0)  		# Connect to camera 0 (or the only camera)
+cap = cv2.VideoCapture(0)  		# Connect to camera 0 (or the only camera)
 cap.set(3, 320)                     	# Set the width to 320
 cap.set(4, 240)                	# Set the height to 240
-Center=np.array([]) """
+Center=np.array([])
 
 f=3.04/(1.12*10**-3)
 
@@ -130,28 +130,28 @@ def Range(img,parameters_dict,finalimage):
             elif parameters_dict["type"]==2:
                 Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                 if Area>150:
-                    if LWidth/LHeight<1.2 and LHeight/LWidth<1.2:
-                        Lx=int(Moment["m10"]/Moment["m00"])#centroids of shapes identified
-                        Ly=int(Moment["m01"]/Moment["m00"])
-                        Centroid=np.array([Lx,Ly])
-                        Center=np.append(Center,Centroid)
-                        cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
-                        parameters_dict["BBoxColour"],2)
-                        Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
-                        Distance=(262.22*np.log(Distance)-1222.1)/1000
-                        rangeText = "R: {:.4f}".format(Distance)
-                        bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
-                        cv2.putText(finalimage, rangeText + bearingText, (Lx1+5,Ly1+10), 
-                         cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
-                        ZDistance=np.append(ZDistance,Distance)
-                        MaxMinLocations(a,finalimage)
-                        Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
-                        Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
-                        #columnwise
-                        Range=Range[Range[:,0].argsort()] 
-                        #if positive then it's to the right if negative then to left of center 
-                    else:
-                        continue
+                    #if LWidth/LHeight<1.2 and LHeight/LWidth<1.2:
+                    Lx=int(Moment["m10"]/Moment["m00"])#centroids of shapes identified
+                    Ly=int(Moment["m01"]/Moment["m00"])
+                    Centroid=np.array([Lx,Ly])
+                    Center=np.append(Center,Centroid)
+                    cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
+                    parameters_dict["BBoxColour"],2)
+                    Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
+                    Distance=(262.22*np.log(Distance)-1222.1)/1000
+                    rangeText = "R: {:.4f}".format(Distance)
+                    bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
+                    cv2.putText(finalimage, rangeText + bearingText, (Lx1+5,Ly1+10), 
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
+                    ZDistance=np.append(ZDistance,Distance)
+                    MaxMinLocations(a,finalimage)
+                    Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
+                    Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                    #columnwise
+                    Range=Range[Range[:,0].argsort()] 
+                    #if positive then it's to the right if negative then to left of center 
+                    #else:
+                    #    continue
                 else: 
                     continue
             elif parameters_dict["type"]==1:
@@ -246,22 +246,23 @@ def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,la
     cover_img=Detection(img,cover_parameters)
     obstacle_img=Detection(img,obstacle_parameters)
     lander_img=Detection(img,lander_parameters)
-    hole_img=Detection(img,hole_parameters)
-    coverhole_img=Detection(img,coverhole_parameters)
-    inverse_Lander=cv2.bitwise_not(lander_img)
+    wall_img=Detection(img,wall_parameters)
+    #hole_img=Detection(img,hole_parameters)
+    #coverhole_img=Detection(img,coverhole_parameters)
 
     sample_Z=Range(sample_img,sample_parameters,finalImage)#sample_img is the filtered img finalImage is just 
     #the plain image
     cover_Z=Range(cover_img,cover_parameters,finalImage)
     obstacle_Z=Range(obstacle_img,obstacle_parameters,finalImage)
     lander_Z=Range(lander_img,lander_parameters,finalImage)
-    hole_Z=Range(hole_img,hole_parameters,finalImage)
-    coverhole_Z=Range(coverhole_img,coverhole_parameters,finalImage)
-    print(sample_Z)
-    print(cover_Z)
-    print(obstacle_Z)
-    print(lander_Z)
-    return sample_Z,cover_Z,obstacle_Z,lander_Z,lander_img,inverse_Lander
+    wall_Z=
+    #hole_Z=Range(hole_img,hole_parameters,finalImage)
+    #coverhole_Z=Range(coverhole_img,coverhole_parameters,finalImage)
+    print("sample distance and bearing",sample_Z)
+    print("cover distance and bearing",cover_Z)
+    print("obstacle distance and bearing",obstacle_Z)
+    print("lander distance and bearing",lander_Z)
+    return sample_Z,cover_Z,obstacle_Z,lander_Z
 def visMain(i):
     ret, img = cap.read()	     		# Get a frame from the camera
     if ret == True:	
@@ -269,11 +270,10 @@ def visMain(i):
         #initiate some variables """
     """ img=cv2.imread("visionScript\manCap16.jpg")
     img=cv2.resize(img,(320,240)) """
-    sample_Z,cover_Z,obstacle_Z,lander_Z,lander_img,inverse_Lander=DetectandRange(img,sample_parameters,
+    sample_Z,cover_Z,obstacle_Z,lander_Z=DetectandRange(img,sample_parameters,
         cover_parameters,obstacle_parameters,lander_parameters,img)
-    lander_hole=Range(inverse_Lander,hole_parameters,img)
-    print("lander hole",lander_hole)
-    if (i%5)==0:
+    #lander_hole=Range(inverse_Lander,hole_parameters,img)
+    if (i%1)==0:
             cv2.imshow("Binary Thresholded Frame",img)# Display thresholded frame
             cv2.waitKey(1)
     #print(Bearing1)
