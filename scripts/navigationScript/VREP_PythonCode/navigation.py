@@ -338,7 +338,7 @@ class Navigation:
                     self.modeStartTime = time.time()
                     self.stateMode = SAMPLE_DROP
                 else:
-                    v = 0.135
+                    v = 0.15
                     w = state.holeRB[0][1]
                 #self.modeStartTime = time.time()
                 # Alan: Ball was released on an angle, so need to re-align first
@@ -354,7 +354,7 @@ class Navigation:
             #     self.stateMode = SAMPLE_DROP
             else:
                 # 60% pwm with beaing at lander max 
-                v = 0.135
+                v = 0.15
                 w = state.landerRB[0][1] * 1.05
         else:
             v, w = 0, 0
@@ -432,7 +432,7 @@ class Navigation:
  ## THIS HASNT BEEN TESTED 
     def dropSample(self, state):
         
-        if (time.time() - self.modeStartTime > 0.2):
+        if (time.time() - self.modeStartTime > 0.1):
             v = 0.08
             w = 0 
         elif (time.time() - self.modeStartTime > 0.5):
