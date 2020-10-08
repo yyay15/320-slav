@@ -35,7 +35,7 @@ ROCK_ALIGN_DISTANCE = 0.3
 FULL_ROTATION = 15
 ROT_ACQUIRE_SAMPLE = 0.9
 DRIVE_OFF_TIME = 6
-LANDER_SWITCH_RANGE = 0.32
+LANDER_SWITCH_RANGE = 0.35
 
 # OBSTACLE AVOIDANCE GAINS 
 KV_ATTRACT = 0.5 #0.5
@@ -330,71 +330,73 @@ class Navigation:
 # !!!!!!!!FUNCTION TO DRIVE TO THE TOP OF THE LANDER !!!!!!#
     def driveUpLander(self,state):
         self.rotState = SLIGHT_OPEN
-        v, w = 0, 0
-        # first check that the lander is visible (it should always be when we're on the lander)
-        if (not self.isEmpty(state.landerRB)):
-            # if the hole is visible and large enough (RB should return none if too small (FROM VISION))
-            if (not self.isEmpty(state.holeRB)):
-                self.landerHoleSeen = True
-                print("Lander hole", state.holeRB)
-                if state.holeRB[0][0] < 0.05:
-                    v, w = 0, 0 
-                    self.modeStartTime = time.time()
-                    self.stateMode = SAMPLE_DROP
-                else:
-                    v = 0.15
-                    w = state.holeRB[0][1] * 1.5
-                    self.modeStartTime = time.time()
-            if (self.landerHoleSeen):
-                if (time.time() - self.modeStartTime > 0.1):
-                    v = 0.15
-                    w = state.lastSeenLanderHoleRB[0][1] * 1.5
-                else:
-                    v, w = 0, 0 
-                    self.landerHoleSeen = False
-                #self.modeStartTime = time.time()
-                # Alan: Ball was released on an angle, so need to re-align first
-                #self.stateMode = HOLE_ALIGN
-                # depreciated code from past
-                # if (state.holeRB[0][0] <= 0.06):
-                #     self.modeStartTime = time.time()
-                #     self.stateMode = SAMPLE_DROP
+        v = 0.15
+        w =0
+        # v, w = 0, 0
+        # # first check that the lander is visible (it should always be when we're on the lander)
+        # if (not self.isEmpty(state.landerRB)):
+        #     # if the hole is visible and large enough (RB should return none if too small (FROM VISION))
+        #     if (not self.isEmpty(state.holeRB)):
+        #         self.landerHoleSeen = True
+        #         print("Lander hole", state.holeRB)
+        #         if state.holeRB[0][0] < 0.05:
+        #             v, w = 0, 0 
+        #             self.modeStartTime = time.time()
+        #             self.stateMode = SAMPLE_DROP
+        #         else:
+        #             v = 0.15
+        #             w = state.holeRB[0][1] * 1.5
+        #             self.modeStartTime = time.time()
+        #     if (self.landerHoleSeen):
+        #         if (time.time() - self.modeStartTime > 0.1):
+        #             v = 0.15
+        #             w = state.lastSeenLanderHoleRB[0][1] * 1.5
+        #         else:
+        #             v, w = 0, 0 
+        #             self.landerHoleSeen = False
+        #         #self.modeStartTime = time.time()
+        #         # Alan: Ball was released on an angle, so need to re-align first
+        #         #self.stateMode = HOLE_ALIGN
+        #         # depreciated code from past
+        #         # if (state.holeRB[0][0] <= 0.06):
+        #         #     self.modeStartTime = time.time()
+        #         #     self.stateMode = SAMPLE_DROP
                 
-            # elif (not self.isEmpty(state.prevLanderRB)):
-            #     v, w = 0 ,0 
-            #     self.modeStartTime = time.time()
-            #     self.stateMode = SAMPLE_DROP
-            else:
-                # 60% pwm with beaing at lander max 
-                v = 0.15
-                w = state.landerRB[0][1] * 4
-        else:
-            v, w = 0, 0
-            self.modeStartTime = time.time()
-            self.stateMode = SEARCH_LANDER
+        #     # elif (not self.isEmpty(state.prevLanderRB)):
+        #     #     v, w = 0 ,0 
+        #     #     self.modeStartTime = time.time()
+        #     #     self.stateMode = SAMPLE_DROP
+        #     else:
+        #         # 60% pwm with beaing at lander max 
+        #         v = 0.15
+        #         w = state.landerRB[0][1] * 4
+        # else:
+        #     v, w = 0, 0
+        #     self.modeStartTime = time.time()
+        #     self.stateMode = SEARCH_LANDER
 
         return v, w
     def alignLander(self, state):
         self.rotState = SLIGHT_OPEN
         v, w = 0, 0
-        if (time.time() - self.modeStartTime > 0.2):
-            v =0.15
-            w = 0
-        else:
-            if (not self.isEmpty(state.landerRB)):
-                landerDiff = state.landerArea - state.prevLanderArea
-                if (landerDiff < 0 and self.prevLanderAreaDiff > 0):
-                    self.prevLanderAreaDiff = 0
-                    self.modeStartTime = time.time()
-                    self.stateMode = UP_LANDER
-                else:
-                    v = 0
-                    w = 0.3
-                    self.prevLanderAreaDiff = landerDiff
-            else:
-                print("align lander -> search lander")
+        # if (time.time() - self.modeStartTime > 0.1):
+        #     v =0.15
+        #     w = 0
+        # else:
+        if (not self.isEmpty(state.landerRB)):
+            landerDiff = state.landerArea - state.prevLanderArea
+            if (landerDiff < 0 and self.prevLanderAreaDiff > 0):
+                self.prevLanderAreaDiff = 0
                 self.modeStartTime = time.time()
-                self.stateMode = SEARCH_LANDER
+                self.stateMode = UP_LANDER
+            else:
+                v = 0
+                w = 0.3
+                self.prevLanderAreaDiff = landerDiff
+        else:
+            print("align lander -> search lander")
+            self.modeStartTime = time.time()
+            self.stateMode = SEARCH_LANDER
         return v, w
 
     
