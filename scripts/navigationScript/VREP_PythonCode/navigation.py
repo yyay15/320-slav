@@ -228,8 +228,8 @@ class Navigation:
         #time to drive to  be in flip position
         v, w = 0, 0
         print("driving to flip pos")
-        # drive straight for 0.2 seconds first 
-        if (time.time() - self.modeStartTime <= 0.2):
+        # drive straight for 0.5 seconds first 
+        if (time.time() - self.modeStartTime <= 0.5):
             v = 0.035
             w = 0
             self.attemptFlip = False
