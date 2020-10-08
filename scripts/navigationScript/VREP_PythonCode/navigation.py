@@ -334,7 +334,7 @@ class Navigation:
             if (not self.isEmpty(state.holeRB)):
                 print("Lander hole visible")
                 # Hardcoded to drive forward
-                timer.sleep(0.8)
+                time.sleep(0.8)
                 self.modeStartTime = time.time()
                 self.stateMode = SAMPLE_DROP
                 # depreciated code from past
