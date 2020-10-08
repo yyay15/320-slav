@@ -445,7 +445,7 @@ class Navigation:
             rotHoleBearing = state.rotHoleRB[0][1]
             print("ROT HOLE RB", state.rotHoleRB)
             # IF Aligned move to flip rock
-            if (-0.03 <= rotHoleBearing <= 0.03):
+            if (-0.01 <= rotHoleBearing <= 0.01):
                 print("changing to flip")
                 self.modeStartTime = time.time()
                 self.stateMode = FLIP_ROCK
