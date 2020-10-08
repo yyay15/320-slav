@@ -197,7 +197,7 @@ class Vision:
                         continue
                 elif parameters_dict["type"]==2:#for obstacle
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>150 and LHeight<=70:
+                    if Area>150:
                         #f LWidth/LHeight<1.5 and LHeight/LWidth<1.5:
                         Lx=int(Moment["m10"]/Moment["m00"])#centroids of shapes identified
                         Ly=int(Moment["m01"]/Moment["m00"])
@@ -286,7 +286,7 @@ class Vision:
                         continue  
                 elif parameters_dict["type"]==5: #cover hole
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>100 and Area<4000:
+                    if Area>100 and Area<4000 and LHeight<=50:
                         Lx=int(Moment["m10"]/Moment["m00"])
                         Ly=int(Moment["m01"]/Moment["m00"])
                         Centroid=np.array([Lx,Ly])
