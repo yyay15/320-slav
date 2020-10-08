@@ -33,7 +33,7 @@ class Vision:
             "Kernel":False,"Circle":False,"BBoxColour":[204,204,0],"type":2}
         self.cover_parameters={"hue":[95,107],"sat":[100,255],"value":[0,200],"Height":70,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[255,255,255],"type":3} 
-        self.hole_parameters={"hue":[0,255],"sat":[70,255],"value":[20,40],"Height":50,"OR_MASK":False,
+        self.hole_parameters={"hue":[0,255],"sat":[0,255],"value":[20,40],"Height":50,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[180,0,180],"type":4} 
         self.wall_parameters={"hue":[0,255],"sat":[0,255],"value":[0,30],"Height":80,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[255,0,0],"type":6} 
@@ -160,7 +160,7 @@ class Vision:
                         continue 
                 elif parameters_dict["type"]==3:#for cover
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if (LWidth*LHeight)>300:
+                    if Area>300 and Area<5000:
                         #if (LWidth/LHeight)<=2 and (LHeight/LWidth)<=2:
                         Lx=int(Moment["m10"]/Moment["m00"])
                         Ly=int(Moment["m01"]/Moment["m00"])
@@ -367,7 +367,8 @@ class Vision:
             Lander_parameter_update={"hue":[15,30],"sat":[0,255],"value":[30,255]}
             self.lander_parameters.update(Lander_parameter_update)#update dictionary for lander
             #to change values to adjust for dodge lighting when going up lander
-            inverted_Lander=cv2.bitwise_not(LanderImage)
+            #inverted_Lander=cv2.bitwise_not(LanderImage)
+            inverted_Lander=self.Detection(finalImage,self.hole_parameters)
             lander_hole=self.Range(inverted_Lander,self.hole_parameters,finalImage)
             #hole_img=self.Detection(img,self.hole_parameters)
             #hole_Z=self.Range(hole_img,self.hole_parameters,img)
