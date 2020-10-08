@@ -20,7 +20,7 @@ cover_parameters={"hue":[95,107],"sat":[75,255],"value":[0,200],"Height":70,"OR_
     "Kernel":False,"Circle":False,"BBoxColour":[255,255,255],"type":3} 
 hole_parameters={"hue":[0,255],"sat":[95,255],"value":[20,40],"Height":50,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[180,0,180],"type":4} 
-wall_parameters={"hue":[0,255],"sat":[0,255],"value":[0,60],"Height":80,"OR_MASK":False,
+wall_parameters={"hue":[0,255],"sat":[0,255],"value":[0,55],"Height":80,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[255,0,0],"type":6} 
 coverhole_parameters={"hue":[0,255],"sat":[0,255],"value":[0,50],"Height":10,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[255,0,0],"type":5} 
@@ -215,7 +215,7 @@ def Range(img,parameters_dict,finalimage):
             #         continue
             elif parameters_dict["type"]==6:
                 Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                if Area>10000:
+                if Area>5000:
                     Lx=int(Moment["m10"]/Moment["m00"])
                     Ly=int(Moment["m01"]/Moment["m00"])
                     Centroid=np.array([Lx,Ly])
