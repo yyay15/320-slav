@@ -333,10 +333,10 @@ class Navigation:
             # if the hole is visible and large enough (RB should return none if too small (FROM VISION))
             if (not self.isEmpty(state.holeRB)):
                 print("Lander hole visible")
-                # Hardcoded to drive forward
-                time.sleep(0.8)
+
                 self.modeStartTime = time.time()
-                self.stateMode = SAMPLE_DROP
+                # Alan: Ball was released on an angle, so need to re-align first
+                self.stateMode = HOLE_ALIGN
                 # depreciated code from past
                 # if (state.holeRB[0][0] <= 0.06):
                 #     self.modeStartTime = time.time()
@@ -384,6 +384,7 @@ class Navigation:
                 self.modeStartTime = time.time()
                 self.stateMode = SEARCH_ROCK
         return v, w
+
 # DEPRECIATED CODE BEFORE WE KNEW THAT THE SURFACE WAS CONCAVED
 
     def holeAlign(self, state):
@@ -396,7 +397,8 @@ class Navigation:
                 w = hole[1] * 1.1
                 v = 0
             else:
-                v, w = 0, 0
+                v, w = 0.8, 0
+                time.sleep(1)
                 self.modeStartTime = time.time()
                 self.stateMode = SAMPLE_DROP
         else:
