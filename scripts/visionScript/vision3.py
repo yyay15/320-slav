@@ -254,12 +254,12 @@ class Vision:
                         continue
                 elif parameters_dict["type"]==4: #hole
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>1000 and Area<1250:
+                    if Area>1000 and Area<2000:
                         #if LWidth/LHeight<1.1 and LHeight/LWidth<1.1:
                         (Lx,Ly),radius=cv2.minEnclosingCircle(a)
                         xdifference=self.Landerx-Lx
                         ydifference=self.Landery-Ly
-                        if (-75 <= xdifference <= 75) and (-60<= ydifference <= 60):
+                        if (-100 <= xdifference <= 100) and (-75<= ydifference <= 75):
                             cv2.rectangle(finalimage,(int(Lx-radius),int(Ly+radius)),(int(Lx+radius),int(Ly-radius)),
                             parameters_dict["BBoxColour"],2)
                             Distance=(parameters_dict["Height"]*(self.f/(2*radius))/8)*math.cos(0.2967)
