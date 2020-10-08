@@ -35,7 +35,7 @@ ROCK_ALIGN_DISTANCE = 0.3
 FULL_ROTATION = 15
 ROT_ACQUIRE_SAMPLE = 0.9
 DRIVE_OFF_TIME = 6
-LANDER_SWITCH_RANGE = 0.39
+LANDER_SWITCH_RANGE = 0.3
 
 # OBSTACLE AVOIDANCE GAINS 
 KV_ATTRACT = 0.5 #0.5
@@ -277,7 +277,7 @@ class Navigation:
                 if (-0.05 <= state.landerRB[0][1] <= 0.05):
                     print("switching to  align lander")
                     self.modeStartTime = time.time()
-                    self.stateMode = ALIGN_LANDER
+                    self.stateMode = UP_LANDER
                 else:
                     v = 0
                     w = w = state.landerRB[0][1] * 0.5
