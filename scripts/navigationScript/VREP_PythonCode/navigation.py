@@ -28,7 +28,7 @@ CLOSE = 2
 SLIGHT_OPEN = 3
 
 # DISTANCE/TIME VARIABLES
-ROT_DISTANCE = 0.21 #collect distance 
+ROT_DISTANCE = 0.22 #collect distance 
 FLIP_DISTANCE = 0.16
 ROCK_ALIGN_DISTANCE = 0.3
 FULL_ROTATION = 15
@@ -300,7 +300,7 @@ class Navigation:
             self.isBlind = True
             self.modeStartTime = time.time()
         elif (self.isBlind):
-            if (time.time() - self.modeStartTime < 2):
+            if (time.time() - self.modeStartTime < 2.2):
                 print("trying to drive straight YEEEEETTTT")
                 v = 0.07
                 w = 0
@@ -333,9 +333,13 @@ class Navigation:
         if (not self.isEmpty(state.landerRB)):
             # if the hole is visible and large enough (RB should return none if too small (FROM VISION))
             if (not self.isEmpty(state.holeRB)):
-                print("Lander hole visible")
-                v = 0.135
-                w = state.holeRB[0][1]
+                print("Lander hole, state.holeRB")
+                if state.holeRB[0][0] < 0.05:
+                    self.modeStartTime = time.time()
+                    self.stateMode = SAMPLE_DROP
+                else:
+                    v = 0.135
+                    w = state.holeRB[0][1]
                 #self.modeStartTime = time.time()
                 # Alan: Ball was released on an angle, so need to re-align first
                 #self.stateMode = HOLE_ALIGN
@@ -344,10 +348,10 @@ class Navigation:
                 #     self.modeStartTime = time.time()
                 #     self.stateMode = SAMPLE_DROP
                 
-            elif (not self.isEmpty(state.prevLanderRB)):
-                v, w = 0 ,0 
-                self.modeStartTime = time.time()
-                self.stateMode = SAMPLE_DROP
+            # elif (not self.isEmpty(state.prevLanderRB)):
+            #     v, w = 0 ,0 
+            #     self.modeStartTime = time.time()
+            #     self.stateMode = SAMPLE_DROP
             else:
                 # 60% pwm with beaing at lander max 
                 v = 0.135
