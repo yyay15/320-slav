@@ -115,7 +115,10 @@ class Navigation:
             w = 0.5 * self.turnDir
         return v, w
 
-    def searchSample(self, state):          
+    def searchSample(self, state):         
+        if (state.sampleCollected):
+            self.rotState = CLOSE
+            self.stateMode =  SEARCH_LANDER
         if (not self.isEmpty(state.sampleRB)):
             v, w = 0, 0
             self.rock_obstacle = True
