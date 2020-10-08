@@ -45,7 +45,7 @@ KW_REPULSE = 2.4
 
 class Navigation:
     def __init__(self):
-        self.stateMode = 5 # intial start state
+        self.stateMode = 2 # intial start state
         self.modeStartTime = time.time() # timer for each state
         self.turnDir = 1                 # turn clockwise or anticlockwise
         self.rock_obstacle = True        # check if rocks should be avoided
@@ -292,8 +292,8 @@ class Navigation:
             v, w = self.navigate([landerR, landerB], state)
 
             # Alan: Adjust for slower velo and faster omega
-            v = v * 0.7 
-            w = w * 1.2
+            v = v * 0.69 
+            w = w * 1.25
 
         return v,w
     
@@ -340,17 +340,21 @@ class Navigation:
 # !!!!!!!!FUNCTION TO DRIVE TO THE TOP OF THE LANDER !!!!!!#
     def driveUpLander(self,state):        
         self.rotState = SLIGHT_OPEN
-        if (not state.sampleCollected):
-            v, w = 0, 0
-            print("Jobs Done")
-            self.state = SEARCH_SAMPLE
-        else:
-            if (time.time() - self.modeStartTime > 2):
-                v,w = 0,0
-                self.state = SEARCH_LANDER
+        if (state.sampleCollected):
+            if (time.time() - self.modeStartTime > 4.20):
+                print("Im LOST PLEASE HELP")
+                v, w = 0, 0
+                self.stateMode = SEARCH_LANDER
             else:
-                v = 0.06
+                print("Imma end this mans career")
+                v = 0.069
                 w = 0
+        else:
+            v, w = 0, 0
+            self.rotState = OPEN
+            print("Jobs Done")
+            self.stateMode = SEARCH_SAMPLE
+
 
 
         # if (not self.isEmpty(state.holeRB)):
@@ -441,7 +445,7 @@ class Navigation:
             rotHoleBearing = state.rotHoleRB[0][1]
             print("ROT HOLE RB", state.rotHoleRB)
             # IF Aligned move to flip rock
-            if (-0.03 <= rotHoleBearing <= 0.03):
+            if (-0.01 <= rotHoleBearing <= 0.01):
                 print("changing to flip")
                 self.modeStartTime = time.time()
                 self.stateMode = FLIP_ROCK
