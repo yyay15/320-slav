@@ -33,7 +33,7 @@ class Vision:
             "Kernel":False,"Circle":False,"BBoxColour":[204,204,0],"type":2}
         self.cover_parameters={"hue":[95,107],"sat":[100,255],"value":[0,200],"Height":70,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[255,255,255],"type":3} 
-        self.hole_parameters={"hue":[0,255],"sat":[75,255],"value":[30,40],"Height":50,"OR_MASK":False,
+        self.hole_parameters={"hue":[0,255],"sat":[75,255],"value":[30,100],"Height":50,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[180,0,180],"type":4} 
         self.wall_parameters={"hue":[0,255],"sat":[0,255],"value":[0,30],"Height":80,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[255,0,0],"type":6} 
@@ -227,6 +227,8 @@ class Vision:
                     if Area>2000 and Area<60000:
                         Lx=int(Moment["m10"]/Moment["m00"])
                         Ly=int(Moment["m01"]/Moment["m00"])
+                        self.Landerx=Lx
+                        self.Landery=Ly
                         Centroid=np.array([Lx,Ly])
                         Center=np.append(Center,Centroid)
                         cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
@@ -255,23 +257,28 @@ class Vision:
                     if Area>1000 and Area<1250:
                         #if LWidth/LHeight<1.1 and LHeight/LWidth<1.1:
                         (Lx,Ly),radius=cv2.minEnclosingCircle(a)
-                        cv2.rectangle(finalimage,(int(Lx-radius),int(Ly+radius)),(int(Lx+radius),int(Ly-radius)),
-                        parameters_dict["BBoxColour"],2)
-                        Distance=(parameters_dict["Height"]*(self.f/(2*radius))/8)*math.cos(0.2967)
-                        Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
-                        Distance=Distance/1000
-                        ZDistance=np.append(ZDistance,Distance)
-                        rangeText = "R: {:.4f}".format(Area)
-                        #bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
-                        cv2.putText(finalimage, rangeText, (Lx1+5,Ly1+10), 
-                         cv2.FONT_HERSHEY_SIMPLEX, 0.5,  parameters_dict["BBoxColour"] )
-                        print("This is hole Area",Area)
-                        Bearing=np.append(Bearing,math.radians((x-160)*(31.1/160)))
-                        Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
-                        #columnwise
-                        Range=Range[Range[:,0].argsort()]
-                        #else:
-                        #    continue
+                        xdifference=self.Landerx-Lx
+                        ydifference=self.Landery-Ly
+                        if (-75 <= xdifference <= 75) and (-60<= ydifference <= 60):
+                            cv2.rectangle(finalimage,(int(Lx-radius),int(Ly+radius)),(int(Lx+radius),int(Ly-radius)),
+                            parameters_dict["BBoxColour"],2)
+                            Distance=(parameters_dict["Height"]*(self.f/(2*radius))/8)*math.cos(0.2967)
+                            Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
+                            Distance=Distance/1000
+                            ZDistance=np.append(ZDistance,Distance)
+                            rangeText = "R: {:.4f}".format(Area)
+                            #bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
+                            cv2.putText(finalimage, rangeText, (Lx1+5,Ly1+10), 
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.5,  parameters_dict["BBoxColour"] )
+                            print("This is hole Area",Area)
+                            Bearing=np.append(Bearing,math.radians((x-160)*(31.1/160)))
+                            Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                            #columnwise
+                            Range=Range[Range[:,0].argsort()]
+                            #else:
+                            #    continue
+                        else:
+                            continue
                     else:
                         continue  
                 elif parameters_dict["type"]==5: #cover hole
