@@ -286,7 +286,7 @@ class Vision:
                         continue  
                 elif parameters_dict["type"]==5: #cover hole
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>100 and Area<4000 and LHeight<=50:
+                    if Area>100 and Area<500 and LHeight<=50:
                         Lx=int(Moment["m10"]/Moment["m00"])
                         Ly=int(Moment["m01"]/Moment["m00"])
                         Centroid=np.array([Lx,Ly])
