@@ -389,6 +389,7 @@ class Navigation:
     def holeAlign(self, state):
         print("centering hole")
         if (not self.isEmpty(state.holeRB)):
+            print("This is stateholeRB: ",state.holeRB)
             if (not (-0.05 <= state.holeRB[0][1] <= 0.05)):
                 print("centering lander hole")
                 self.centering = True
