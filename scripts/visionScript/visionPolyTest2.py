@@ -222,7 +222,7 @@ def Range(img,parameters_dict,finalimage):
                     Center=np.append(Center,Centroid)
                     #cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
                      #parameters_dict["BBoxColour"],2)
-                    cv2.drawContours(finalimage, Contour, -1, (0, 255, 0), 3) 
+                    cv2.drawContours(finalimage, cnt, -1, (0, 255, 0), 3) 
                     Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
                     Distance=(0.8667*Distance-3)/1000
                     rangeText = "R: {:.4f}".format(Distance)
