@@ -35,7 +35,7 @@ ROCK_ALIGN_DISTANCE = 0.3
 FULL_ROTATION = 15
 ROT_ACQUIRE_SAMPLE = 0.9
 DRIVE_OFF_TIME = 6
-LANDER_SWITCH_RANGE = 0.35
+LANDER_SWITCH_RANGE = 0.39
 
 # OBSTACLE AVOIDANCE GAINS 
 KV_ATTRACT = 0.5 #0.5
@@ -330,8 +330,18 @@ class Navigation:
 # !!!!!!!!FUNCTION TO DRIVE TO THE TOP OF THE LANDER !!!!!!#
     def driveUpLander(self,state):
         self.rotState = SLIGHT_OPEN
-        v = 0.15
-        w =0
+        if (time.time() - self.modeStartTime > 2):
+            if (not self.isEmpty(state.holeRB)):
+                v = 0.15
+                w = state.holeRB[0][1]
+            else:
+                v = 0.15
+                w = 0
+        else:
+            v, w = 0, 0
+            self.modeStartTime = time.time()
+            self.stateMode = SAMPLE_DROP
+
         # v, w = 0, 0
         # # first check that the lander is visible (it should always be when we're on the lander)
         # if (not self.isEmpty(state.landerRB)):
@@ -374,8 +384,8 @@ class Navigation:
         #     v, w = 0, 0
         #     self.modeStartTime = time.time()
         #     self.stateMode = SEARCH_LANDER
-
         return v, w
+        
     def alignLander(self, state):
         self.rotState = SLIGHT_OPEN
         v, w = 0, 0
