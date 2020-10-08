@@ -343,7 +343,7 @@ class Navigation:
                     w = state.holeRB[0][1] * 1.5
                     self.modeStartTime = time.time()
             if (self.landerHoleSeen):
-                if (time.time - self.modeStartTime > 0.1):
+                if (time.time() - self.modeStartTime > 0.1):
                     v = 0.15
                     w = state.lastSeenLanderHoleRB[0][1] * 1.5
                 else:
