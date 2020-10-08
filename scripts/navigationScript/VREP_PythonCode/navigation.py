@@ -326,20 +326,29 @@ class Navigation:
 
 # !!!!!!!!FUNCTION TO DRIVE TO THE TOP OF THE LANDER !!!!!!#
     def driveUpLander(self,state):
-        print("drive up lander")
         self.rotState = SLIGHT_OPEN
         v, w = 0, 0
         # first check that the lander is visible (it should always be when we're on the lander)
         if (not self.isEmpty(state.landerRB)):
             # if the hole is visible and large enough (RB should return none if too small (FROM VISION))
             if (not self.isEmpty(state.holeRB)):
-                print("Lander hole, state.holeRB")
+                self.landerHoleSeen = True
+                print("Lander hole", state.holeRB)
                 if state.holeRB[0][0] < 0.05:
+                    v, w = 0, 0 
                     self.modeStartTime = time.time()
                     self.stateMode = SAMPLE_DROP
                 else:
                     v = 0.15
-                    w = state.holeRB[0][1]
+                    w = state.holeRB[0][1] * 1.5
+                    self.modeStartTime = time.time()
+            if (self.landerHoleSeen):
+                if (time.time() - self.modeStartTime > 0.1):
+                    v = 0.15
+                    w = state.lastSeenLanderHoleRB[0][1] * 1.5
+                else:
+                    v, w = 0, 0 
+                    self.landerHoleSeen = False
                 #self.modeStartTime = time.time()
                 # Alan: Ball was released on an angle, so need to re-align first
                 #self.stateMode = HOLE_ALIGN
@@ -355,7 +364,7 @@ class Navigation:
             else:
                 # 60% pwm with beaing at lander max 
                 v = 0.15
-                w = state.landerRB[0][1] * 1.05
+                w = state.landerRB[0][1] * 4
         else:
             v, w = 0, 0
             self.modeStartTime = time.time()
