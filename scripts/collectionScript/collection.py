@@ -76,7 +76,7 @@ class Collection:
              
 
     def Open_ROT(self):
-        self.servoPWM.ChangeDutyCycle(6.9)
+        self.servoPWM.ChangeDutyCycle(6.8)
         print("Open")
         time.sleep(1)
         self.servoPWM.ChangeDutyCycle(0)
@@ -88,7 +88,7 @@ class Collection:
         self.servoPWM.ChangeDutyCycle(0)
 
     def Lander(self):
-        self.servoPWM.ChangeDutyCycle(5.1)
+        self.servoPWM.ChangeDutyCycle(4.9)
         print("Releasing Ball")
         time.sleep(1)
         self.servoPWM.ChangeDutyCycle(0)
