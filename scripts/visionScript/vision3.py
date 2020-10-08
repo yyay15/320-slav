@@ -226,7 +226,7 @@ class Vision:
                         continue
                 elif parameters_dict["type"]==1: #for lander
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>2000 and Area<60000:
+                    if Area>10000 and Area<60000:
                         self.landerArea = Area
                         Lx=int(Moment["m10"]/Moment["m00"])
                         Ly=int(Moment["m01"]/Moment["m00"])
@@ -257,7 +257,7 @@ class Vision:
                         continue
                 elif parameters_dict["type"]==4: #hole
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>1000 and Area<2000:
+                    if Area>100 and Area<2000:
                         #if LWidth/LHeight<1.1 and LHeight/LWidth<1.1:
                         (Lx,Ly),radius=cv2.minEnclosingCircle(a)
                         xdifference=self.Landerx-Lx
