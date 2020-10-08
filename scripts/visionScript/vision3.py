@@ -33,7 +33,7 @@ class Vision:
             "Kernel":False,"Circle":False,"BBoxColour":[204,204,0],"type":2}
         self.cover_parameters={"hue":[95,107],"sat":[100,255],"value":[0,200],"Height":70,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[255,255,255],"type":3} 
-        self.hole_parameters={"hue":[0,255],"sat":[75,255],"value":[30,100],"Height":50,"OR_MASK":False,
+        self.hole_parameters={"hue":[0,255],"sat":[50,255],"value":[20,100],"Height":50,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[180,0,180],"type":4} 
         self.wall_parameters={"hue":[0,255],"sat":[0,255],"value":[0,30],"Height":80,"OR_MASK":False,
             "Kernel":False,"Circle":False,"BBoxColour":[255,0,0],"type":6} 
@@ -271,7 +271,7 @@ class Vision:
                             cv2.putText(finalimage, rangeText, (Lx1+5,Ly1+10), 
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.5,  parameters_dict["BBoxColour"] )
                             print("This is hole Area",Area)
-                            Bearing=np.append(Bearing,math.radians((x-160)*(31.1/160)))
+                            Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
                             Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                             #columnwise
                             Range=Range[Range[:,0].argsort()]
