@@ -143,7 +143,7 @@ class Vision:
                         Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
                         Distance=Distance/1000
                         ZDistance=np.append(ZDistance,Distance)
-                        Bearing=np.append(Bearing,math.radians((x-160)*(31.1/160)))
+                        Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
                         #print range bearing on image
                         textOrigin = (int(Lx-radius),int(Ly-radius)+ 5)
                         rangeText = "R: {:.4f}".format(Distance)
