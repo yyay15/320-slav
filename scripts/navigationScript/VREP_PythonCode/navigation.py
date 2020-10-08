@@ -16,6 +16,7 @@ FLIP_ROCK = 9
 HOLE_ALIGN = 10
 SAMPLE_DROP = 11
 ROCK_ALIGN = 12
+ALIGN_LANDER = 13
 
 #ROT CONSTANTS
 # State 0 = pass
@@ -44,7 +45,7 @@ KW_REPULSE = 2.4
 
 class Navigation:
     def __init__(self):
-        self.stateMode = 1 # intial start state
+        self.stateMode = 5 # intial start state
         self.modeStartTime = time.time() # timer for each state
         self.turnDir = 1                 # turn clockwise or anticlockwise
         self.rock_obstacle = True        # check if rocks should be avoided
@@ -55,7 +56,8 @@ class Navigation:
         self.attemptFlip = False
         self.landerHoleSeen = False
         self.numSampleCollected = 0
-        
+        self.prevLanderAreaDiff = 0
+
     
     def currentState(self, stateNum):
         switchState = {
@@ -70,7 +72,8 @@ class Navigation:
             9: self.flipRock,
             10: self.holeAlign,
             11: self.dropSample,
-            12: self.alignRock
+            12: self.alignRock,
+            13: self.alignLander
         }
         return switchState.get(stateNum, self.searchSample)
 
@@ -272,9 +275,9 @@ class Navigation:
         else:
             if (state.landerRB[0][0] < LANDER_SWITCH_RANGE):
                 if (-0.05 <= state.landerRB[0][1] <= 0.05):
-                    print("switching to drive up lander")
+                    print("switching to  align lander")
                     self.modeStartTime = time.time()
-                    self.stateMode = UP_LANDER
+                    self.stateMode = ALIGN_LANDER
                 else:
                     v = 0
                     w = w = state.landerRB[0][1] * 0.5
@@ -371,6 +374,25 @@ class Navigation:
             self.stateMode = SEARCH_LANDER
 
         return v, w
+    def alignLander(self, state):
+        self.rotState = SLIGHT_OPEN
+        v, w = 0, 0
+        if (time.time() - self.modeStartTime > 0.2):
+            v =0.15
+            w = 0
+        else:
+            if (not self.isEmpty(state.landerRB)):
+                landerDiff = state.landerArea - state.prevLanderAreaDiff
+                if (landerDiff < 0 and self.prevLanderAreaDiff > 0):
+                    prevLanderAreaDiff = 0
+                    self.modeStartTime = time.time()
+                    self.stateMode = UP_LANDER
+                else:
+                    v = 0
+                    w = 0.3
+                    self.prevLanderAreaDiff = prevLanderAreaDiff
+        return v, w
+
     
     def alignRock(self, state):
         print("aligning rock")

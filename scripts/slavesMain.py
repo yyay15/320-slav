@@ -193,7 +193,7 @@ if __name__ == '__main__':
                     # vision.updateVisionState(nav.stateMode)
                     objects = vision.GetDetectedObjects(nav.stateMode)
                     sampleCollected = vision.sampleCollected()
-                    state.updateState(objects,sampleCollected)
+                    state.updateState(objects,sampleCollected, vision.landerArea)
                     v, w = nav.updateVelocities(state)
                     loc.getWheelAngVel(v, w)
                     ledIndicator(nav.stateMode)
