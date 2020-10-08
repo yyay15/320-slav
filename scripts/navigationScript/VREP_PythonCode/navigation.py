@@ -293,7 +293,7 @@ class Navigation:
 
             # Alan: Adjust for slower velo and faster omega
             v = v * 0.69 
-            w = w * 1.24
+            w = w * 1.25
 
         return v,w
     
