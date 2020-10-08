@@ -338,16 +338,29 @@ class Navigation:
         return v, w
 
 # !!!!!!!!FUNCTION TO DRIVE TO THE TOP OF THE LANDER !!!!!!#
-    def driveUpLander(self,state):
+    def driveUpLander(self,state):        
         self.rotState = SLIGHT_OPEN
-        if (not self.isEmpty(state.holeRB)):
-            v = 0.06
-            w = state.holeRB[0][1]
-            # self.modeStartTime = time.time()
-            # self.stateMode = SAMPLE_DROP
+        if (not state.sampleCollected):
+            v, w = 0, 0
+            print("Jobs Done")
+            self.state = SEARCH_SAMPLE
         else:
-            v = 0.06
-            w = 0
+            if (time.time() - self.modeStartTime > 2):
+                v,w = 0,0
+                self.state = SEARCH_LANDER
+            else:
+                v = 0.06
+                w = 0
+
+
+        # if (not self.isEmpty(state.holeRB)):
+        #     v = 0.06
+        #     w = state.holeRB[0][1]
+        #     # self.modeStartTime = time.time()
+        #     # self.stateMode = SAMPLE_DROP
+        # else:
+        #     v = 0.06
+        #     w = 0
 
 
         # v, w = 0, 0
