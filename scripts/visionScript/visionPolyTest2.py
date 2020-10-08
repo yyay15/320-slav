@@ -12,15 +12,17 @@ f=3.04/(1.12*10**-3)
 
 sample_parameters={"hue":[0,5],"sat":[125,255],"value":[125,255],"Height":40,"OR_MASK":True,
     "Kernel":True,"Circle":True,"BBoxColour":[204,0,204],"type":0}
-lander_parameters={"hue":[15,30],"sat":[0,255],"value":[150,255],"Height":80,"OR_MASK":False,
+lander_parameters={"hue":[15,30],"sat":[100,255],"value":[100,255],"Height":80,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[0,0,255],"type":1}
-obstacle_parameters={"hue":[40,70],"sat":[50,255],"value":[40,255],"Height":80,"OR_MASK":False,
+obstacle_parameters={"hue":[40,70],"sat":[30,255],"value":[40,255],"Height":80,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[204,204,0],"type":2}
-cover_parameters={"hue":[100,120],"sat":[0,200],"value":[0,200],"Height":70,"OR_MASK":False,
+cover_parameters={"hue":[95,107],"sat":[100,255],"value":[0,200],"Height":70,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[255,255,255],"type":3} 
 hole_parameters={"hue":[0,255],"sat":[95,255],"value":[20,40],"Height":50,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[180,0,180],"type":4} 
-coverhole_parameters={"hue":[0,255],"sat":[0,255],"value":[30,80],"Height":10,"OR_MASK":False,
+wall_parameters={"hue":[0,255],"sat":[0,255],"value":[0,30],"Height":80,"OR_MASK":False,
+    "Kernel":False,"Circle":False,"BBoxColour":[255,0,0],"type":6} 
+coverhole_parameters={"hue":[0,255],"sat":[0,255],"value":[0,50],"Height":10,"OR_MASK":False,
     "Kernel":False,"Circle":False,"BBoxColour":[255,0,0],"type":5} 
 
 
@@ -230,12 +232,12 @@ def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,la
     print(lander_Z)
     return sample_Z,cover_Z,obstacle_Z,lander_Z,lander_img,inverse_Lander
 def visMain(i):
-    """ ret, img = cap.read()	     		# Get a frame from the camera
+    ret, img = cap.read()	     		# Get a frame from the camera
     if ret == True:	
-        cv2.waitKey(1) """	
+        cv2.waitKey(1)
         #initiate some variables """
-    img=cv2.imread("visionScript\manCap16.jpg")
-    img=cv2.resize(img,(320,240))
+    """ img=cv2.imread("visionScript\manCap16.jpg")
+    img=cv2.resize(img,(320,240)) """
     sample_Z,cover_Z,obstacle_Z,lander_Z,lander_img,inverse_Lander=DetectandRange(img,sample_parameters,
         cover_parameters,obstacle_parameters,lander_parameters,img)
     lander_hole=Range(inverse_Lander,hole_parameters,img)
