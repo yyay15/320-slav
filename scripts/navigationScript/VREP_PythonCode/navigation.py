@@ -353,7 +353,7 @@ class Navigation:
             v, w = 0, 0
             self.rotState = OPEN
             print("Jobs Done")
-            self.state = SEARCH_SAMPLE
+            self.stateMode = SEARCH_SAMPLE
 
 
 
