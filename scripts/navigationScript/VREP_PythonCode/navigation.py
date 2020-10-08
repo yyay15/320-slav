@@ -341,13 +341,13 @@ class Navigation:
     def driveUpLander(self,state):        
         self.rotState = SLIGHT_OPEN
         if (state.sampleCollected):
-            if (time.time() - self.modeStartTime > 4):
+            if (time.time() - self.modeStartTime > 4.20):
                 print("Im LOST PLEASE HELP")
                 v, w = 0, 0
                 self.stateMode = SEARCH_LANDER
             else:
                 print("Imma end this mans career")
-                v = 0.085
+                v = 0.069
                 w = 0
         else:
             v, w = 0, 0
