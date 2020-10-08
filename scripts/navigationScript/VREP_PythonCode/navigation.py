@@ -406,6 +406,7 @@ class Navigation:
  ## THIS HASNT BEEN TESTED 
     def dropSample(self, state):
         self.rotState = OPEN
+        v, w = 0, 0
         # GO FORWARD FOR HALF SECOND THEN REVERSE FOR HALF SECOND 
         # WILL NEED TO TWEAK THESE PARAMETERS
         if (state.sampleCollected):
