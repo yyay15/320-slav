@@ -78,8 +78,8 @@ def Range(img,parameters_dict,finalimage):
     if Contour == []:
         print("there is nothing here")
     else:
-        Contour=imutils.grab_contours(Contour)
-        for a in Contour:
+        cnt=imutils.grab_contours(Contour)
+        for a in cnt:
             #find the center of the contour
             Moment=cv2.moments(a)
             Area=cv2.contourArea(a)
@@ -213,29 +213,30 @@ def Range(img,parameters_dict,finalimage):
             #         Range=Range[Range[:,0].argsort()] 
             #     else:
             #         continue
-            # elif parameters_dict["type"]==6:
-            #     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-            #     if Area>5000:
-            #         Lx=int(Moment["m10"]/Moment["m00"])
-            #         Ly=int(Moment["m01"]/Moment["m00"])
-            #         Centroid=np.array([Lx,Ly])
-            #         Center=np.append(Center,Centroid)
-            #         cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
-            #         parameters_dict["BBoxColour"],2)
-            #         Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
-            #         Distance=(0.8667*Distance-3)/1000
-            #         rangeText = "R: {:.4f}".format(Distance)
-            #         bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
-            #         cv2.putText(finalimage, rangeText + bearingText, (Lx1+5,Ly1+10), 
-            #          cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
-            #         ZDistance=np.append(ZDistance,Distance)
-            #         #self.MaxMinLocations(a,finalimage)
-            #         Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
-            #         Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
-            #         #columnwise
-            #         Range=Range[Range[:,0].argsort()] 
-            #     else:
-            #         continue
+            elif parameters_dict["type"]==6:
+                Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
+                if Area>5000:
+                    Lx=int(Moment["m10"]/Moment["m00"])
+                    Ly=int(Moment["m01"]/Moment["m00"])
+                    Centroid=np.array([Lx,Ly])
+                    Center=np.append(Center,Centroid)
+                    #cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
+                     #parameters_dict["BBoxColour"],2)
+                    cv2.drawContours(finalimage, Contour, -1, (0, 255, 0), 3) 
+                    Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
+                    Distance=(0.8667*Distance-3)/1000
+                    rangeText = "R: {:.4f}".format(Distance)
+                    bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
+                    cv2.putText(finalimage, rangeText + bearingText, (Lx1+5,Ly1+10), 
+                     cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
+                    ZDistance=np.append(ZDistance,Distance)
+                    #self.MaxMinLocations(a,finalimage)
+                    Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
+                    Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                    #columnwise
+                    Range=Range[Range[:,0].argsort()] 
+                else:
+                    continue
 
 
     return Range
