@@ -345,10 +345,12 @@ class Navigation:
             print("Jobs Done")
             self.state = SEARCH_SAMPLE
         else:
-            if (time.time() - self.modeStartTime > 2):
+            if (time.time() - self.modeStartTime > 5.0):
+                print("Im LOST PLEASE HELP")
                 v,w = 0,0
                 self.state = SEARCH_LANDER
             else:
+                print("Imma end this mans career")
                 v = 0.06
                 w = 0
 
