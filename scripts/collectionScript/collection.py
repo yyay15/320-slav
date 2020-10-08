@@ -82,7 +82,7 @@ class Collection:
         self.servoPWM.ChangeDutyCycle(0)
 
     def Close_ROT(self):
-        self.servoPWM.ChangeDutyCycle(2.8)    
+        self.servoPWM.ChangeDutyCycle(3)    
         print("Close")
         time.sleep(1)
         self.servoPWM.ChangeDutyCycle(0)
