@@ -98,16 +98,17 @@ class Vision:
             mask=cv2.bitwise_or(mask,mask1)
         if parameters_dict["Kernel"]==True:
             Kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
+            
         else:
-            if parameters_dict["type"]==1 and self.state==8:
-                Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
-                filtered_img=cv2.morphologyEx(mask,cv2.MORPH_OPEN,Kernel)
-                filtered_img=cv2.dilate(mask,Kernel,iterations=1)
-            else:
-                Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
-                filtered_img=cv2.morphologyEx(mask,cv2.MORPH_OPEN,Kernel)
+            Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
+                
         #Thresholded_img=cv2.bitwise_and(ogimg,ogimg,mask=mask)
-        #filtered_img=cv2.morphologyEx(mask,cv2.MORPH_OPEN,Kernel)
+        filtered_img=cv2.morphologyEx(mask,cv2.MORPH_OPEN,Kernel)
+        if parameters_dict["type"]==1 and self.state==8:
+            #Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
+            #filtered_img=cv2.morphologyEx(mask,cv2.MORPH_OPEN,Kernel)
+            filtered_img=cv2.dilate(filtered_img,Kernel,iterations=1)  
+
         return filtered_img
 
     
