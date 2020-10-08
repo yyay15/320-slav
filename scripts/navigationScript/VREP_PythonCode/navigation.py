@@ -331,9 +331,10 @@ class Navigation:
     def driveUpLander(self,state):
         self.rotState = SLIGHT_OPEN
         if (not self.isEmpty(state.holeRB)):
-            v, w = 0, 0
-            self.modeStartTime = time.time()
-            self.stateMode = SAMPLE_DROP
+            v = 0.15
+            w = state.holeRB[0][1]
+            # self.modeStartTime = time.time()
+            # self.stateMode = SAMPLE_DROP
         else:
             v = 0.15
             w = 0
