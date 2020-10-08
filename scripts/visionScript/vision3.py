@@ -255,7 +255,7 @@ class Vision:
                         continue
                 elif parameters_dict["type"]==4: #hole
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>750 and Area<2000:
+                    if Area>750 and Area<1250:
                         #if LWidth/LHeight<1.1 and LHeight/LWidth<1.1:
                         (Lx,Ly),radius=cv2.minEnclosingCircle(a)
                         xdifference=self.Landerx-Lx
@@ -267,7 +267,7 @@ class Vision:
                             Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
                             Distance=Distance/1000
                             ZDistance=np.append(ZDistance,Distance)
-                            rangeText = "R: {:.4f}".format(Area)
+                            rangeText = "R: {:.4f}".format(Distance)
                             #bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
                             cv2.putText(finalimage, rangeText, (Lx1+5,Ly1+10), 
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.5,  parameters_dict["BBoxColour"] )
