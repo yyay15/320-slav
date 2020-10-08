@@ -251,7 +251,7 @@ class Vision:
                         continue
                 elif parameters_dict["type"]==4: #hole
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>1300 and Area<1400:
+                    if Area>1000 and Area<1250:
                         #if LWidth/LHeight<1.1 and LHeight/LWidth<1.1:
                         (x,y),radius=cv2.minEnclosingCircle(a)
                         cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
