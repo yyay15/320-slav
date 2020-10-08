@@ -44,7 +44,7 @@ KW_REPULSE = 2.4
 
 class Navigation:
     def __init__(self):
-        self.stateMode = 1  # intial start state
+        self.stateMode = 2  # intial start state
         self.modeStartTime = time.time() # timer for each state
         self.turnDir = 1                 # turn clockwise or anticlockwise
         self.rock_obstacle = True        # check if rocks should be avoided
