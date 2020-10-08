@@ -442,7 +442,7 @@ class Navigation:
             # THIS VARIABLE (rotHoleBearing) WAS CREATED TO MAKE IT EASIER TO PUT A GAIN ON THE ROT HOLE BEARING FOR THE ALIGNMENT CONDITION
             # MIGHT NOT BE NEEDE ANYMORE 
             # NEEDS TESTING
-            rotHoleBearing = state.rotHoleRB[0][1]
+            rotHoleBearing = state.rotHoleRB[-1][1]
             print("ROT HOLE RB", state.rotHoleRB)
             # IF Aligned move to flip rock
             if (-0.01 <= rotHoleBearing <= 0.01):
