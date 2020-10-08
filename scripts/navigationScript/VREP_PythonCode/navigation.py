@@ -330,17 +330,14 @@ class Navigation:
 # !!!!!!!!FUNCTION TO DRIVE TO THE TOP OF THE LANDER !!!!!!#
     def driveUpLander(self,state):
         self.rotState = SLIGHT_OPEN
-        if (time.time() - self.modeStartTime > 2):
-            if (not self.isEmpty(state.holeRB)):
-                v = 0.15
-                w = state.holeRB[0][1]
-            else:
-                v = 0.15
-                w = 0
-        else:
+        if (not self.isEmpty(state.holeRB)):
             v, w = 0, 0
             self.modeStartTime = time.time()
             self.stateMode = SAMPLE_DROP
+        else:
+            v = 0.15
+            w = 0
+
 
         # v, w = 0, 0
         # # first check that the lander is visible (it should always be when we're on the lander)
