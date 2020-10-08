@@ -24,6 +24,7 @@ class Vision:
         self.cap.set(17,6005.56)  # White Balance
         self.Center=np.array([])
         self.f=3.04/(1.12*10**-3)
+        self.landerArea = 0
         #img=cv2.imread("MultipleCovers.jpg")
         self.sample_parameters={"hue":[0,5],"sat":[125,255],"value":[125,255],"Height":40,"OR_MASK":True,
             "Kernel":True,"Circle":True,"BBoxColour":[204,0,204],"type":0}
@@ -226,6 +227,7 @@ class Vision:
                 elif parameters_dict["type"]==1: #for lander
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     if Area>2000 and Area<60000:
+                        self.landerArea = Area
                         Lx=int(Moment["m10"]/Moment["m00"])
                         Ly=int(Moment["m01"]/Moment["m00"])
                         self.Landerx=Lx

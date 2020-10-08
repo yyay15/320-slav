@@ -15,12 +15,13 @@ class State:
         self.prevHoleRB = None
         self.prevRotHoleRB = None
         self.lastSeenLanderHole = None
+        self.landerArea = 0
 
         self.onLander = False
         self.sampleCollected = True
 
 
-    def updateState(self, objects, sampleCollected):
+    def updateState(self, objects, sampleCollected, landerArea):
         if (self.holeRB != None):
             self.lastSeenLanderHoleRB = self.holeRB
         self.prevSampleRB = self.sampleRB
@@ -29,6 +30,7 @@ class State:
         self.prevRocksRB = self.rocksRB
         self.prevHoleRB = self.holeRB
         self.prevRotHoleRB = self.rotHoleRB
+        self.prevLanderArea = self.landerArea
 
         self.sampleRB = objects[0]
         self.landerRB = objects[1]
@@ -36,5 +38,6 @@ class State:
         self.rocksRB = objects[3]
         self.holeRB = objects[4]
         self.rotHoleRB = objects[5]
+        self.landerArea = landerArea
         
         self.sampleCollected = sampleCollected
