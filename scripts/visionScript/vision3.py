@@ -99,9 +99,15 @@ class Vision:
         if parameters_dict["Kernel"]==True:
             Kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
         else:
-            Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
+            if parameters_dict["type"]==1 and self.state==8:
+                Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
+                filtered_img=cv2.morphologyEx(mask,cv2.MORPH_OPEN,Kernel)
+                filtered_img=cv2.dilate(mask,Kernel,iterations=1)
+            else:
+                Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
+                filtered_img=cv2.morphologyEx(mask,cv2.MORPH_OPEN,Kernel)
         #Thresholded_img=cv2.bitwise_and(ogimg,ogimg,mask=mask)
-        filtered_img=cv2.morphologyEx(mask,cv2.MORPH_OPEN,Kernel)
+        #filtered_img=cv2.morphologyEx(mask,cv2.MORPH_OPEN,Kernel)
         return filtered_img
 
     
@@ -222,7 +228,7 @@ class Vision:
                         Centroid=np.array([Lx,Ly])
                         Center=np.append(Center,Centroid)
                         cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
-                        parameters_dict["BBoxColour"],2)
+                         parameters_dict["BBoxColour"],2)
                         Distance=(parameters_dict["Height"]*(self.f/LHeight)/8)*math.cos(0.2967)
                         Distance=(0.8667*Distance-3)/1000
                         ZDistance=np.append(ZDistance,Distance)
