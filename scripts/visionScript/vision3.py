@@ -172,7 +172,8 @@ class Vision:
                         #rangeText = "New Lx {:.4f} ".format(New_Lx)
                         #bearingText = "Lx: {:.4f}".format(Lx)
                         bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
-                        cv2.putText(finalimage, rangeText + bearingText, (Lx1+5,Ly1+10), cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
+                        cv2.putText(finalimage, rangeText + bearingText, (Lx1+5,Ly1+10), 
+                         cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"])
                         #RangeRBC=np.vstack((ZDistance,NewBearing)).T
                         #RangeRBC=RangeRBC[RangeRBC[:,0].argsort()] 
                         Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
@@ -202,7 +203,8 @@ class Vision:
                         textOrigin = (Lx-int(LWidth/2),Ly-int(LHeight/2)+ 15)
                         rangeText = "R: {:.4f}".format(Distance)
                         bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
-                        cv2.putText(finalimage, rangeText + bearingText, textOrigin, cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
+                        cv2.putText(finalimage, rangeText + bearingText, textOrigin, 
+                         cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
                         ##
                         Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                         #columnwise
@@ -242,7 +244,7 @@ class Vision:
                         continue
                 elif parameters_dict["type"]==4: #hole
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>30 and Area<2000:
+                    if Area>500 and Area<2000:
                         #if LWidth/LHeight<1.1 and LHeight/LWidth<1.1:
                         (x,y),radius=cv2.minEnclosingCircle(a)
                         cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
