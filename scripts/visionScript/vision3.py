@@ -197,7 +197,7 @@ class Vision:
                         continue
                 elif parameters_dict["type"]==2:#for obstacle
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>150:
+                    if Area>150 and LHeight<=70:
                         #f LWidth/LHeight<1.5 and LHeight/LWidth<1.5:
                         Lx=int(Moment["m10"]/Moment["m00"])#centroids of shapes identified
                         Ly=int(Moment["m01"]/Moment["m00"])
