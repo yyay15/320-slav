@@ -244,7 +244,7 @@ class Vision:
                         continue
                 elif parameters_dict["type"]==4: #hole
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>1000 and Area<2000:
+                    if Area>1000 and Area<1250:
                         #if LWidth/LHeight<1.1 and LHeight/LWidth<1.1:
                         (x,y),radius=cv2.minEnclosingCircle(a)
                         cv2.rectangle(finalimage,(int(x-radius),int(y+radius)),(int(x+radius),int(y-radius)),
@@ -253,6 +253,11 @@ class Vision:
                         Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
                         Distance=Distance/1000
                         ZDistance=np.append(ZDistance,Distance)
+                        rangeText = "R: {:.4f}".format(Area)
+                        #bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
+                        cv2.putText(finalimage, rangeText, (Lx1+5,Ly1+10), 
+                         cv2.FONT_HERSHEY_SIMPLEX, 0.5,  parameters_dict["BBoxColour"] )
+                        print("This is hole Area",Area)
                         Bearing=np.append(Bearing,math.radians((x-160)*(31.1/160)))
                         Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                         #columnwise
