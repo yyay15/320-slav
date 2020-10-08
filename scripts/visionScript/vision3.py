@@ -151,7 +151,7 @@ class Vision:
                         #    continue
                     else:
                         continue 
-                elif parameters_dict["type"]==3:
+                elif parameters_dict["type"]==3:#for cover
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     if (LWidth*LHeight)>300:
                         #if (LWidth/LHeight)<=2 and (LHeight/LWidth)<=2:
@@ -261,7 +261,7 @@ class Vision:
                         continue  
                 elif parameters_dict["type"]==5: #cover hole
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>20 and Area<2000:
+                    if Area>100 and Area<4000:
                         Lx=int(Moment["m10"]/Moment["m00"])
                         Ly=int(Moment["m01"]/Moment["m00"])
                         Centroid=np.array([Lx,Ly])
@@ -357,8 +357,6 @@ class Vision:
             lander_hole=self.Range(inverted_Lander,self.hole_parameters,finalImage)
             #hole_img=self.Detection(img,self.hole_parameters)
             #hole_Z=self.Range(hole_img,self.hole_parameters,img)
-            #LanderMasklow=np.array([15,0,0],dtype="uint8")
-            #LanderMaskhigh=np.array([30,255,255],dtype="uint8")
         #elif self.state==10:
         #   hole_img=self.Detection(img,self.hole_parameters)
             print("This is self.state 8 ", lander_hole)
