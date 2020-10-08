@@ -120,13 +120,19 @@ class Navigation:
             v, w = 0, 0
             self.rock_obstacle = True
             self.stateMode = NAV_SAMPLE
-        elif (time.time() - self.modeStartTime >= FULL_ROTATION): 
-            print("moving around")
-            v, w = self.navigate([0.2, 0], state)
-            if (time.time() - self.modeStartTime - FULL_ROTATION >= 1.5):
-                print("return to spin")
-                self.turnDir = self.turnDir * -1 
-                self.modeStartTime = time.time()
+        elif (time.time() - self.modeStartTime >= FULL_ROTATION):
+            if (not self.isEmpty(state.obstaclesRB)):
+                print("nav to obstacle")
+                v, w = self.navObsAvoidRock(state)
+                if (state.obstaclesRB[0][0] < 0.3):
+                    self.modeStartTime = time.time()
+            else:
+                print("moving around")
+                v, w = self.navigate([0.2, 0], state)
+                if (time.time() - self.modeStartTime - FULL_ROTATION >= 1.5):
+                    print("return to spin")
+                    self.turnDir = self.turnDir * -1 
+                    self.modeStartTime = time.time()
         else:
             v = 0
             w = 0.5 * self.turnDir
@@ -575,7 +581,18 @@ class Navigation:
                 minObstacle = obstacle
         return minObstacle
 
-
+    def navObsAvoidRock(self, state):
+        vRep, wRep = 0, 0
+        v = state.obstaclesRB[0][0] * KV_ATTRACT
+        w = state.obstaclesRB[0][1] 
+        if (not self.isEmpty(state.rocksRB)):
+            if state.rocksRB[0][0] < 0.7:
+                closeObs = state.rocksRB[0]
+                wRep =  (np.sign(closeObs[1]) * (0.5 - closeObs[0]) * (3 - abs(closeObs[1]))* KW_REPULSE)
+                vRep =  (0.5 - closeObs[0]) * 0.2
+        v = v - vRep
+        w = w -wRep
+        return v, w
 #-----------------------#
 # Helper functions
 #-----------------------#
