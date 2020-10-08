@@ -226,7 +226,7 @@ class Vision:
                         continue
                 elif parameters_dict["type"]==1: #for lander
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>10000 and Area<60000:
+                    if Area>3000 and Area<60000:
                         self.landerArea = Area
                         Lx=int(Moment["m10"]/Moment["m00"])
                         Ly=int(Moment["m01"]/Moment["m00"])
