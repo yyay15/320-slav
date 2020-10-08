@@ -94,7 +94,7 @@ def Range(img,parameters_dict,finalimage):
                     Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
                     Distance=Distance/1000
                     rangeText = "R: {:.4f}".format(Distance)
-                    bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
+                    bearingText = " B: {:.4f}".format((math.radians((x-160)*(31.1/160))))
                     cv2.putText(finalimage, rangeText + bearingText, (Lx1+5,Ly1+10), 
                         cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
                     ZDistance=np.append(ZDistance,Distance)
