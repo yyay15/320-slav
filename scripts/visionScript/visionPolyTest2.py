@@ -255,13 +255,14 @@ def DetectandRange(img,sample_parameters,cover_parameters,obstacle_parameters,la
     cover_Z=Range(cover_img,cover_parameters,finalImage)
     obstacle_Z=Range(obstacle_img,obstacle_parameters,finalImage)
     lander_Z=Range(lander_img,lander_parameters,finalImage)
-    wall_Z=
+    wall_Z=Range(wall_img,wall_parameters,finalImage)
     #hole_Z=Range(hole_img,hole_parameters,finalImage)
     #coverhole_Z=Range(coverhole_img,coverhole_parameters,finalImage)
     print("sample distance and bearing",sample_Z)
     print("cover distance and bearing",cover_Z)
     print("obstacle distance and bearing",obstacle_Z)
     print("lander distance and bearing",lander_Z)
+    print("wall distance and bearing",wall_Z)
     return sample_Z,cover_Z,obstacle_Z,lander_Z
 def visMain(i):
     ret, img = cap.read()	     		# Get a frame from the camera
