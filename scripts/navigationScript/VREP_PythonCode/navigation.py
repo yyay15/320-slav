@@ -385,22 +385,25 @@ class Navigation:
                 self.stateMode = SEARCH_ROCK
         return v, w
 
-# DEPRECIATED CODE BEFORE WE KNEW THAT THE SURFACE WAS CONCAVED
 
     def holeAlign(self, state):
         print("centering hole")
         if (not self.isEmpty(state.holeRB)):
             if (not (-0.05 <= state.holeRB[0][1] <= 0.05)):
-                print("centering hole")
+                print("centering lander hole")
                 self.centering = True
                 hole = state.holeRB[0]
-                w = hole[1] * 1.1
+                w = hole[1] 
                 v = 0
-            else:
-                v, w = 0.8, 0
-                time.sleep(1)
                 self.modeStartTime = time.time()
-                self.stateMode = SAMPLE_DROP
+            else:
+                if (time.time() - self.modeStartTime > 0.5):
+                    v = 0.08
+                    w = 0
+                else:
+                    v, w = 0, 0
+                    self.modeStartTime = time.time()
+                    self.stateMode = SAMPLE_DROP
         else:
             v, w = 0, 0
             self.modeStartTime = time.time()
