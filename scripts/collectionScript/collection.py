@@ -88,7 +88,7 @@ class Collection:
         self.servoPWM.ChangeDutyCycle(0)
 
     def Lander(self):
-        self.servoPWM.ChangeDutyCycle(4.3)
+        self.servoPWM.ChangeDutyCycle(4.4)
         print("Releasing Ball")
         time.sleep(1)
         self.servoPWM.ChangeDutyCycle(0)
