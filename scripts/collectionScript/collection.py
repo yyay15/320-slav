@@ -76,7 +76,7 @@ class Collection:
              
 
     def Open_ROT(self):
-        self.servoPWM.ChangeDutyCycle(7.5)
+        self.servoPWM.ChangeDutyCycle(6.9)
         print("Open")
         time.sleep(1)
         self.servoPWM.ChangeDutyCycle(0)

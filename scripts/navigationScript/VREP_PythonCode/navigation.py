@@ -347,7 +347,7 @@ class Navigation:
                 self.stateMode = SEARCH_LANDER
             else:
                 print("Imma end this mans career")
-                v = 0.07
+                v = 0.08
                 w = 0
         else:
             v, w = 0, 0
