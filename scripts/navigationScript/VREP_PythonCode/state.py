@@ -14,12 +14,15 @@ class State:
         self.prevRocksRB = None
         self.prevHoleRB = None
         self.prevRotHoleRB = None
+        self.lastSeenLanderHole = None
 
         self.onLander = False
         self.sampleCollected = True
 
 
     def updateState(self, objects, sampleCollected):
+        if (self.holeRB != None):
+            self.lastSeenLanderHoleRB = self.holeRB
         self.prevSampleRB = self.sampleRB
         self.prevLanderRB = self.landerRB
         self.prevObstaclesRB = self.obstaclesRB
