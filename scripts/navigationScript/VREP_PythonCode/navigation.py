@@ -119,6 +119,8 @@ class Navigation:
         if (state.sampleCollected):
             self.rotState = CLOSE
             self.stateMode =  SEARCH_LANDER
+        if (self.rotState == OPEN):
+            self.rotState = SLIGHT_OPEN
         if (not self.isEmpty(state.sampleRB)):
             v, w = 0, 0
             self.rock_obstacle = True
