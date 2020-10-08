@@ -20,8 +20,8 @@ FULL_ROTATION = 20
 
 KV_ATTRACT = 0.4
 KW_ATTRACT = 2
-KV_REPULSE = 0.3
-KW_REPULSE = 4
+KV_REPULSE = 0.6
+KW_REPULSE = 6
 
 class Navigation:
     def __init__(self):
@@ -63,12 +63,10 @@ class Navigation:
                 self.prevstate = self.stateMode
                 self.stateMode = NAV_SAMPLE
             elif (time.time() -self.modeStartTime >= FULL_ROTATION):
-                if (not self.isEmpty(state.rocksRB)):
-                    print("nav to rock")
-                    self.rock_obstacle = False
-                    v, w = self.navigate(state.rocksRB[0], state)
-                    if state.rocksRB[0][0] < 0.2:
-                        self.rock_obstacle = True
+                if (not self.isEmpty(state.obstaclesRB)):
+                    print("nav to obstacle")
+                    v, w = self.navObsAvoidRock(state)
+                    if state.obstaclesRB[0][0] < 0.3:
                         self.modeStartTime = time.time()
                 else:
                     print("moving around")
@@ -181,9 +179,14 @@ class Navigation:
         elif self.isEmpty(state.landerRB):
             v, w = 0, 0
             if not self.isEmpty(state.prevLanderRB):
-                if state.sampleCollected:
-                    print("drive up lander")
-                    self.stateMode = DRIVE_UP
+                if (state.prevLanderRB[0] < 0.1):
+                    if state.sampleCollected:
+                        print("drive up lander")
+                        self.stateMode = DRIVE_UP
+                else:
+                    print("returning to lander search")
+                    self.modeStartTime = time.time()
+                    self.stateMode = SEARCH_LANDER
             else:
                 print("returning to lander search")
                 self.modeStartTime = time.time()
@@ -214,8 +217,10 @@ class Navigation:
         w = KW_ATTRACT * goal[1]
         print(w)
         vRep, wRep = self.avoidObstacles(state)
+        if (self.stateMode == NAV_LANDER):
+            wRep = wRep * 20
         v = v -vRep
-        w = w-wRep
+        w = w- wRep
         return v, w
 
 
@@ -228,7 +233,7 @@ class Navigation:
             if not self.isEmpty(rocks) and self.rock_obstacle:
                 obstacles = obstacles + rocks
             closeObs = self.closestObstacle(obstacles)
-            if closeObs[0] < 0.5:
+            if closeObs[0] < 0.7:
                 wRep =  (np.sign(closeObs[1]) * (0.5 - closeObs[0]) * (3 - abs(closeObs[1]))* KW_REPULSE)
                 vRep =  (0.5 - closeObs[0]) * 0.2
                 if closeObs[0] < 0.4:
@@ -242,6 +247,20 @@ class Navigation:
             if (obstacle[0] < minObstacle[0]):
                 minObstacle = obstacle
         return minObstacle
+    
+    def navObsAvoidRock(self, state):
+        vRep, wRep = 0, 0
+        v = state.obstaclesRB[0][0] * KV_ATTRACT
+        w = state.obstaclesRB[0][1] 
+        if (not self.isEmpty(state.rocksRB)):
+            if state.rocksRB[0][0] < 0.7:
+                closeObs = state.rocksRB[0]
+                wRep =  (np.sign(closeObs[1]) * (0.5 - closeObs[0]) * (3 - abs(closeObs[1]))* KW_REPULSE)
+                vRep =  (0.5 - closeObs[0]) * 0.2
+
+        v = v - vRep
+        w = w -wRep
+        return v, w
 
     def isEmpty(self, objectIn): #check to see if object is empty, suitable for sim and real life
         if (type(objectIn) != np.ndarray):
