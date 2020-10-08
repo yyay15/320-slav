@@ -44,7 +44,7 @@ KW_REPULSE = 2.4
 
 class Navigation:
     def __init__(self):
-        self.stateMode = 2  # intial start state
+        self.stateMode = 1 # intial start state
         self.modeStartTime = time.time() # timer for each state
         self.turnDir = 1                 # turn clockwise or anticlockwise
         self.rock_obstacle = True        # check if rocks should be avoided
@@ -53,6 +53,7 @@ class Navigation:
         self.centering = False
         self.commandnav = False
         self.attemptFlip = False
+        self.landerHoleSeen = False
         self.numSampleCollected = 0
         
     
@@ -289,7 +290,7 @@ class Navigation:
             print("centering")
             self.centering = True
             sample = state.sampleRB[0]
-            w = sample[1] * 1.15
+            w = sample[1] * 1.1
             v = 0
         elif (not self.isEmpty(state.sampleRB) and not self.isBlind):
             self.centering = False
@@ -333,15 +334,20 @@ class Navigation:
             # if the hole is visible and large enough (RB should return none if too small (FROM VISION))
             if (not self.isEmpty(state.holeRB)):
                 print("Lander hole visible")
-
-                self.modeStartTime = time.time()
+                v = 0.135
+                w = state.holeRB[0][1]
+                #self.modeStartTime = time.time()
                 # Alan: Ball was released on an angle, so need to re-align first
-                self.stateMode = HOLE_ALIGN
+                #self.stateMode = HOLE_ALIGN
                 # depreciated code from past
                 # if (state.holeRB[0][0] <= 0.06):
                 #     self.modeStartTime = time.time()
                 #     self.stateMode = SAMPLE_DROP
                 
+            elif (not self.isEmpty(state.prevLanderRB)):
+                v, w = 0 ,0 
+                self.modeStartTime = time.time()
+                self.stateMode = SAMPLE_DROP
             else:
                 # 60% pwm with beaing at lander max 
                 v = 0.135
@@ -385,50 +391,74 @@ class Navigation:
                 self.stateMode = SEARCH_ROCK
         return v, w
 
-
+# depreciate
     def holeAlign(self, state):
-        print("centering hole")
-        if (not self.isEmpty(state.holeRB)):
-            if (not (-0.05 <= state.holeRB[0][1] <= 0.05)):
-                print("centering lander hole")
-                self.centering = True
-                hole = state.holeRB[0]
-                w = hole[1] 
-                v = 0
-                self.modeStartTime = time.time()
-            else:
-                if (time.time() - self.modeStartTime > 0.5):
-                    v = 0.08
-                    w = 0
-                else:
-                    v, w = 0, 0
-                    self.modeStartTime = time.time()
-                    self.stateMode = SAMPLE_DROP
-        else:
-            v, w = 0, 0
-            self.modeStartTime = time.time()
-            self.stateMode = SEARCH_LANDER
+        v, w = 0, 0
+        # print("centering hole")
+        # if (self.isEmpty(state.holeRB)):
+        #     if (self.landerHoleSeen):
+        #         if (time.time() - self.modeStartTime)
+        #     v, w = 0, 0 
+        #     self.modeStartTime = time.time()
+        #     self.stateMode = SAMPLE_DROP
+        # elif (not self.isEmpty(state.holeRB))
+        #     print("hole RB"state.rotHoleRB)
+        #     if (not (-0.05 <= state.holeRB[0][1] <= 0.05)):
+        #         print("centering lander hole")
+        #         self.centering = True
+        #         hole = state.holeRB[0]
+        #         w = hole[1] 
+        #         v = 0
+        #         self.modeStartTime = time.time()
+        #     else:
+                
+        #         if (time.time() - self.modeStartTime > 0.5):
+        #             v = 0.08
+        #             w = 0
+        #         else:
+        #             v, w = 0, 0
+        #             self.modeStartTime = time.time()
+        #             self.stateMode = SAMPLE_DROP
+        # else:
+        #     v, w = 0, 0
+        #     self.modeStartTime = time.time()
+        #     self.stateMode = SEARCH_LANDER
         return v, w 
         
  ## THIS HASNT BEEN TESTED 
     def dropSample(self, state):
-        self.rotState = OPEN
-        v, w = 0, 0
-        # GO FORWARD FOR HALF SECOND THEN REVERSE FOR HALF SECOND 
-        # WILL NEED TO TWEAK THESE PARAMETERS
-        if (state.sampleCollected):
-            if (time.time() - self.modeStartTime > 0.5):
-                v = 0.07
-                w = 0
-            elif(0.5 < (time.time()- self.modeStartTime) < 1 ):
-                v = - 0.07
-                w = 0
+        
+        if (time.time() - self.modeStartTime > 0.2):
+            v = 0.08
+            w = 0 
+        elif (time.time() - self.modeStartTime > 0.5):
+            self.rotState = OPEN
+            v = 0.07
+            w = 0
+        elif (time.time() - self.modeStartTime > 1):
+            self.rotState = OPEN
+            v = - 0.07
+            w = 0
         else:
-            self.rotState = CLOSE # maybe it needs to be on lander() when driving down? will this affect vision later? 
-            v, w = 0,0
-            self.numSampleCollected += 1
-            self.stateMode = SEARCH_SAMPLE
-            self.modeStartTime = time.time()
+            v, w = 0, 0
+
+        # self.rotState = OPEN
+        # v, w = 0, 0
+        # # GO FORWARD FOR HALF SECOND THEN REVERSE FOR HALF SECOND 
+        # # WILL NEED TO TWEAK THESE PARAMETERS
+        # if (state.sampleCollected):
+        #     if (time.time() - self.modeStartTime > 0.5):
+        #         v = 0.07
+        #         w = 0
+        #     elif(0.5 < (time.time()- self.modeStartTime) < 1 ):
+        #         v = - 0.07
+        #         w = 0
+        # else:
+        #     self.rotState = CLOSE # maybe it needs to be on lander() when driving down? will this affect vision later? 
+        #     v, w = 0,0
+        #     self.numSampleCollected += 1
+        #     self.stateMode = SEARCH_SAMPLE
+        #     self.modeStartTime = time.time()
         return v, w
 
 
