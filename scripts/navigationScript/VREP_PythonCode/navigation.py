@@ -326,7 +326,6 @@ class Navigation:
 
 # !!!!!!!!FUNCTION TO DRIVE TO THE TOP OF THE LANDER !!!!!!#
     def driveUpLander(self,state):
-        print("drive up lander")
         self.rotState = SLIGHT_OPEN
         v, w = 0, 0
         # first check that the lander is visible (it should always be when we're on the lander)
