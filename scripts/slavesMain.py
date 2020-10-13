@@ -67,8 +67,6 @@ def ledSetup():
 
 
 
-
-
 #---------------#
 # Flask Function
 #---------------#
