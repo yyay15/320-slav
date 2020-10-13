@@ -182,9 +182,12 @@ if __name__ == '__main__':
             """)
             userSelect = input()
             if  userSelect == "a":
+                print("Choose starting state, 0 - 13")
+                startState = int(input())
                 loc = localisation.Localisation()
                 nav = navigation.Navigation() 
                 state = state.State()
+                nav.stateMode = startState
                 # CHUCK THAT CHUNK HERE
                 while True:
                     print("==========================================")
