@@ -167,6 +167,7 @@ if __name__ == '__main__':
     # Try Loading And running
     try:
         print("beforeWhile...")
+        collection.Lander()
 
         while(1):
             print("""
