@@ -105,6 +105,7 @@ class Collection:
 
     def Open_ROT2(self):
             timeElapsed = time.time() - self.stateTime
+            print("I'm Open Rot")
             if timeElapsed < 1:
                 self.servoPWM.ChangeDutyCycle(6.8)
                 print("Open")
@@ -118,6 +119,7 @@ class Collection:
 
     def Close_ROT2(self):
         timeElapsed = time.time() - self.stateTime
+        print("I'm close Rot")
         if timeElapsed < 1:
             self.servoPWM.ChangeDutyCycle(3.2)
             print("Close")
@@ -127,9 +129,11 @@ class Collection:
             self.servoPWM.ChangeDutyCycle(0)
         else:
             pass
+        print("I'm passing close Rot")
 
     def Lander2(self):
         timeElapsed = time.time() - self.stateTime
+        print("I'm Lander")
         if timeElapsed < 1:
             self.servoPWM.ChangeDutyCycle(4.9)
             print("Lander Angle")
@@ -139,3 +143,4 @@ class Collection:
             self.servoPWM.ChangeDutyCycle(0)
         else:
             pass
+        print("I'm passing Lander")
