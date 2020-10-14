@@ -154,6 +154,8 @@ class Navigation:
 
     def searchRock(self, state):
         print("searching for rock")
+        if (self.rotState == OPEN or self.rotState == CLOSE):
+            self.rotState = SLIGHT_OPEN
         if (not self.isEmpty(state.rocksRB)):
             v, w = 0, 0
             self.rock_obstacle = False
