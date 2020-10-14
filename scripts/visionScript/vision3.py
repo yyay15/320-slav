@@ -102,7 +102,7 @@ class Vision:
         elif parameters_dict["type"]==1:
             Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(10,10))
         elif parameters_dict["type"]==4:
-            Kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(10,10))
+            Kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
         else:
             Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
                 
@@ -266,7 +266,7 @@ class Vision:
                         (Lx,Ly),radius=cv2.minEnclosingCircle(a)
                         xdifference=self.Landerx-Lx
                         ydifference=self.Landery-Ly
-                        if (-100 <= xdifference <= 100) and (-75<= ydifference <= 75):
+                        if (-Lx/2 <= xdifference <= Lx/2) and (-Ly/2<= ydifference <= Ly/2):
                             cv2.rectangle(finalimage,(int(Lx-radius),int(Ly+radius)),(int(Lx+radius),int(Ly-radius)),
                             parameters_dict["BBoxColour"],2)
                             Distance=(parameters_dict["Height"]*(self.f/(2*radius))/8)*math.cos(0.2967)
