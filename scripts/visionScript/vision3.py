@@ -322,6 +322,7 @@ class Vision:
         # print(obstacle_Z)
         print("Lander", lander_Z)
         return sample_Z,cover_Z,obstacle_Z,lander_Z,lander_img
+
     def visMain(self, i):
         ret, img = self.cap.read()	     		# Get a frame from the camera
         #imcopy=np.copy(img)
@@ -354,7 +355,7 @@ class Vision:
         rate2=1/elapsed2
         print(rate2)
 
-        print(" This is rotHoleRB", rotHoleRB)
+        print(" This is landerHole", landerHoleRB)
             # sample [[R, B], [R,B]]
             # lander [R, B]
         # if nothing sampleRB = None,holesRB,
@@ -369,6 +370,7 @@ class Vision:
             SamplePresent=False
         return SamplePresent 
         pass
+
     def holefinder(self,finalImage,LanderImage):
         hole_Z=None
         coverhole_img=None
