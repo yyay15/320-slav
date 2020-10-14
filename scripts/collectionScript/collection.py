@@ -105,47 +105,54 @@ class Collection:
             self.Lander()
 
     def Open_ROT2(self):
-            timeElapsed = time.time() - self.stateTime
-            print("I'm Open Rot")
-            print(timeElapsed)
-            if timeElapsed < 0.5:
-                if self.count <1:
-                    self.servoPWM.ChangeDutyCycle(6.8)
-                    self.count+=1
-                print("Open")
-            elif 0.5 < timeElapsed < 2:
-                if self.count <2:
-                    self.servoPWM.ChangeDutyCycle(0)
-                    self.count+=1
-                
-            else:
-                pass
-                print("I'm passing Open Rot")
+        timeElapsed = time.time() - self.stateTime
+        print("I'm Open Rot")
+        print(timeElapsed)
+        if timeElapsed < 0.4:
+            if self.count <1:
+                self.servoPWM.ChangeDutyCycle(6.8)
+                self.count+=1
+            print("Open")
+        elif 0.4 < timeElapsed < 2:
+            if self.count <2:
+                self.servoPWM.ChangeDutyCycle(0)
+                self.count+=1
+            
+        else:
+            pass
+            print("I'm passing Open Rot")
 
     def Close_ROT2(self):
         timeElapsed = time.time() - self.stateTime
-        print("I'm close Rot")
-        if timeElapsed < 1:
-            self.servoPWM.ChangeDutyCycle(3.2)
+        print("I'm Close Rot")
+        print(timeElapsed)
+        if timeElapsed < 0.4:
+            if self.count <1:
+                self.servoPWM.ChangeDutyCycle(3.2)
+                self.count+=1
             print("Close")
-        elif 1 < timeElapsed < 2:
-            pass
-        elif 2 < timeElapsed < 3:
-            self.servoPWM.ChangeDutyCycle(0)
+        elif 0.4 < timeElapsed < 2:
+            if self.count <2:
+                self.servoPWM.ChangeDutyCycle(0)
+                self.count+=1
         else:
             pass
-        print("I'm passing close Rot")
+            print("I'm passing Close Rot")
+
 
     def Lander2(self):
         timeElapsed = time.time() - self.stateTime
         print("I'm Lander")
-        if timeElapsed < 1:
-            self.servoPWM.ChangeDutyCycle(4.9)
-            print("Lander Angle")
-        elif 1 < timeElapsed < 2:
-            pass
-        elif 2 < timeElapsed < 3:
-            self.servoPWM.ChangeDutyCycle(0)
+        print(timeElapsed)
+        if timeElapsed < 0.4:
+            if self.count <1:
+                self.servoPWM.ChangeDutyCycle(4.9)
+                self.count+=1
+            print("Lander Angled Up")
+        elif 0.4 < timeElapsed < 2:
+            if self.count <2:
+                self.servoPWM.ChangeDutyCycle(0)
+                self.count+=1
         else:
             pass
-        print("I'm passing Lander")
+            print("I'm passing Lander")
