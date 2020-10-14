@@ -58,6 +58,7 @@ class Navigation:
         self.commandnav = False
         self.attemptFlip = False
         self.landerHoleSeen = False
+        self.onLander = True
         self.numSampleCollected = 0
         self.prevLanderAreaDiff = 0
 
@@ -175,19 +176,39 @@ class Navigation:
     def navSample(self, state):
         print("nav to sample ")
         if (self.isEmpty(state.sampleRB)):
-            if (self.isEmpty(state.prevSampleRB)):
-                v, w = 0, 0
-                print("returing to sample search")
-                self.modeStartTime = time.time()
-                self.stateMode = SEARCH_SAMPLE
+            if (self.onLander):
+                if time.time() - self.modeStartTime < 0.4:
+                    v = 0.04
+                else:
+                    self.onLander = False
             else:
                 v, w = 0, 0
-                # find bearing of previous sample and spin that direction
-                self.turnDir = np.sign(state.prevSampleRB[0][1])
-                print("returning to sample search")
+                if (not self.isEmpty(state.prevSampleRB)):
+                    self.turnDir = np.sign(state.prevSampleRB[0][1])
+                print("retunring to sample search")
                 self.modeStartTime = time.time()
                 self.stateMode = SEARCH_SAMPLE
+            # if (self.isEmpty(state.prevSampleRB) or self.onLander):
+            #     v, w = 0, 0
+            #     if (self.onLander and self.isEmpty(state.prevSampleRB)):
+            #         # time to drive forward when stuck
+            #         if time.time() - self.modeStartTime < 0.4:
+            #             v = 0.04
+            #         else:
+            #             self.onLander = False
+            #     else:
+            #         print("returning to sample search")
+            #         self.modeStartTime = time.time()
+            #         self.stateMode = SEARCH_SAMPLE
+            # else:
+            #     v, w = 0, 0
+            #     # find bearing of previous sample and spin that direction
+            #     self.turnDir = np.sign(state.prevSampleRB[0][1])
+            #     print("returning to sample search")
+            #     self.modeStartTime = time.time()
+            #     self.stateMode = SEARCH_SAMPLE
         else:
+            self.modeStartTime = time.time()
             currSample = state.prevSampleRB[0]
             print(currSample)
             v, w = self.navigate(currSample, state)
@@ -196,6 +217,7 @@ class Navigation:
                 v, w = 0, 0
                 self.modeStartTime = time.time()
                 self.stateMode = ACQUIRE_SAMPLE
+                self.onLander = False
 
         return v, w
 
@@ -335,9 +357,9 @@ class Navigation:
         return v, w
 
 # !!!!!!!!FUNCTION TO DRIVE TO THE TOP OF THE LANDER !!!!!!#
-    def driveUpLander(self,state):
-        if (self.rotState != SLIGHT_OPEN):        
-            self.rotState = SLIGHT_OPEN
+    def driveUpLander(self,state):        
+        self.rotState = SLIGHT_OPEN
+        self.onLander = True
         if (state.sampleCollected):
             if (time.time() - self.modeStartTime > 4.20):
                 print("Im LOST PLEASE HELP")
