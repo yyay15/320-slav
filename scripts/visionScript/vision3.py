@@ -299,7 +299,7 @@ class Vision:
                         print("LHeight of coverhole",LHeight)
                         #self.MaxMinLocations(a,finalimage)
                         Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
-                        Range=np.vstack((ZDistance,-Bearing*2)).T#Put Bearing and ZDistance into one array and arrange
+                        Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
                         #columnwise
                         Range=Range[Range[:,0].argsort()] 
                     else:
