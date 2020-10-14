@@ -229,8 +229,8 @@ class Navigation:
         #time to drive to  be in flip position
         v, w = 0, 0
         print("driving to flip pos")
-        # drive straight for 3.5 seconds first 
-        if (time.time() - self.modeStartTime <= 3.50):
+        # drive straight for 0.5 seconds first 
+        if (time.time() - self.modeStartTime <= 4.20):
             v = 0.042
             w = 0
             self.attemptFlip = False
@@ -343,7 +343,7 @@ class Navigation:
         self.rotState = SLIGHT_OPEN
         self.onLander = True
         if (state.sampleCollected):
-            if not state.holeRB:
+            if (not self.isEmpty(state.holeRB)):
                 self.stateMode = HOLE_ALIGN
             if (time.time() - self.modeStartTime > 2.5):
                 print("Im LOST PLEASE HELP")
@@ -478,7 +478,7 @@ class Navigation:
         if (state.sampleCollected):
             print("we gonna kobe into the hole")
             print("This is the kobe traj: ",state.holeRB)
-            if not state.holeRB:
+            if(not self.isEmpty(state.holeRB)):
                 hole = state.holeRB[0]
                 v = 0.08
                 w = hole[1]
