@@ -53,6 +53,7 @@ class Collection:
         self.currentState = navRockState
         if self.currentState != self.prevState:
             self.stateTime = time.time()
+            self.count = 0
         
         if self.currentState == 0:
             pass
@@ -107,13 +108,18 @@ class Collection:
             timeElapsed = time.time() - self.stateTime
             print("I'm Open Rot")
             print(timeElapsed)
-            if timeElapsed < 1:
-                self.servoPWM.ChangeDutyCycle(6.8)
+            if timeElapsed < 0.5:
+                if self.count <1:
+                    self.servoPWM.ChangeDutyCycle(6.8)
+                    self.count+=1
                 print("Open")
             elif 1 < timeElapsed < 2:
                 pass
             elif 2 < timeElapsed < 3:
-                self.servoPWM.ChangeDutyCycle(0)
+                if self.count <2:
+                    self.servoPWM.ChangeDutyCycle(0)
+                    self.count+=1
+                
             else:
                 pass
                 print("I'm passing Open Rot")
