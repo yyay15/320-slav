@@ -58,6 +58,7 @@ class Navigation:
         self.commandnav = False
         self.attemptFlip = False
         self.landerHoleSeen = False
+        self.onLander = True
         self.numSampleCollected = 0
         self.prevLanderAreaDiff = 0
 
@@ -175,28 +176,31 @@ class Navigation:
     def navSample(self, state):
         print("nav to sample ")
         if (self.isEmpty(state.sampleRB)):
-            if (self.isEmpty(state.prevSampleRB)):
-                v, w = 0, 0
-                print("returing to sample search")
-                self.modeStartTime = time.time()
-                self.stateMode = SEARCH_SAMPLE
+            if (self.onLander):
+                if time.time() - self.modeStartTime < 2.5:
+                    v = 0.08
+                    w = 0
+                else:
+                    v = 0
+                    w = 0
+                    self.onLander = False
             else:
                 v, w = 0, 0
-                # find bearing of previous sample and spin that direction
-                self.turnDir = np.sign(state.prevSampleRB[0][1])
-                print("returning to sample search")
+                if (not self.isEmpty(state.prevSampleRB)):
+                    self.turnDir = np.sign(state.prevSampleRB[0][1])
+                print("retunring to sample search")
                 self.modeStartTime = time.time()
                 self.stateMode = SEARCH_SAMPLE
         else:
-            currSample = state.prevSampleRB[0]
-            print(currSample)
+            self.modeStartTime = time.time()
+            currSample = state.sampleRB[0]
             v, w = self.navigate(currSample, state)
             if (currSample[0] < ROT_DISTANCE):
                 print("acquiring sample")
                 v, w = 0, 0
                 self.modeStartTime = time.time()
                 self.stateMode = ACQUIRE_SAMPLE
-
+                self.onLander = False
         return v, w
 
     def navRock(self, state):
@@ -335,17 +339,17 @@ class Navigation:
         return v, w
 
 # !!!!!!!!FUNCTION TO DRIVE TO THE TOP OF THE LANDER !!!!!!#
-    def driveUpLander(self,state):
-        if (self.rotState != SLIGHT_OPEN):        
-            self.rotState = SLIGHT_OPEN
+    def driveUpLander(self,state):        
+        self.rotState = SLIGHT_OPEN
+        self.onLander = True
         if (state.sampleCollected):
-            if (time.time() - self.modeStartTime > 4.20):
+            if (time.time() - self.modeStartTime > 2.5):
                 print("Im LOST PLEASE HELP")
                 v, w = 0, 0
                 self.stateMode = SEARCH_LANDER
             else:
                 print("Imma end this mans career")
-                v = 0.069
+                v = 0.075
                 w = 0
         else:
             v, w = 0, 0
