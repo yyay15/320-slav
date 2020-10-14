@@ -473,15 +473,20 @@ class Navigation:
 
     # depreciate unless 👀👀
     def holeAlign(self, state):
+        print("I am aligning to da hoe")
         v, w = 0, 0
         if (state.sampleCollected):
+            print("we gonna kobe into the hole")
+            print("This is the kobe traj: ",state.holeRB)
             if(state.holeRB != None):
                 hole = state.holeRB[0]
                 v = 0.08
                 w = hole[1]
             else:
+                print("Here we go again")
                 self.stateMode = UP_LANDER
         else:
+            print("Gotta look for some orange spheres")
             self.stateMode = SEARCH_SAMPLE
 
         # print("centering hole")
