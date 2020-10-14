@@ -144,12 +144,12 @@ class Collection:
         timeElapsed = time.time() - self.stateTime
         print("I'm Lander")
         print(timeElapsed)
-        if timeElapsed < 0.55:
+        if timeElapsed < 0.6:
             if self.count <1:
                 self.servoPWM.ChangeDutyCycle(4.9)
                 self.count+=1
                 print("Lander Angled Up")
-        elif 0.55 < timeElapsed < 1:
+        elif 0.6 < timeElapsed < 1.5:
             if self.count <2:
                 self.servoPWM.ChangeDutyCycle(0)
                 self.count+=1
