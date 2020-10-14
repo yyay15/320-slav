@@ -32,7 +32,7 @@ SLIGHT_OPEN = 3
 # DISTANCE/TIME VARIABLES
 ROT_DISTANCE = 0.22 #collect distance 
 FLIP_DISTANCE = 0.16
-ROCK_ALIGN_DISTANCE = 0.3
+ROCK_ALIGN_DISTANCE = 0.35
 FULL_ROTATION = 15
 ROT_ACQUIRE_SAMPLE = 0.9
 DRIVE_OFF_TIME = 6
@@ -237,7 +237,8 @@ class Navigation:
                 if (currRock[0] < ROCK_ALIGN_DISTANCE):
                     print("align rock")
                     self.modeStartTime = time.time()
-                    self.rotState = CLOSE
+                    if (self.rotState != CLOSE):
+                        self.rotState = CLOSE
                     self.stateMode = ROCK_ALIGN
 
         return v, w

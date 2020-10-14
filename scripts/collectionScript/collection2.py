@@ -48,7 +48,6 @@ class Collection:
         self.stateTime = 0
 
 
-
     def sampleManage(self, navRockState):
         self.currentState = navRockState
         if self.currentState != self.prevState:
@@ -59,12 +58,12 @@ class Collection:
             if self.currentState == 0:
                 pass
             elif self.currentState == 1:
-                self.Open_ROT2()
+                self.Open_ROT()
             elif self.currentState == 2:
                 print("close rot")
-                self.Close_ROT2()
+                self.Close_ROT()
             elif self.currentState == 3:
-                self.Lander2()
+                self.Lander()
             self.prevState = self.currentState
             
     def Test_ROT(self):
@@ -79,46 +78,19 @@ class Collection:
              
 
     def Open_ROT(self):
-        self.servoPWM.ChangeDutyCycle(6.8)
-        print("Open")
-        time.sleep(1)
-        self.servoPWM.ChangeDutyCycle(0)
+        timeElapsed = time.time() - stateTime
+        if timeElapsed < 1:
+            self.servoPWM.ChangeDutyCycle(6.8)
+            print("Open")
+        elif 1 < timeElapsed < 2:
+            pass
+        elif 2 < timeElapsed < 3:
+            self.servoPWM.ChangeDutyCycle(0)
+        else:
+            pass
 
     def Close_ROT(self):
-        self.servoPWM.ChangeDutyCycle(3.2)    
-        print("Close")
-        time.sleep(1)
-        self.servoPWM.ChangeDutyCycle(0)
-
-    def Lander(self):
-        self.servoPWM.ChangeDutyCycle(4.9)
-        print("Releasing Ball")
-        time.sleep(1)
-        self.servoPWM.ChangeDutyCycle(0)
-
-
-    def commandCentreCollectionControl(self,command):
-        if command == "o":
-            self.Open_ROT()
-        elif command == "p":
-            self.Close_ROT()
-        elif command == "l":
-            self.Lander()
-
-    def Open_ROT2(self):
-            timeElapsed = time.time() - self.stateTime
-            if timeElapsed < 1:
-                self.servoPWM.ChangeDutyCycle(6.8)
-                print("Open")
-            elif 1 < timeElapsed < 2:
-                pass
-            elif 2 < timeElapsed < 3:
-                self.servoPWM.ChangeDutyCycle(0)
-            else:
-                pass
-
-    def Close_ROT2(self):
-        timeElapsed = time.time() - self.stateTime
+        timeElapsed = time.time() - stateTime
         if timeElapsed < 1:
             self.servoPWM.ChangeDutyCycle(3.2)
             print("Close")
@@ -129,8 +101,8 @@ class Collection:
         else:
             pass
 
-    def Lander2(self):
-        timeElapsed = time.time() - self.stateTime
+    def Lander(self):
+        timeElapsed = time.time() - stateTime
         if timeElapsed < 1:
             self.servoPWM.ChangeDutyCycle(4.9)
             print("Lander Angle")
@@ -140,3 +112,14 @@ class Collection:
             self.servoPWM.ChangeDutyCycle(0)
         else:
             pass
+        
+
+
+    def commandCentreCollectionControl(self,command):
+        if command == "o":
+            self.Open_ROT()
+        elif command == "p":
+            self.Close_ROT()
+        elif command == "l":
+            self.Lander()
+
