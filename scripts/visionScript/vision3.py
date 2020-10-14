@@ -257,7 +257,7 @@ class Vision:
                         continue
                 elif parameters_dict["type"]==4: #hole
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>1000 and Area<2000:
+                    if Area>750 and Area<2000:
                         #if LWidth/LHeight<1.1 and LHeight/LWidth<1.1:
                         (Lx,Ly),radius=cv2.minEnclosingCircle(a)
                         xdifference=self.Landerx-Lx
@@ -377,7 +377,7 @@ class Vision:
         coverhole_Z=None
         lander_hole=0
         #imcopy=np.copy(img)
-        if self.state==8:
+        if self.state==8 or self.state==10:
             Lander_parameter_update={"hue":[15,30],"sat":[0,255],"value":[75,255]}
             self.lander_parameters.update(Lander_parameter_update)#update dictionary for lander
             #to change values to adjust for dodge lighting when going up lander
