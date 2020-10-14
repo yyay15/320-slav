@@ -471,9 +471,19 @@ class Navigation:
                 self.stateMode = SEARCH_ROCK
         return v, w
 
-# depreciate
+    # depreciate unless 👀👀
     def holeAlign(self, state):
         v, w = 0, 0
+        if (state.sampleCollected):
+            if(state.holeRB != None):
+                hole = state.holeRB[0]
+                v = 0.08
+                w = hole[1]
+            else:
+                self.stateMode = UP_LANDER
+        else:
+            self.stateMode = SEARCH_SAMPLE
+
         # print("centering hole")
         # if (self.isEmpty(state.holeRB)):
         #     if (self.landerHoleSeen):
