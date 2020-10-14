@@ -20,8 +20,8 @@ class Vision:
         self.cap = cv2.VideoCapture(0)  		# Connect to camera 0 (or the only camera)
         self.cap.set(3, 320)                     	# Set the width to 320
         self.cap.set(4, 240)                      	# Set the height to 240
-        # self.cap.set(12,0.6) # Exposure
-        self.cap.set(17,6005.56)  # White Balance
+        self.cap.set(12,0.6) # Exposure
+        # self.cap.set(17,6005.56)  # White Balance
         self.Center=np.array([])
         self.f=3.04/(1.12*10**-3)
         self.landerArea = 0
