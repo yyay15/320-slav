@@ -100,7 +100,9 @@ class Vision:
         if parameters_dict["Kernel"]==True:
             Kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
         elif parameters_dict["type"]==1:
-            Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(10,10))    
+            Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(10,10))
+        elif parameters_dict["type"]==4:
+            Kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(10,10))
         else:
             Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
                 
@@ -109,6 +111,8 @@ class Vision:
         if parameters_dict["type"]==1 and self.state==8:
             #Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
             #filtered_img=cv2.morphologyEx(mask,cv2.MORPH_OPEN,Kernel)
+            filtered_img=cv2.dilate(filtered_img,Kernel,iterations=1)  
+        elif parameters_dict["type"]==4 and (self.state==8 or self.state==10):
             filtered_img=cv2.dilate(filtered_img,Kernel,iterations=1)  
 
         return filtered_img
