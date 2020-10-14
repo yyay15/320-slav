@@ -53,20 +53,18 @@ class Collection:
         self.currentState = navRockState
         if self.currentState != self.prevState:
             stateTime = time.time()
-        if self.currentState == self.prevState:
+        
+        if self.currentState == 0:
             pass
-        else:
-            if self.currentState == 0:
-                pass
-            elif self.currentState == 1:
-                self.Open_ROT2()
-            elif self.currentState == 2:
-                print("close rot")
-                self.Close_ROT2()
-            elif self.currentState == 3:
-                self.Lander2()
-            self.prevState = self.currentState
-            
+        elif self.currentState == 1:
+            self.Open_ROT2()
+        elif self.currentState == 2:
+            print("close rot")
+            self.Close_ROT2()
+        elif self.currentState == 3:
+            self.Lander2()
+        self.prevState = self.currentState
+        
     def Test_ROT(self):
         for x in range (5,25):
             self.servoPWM.ChangeDutyCycle(x/2)
@@ -116,6 +114,7 @@ class Collection:
                 self.servoPWM.ChangeDutyCycle(0)
             else:
                 pass
+                print("I'm passing Open Rot")
 
     def Close_ROT2(self):
         timeElapsed = time.time() - self.stateTime
