@@ -343,6 +343,8 @@ class Navigation:
         self.rotState = SLIGHT_OPEN
         self.onLander = True
         if (state.sampleCollected):
+            if (state.holeRB != None):
+                self.stateMode = HOLE_ALIGN
             if (time.time() - self.modeStartTime > 2.5):
                 print("Im LOST PLEASE HELP")
                 v, w = 0, 0
