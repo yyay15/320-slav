@@ -191,29 +191,9 @@ class Navigation:
                 print("retunring to sample search")
                 self.modeStartTime = time.time()
                 self.stateMode = SEARCH_SAMPLE
-            # if (self.isEmpty(state.prevSampleRB) or self.onLander):
-            #     v, w = 0, 0
-            #     if (self.onLander and self.isEmpty(state.prevSampleRB)):
-            #         # time to drive forward when stuck
-            #         if time.time() - self.modeStartTime < 0.4:
-            #             v = 0.04
-            #         else:
-            #             self.onLander = False
-            #     else:
-            #         print("returning to sample search")
-            #         self.modeStartTime = time.time()
-            #         self.stateMode = SEARCH_SAMPLE
-            # else:
-            #     v, w = 0, 0
-            #     # find bearing of previous sample and spin that direction
-            #     self.turnDir = np.sign(state.prevSampleRB[0][1])
-            #     print("returning to sample search")
-            #     self.modeStartTime = time.time()
-            #     self.stateMode = SEARCH_SAMPLE
         else:
             self.modeStartTime = time.time()
-            currSample = state.prevSampleRB[0]
-            print(currSample)
+            currSample = state.sampleRB[0]
             v, w = self.navigate(currSample, state)
             if (currSample[0] < ROT_DISTANCE):
                 print("acquiring sample")
@@ -221,7 +201,6 @@ class Navigation:
                 self.modeStartTime = time.time()
                 self.stateMode = ACQUIRE_SAMPLE
                 self.onLander = False
-
         return v, w
 
     def navRock(self, state):
