@@ -52,7 +52,7 @@ class Collection:
     def sampleManage(self, navRockState):
         self.currentState = navRockState
         if self.currentState != self.prevState:
-            stateTime = time.time()
+            self.stateTime = time.time()
         
         if self.currentState == 0:
             pass
