@@ -106,6 +106,7 @@ class Collection:
     def Open_ROT2(self):
             timeElapsed = time.time() - self.stateTime
             print("I'm Open Rot")
+            print(timeElapsed)
             if timeElapsed < 1:
                 self.servoPWM.ChangeDutyCycle(6.8)
                 print("Open")
