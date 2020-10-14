@@ -104,7 +104,7 @@ class Navigation:
         if (state.sampleCollected):
             self.rotState = CLOSE
             self.stateMode =  SEARCH_LANDER
-        if (self.rotState == OPEN):
+        if (self.rotState == OPEN or self.rotState == CLOSE):
             self.rotState = SLIGHT_OPEN
         if (time.time() - self.searchTime < 60):
             if (not self.isEmpty(state.sampleRB)):
@@ -154,6 +154,8 @@ class Navigation:
 
     def searchRock(self, state):
         print("searching for rock")
+        if (self.rotState == OPEN or self.rotState == CLOSE):
+            self.rotState = SLIGHT_OPEN
         if (not self.isEmpty(state.rocksRB)):
             v, w = 0, 0
             self.rock_obstacle = False
@@ -213,6 +215,7 @@ class Navigation:
                 if (currRock[0] < ROCK_ALIGN_DISTANCE):
                     print("align rock")
                     self.modeStartTime = time.time()
+                    self.rotState = CLOSE
                     self.stateMode = ROCK_ALIGN
 
         return v, w
