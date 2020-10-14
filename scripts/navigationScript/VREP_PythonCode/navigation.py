@@ -343,13 +343,13 @@ class Navigation:
         self.rotState = SLIGHT_OPEN
         self.onLander = True
         if (state.sampleCollected):
-            if (time.time() - self.modeStartTime > 3):
+            if (time.time() - self.modeStartTime > 2.5):
                 print("Im LOST PLEASE HELP")
                 v, w = 0, 0
                 self.stateMode = SEARCH_LANDER
             else:
                 print("Imma end this mans career")
-                v = 0.069
+                v = 0.075
                 w = 0
         else:
             v, w = 0, 0
