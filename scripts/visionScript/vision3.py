@@ -163,7 +163,7 @@ class Vision:
                         continue 
                 elif parameters_dict["type"]==3:#for cover
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>300 and Area<5000:
+                    if Area>300 and Area<10000:
                         #if (LWidth/LHeight)<=2 and (LHeight/LWidth)<=2:
                         Lx=int(Moment["m10"]/Moment["m00"])
                         Ly=int(Moment["m01"]/Moment["m00"])
@@ -226,7 +226,7 @@ class Vision:
                         continue
                 elif parameters_dict["type"]==1: #for lander
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>3000 and Area<60000:
+                    if Area>2000 and Area<60000:
                         self.landerArea = Area
                         Lx=int(Moment["m10"]/Moment["m00"])
                         Ly=int(Moment["m01"]/Moment["m00"])
