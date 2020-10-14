@@ -266,7 +266,7 @@ class Vision:
                         (Lx,Ly),radius=cv2.minEnclosingCircle(a)
                         xdifference=self.Landerx-Lx
                         ydifference=self.Landery-Ly
-                        if (-Lx/2 <= xdifference <= Lx/2) and (-Ly/2<= ydifference <= Ly/2):
+                        if  (-Ly/2<= ydifference <= Ly/2):
                             cv2.rectangle(finalimage,(int(Lx-radius),int(Ly+radius)),(int(Lx+radius),int(Ly-radius)),
                             parameters_dict["BBoxColour"],2)
                             Distance=(parameters_dict["Height"]*(self.f/(2*radius))/8)*math.cos(0.2967)
