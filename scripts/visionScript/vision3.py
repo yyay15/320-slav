@@ -257,7 +257,7 @@ class Vision:
                         continue
                 elif parameters_dict["type"]==4: #hole
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>1000 and Area<2000:
+                    if Area>750 and Area<2000:
                         #if LWidth/LHeight<1.1 and LHeight/LWidth<1.1:
                         (Lx,Ly),radius=cv2.minEnclosingCircle(a)
                         xdifference=self.Landerx-Lx
