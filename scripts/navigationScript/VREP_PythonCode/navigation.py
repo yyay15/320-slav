@@ -215,7 +215,8 @@ class Navigation:
                 if (currRock[0] < ROCK_ALIGN_DISTANCE):
                     print("align rock")
                     self.modeStartTime = time.time()
-                    self.rotState = CLOSE
+                    if (self.rotState != CLOSE):
+                        self.rotState = CLOSE
                     self.stateMode = ROCK_ALIGN
 
         return v, w
