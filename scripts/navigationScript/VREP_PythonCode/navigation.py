@@ -343,6 +343,8 @@ class Navigation:
         self.rotState = SLIGHT_OPEN
         self.onLander = True
         if (state.sampleCollected):
+            if (state.holeRB != None):
+                self.stateMode = HOLE_ALIGN
             if (time.time() - self.modeStartTime > 2.5):
                 print("Im LOST PLEASE HELP")
                 v, w = 0, 0
@@ -469,9 +471,24 @@ class Navigation:
                 self.stateMode = SEARCH_ROCK
         return v, w
 
-# depreciate
+    # depreciate unless 👀👀
     def holeAlign(self, state):
+        print("I am aligning to da hoe")
         v, w = 0, 0
+        if (state.sampleCollected):
+            print("we gonna kobe into the hole")
+            print("This is the kobe traj: ",state.holeRB)
+            if(state.holeRB != None):
+                hole = state.holeRB[0]
+                v = 0.08
+                w = hole[1]
+            else:
+                print("Here we go again")
+                self.stateMode = UP_LANDER
+        else:
+            print("Gotta look for some orange spheres")
+            self.stateMode = SEARCH_SAMPLE
+
         # print("centering hole")
         # if (self.isEmpty(state.holeRB)):
         #     if (self.landerHoleSeen):
