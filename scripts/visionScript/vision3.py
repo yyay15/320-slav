@@ -377,7 +377,7 @@ class Vision:
         coverhole_Z=None
         lander_hole=0
         #imcopy=np.copy(img)
-        if self.state==8:
+        if self.state==8 or self.state==10:
             Lander_parameter_update={"hue":[15,30],"sat":[0,255],"value":[75,255]}
             self.lander_parameters.update(Lander_parameter_update)#update dictionary for lander
             #to change values to adjust for dodge lighting when going up lander
