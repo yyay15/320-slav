@@ -334,8 +334,9 @@ class Navigation:
         return v, w
 
 # !!!!!!!!FUNCTION TO DRIVE TO THE TOP OF THE LANDER !!!!!!#
-    def driveUpLander(self,state):        
-        self.rotState = SLIGHT_OPEN
+    def driveUpLander(self,state):
+        if (self.rotState != SLIGHT_OPEN):        
+            self.rotState = SLIGHT_OPEN
         if (state.sampleCollected):
             if (time.time() - self.modeStartTime > 4.20):
                 print("Im LOST PLEASE HELP")
