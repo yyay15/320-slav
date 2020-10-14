@@ -108,12 +108,12 @@ class Collection:
         timeElapsed = time.time() - self.stateTime
         print("I'm Open Rot")
         print(timeElapsed)
-        if timeElapsed < 0.4:
+        if timeElapsed < 0.25:
             if self.count <1:
                 self.servoPWM.ChangeDutyCycle(6.8)
                 self.count+=1
                 print("Open")
-        elif 0.4 < timeElapsed < 2:
+        elif 0.25 < timeElapsed < 2:
             if self.count <2:
                 self.servoPWM.ChangeDutyCycle(0)
                 self.count+=1
