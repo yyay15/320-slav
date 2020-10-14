@@ -106,7 +106,7 @@ class Collection:
             self.Lander()
 
     def Open_ROT2(self):
-            timeElapsed = time.time() - stateTime
+            timeElapsed = time.time() - self.stateTime
             if timeElapsed < 1:
                 self.servoPWM.ChangeDutyCycle(6.8)
                 print("Open")
@@ -117,26 +117,26 @@ class Collection:
             else:
                 pass
 
-        def Close_ROT2(self):
-            timeElapsed = time.time() - stateTime
-            if timeElapsed < 1:
-                self.servoPWM.ChangeDutyCycle(3.2)
-                print("Close")
-            elif 1 < timeElapsed < 2:
-                pass
-            elif 2 < timeElapsed < 3:
-                self.servoPWM.ChangeDutyCycle(0)
-            else:
-                pass
+    def Close_ROT2(self):
+        timeElapsed = time.time() - self.stateTime
+        if timeElapsed < 1:
+            self.servoPWM.ChangeDutyCycle(3.2)
+            print("Close")
+        elif 1 < timeElapsed < 2:
+            pass
+        elif 2 < timeElapsed < 3:
+            self.servoPWM.ChangeDutyCycle(0)
+        else:
+            pass
 
-        def Lander2(self):
-            timeElapsed = time.time() - stateTime
-            if timeElapsed < 1:
-                self.servoPWM.ChangeDutyCycle(4.9)
-                print("Lander Angle")
-            elif 1 < timeElapsed < 2:
-                pass
-            elif 2 < timeElapsed < 3:
-                self.servoPWM.ChangeDutyCycle(0)
-            else:
-                pass
+    def Lander2(self):
+        timeElapsed = time.time() - self.stateTime
+        if timeElapsed < 1:
+            self.servoPWM.ChangeDutyCycle(4.9)
+            print("Lander Angle")
+        elif 1 < timeElapsed < 2:
+            pass
+        elif 2 < timeElapsed < 3:
+            self.servoPWM.ChangeDutyCycle(0)
+        else:
+            pass
