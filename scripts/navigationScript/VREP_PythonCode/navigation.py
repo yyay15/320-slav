@@ -179,7 +179,10 @@ class Navigation:
             if (self.onLander):
                 if time.time() - self.modeStartTime < 0.4:
                     v = 0.04
+                    w = 0
                 else:
+                    v = 0.04
+                    w = 0
                     self.onLander = False
             else:
                 v, w = 0, 0
