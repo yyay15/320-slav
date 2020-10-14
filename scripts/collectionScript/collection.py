@@ -112,7 +112,7 @@ class Collection:
             if self.count <1:
                 self.servoPWM.ChangeDutyCycle(6.8)
                 self.count+=1
-            print("Open")
+                print("Open")
         elif 0.4 < timeElapsed < 2:
             if self.count <2:
                 self.servoPWM.ChangeDutyCycle(0)
@@ -130,7 +130,7 @@ class Collection:
             if self.count <1:
                 self.servoPWM.ChangeDutyCycle(3.2)
                 self.count+=1
-            print("Close")
+                print("Close")
         elif 0.4 < timeElapsed < 2:
             if self.count <2:
                 self.servoPWM.ChangeDutyCycle(0)
@@ -148,7 +148,7 @@ class Collection:
             if self.count <1:
                 self.servoPWM.ChangeDutyCycle(4.9)
                 self.count+=1
-            print("Lander Angled Up")
+                print("Lander Angled Up")
         elif 0.4 < timeElapsed < 2:
             if self.count <2:
                 self.servoPWM.ChangeDutyCycle(0)
