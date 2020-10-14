@@ -59,12 +59,12 @@ class Collection:
             if self.currentState == 0:
                 pass
             elif self.currentState == 1:
-                self.Open_ROT()
+                self.Open_ROT2()
             elif self.currentState == 2:
                 print("close rot")
-                self.Close_ROT()
+                self.Close_ROT2()
             elif self.currentState == 3:
-                self.Lander()
+                self.Lander2()
             self.prevState = self.currentState
             
     def Test_ROT(self):
