@@ -52,7 +52,7 @@ class Collection:
     def sampleManage(self, navRockState):
         self.currentState = navRockState
         if self.currentState != self.prevState:
-            stateTime = time.time()
+            self.stateTime = time.time()
         
         if self.currentState == 0:
             pass
@@ -106,6 +106,7 @@ class Collection:
     def Open_ROT2(self):
             timeElapsed = time.time() - self.stateTime
             print("I'm Open Rot")
+            print(timeElapsed)
             if timeElapsed < 1:
                 self.servoPWM.ChangeDutyCycle(6.8)
                 print("Open")

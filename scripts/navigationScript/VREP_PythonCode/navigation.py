@@ -177,7 +177,7 @@ class Navigation:
         print("nav to sample ")
         if (self.isEmpty(state.sampleRB)):
             if (self.onLander):
-                if time.time() - self.modeStartTime < 2:
+                if time.time() - self.modeStartTime < 2.5:
                     v = 0.08
                     w = 0
                 else:
