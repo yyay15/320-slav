@@ -374,7 +374,7 @@ class Vision:
         return sampleRB, landerRB, obstaclesRB, rocksRB,  landerHoleRB, rotHoleRB
 
 
-    def sampleCollected(self)
+    def sampleCollected(self):
         self.filterCounter += 1
         index = self.filterCounter % self.filterSize
         if a>13:
