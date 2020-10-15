@@ -475,8 +475,8 @@ class Navigation:
             print("This is the kobe traj: ",state.holeRB)
             if(not self.isEmpty(state.holeRB)):
                 hole = state.holeRB[0]
-                v = 0.03
-                w = hole[1]*1.25
+                v = 0.05
+                w = hole[1]*1.3
             else:
                 print("Here we go again")
                 self.stateMode = UP_LANDER
