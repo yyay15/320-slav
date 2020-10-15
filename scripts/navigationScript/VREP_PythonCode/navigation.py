@@ -42,7 +42,7 @@ LANDER_SWITCH_RANGE = 0.3
 KV_ATTRACT = 0.5 #0.5
 KW_ATTRACT = 1.3    #1.5 #0.8
 KV_REPULSE = 0.3
-KW_REPULSE = 2.2
+KW_REPULSE = 2.3
 
 class Navigation:
     def __init__(self):
@@ -612,7 +612,7 @@ class Navigation:
                     wTemp =  (np.sign(closeObs[1]) * (0.5 - closeObs[0]) * (3 - abs(closeObs[1]))* KW_REPULSE)
                     vRep =  (0.5 - closeObs[0]) * 0.2
                 if closeObs[0] < 0.15:
-                    wTemp = 0.9* wTemp
+                    wTemp = 1.5* wTemp
                 wRep += wTemp
         return vRep, wRep
 
