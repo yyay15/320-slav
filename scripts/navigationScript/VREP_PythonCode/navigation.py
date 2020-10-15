@@ -258,6 +258,7 @@ class Navigation:
                     self.isBlind = False
                     self.attemptFlip = True
             else:
+                self.rotState = CLOSE
                 # on the odd chance the sample is collected (UNLIKELY)
                 if (state.sampleCollected):
                     self.modeStartTime = time.time()
