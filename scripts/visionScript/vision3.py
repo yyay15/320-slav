@@ -123,6 +123,7 @@ class Vision:
         RangeRBC=np.array([])
         ZDistance=np.array([])
         Bearing=np.array([])
+        maxArea=0
         NewBearing=np.array([])
         Center=np.array([])
         #LWidth=np.array([])
@@ -262,28 +263,32 @@ class Vision:
                 elif parameters_dict["type"]==4: #hole
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
                     if Area>750 and Area<2000:
+                        if maxArea<Area:
+                            maxArea=Area
                         #if LWidth/LHeight<1.1 and LHeight/LWidth<1.1:
-                        (Lx,Ly),radius=cv2.minEnclosingCircle(a)
-                        xdifference=self.Landerx-Lx
-                        ydifference=self.Landery-Ly
-                        if  (-Ly/2<= ydifference <= Ly/2):
-                            cv2.rectangle(finalimage,(int(Lx-radius),int(Ly+radius)),(int(Lx+radius),int(Ly-radius)),
-                            parameters_dict["BBoxColour"],2)
-                            Distance=(parameters_dict["Height"]*(self.f/(2*radius))/8)*math.cos(0.2967)
-                            Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
-                            Distance=Distance/1000
-                            ZDistance=np.append(ZDistance,Distance)
-                            rangeText = "R: {:.4f}".format(Distance)
-                            #bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
-                            cv2.putText(finalimage, rangeText, (Lx1+5,Ly1+10), 
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.5,  parameters_dict["BBoxColour"] )
-                            print("This is hole Area",Area)
-                            Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
-                            Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
-                            #columnwise
-                            Range=Range[Range[:,0].argsort()]
-                            #else:
-                            #    continue
+                            (Lx,Ly),radius=cv2.minEnclosingCircle(a)
+                            xdifference=self.Landerx-Lx
+                            ydifference=self.Landery-Ly
+                            if  (-Ly/2<= ydifference <= Ly/2):
+                                cv2.rectangle(finalimage,(int(Lx-radius),int(Ly+radius)),(int(Lx+radius),int(Ly-radius)),
+                                parameters_dict["BBoxColour"],2)
+                                Distance=(parameters_dict["Height"]*(self.f/(2*radius))/8)*math.cos(0.2967)
+                                Distance=(-0.0005*Distance**2)+(1.4897*Distance)-66.919
+                                Distance=Distance/1000
+                                ZDistance=np.append(ZDistance,Distance)
+                                rangeText = "R: {:.4f}".format(Distance)
+                                #bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
+                                cv2.putText(finalimage, rangeText, (Lx1+5,Ly1+10), 
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.5,  parameters_dict["BBoxColour"] )
+                                print("This is hole Area",Area)
+                                Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
+                                Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                                #columnwise
+                                Range=Range[Range[:,0].argsort()]
+                                #else:
+                                #    continue
+                            else:
+                                continue
                         else:
                             continue
                     else:
