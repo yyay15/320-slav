@@ -265,7 +265,7 @@ class Vision:
                         continue
                 elif parameters_dict["type"]==4: #hole
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>750 and Area<3000:
+                    if Area>500 and Area<4000:
                         #if maxArea<Area:
                         #    maxArea=Area
                         #if LWidth/LHeight<1.1 and LHeight/LWidth<1.1:
