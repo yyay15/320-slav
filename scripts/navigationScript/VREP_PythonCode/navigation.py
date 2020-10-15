@@ -231,7 +231,7 @@ class Navigation:
         v, w = 0, 0
         print("driving to flip pos")
         # drive straight for 1.5 seconds first 
-        if (time.time() - self.modeStartTime <= 2):
+        if (time.time() - self.modeStartTime <= 2.2):
             v = 0.042
             w = 0
             self.attemptFlip = False
@@ -448,10 +448,10 @@ class Navigation:
             if (closestRock[0] < 0.17 and (-0.15 < closestRock[1] < 0.15)):
                 self.modeStartTime = time.time()
                 self.stateMode = FLIP_ROCK
-            if (not -0.07 < closestRock[1] < 0.07):
+            if (not -0.06 < closestRock[1] < 0.06):
                 w =closestRock[1]
             if (closestRock[0] > 0.17):
-                v = 0.04
+                v = 0.05
         else:
             self.modeStartTime = time.time()
             self.stateMode = SEARCH_ROCK
