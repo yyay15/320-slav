@@ -453,7 +453,7 @@ class Navigation:
         else:
             self.modeStartTime = time.time()
             self.stateMode = SEARCH_ROCK
-            
+        return v, w
     
     # def alignRock(self, state):
     #     print("aligning rock")
