@@ -255,9 +255,11 @@ class Navigation:
                     # after 1 second close cover
                     print("closing cover")
                     self.rotState = CLOSE
+                    self.flipRockStart= time.time()
                     self.isBlind = False
                     self.attemptFlip = True
-            if (self.attemptFlip):
+            if (self.attemptFlip and time.time() - self.flipRockStart > 5):
+                v, w = 0, 0
                 if (self.isEmpty(state.sampleRB)):
                     self.modeStartTime = time.time()
                     self.stateMode = SEARCH_ROCK
