@@ -113,7 +113,7 @@ class Collection:
                 self.servoPWM.ChangeDutyCycle(7.2)
                 self.count+=1
                 print("Open")
-        elif 0.4 < timeElapsed < 1:
+        elif 0.4 < timeElapsed < 1.5:
             if self.count <2:
                 self.servoPWM.ChangeDutyCycle(0)
                 self.count+=1
@@ -131,7 +131,7 @@ class Collection:
                 self.servoPWM.ChangeDutyCycle(3.1)
                 self.count+=1
                 print("Close")
-        elif 0.45 < timeElapsed < 1:
+        elif 0.45 < timeElapsed < 1.5:
             if self.count <2:
                 self.servoPWM.ChangeDutyCycle(0)
                 self.count+=1
