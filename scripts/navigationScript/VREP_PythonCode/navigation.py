@@ -32,7 +32,7 @@ SLIGHT_OPEN = 3
 # DISTANCE/TIME VARIABLES
 ROT_DISTANCE = 0.22 #collect distance 
 FLIP_DISTANCE = 0.16
-ROCK_ALIGN_DISTANCE = 0.35
+ROCK_ALIGN_DISTANCE = 0.25
 FULL_ROTATION = 15
 ROT_ACQUIRE_SAMPLE = 0.9
 DRIVE_OFF_TIME = 6
@@ -246,13 +246,14 @@ class Navigation:
                 self.flipRockStart= time.time()
                 self.isBlind = True
             if (self.isBlind):
-                if (time.time() - self.flipRockStart < 5):
+                if (time.time() - self.flipRockStart < 0.7):
                     print("cover open, reversing")
                     v = -0.07
                     w = 0
                 else:
                     # after 1 second close cover
                     print("closing cover")
+                    self.rotState = CLOSE
                     self.isBlind = False
                     self.attemptFlip = True
             else:
