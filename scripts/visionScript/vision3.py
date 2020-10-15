@@ -102,7 +102,7 @@ class Vision:
         elif parameters_dict["type"]==1:
             Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(10,10))
         elif parameters_dict["type"]==4:
-            Kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
+            Kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(10,10))
         else:
             Kernel=cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
                 
