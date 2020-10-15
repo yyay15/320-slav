@@ -621,7 +621,7 @@ class Navigation:
         if not self.isEmpty(allObstacles):
             for obs in allObstacles:
                 if (obs[0] < 0.5):
-                    repulsivePotential = ko * ((c3 * obs[1] + 1) / c3**2 ) * exp(-c3 * obs[1]) * exp(-c4 * obs[0])
+                    repulsivePotential += ko * ((c3 * obs[1] + 1) / c3**2 ) * exp(-c3 * obs[1]) * exp(-c4 * obs[0])
             # closeObs = self.closestObstacle(allObstacles)
             # if closeObs[0] < 0.5:
             #     wRep =  (np.sign(closeObs[1]) * (0.5 - closeObs[0]) * (3 - abs(closeObs[1]))* KW_REPULSE)
