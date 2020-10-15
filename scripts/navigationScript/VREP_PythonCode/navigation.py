@@ -230,7 +230,7 @@ class Navigation:
         v, w = 0, 0
         print("driving to flip pos")
         # drive straight for 0.5 seconds first 
-        if (time.time() - self.modeStartTime <= 5):
+        if (time.time() - self.modeStartTime <= 4):
             v = 0.042
             w = 0
             self.attemptFlip = False
@@ -243,10 +243,9 @@ class Navigation:
                 self.rotState = OPEN
                 self.modeStartTime = time.time()
                 self.isBlind = True
-            # after flipping rock, reverse slightly (1 second) to get out of way/ not accidentally close on rock
             if (self.isBlind):
-                print("cover open, reversing")
-                if (time.time() - self.modeStartTime < 1):
+                if (time.time() - self.modeStartTime < 5):
+                    print("cover open, reversing")
                     v = -0.07
                     w = 0
                 else:
@@ -443,49 +442,18 @@ class Navigation:
         v, w = 0, 0
         if (not self.isEmpty(state.rocksRB)):
             closestRock = state.rocksRB[0]
-            if (closestRock[0] < 0.08 and (-0.07 < closestRock[1] < 0.07)):
+            if (closestRock[0] < 0.17 and (-0.15 < closestRock[1] < 0.15)):
                 self.modeStartTime = time.time()
                 self.stateMode = FLIP_ROCK
             if (not -0.07 < closestRock[1] < 0.07):
                 w =closestRock[1]
-            if (closestRock[0] > 0.08):
+            if (closestRock[0] > 0.17):
                 v = 0.04
         else:
             self.modeStartTime = time.time()
             self.stateMode = SEARCH_ROCK
-            
-    
-    # def alignRock(self, state):
-    #     print("aligning rock")
-    #     v, w = 0, 0
-    #     if (not self.isEmpty(state.rotHoleRB)):
-    #         # THIS VARIABLE (rotHoleBearing) WAS CREATED TO MAKE IT EASIER TO PUT A GAIN ON THE ROT HOLE BEARING FOR THE ALIGNMENT CONDITION
-    #         # MIGHT NOT BE NEEDE ANYMORE 
-    #         # NEEDS TESTING
-    #         rotHoleBearing = state.rotHoleRB[0][1]
-    #         print("ROT HOLE RB", state.rotHoleRB)
-    #         # IF Aligned move to flip rock
-    #         if (-0.01 <= rotHoleBearing <= 0.01):
-    #             print("changing to flip")
-    #             self.modeStartTime = time.time()
-    #             self.stateMode = FLIP_ROCK
-    #         else:
-    #             # this function was used when i was trying out having the rock as a repulsive force
-    #             # this is not needed hence, the None for avoid 
-    #             # just navigating to ROT Hole RB
-    #             v, w = self.navAndAvoid(state.rotHoleRB, None)
-    #     else:
-    #         # THESE FUNCTIONS MAY BE DEPRECIATED
-    #         # IF THE ROBOT HAS MOVED TOO CLOSE BUT ROT HOLE WAS SEEN PREVIOUSLY GO TO FLIP ROCK_ALIGN
-    #         # WAS A BIT ERROR PRONE IDEALLY SHOULDNT NEED THIS
-    #         if (not self.isEmpty(state.prevRotHoleRB)):
-    #             self.modeStartTime = time.time()
-    #             self.stateMode = FLIP_ROCK
-    #         else:
-    #             print(" searching rock")
-    #             self.modeStartTime = time.time()
-    #             self.stateMode = SEARCH_ROCK
-    #     return v, w
+        return v, w
+
 
     # depreciate unless 👀👀
     def holeAlign(self, state):

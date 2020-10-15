@@ -13,6 +13,9 @@ class Vision:
         # parameters that change 
         self.state = 1
         self.random = 1
+        self.filterCounter = 0
+        self.filterSize = 10
+        self.sensorValues = [0] * (self.filterSize)
         self.changingVariable = 1
         # https://stackoverflow.com/questions/11420748/setting-camera-parameters-in-opencv-python
         i2c = busio.I2C(board.SCL, board.SDA)
@@ -372,12 +375,19 @@ class Vision:
 
 
     def sampleCollected(self):
-        a=self.sensor.proximity
-        if a>=13:
-            SamplePresent=True
+        self.filterCounter += 1
+        a = self.sensor.proximity
+        index = self.filterCounter % self.filterSize
+        if a >13:
+            self.sensorValues[index] = 1
         else:
-            SamplePresent=False
-        return SamplePresent 
+            self.sensorValues[index] = 0
+        
+        averageSensorValue = sum(self.sensorValues) / len(self.sensorValues)
+        if averageSensorValue > 1:
+            return True
+        else:
+            return False
         pass
 
     def holefinder(self,finalImage,LanderImage):
