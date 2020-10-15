@@ -15,7 +15,7 @@ class Vision:
         self.random = 1
         self.filterCounter = 0
         self.filterSize = 10
-        self.sensorValues = [0] * (filterSize)
+        self.sensorValues = [0] * (self.filterSize)
         self.changingVariable = 1
         # https://stackoverflow.com/questions/11420748/setting-camera-parameters-in-opencv-python
         i2c = busio.I2C(board.SCL, board.SDA)
