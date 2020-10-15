@@ -107,7 +107,7 @@ class Navigation:
         if (state.sampleCollected):
             self.rotState = CLOSE
             self.stateMode =  SEARCH_LANDER
-        if (self.rotState == OPEN or self.rotState == CLOSE):
+        if (self.rotState == OPEN or self.rotState == CLOSE or self.rotState == HARD_CLOSE):
             self.rotState = SLIGHT_OPEN
         if (time.time() - self.searchTime < 60):
             if (not self.isEmpty(state.sampleRB)):
@@ -137,6 +137,8 @@ class Navigation:
 
     # robot spins, moves forward, spins again
     def searchLander(self, state):
+        if (self.rotState == HARD_CLOSE):
+            self.rotState = CLOSE
         if (not self.isEmpty(state.prevLanderRB)):
             self.rotState = CLOSE
             self.turnDir = np.sign(state.prevLanderRB[0][1]) 
