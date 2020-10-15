@@ -26,7 +26,7 @@ servoPin = 17
 # State 1 = Open
 # State 2 = Close
 # State 3 = Slight Open
-
+# State 4 = Hard Close
 
 
 ################################################################
@@ -64,6 +64,8 @@ class Collection:
             self.Close_ROT2()
         elif self.currentState == 3:
             self.Lander2()
+        elif self.currentState == 4: 
+            self.Close_ROT()
         self.prevState = self.currentState
         
     def Test_ROT(self):

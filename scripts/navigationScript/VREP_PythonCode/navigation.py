@@ -28,6 +28,7 @@ PASS_STATE = 0
 OPEN = 1
 CLOSE = 2
 SLIGHT_OPEN = 3
+HARD_CLOSE = 4
 
 # DISTANCE/TIME VARIABLES
 ROT_DISTANCE = 0.22 #collect distance 
@@ -327,10 +328,10 @@ class Navigation:
                 w = 0
             else:
                 v, w = 0, 0
-                self.rotState = CLOSE
+                self.rotState = HARD_CLOSE
                 self.isBlind = False
         elif (not self.isBlind):
-            self.rotState = CLOSE
+            self.rotState = HARD_CLOSE
             if (state.sampleCollected):
                 print("sample collected, search lander")
                 v, w = 0, 0
