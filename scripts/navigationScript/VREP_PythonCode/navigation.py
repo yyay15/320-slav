@@ -438,6 +438,21 @@ class Navigation:
             self.stateMode = SEARCH_LANDER
         return v, w
 
+    def alignRock(self,state):
+        print("aligning rock")
+        v, w = 0, 0
+        if (not self.isEmpty(state.rocksRB)):
+            closestRock = state.rocksRB[0]
+            if (rocksRB[0] > 0.1):
+                v = 0.02
+                w = rocksRB[1] 
+            else:
+                self.modeStartTime = time.time()
+                self.stateMode = FLIP_ROCK
+        else:
+            self.modeStartTime = time.time()
+            self.stateMode = SEARCH_ROCK
+            
     
     def alignRock(self, state):
         print("aligning rock")
