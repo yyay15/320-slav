@@ -607,6 +607,7 @@ class Navigation:
         if not self.isEmpty(allObstacles):
             #closeObs = self.closestObstacle(allObstacles)
             for closeObs in allObstacles:
+                wTemp = 0
                 if closeObs[0] < 0.5:
                     wTemp =  (np.sign(closeObs[1]) * (0.5 - closeObs[0]) * (3 - abs(closeObs[1]))* KW_REPULSE)
                     vRep =  (0.5 - closeObs[0]) * 0.2
