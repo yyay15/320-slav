@@ -264,10 +264,11 @@ class Navigation:
                 else:
                     # search sample
                     self.modeStartTime = time.time()
-                    if (not self.isEmpty(state.sampleRB)):
-                        self.stateMode = SEARCH_SAMPLE
-                    else:
-                        self.stateMode = SEARCH_ROCK
+                    self.stateMode = SEARCH_SAMPLE
+                    #if (not self.isEmpty(state.sampleRB)):
+                    #    self.stateMode = SEARCH_SAMPLE
+                    #else:
+                    #    self.stateMode = SEARCH_ROCK
         return v, w
 
     def navLander(self, state):
