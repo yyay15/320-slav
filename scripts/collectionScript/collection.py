@@ -61,7 +61,7 @@ class Collection:
             self.Open_ROT2()
         elif self.currentState == 2:
             print("close rot")
-            self.Close_ROT2()
+            self.Close_ROT()
         elif self.currentState == 3:
             self.Lander2()
         self.prevState = self.currentState
