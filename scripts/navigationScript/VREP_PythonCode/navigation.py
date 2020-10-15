@@ -612,7 +612,7 @@ class Navigation:
                     wTemp =  (np.sign(closeObs[1]) * (0.5 - closeObs[0]) * (3 - abs(closeObs[1]))* KW_REPULSE)
                     vRep =  (0.5 - closeObs[0]) * 0.2
                 if closeObs[0] < 0.15:
-                    wTemp = 2 * wTemp
+                    wTemp = 1.2 * wTemp
                 wRep += wTemp
         return vRep, wRep
 
