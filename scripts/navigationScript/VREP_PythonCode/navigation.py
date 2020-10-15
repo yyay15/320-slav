@@ -448,7 +448,7 @@ class Navigation:
                 self.stateMode = FLIP_ROCK
             if (not -0.07 < closestRock[1] < 0.07):
                 w =closestRock[1]
-            if (closestRock[0] > 0.08):
+            if (closestRock[0] > 0.17):
                 v = 0.04
         else:
             self.modeStartTime = time.time()
