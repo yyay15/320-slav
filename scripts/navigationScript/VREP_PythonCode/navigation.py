@@ -475,7 +475,7 @@ class Navigation:
             print("This is the kobe traj: ",state.holeRB)
             if(not self.isEmpty(state.holeRB)):
                 hole = state.holeRB[0]
-                v = 0.05
+                v = 0.1
                 w = hole[1]*1.3
             else:
                 print("Here we go again")
