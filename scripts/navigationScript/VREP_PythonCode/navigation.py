@@ -91,12 +91,12 @@ class Navigation:
 
     def searchAll(self, state):
         v, w = 0, 0
-        if (time.time() - self.overallTime > 240 or self.numSampleCollected >= 3):
+        if (time.time() - self.overallTime  < 120 or self.numSampleCollected >= 1):
             self.stateMode = SEARCH_ROCK
             self.modeStartTime = time.time()
-        elif (time.time() - self.searchTime > 60):
-            self.stateMode = SEARCH_ROCK
-            self.modeStartTime = time.time()
+        # elif (time.time() - self.searchTime > 60):
+        #     self.stateMode = SEARCH_ROCK
+        #     self.modeStartTime = time.time()
         else:
             self.stateMode = SEARCH_SAMPLE
             self.modeStartTime = time.time()
@@ -107,31 +107,28 @@ class Navigation:
         if (state.sampleCollected):
             self.rotState = CLOSE
             self.stateMode =  SEARCH_LANDER
-        if (self.rotState == OPEN or self.rotState == CLOSE or self.rotState == HARD_CLOSE):
-            self.rotState = SLIGHT_OPEN
-        if (time.time() - self.searchTime < 60):
-            if (not self.isEmpty(state.sampleRB)):
-                self.rock_obstacle = True
-                self.stateMode = NAV_SAMPLE
-            elif (time.time() - self.modeStartTime >= FULL_ROTATION):
-                if (not self.isEmpty(state.obstaclesRB)):
-                    print("nav to obstacle")
-                    v, w = self.navObsAvoidRock(state)
-                    if (state.obstaclesRB[0][0] < 0.3):
-                        self.modeStartTime = time.time()
-                else:
-                    print("moving around")
-                    v, w = self.navigate([0.2, 0], state)
-                    if (time.time() - self.modeStartTime - FULL_ROTATION >= 1.5):
-                        print("return to spin")
-                        self.turnDir = self.turnDir * -1 
-                        self.modeStartTime = time.time()
-            else:
-                v = 0
-                w = 0.5 * self.turnDir
         else:
-            self.stateMode = SEARCH_ALL
-            self.modeStartTime = time.time()
+            self.rotState = SLIGHT_OPEN
+        if (not self.isEmpty(state.sampleRB)):
+            self.rock_obstacle = True
+            self.stateMode = NAV_SAMPLE
+        elif (time.time() - self.modeStartTime >= FULL_ROTATION):
+            if (not self.isEmpty(state.obstaclesRB)):
+                print("nav to obstacle")
+                v, w = self.navObsAvoidRock(state)
+                if (state.obstaclesRB[0][0] < 0.3):
+                    self.modeStartTime = time.time()
+            else:
+                print("moving around")
+                v, w = self.navigate([0.2, 0], state)
+                if (time.time() - self.modeStartTime - FULL_ROTATION >= 1.5):
+                    print("return to spin")
+                    self.turnDir = self.turnDir * -1 
+                    self.modeStartTime = time.time()
+        else:
+            v = 0
+            w = 0.5 * self.turnDir
+
 
         return v, w
 
@@ -260,6 +257,12 @@ class Navigation:
                     self.rotState = CLOSE
                     self.isBlind = False
                     self.attemptFlip = True
+            if (self.attemptFlip):
+                if (self.isEmpty(state.sampleRB)):
+                    self.modeStartTime = time.time()
+                    self.stateMode = SEARCH_ROCK
+                else:
+                    self.attemptFlip = False
             else:
                 self.rotState = CLOSE
                 # on the odd chance the sample is collected (UNLIKELY)
@@ -270,10 +273,6 @@ class Navigation:
                     # search sample
                     self.modeStartTime = time.time()
                     self.stateMode = SEARCH_SAMPLE
-                    #if (not self.isEmpty(state.sampleRB)):
-                    #    self.stateMode = SEARCH_SAMPLE
-                    #else:
-                    #    self.stateMode = SEARCH_ROCK
         return v, w
 
     def navLander(self, state):
