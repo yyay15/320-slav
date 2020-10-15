@@ -375,19 +375,25 @@ class Vision:
 
 
     def sampleCollected(self):
-        self.filterCounter += 1
-        a = self.sensor.proximity
-        index = self.filterCounter % self.filterSize
-        if a >13:
-            self.sensorValues[index] = 1
+        a=self.sensor.proximity
+        if a>=13:
+            SamplePresent=True
         else:
-            self.sensorValues[index] = 0
+            SamplePresent=False
+        return SamplePresent 
+        # self.filterCounter += 1
+        # a = self.sensor.proximity
+        # index = self.filterCounter % self.filterSize
+        # if a >13:
+        #     self.sensorValues[index] = 1
+        # else:
+        #     self.sensorValues[index] = 0
         
-        averageSensorValue = sum(self.sensorValues) / len(self.sensorValues)
-        if averageSensorValue > 1:
-            return True
-        else:
-            return False
+        # averageSensorValue = sum(self.sensorValues) / len(self.sensorValues)
+        # if averageSensorValue > 1:
+        #     return True
+        # else:
+        #     return False
         pass
 
     def holefinder(self,finalImage,LanderImage):

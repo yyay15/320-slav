@@ -32,7 +32,7 @@ SLIGHT_OPEN = 3
 # DISTANCE/TIME VARIABLES
 ROT_DISTANCE = 0.22 #collect distance 
 FLIP_DISTANCE = 0.16
-ROCK_ALIGN_DISTANCE = 0.35
+ROCK_ALIGN_DISTANCE = 0.25
 FULL_ROTATION = 15
 ROT_ACQUIRE_SAMPLE = 0.9
 DRIVE_OFF_TIME = 6
@@ -48,6 +48,7 @@ class Navigation:
     def __init__(self):
         self.stateMode = 0 # intial start state
         self.modeStartTime = time.time() # timer for each state
+        self.flipRockStart = 0
         self.searchTime= time.time()
         self.overallTime = time.time()
         self.turnDir = 1                 # turn clockwise or anticlockwise
@@ -229,8 +230,8 @@ class Navigation:
         #time to drive to  be in flip position
         v, w = 0, 0
         print("driving to flip pos")
-        # drive straight for 0.5 seconds first 
-        if (time.time() - self.modeStartTime <= 4):
+        # drive straight for 1.5 seconds first 
+        if (time.time() - self.modeStartTime <= 1.5):
             v = 0.042
             w = 0
             self.attemptFlip = False
@@ -240,17 +241,19 @@ class Navigation:
             v, w = 0, 0
             if (not self.isBlind and not self.attemptFlip):
                 print("flipping rock")
+                v, w = 0, 0
                 self.rotState = OPEN
-                self.modeStartTime = time.time()
+                self.flipRockStart= time.time()
                 self.isBlind = True
             if (self.isBlind):
-                if (time.time() - self.modeStartTime < 5):
+                if (time.time() - self.flipRockStart < 0.7):
                     print("cover open, reversing")
                     v = -0.07
                     w = 0
                 else:
                     # after 1 second close cover
                     print("closing cover")
+                    self.rotState = CLOSE
                     self.isBlind = False
                     self.attemptFlip = True
             else:
