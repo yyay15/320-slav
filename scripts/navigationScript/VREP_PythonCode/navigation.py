@@ -579,39 +579,56 @@ class Navigation:
         return v, w
 
     def navigate(self, goal, state):
-        vRep, wRep = 0, 0
-        v = KV_ATTRACT * goal[0] 
-        w = KW_ATTRACT * goal[1]
-        vRep, wRep = self.avoidObstacles(state)
-        v = v - vRep
-        w = w - wRep
+        kg = 2
+        c1 = 0.4
+        c2 = 0.4
+        vMax = 0.1
+        kv = 0.5
+        repulsive = 0
+        # vRep, wRep = 0, 0
+        # w = KW_ATTRACT * goal[1]
+        # vRep, wRep = self.avoidObstacles(state)
+        # v = v - vRep
+        # w = w - wRep
+        attractive = 0.5 * kg * (goal[1]**2) * (exp(-c1*goal[0]) + c2)
+        repulsive = self.avoidObstacles(state)
+        total = attractive - repulsive
+        w = total 
+        v = max(0.1 * exp(-0.5 * repulsive), 0)
+
         return v, w
 
     def avoidObstacles(self, state):
+        # defining gross VARIABLES
+        c3 = 4
+        c4 = 0.1
+        ko = 9
+        repulsivePotential = 0
         allObstacles = []
         obstacles = state.obstaclesRB#[[r,b], [r,b]]
         rocks = state.rocksRB #[[r,b], [r,b]]
-        vRep = 0
-        wRep = 0
+        # vRep = 0
+        # wRep = 0
         if not self.isEmpty(obstacles):
             print("adding obstacles")
             obstacles = obstacles.tolist()
             allObstacles = allObstacles + obstacles
-            print(allObstacles)
         if not self.isEmpty(rocks) and self.rock_obstacle:
-            print("adding rocks")
+            print("adding rocks to obs")
             rocks = rocks.tolist()
             allObstacles = allObstacles + rocks
-            print(allObstacles)
-            
+        
         if not self.isEmpty(allObstacles):
-            closeObs = self.closestObstacle(allObstacles)
-            if closeObs[0] < 0.5:
-                wRep =  (np.sign(closeObs[1]) * (0.5 - closeObs[0]) * (3 - abs(closeObs[1]))* KW_REPULSE)
-                vRep =  (0.5 - closeObs[0]) * 0.2
-                if closeObs[0] < 0.4:
-                    wRep = 2 * wRep
-        return vRep, wRep
+            for obs in allObstacles:
+                if (obs[0] < 0.5):
+                    repulsivePotential = ko * ((c3 * abs(obs[i]) + 1) / c3**2 ) * exp(-c3 * abs(obs[i])) * exp(-c4 * obs[0])
+            # closeObs = self.closestObstacle(allObstacles)
+            # if closeObs[0] < 0.5:
+            #     wRep =  (np.sign(closeObs[1]) * (0.5 - closeObs[0]) * (3 - abs(closeObs[1]))* KW_REPULSE)
+            #     vRep =  (0.5 - closeObs[0]) * 0.2
+            #     if closeObs[0] < 0.4:
+            #         wRep = 2 * wRep
+        return repulsivePotential
 
     def closestObstacle(self, obstacles):
         minObstacle = obstacles[0]
