@@ -592,7 +592,7 @@ class Navigation:
         # w = w - wRep
         attractive = 0.5 * kg * (goal[1]**2) * (exp(-c1*goal[0]) + c2)
         repulsive = self.avoidObstacles(state)
-        total = attractive - repulsive
+        total = attractive + repulsive
         w = total 
         v = max(0.1 * exp(-0.5 * repulsive), 0)
 
@@ -602,7 +602,7 @@ class Navigation:
         # defining gross VARIABLES
         c3 = 4
         c4 = 0.1
-        ko = 9
+        ko = 12
         repulsivePotential = 0
         allObstacles = []
         obstacles = state.obstaclesRB#[[r,b], [r,b]]
