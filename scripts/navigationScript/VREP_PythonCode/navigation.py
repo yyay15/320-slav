@@ -579,9 +579,9 @@ class Navigation:
         return v, w
 
     def navigate(self, goal, state):
-        kg = 2
+        kg = 5
         c1 = 0.4
-        c2 = 0.4
+        c2 = 0.1
         vMax = 0.1
         kv = 0.5
         repulsive = 0
@@ -600,9 +600,9 @@ class Navigation:
 
     def avoidObstacles(self, state):
         # defining gross VARIABLES
-        c3 = 4
-        c4 = 0.1
-        ko = 12
+        c3 = 8
+        c4 = 0
+        ko = 9
         repulsivePotential = 0
         allObstacles = []
         obstacles = state.obstaclesRB#[[r,b], [r,b]]
