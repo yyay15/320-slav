@@ -168,7 +168,7 @@ class Vision:
                         continue 
                 elif parameters_dict["type"]==3:#for cover
                     Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
-                    if Area>300 and Area<10000:
+                    if Area>300:
                         #if (LWidth/LHeight)<=2 and (LHeight/LWidth)<=2:
                         Lx=int(Moment["m10"]/Moment["m00"])
                         Ly=int(Moment["m01"]/Moment["m00"])
