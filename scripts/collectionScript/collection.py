@@ -66,6 +66,8 @@ class Collection:
             self.Lander2()
         elif self.currentState == 4: 
             self.Close_ROT()
+            self.currentState = 2
+
         self.prevState = self.currentState
         
     def Test_ROT(self):
