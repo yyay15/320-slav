@@ -376,8 +376,9 @@ class Vision:
 
     def sampleCollected(self):
         self.filterCounter += 1
+        a = self.sensor.proximity
         index = self.filterCounter % self.filterSize
-        if a>13:
+        if a >13:
             self.sensorValues[index] = 1
         else:
             self.sensorValues[index] = 0
