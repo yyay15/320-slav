@@ -406,7 +406,7 @@ class Vision:
             SamplePresent=True
         else:
             SamplePresent=False
-        pass
+        return SamplePresent
 
     def holefinder(self,finalImage,LanderImage):
         hole_Z=None
