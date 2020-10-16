@@ -132,7 +132,7 @@ class Collection:
         print(timeElapsed)
         if timeElapsed < 0.7:
             if self.count <1:
-                self.servoPWM.ChangeDutyCycle(2.6)
+                self.servoPWM.ChangeDutyCycle(3.3)
                 self.count+=1
                 print("Close")
         elif 0.7 < timeElapsed < 1.5:
