@@ -18,6 +18,7 @@ HOLE_ALIGN = 10
 SAMPLE_DROP = 11
 ROCK_ALIGN = 12
 ALIGN_LANDER = 13
+FLIP_CHECK = 14
 
 #ROT CONSTANTS
 # State 0 = pass
@@ -81,7 +82,8 @@ class Navigation:
             10: self.holeAlign,
             11: self.dropSample,
             12: self.alignRock,
-            13: self.alignLander
+            13: self.alignLander,
+            14: self.checkFlip
         }
         return switchState.get(stateNum, self.searchSample)
 
@@ -227,7 +229,8 @@ class Navigation:
                     self.stateMode = ROCK_ALIGN
 
         return v, w
-    
+
+
     def flipRock(self, state):
         #time to drive to  be in flip position
         v, w = 0, 0
@@ -247,8 +250,8 @@ class Navigation:
                 self.rotState = OPEN
                 self.flipRockStart= time.time()
                 self.isBlind = True
-            elif (self.isBlind):
-                if (time.time() - self.flipRockStart <1.5):
+            if (self.isBlind):
+                if (time.time() - self.flipRockStart < 0.7):
                     print("cover open, reversing")
                     v = -0.07
                     w = 0
@@ -256,30 +259,80 @@ class Navigation:
                     # after 1 second close cover
                     print("closing cover")
                     self.rotState = CLOSE
-                    self.checkSampleTime= time.time()
                     self.isBlind = False
                     self.attemptFlip = True
-            elif (self.attemptFlip and time.time() - self.checkSampleTime < 5):
-                print("checking for successful flip")
-                v, w = 0, 0
-                if (self.isEmpty(state.sampleRB) and time.time() - self.flipRockStart > 2):
-                    print("Unsuccessful, search rock")
-                    self.modeStartTime = time.time()
-                    self.stateMode = SEARCH_ROCK
-                else:
-                    print("successful")
-                    self.attemptFlip = False
             else:
                 self.rotState = CLOSE
-                # on the odd chance the sample is collected (UNLIKELY)
-                if (state.sampleCollected):
-                    self.modeStartTime = time.time()
-                    self.stateMode = SEARCH_LANDER
-                else:
-                    # search sample
-                    self.modeStartTime = time.time()
-                    self.stateMode = SEARCH_SAMPLE
+                self.modeStartTime = time.time()
+                self.stateMode = FLIP_CHECK
+
         return v, w
+    
+    # def flipRock(self, state):
+    #     #time to drive to  be in flip position
+    #     v, w = 0, 0
+    #     print("driving to flip pos")
+    #     # drive straight for 1.5 seconds first 
+    #     if (time.time() - self.modeStartTime <= 2.0):
+    #         v = 0.042
+    #         w = 0
+    #         self.attemptFlip = False
+    #     else:
+    #         # if the cover hasnt been lifted and not attempted then flip 
+    #         print("preparing to flip")
+    #         v, w = 0, 0
+    #         if (not self.isBlind and not self.attemptFlip):
+    #             print("flipping rock")
+    #             v, w = 0, 0
+    #             self.rotState = OPEN
+    #             self.flipRockStart= time.time()
+    #             self.isBlind = True
+    #         elif (self.isBlind):
+    #             if (time.time() - self.flipRockStart <1.5):
+    #                 print("cover open, reversing")
+    #                 v = -0.07
+    #                 w = 0
+    #             else:
+    #                 # after 1 second close cover
+    #                 print("closing cover")
+    #                 self.rotState = CLOSE
+    #                 self.checkSampleTime= time.time()
+    #                 self.isBlind = False
+    #                 self.attemptFlip = True
+    #         elif (self.attemptFlip and time.time() - self.checkSampleTime < 5):
+    #             print("checking for successful flip")
+    #             v, w = 0, 0
+    #             if (self.isEmpty(state.sampleRB) and time.time() - self.flipRockStart > 2):
+    #                 print("Unsuccessful, search rock")
+    #                 self.modeStartTime = time.time()
+    #                 self.stateMode = SEARCH_ROCK
+    #             else:
+    #                 print("successful")
+    #                 self.attemptFlip = False
+    #         else:
+    #             self.rotState = CLOSE
+    #             # on the odd chance the sample is collected (UNLIKELY)
+    #             if (state.sampleCollected):
+    #                 self.modeStartTime = time.time()
+    #                 self.stateMode = SEARCH_LANDER
+    #             else:
+    #                 # search sample
+    #                 self.modeStartTime = time.time()
+    #                 self.stateMode = SEARCH_SAMPLE
+    #     return v, w
+    
+    def checkFlip(self, state):
+        v, w = 0, 0
+        if (time.time() - self.modeStartTime > 1):
+            if (self.isEmpty(state.sampleRB)):
+                self.modeStartTime = time.time()
+                self.stateMode = SEARCH_ROCK
+            else:
+                self.modeStartTime = time.time()
+                self.stateMode = SEARCH_SAMPLE
+        return v, w
+
+
 
     def navLander(self, state):
         if (not state.sampleCollected):
