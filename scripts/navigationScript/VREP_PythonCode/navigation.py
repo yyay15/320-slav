@@ -513,6 +513,7 @@ class Navigation:
                 v, w = 0, 0
                 self.modeStartTime = time.time()
         else:
+            v, w = 0, 0
             self.modeStartTime = time.time()
             self.stateMode = SEARCH_SAMPLE
         return v, w
