@@ -196,6 +196,7 @@ if __name__ == '__main__':
                     objects = vision.GetDetectedObjects(nav.stateMode)
                     sampleCollected = vision.sampleCollected()
                     state.updateState(objects,sampleCollected, vision.landerArea)
+                    print("Wall range", state.wallRB)
                     v, w = nav.updateVelocities(state)
                     loc.getWheelAngVel(v, w)
                     ledIndicator(nav.stateMode)

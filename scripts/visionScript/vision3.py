@@ -346,7 +346,7 @@ class Vision:
         cover_img=self.Detection(img,self.cover_parameters)
         obstacle_img=self.Detection(img,self.obstacle_parameters)
         lander_img=self.Detection(img,self.lander_parameters)
-        wall_img=Detection(img,wall_parameters)
+        wall_img=self.Detection(img,wall_parameters)
 
         sample_Z=self.Range(sample_img,self.sample_parameters,finalImage)
         cover_Z=self.Range(cover_img,self.cover_parameters,finalImage)
