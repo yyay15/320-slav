@@ -247,7 +247,7 @@ class Navigation:
                 self.flipRockStart= time.time()
                 self.isBlind = True
             elif (self.isBlind):
-                if (time.time() - self.flipRockStart <3):
+                if (time.time() - self.flipRockStart <1.5):
                     print("cover open, reversing")
                     v = -0.07
                     w = 0
@@ -261,7 +261,7 @@ class Navigation:
             elif (self.attemptFlip and time.time() - self.flipRockStart < 5):
                 print("checking for successful flip")
                 v, w = 0, 0
-                if (self.isEmpty(state.sampleRB)):
+                if (self.isEmpty(state.sampleRB) and time.time() - self.flipRockStart > 2):
                     print("Unsuccessful, search rock")
                     self.modeStartTime = time.time()
                     self.stateMode = SEARCH_ROCK
