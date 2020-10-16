@@ -525,16 +525,16 @@ class Navigation:
  ## THIS HASNT BEEN TESTED 
     def dropSample(self, state):
         print(self.modeStartTime)
-        if (time.time() - self.modeStartTime < 0.1):
+        if (time.time() - self.modeStartTime < 0.5):
             v = 0.08
             w = 0 
             print("go forward")
-        elif (time.time() - self.modeStartTime < 0.5):
+        elif (time.time() - self.modeStartTime < 1):
             self.rotState = OPEN
             v = 0.07
             w = 0
             print("opening ROT")
-        elif (time.time() - self.modeStartTime < 1):
+        elif (time.time() - self.modeStartTime < 1.3):
             self.rotState = OPEN
             v = - 0.07
             w = 0
