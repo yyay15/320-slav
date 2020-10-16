@@ -331,7 +331,7 @@ class Navigation:
             self.isBlind = True
             self.modeStartTime = time.time()
         elif (self.isBlind):
-            if (time.time() - self.modeStartTime < 1.5):
+            if (time.time() - self.modeStartTime < 1.6):
                 print("trying to drive straight YEEEEETTTT")
                 v = 0.07
                 w = 0
