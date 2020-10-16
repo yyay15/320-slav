@@ -601,7 +601,7 @@ class Navigation:
                 if closeObs[0] < 0.15:
                     wTemp = 1.75 * wTemp
                 wRep += wTemp
-        if not self.isEmpty(rocks):
+        if not self.isEmpty(rocks) and self.rockObstacle:
             for rock in rocks:
                 wTemp = 0
                 if closeObs[0] < 0.6:
