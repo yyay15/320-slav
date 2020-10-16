@@ -277,7 +277,7 @@ class Navigation:
                 self.stateMode = SEARCH_ROCK
             else:
                 self.modeStartTime = time.time()
-                self.avoidObstacles = True
+                self.rockObstacle = True
                 self.stateMode = SEARCH_SAMPLE
         return v, w
 
@@ -581,21 +581,9 @@ class Navigation:
         return v, w
 
     def avoidObstacles(self, state):
-        allObstacles = []
         obstacles = state.obstaclesRB#[[r,b], [r,b]]
         rocks = state.rocksRB #[[r,b], [r,b]]
-        vRep = 0
-        wRep = 0
-        # if not self.isEmpty(obstacles):
-        #     print("adding obstacles")
-        #     obstacles = obstacles.tolist()
-        #     allObstacles = allObstacles + obstacles
-        #     print(allObstacles)
-        # if not self.isEmpty(rocks) and self.rockObstacle:
-        #     print("adding rocks")
-        #     rocks = rocks.tolist()
-        #     allObstacles = allObstacles + rocks
-        #     print(allObstacles)
+        vRep, wRep = 0, 0
         if not self.isEmpty(obstacles):
             for obs in obstacles:
                 wTemp = 0
@@ -614,17 +602,6 @@ class Navigation:
                     # if closeObs[0] < 0.15:
                     #     wTemp = 1.75 * wTemp
                 wRep += wTemp
-
-        # if not self.isEmpty(allObstacles):
-        #     #closeObs = self.closestObstacle(allObstacles)
-        #     for closeObs in allObstacles:
-        #         wTemp = 0
-        #         if closeObs[0] < 0.5:
-        #             wTemp =  (np.sign(closeObs[1]) * (0.5 - closeObs[0]) * (3 - abs(closeObs[1]))* KW_REPULSE)
-        #             vRep =  (0.5 - closeObs[0]) * 0.2
-        #         if closeObs[0] < 0.15:
-        #             wTemp = 1.75 * wTemp
-        #         wRep += wTemp
         return vRep, wRep
 
     def closestObstacle(self, obstacles):
