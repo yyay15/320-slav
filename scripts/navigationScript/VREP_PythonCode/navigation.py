@@ -595,18 +595,18 @@ class Navigation:
         if not self.isEmpty(obstacles):
             for obs in obstacles:
                 wTemp = 0
-                if closeObs[0] < 0.5:
-                    wTemp =  (np.sign(closeObs[1]) * (0.5 - closeObs[0]) * (3 - abs(closeObs[1]))* KW_REPULSE)
-                    vRep =  (0.5 - closeObs[0]) * 0.2
-                if closeObs[0] < 0.15:
+                if obs[0] < 0.5:
+                    wTemp =  (np.sign(obs[1]) * (0.5 - obs[0]) * (3 - abs(obs[1]))* KW_REPULSE)
+                    vRep =  (0.5 - obs[0]) * 0.2
+                if obs[0] < 0.15:
                     wTemp = 1.75 * wTemp
                 wRep += wTemp
         if not self.isEmpty(rocks) and self.rockObstacle:
-            for rock in rocks:
+            for obs in rocks:
                 wTemp = 0
-                if closeObs[0] < 0.6:
-                    wTemp =  (np.sign(closeObs[1]) * (0.5 - closeObs[0]) * (3 - abs(closeObs[1]))* KW_REPULSE * 1.5)
-                    vRep =  (0.5 - closeObs[0]) * 0.2
+                if obs[0] < 0.6:
+                    wTemp =  (np.sign(obs[1]) * (0.5 - obs[0]) * (3 - abs(obs[1]))* KW_REPULSE * 1.5)
+                    vRep =  (0.5 - obs[0]) * 0.2
                     # if closeObs[0] < 0.15:
                     #     wTemp = 1.75 * wTemp
                 wRep += wTemp
