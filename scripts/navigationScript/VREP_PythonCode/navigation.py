@@ -534,13 +534,14 @@ class Navigation:
             v = 0.07
             w = 0
             print("opening ROT")
-        elif (time.time() - self.modeStartTime < 1.3):
+        elif (time.time() - self.modeStartTime < 1.5):
             self.rotState = OPEN
             v = - 0.07
             w = 0
             print("going backward")
         else:
             v, w = 0, 0
+            self.stateMode = self.searchSample
 
         # self.rotState = OPEN
         # v, w = 0, 0
