@@ -137,10 +137,8 @@ class Navigation:
 
     # robot spins, moves forward, spins again
     def searchLander(self, state):
-        if (self.rotState == HARD_CLOSE):
-            self.rotState = CLOSE
+        self.rotState = CLOSE
         if (not self.isEmpty(state.prevLanderRB)):
-            self.rotState = CLOSE
             self.turnDir = np.sign(state.prevLanderRB[0][1]) 
         print("search lander")
         if (not self.isEmpty(state.landerRB)):
@@ -284,6 +282,7 @@ class Navigation:
 
 
     def navLander(self, state):
+        self.rotState = CLOSE
         if (not state.sampleCollected):
             v, w = 0, 0
             print("sample lost, searching for sample")
