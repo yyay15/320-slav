@@ -599,7 +599,7 @@ class Navigation:
                     wTemp =  (np.sign(obs[1]) * (0.5 - obs[0]) * (3 - abs(obs[1]))* KW_REPULSE)
                     vRep =  (0.5 - obs[0]) * 0.2
                 if obs[0] < 0.15:
-                    wTemp = 1.75 * wTemp
+                    wTemp = 2 * wTemp
                 wRep += wTemp
         if not self.isEmpty(rocks) and self.rockObstacle:
             for obs in rocks:
