@@ -378,14 +378,14 @@ class Navigation:
 
 
 
-        # if (not self.isEmpty(state.holeRB)):
-        #     v = 0.06
-        #     w = state.holeRB[0][1]
-        #     # self.modeStartTime = time.time()
-        #     # self.stateMode = SAMPLE_DROP
-        # else:
-        #     v = 0.06
-        #     w = 0
+        if (not self.isEmpty(state.holeRB)):
+             v = 0.06
+             w = state.holeRB[0][1]
+             self.modeStartTime = time.time()
+             self.stateMode = SAMPLE_DROP
+        else:
+             v = 0.06
+             w = 0
 
 
         # v, w = 0, 0
