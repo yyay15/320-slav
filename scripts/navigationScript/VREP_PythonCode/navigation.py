@@ -331,7 +331,7 @@ class Navigation:
             self.isBlind = True
             self.modeStartTime = time.time()
         elif (self.isBlind):
-            if (time.time() - self.modeStartTime < 2.2):
+            if (time.time() - self.modeStartTime < 1.75):
                 print("trying to drive straight YEEEEETTTT")
                 v = 0.07
                 w = 0
@@ -541,6 +541,7 @@ class Navigation:
             print("going backward")
         else:
             v, w = 0, 0
+            self.stateMode = self.searchSample
         return v, w
 #help
 
