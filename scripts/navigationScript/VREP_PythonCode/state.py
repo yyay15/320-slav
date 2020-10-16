@@ -7,6 +7,7 @@ class State:
         self.rocksRB = None
         self.holeRB = None
         self.rotHoleRB = None
+        self.wallRB = None
         
         self.prevSampleRB = None
         self.prevLanderRB = None
@@ -15,6 +16,7 @@ class State:
         self.prevHoleRB = None
         self.prevRotHoleRB = None
         self.lastSeenLanderHole = None
+        self.prevWallRB = None
         self.landerArea = 0
 
         self.onLander = False
@@ -31,6 +33,7 @@ class State:
         self.prevHoleRB = self.holeRB
         self.prevRotHoleRB = self.rotHoleRB
         self.prevLanderArea = self.landerArea
+        self.prevWallRB = self.wallRB
 
         self.sampleRB = objects[0]
         self.landerRB = objects[1]
@@ -38,6 +41,7 @@ class State:
         self.rocksRB = objects[3]
         self.holeRB = objects[4]
         self.rotHoleRB = objects[5]
+        self.wallRB = objects[6]
         self.landerArea = landerArea
         
         self.sampleCollected = sampleCollected
