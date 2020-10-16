@@ -13,9 +13,6 @@ class Vision:
         # parameters that change 
         self.state = 1
         self.random = 1
-        self.filterCounter = 0
-        self.filterSize = 10
-        self.sensorValues = [0] * (self.filterSize)
         self.changingVariable = 1
         # https://stackoverflow.com/questions/11420748/setting-camera-parameters-in-opencv-python
         i2c = busio.I2C(board.SCL, board.SDA)
@@ -317,23 +314,51 @@ class Vision:
                     else:
                         continue
 
+                elif parameters_dict["type"]==6:
+                    Lx1,Ly1,LWidth,LHeight=cv2.boundingRect(a)
+                    if Area>5000:
+                        Lx=int(Moment["m10"]/Moment["m00"])
+                        Ly=int(Moment["m01"]/Moment["m00"])
+                        Centroid=np.array([Lx,Ly])
+                        Center=np.append(Center,Centroid)
+                        #cv2.rectangle(finalimage,(Lx-int(LWidth/2),Ly+int(LHeight/2)),(Lx+int(LWidth/2),Ly-int(LHeight/2)),
+                        #parameters_dict["BBoxColour"],2)
+                        cv2.drawContours(finalimage, cnt, -1, (0, 255, 0), 3) 
+                        Distance=(parameters_dict["Height"]*(f/LHeight)/8)*math.cos(0.2967)
+                        Distance=(0.8667*Distance-3)/1000
+                        rangeText = "R: {:.4f}".format(Distance)
+                        bearingText = " B: {:.4f}".format((math.radians((Lx-160)*(31.1/160))))
+                        cv2.putText(finalimage, rangeText + bearingText, (Lx1+5,Ly1+10), 
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.4,  parameters_dict["BBoxColour"] )
+                        ZDistance=np.append(ZDistance,Distance)
+                        #self.MaxMinLocations(a,finalimage)
+                        Bearing=np.append(Bearing,math.radians((Lx-160)*(31.1/160)))
+                        Range=np.vstack((ZDistance,-Bearing)).T#Put Bearing and ZDistance into one array and arrange
+                        #columnwise
+                        Range=Range[Range[:,0].argsort()] 
+                    else:
+                        continue
+
         return Range #,RangeRBC
 
-    def DetectandRange(self,img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters,finalImage):
+    def DetectandRange(self,img,sample_parameters,cover_parameters,obstacle_parameters,lander_parameters,finalImage, wall_parameters):
         sample_img=self.Detection(img,self.sample_parameters)
         cover_img=self.Detection(img,self.cover_parameters)
         obstacle_img=self.Detection(img,self.obstacle_parameters)
         lander_img=self.Detection(img,self.lander_parameters)
+        wall_img=Detection(img,wall_parameters)
 
         sample_Z=self.Range(sample_img,self.sample_parameters,finalImage)
         cover_Z=self.Range(cover_img,self.cover_parameters,finalImage)
         obstacle_Z=self.Range(obstacle_img,self.obstacle_parameters,finalImage)
         lander_Z=self.Range(lander_img,self.lander_parameters,finalImage)
+        wall_Z = self.Range(wall_img, wall_parameters, finalImage)
+
         # print(sample_Z)
         # print(cover_Z)
         # print(obstacle_Z)
         print("Lander", lander_Z)
-        return sample_Z,cover_Z,obstacle_Z,lander_Z,lander_img
+        return sample_Z,cover_Z,obstacle_Z,lander_Z,lander_img, wall_Z
 
     def visMain(self, i):
         ret, img = self.cap.read()	     		# Get a frame from the camera
@@ -341,8 +366,9 @@ class Vision:
         if ret == True:	
             cv2.waitKey(1)	
             #initiate some variables
-        sample_Z,cover_Z,obstacle_Z,lander_Z,lander_img=self.DetectandRange(img,self.sample_parameters,
-            self.cover_parameters,self.obstacle_parameters,self.lander_parameters,img)
+        sample_Z,cover_Z,obstacle_Z,lander_Z,lander_img, wall_Z =self.DetectandRange(img,self.sample_parameters,
+            self.cover_parameters,self.obstacle_parameters,self.lander_parameters,img, self.wall_parameters)
+
         coverhole_Z, hole_Z=self.holefinder(img,lander_img)
         
         if (i%5)==0:
@@ -350,7 +376,7 @@ class Vision:
         #print(Bearing1)holes_RB,
 
         #print(i)
-        return sample_Z,lander_Z,cover_Z,obstacle_Z,hole_Z,coverhole_Z
+        return sample_Z,lander_Z,cover_Z,obstacle_Z,hole_Z,coverhole_Z, wall_Z
     
     def GetDetectedObjects(self,state):
         sampleRB, landerRB, obstaclesRB, rocksRB, landerHoleRB, rotHoleRB, = None, None, None, None, None, None
@@ -358,7 +384,7 @@ class Vision:
         now=time.time()
         #i+=1   #holesRB,
         self.state = state 
-        sampleRB,landerRB,rocksRB,obstaclesRB,landerHoleRB,rotHoleRB =self.visMain(i)
+        sampleRB,landerRB,rocksRB,obstaclesRB,landerHoleRB,rotHoleRB, wallRB =self.visMain(i)
         #self.updateVisionState(state)
         
         elapsed=time.time()-now
@@ -371,7 +397,7 @@ class Vision:
             # sample [[R, B], [R,B]]
             # lander [R, B]
         # if nothing sampleRB = None,holesRB,
-        return sampleRB, landerRB, obstaclesRB, rocksRB,  landerHoleRB, rotHoleRB
+        return sampleRB, landerRB, obstaclesRB, rocksRB,  landerHoleRB, rotHoleRB, wallRB
 
 
     def sampleCollected(self):
@@ -380,20 +406,6 @@ class Vision:
             SamplePresent=True
         else:
             SamplePresent=False
-        return SamplePresent 
-        # self.filterCounter += 1
-        # a = self.sensor.proximity
-        # index = self.filterCounter % self.filterSize
-        # if a >13:
-        #     self.sensorValues[index] = 1
-        # else:
-        #     self.sensorValues[index] = 0
-        
-        # averageSensorValue = sum(self.sensorValues) / len(self.sensorValues)
-        # if averageSensorValue > 1:
-        #     return True
-        # else:
-        #     return False
         pass
 
     def holefinder(self,finalImage,LanderImage):
