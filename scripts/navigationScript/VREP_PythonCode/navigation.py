@@ -541,27 +541,8 @@ class Navigation:
             print("going backward")
         else:
             v, w = 0, 0
-            self.stateMode = self.searchSample
-
-        # self.rotState = OPEN
-        # v, w = 0, 0
-        # # GO FORWARD FOR HALF SECOND THEN REVERSE FOR HALF SECOND 
-        # # WILL NEED TO TWEAK THESE PARAMETERS
-        # if (state.sampleCollected):
-        #     if (time.time() - self.modeStartTime > 0.5):
-        #         v = 0.07
-        #         w = 0
-        #     elif(0.5 < (time.time()- self.modeStartTime) < 1 ):
-        #         v = - 0.07
-        #         w = 0
-        # else:
-        #     self.rotState = CLOSE # maybe it needs to be on lander() when driving down? will this affect vision later? 
-        #     v, w = 0,0
-        #     self.numSampleCollected += 1
-        #     self.stateMode = SEARCH_SAMPLE
-        #     self.modeStartTime = time.time()
         return v, w
-
+#help
 
 
                 
