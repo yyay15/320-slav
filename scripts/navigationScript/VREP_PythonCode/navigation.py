@@ -277,7 +277,7 @@ class Navigation:
                 self.stateMode = SEARCH_ROCK
             else:
                 self.modeStartTime = time.time()
-                self.
+                self.avoidObstacles = True
                 self.stateMode = SEARCH_SAMPLE
         return v, w
 
