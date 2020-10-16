@@ -336,7 +336,7 @@ class Navigation:
                 w = 0
             else:
                 v, w = 0, 0
-                self.rotState = HARD_CLOSE
+                self.rotState = CLOSE
                 self.isBlind = False
         elif (not self.isBlind):
             self.rotState = CLOSE
