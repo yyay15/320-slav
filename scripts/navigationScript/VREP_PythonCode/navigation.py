@@ -582,20 +582,18 @@ class Navigation:
         rocks = state.rocksRB #[[r,b], [r,b]]
         vRep = 0
         wRep = 0
+        # if not self.isEmpty(obstacles):
+        #     print("adding obstacles")
+        #     obstacles = obstacles.tolist()
+        #     allObstacles = allObstacles + obstacles
+        #     print(allObstacles)
+        # if not self.isEmpty(rocks) and self.rockObstacle:
+        #     print("adding rocks")
+        #     rocks = rocks.tolist()
+        #     allObstacles = allObstacles + rocks
+        #     print(allObstacles)
         if not self.isEmpty(obstacles):
-            print("adding obstacles")
-            obstacles = obstacles.tolist()
-            allObstacles = allObstacles + obstacles
-            print(allObstacles)
-        if not self.isEmpty(rocks) and self.rockObstacle:
-            print("adding rocks")
-            rocks = rocks.tolist()
-            allObstacles = allObstacles + rocks
-            print(allObstacles)
-            
-        if not self.isEmpty(allObstacles):
-            #closeObs = self.closestObstacle(allObstacles)
-            for closeObs in allObstacles:
+            for obs in obstacles:
                 wTemp = 0
                 if closeObs[0] < 0.5:
                     wTemp =  (np.sign(closeObs[1]) * (0.5 - closeObs[0]) * (3 - abs(closeObs[1]))* KW_REPULSE)
@@ -603,6 +601,26 @@ class Navigation:
                 if closeObs[0] < 0.15:
                     wTemp = 1.75 * wTemp
                 wRep += wTemp
+        if not self.isEmpty(rocks):
+            for rock in rocks:
+                wTemp = 0
+                if closeObs[0] < 0.6:
+                    wTemp =  (np.sign(closeObs[1]) * (0.5 - closeObs[0]) * (3 - abs(closeObs[1]))* KW_REPULSE * 1.5)
+                    vRep =  (0.5 - closeObs[0]) * 0.2
+                    # if closeObs[0] < 0.15:
+                    #     wTemp = 1.75 * wTemp
+                wRep += wTemp
+
+        # if not self.isEmpty(allObstacles):
+        #     #closeObs = self.closestObstacle(allObstacles)
+        #     for closeObs in allObstacles:
+        #         wTemp = 0
+        #         if closeObs[0] < 0.5:
+        #             wTemp =  (np.sign(closeObs[1]) * (0.5 - closeObs[0]) * (3 - abs(closeObs[1]))* KW_REPULSE)
+        #             vRep =  (0.5 - closeObs[0]) * 0.2
+        #         if closeObs[0] < 0.15:
+        #             wTemp = 1.75 * wTemp
+        #         wRep += wTemp
         return vRep, wRep
 
     def closestObstacle(self, obstacles):
