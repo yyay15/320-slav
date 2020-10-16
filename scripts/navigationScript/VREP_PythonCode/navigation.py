@@ -51,6 +51,7 @@ class Navigation:
         self.modeStartTime = time.time() # timer for each state
         self.flipRockStart = 0
         self.searchTime= time.time()
+        self.checkSampleTime = time.time()
         self.overallTime = time.time()
         self.turnDir = 1                 # turn clockwise or anticlockwise
         self.rock_obstacle = True        # check if rocks should be avoided
@@ -255,10 +256,10 @@ class Navigation:
                     # after 1 second close cover
                     print("closing cover")
                     self.rotState = CLOSE
-                    self.flipRockStart= time.time()
+                    self.checkSampleTime= time.time()
                     self.isBlind = False
                     self.attemptFlip = True
-            elif (self.attemptFlip and time.time() - self.flipRockStart < 5):
+            elif (self.attemptFlip and time.time() - self.checkSampleTime < 5):
                 print("checking for successful flip")
                 v, w = 0, 0
                 if (self.isEmpty(state.sampleRB) and time.time() - self.flipRockStart > 2):
