@@ -490,57 +490,31 @@ class Navigation:
             print("Gotta look for some orange spheres")
             self.stateMode = SEARCH_SAMPLE
 
-        # print("centering hole")
-        # if (self.isEmpty(state.holeRB)):
-        #     if (self.landerHoleSeen):
-        #         if (time.time() - self.modeStartTime)
-        #     v, w = 0, 0 
-        #     self.modeStartTime = time.time()
-        #     self.stateMode = SAMPLE_DROP
-        # elif (not self.isEmpty(state.holeRB))
-        #     print("hole RB"state.rotHoleRB)
-        #     if (not (-0.05 <= state.holeRB[0][1] <= 0.05)):
-        #         print("centering lander hole")
-        #         self.centering = True
-        #         hole = state.holeRB[0]
-        #         w = hole[1] 
-        #         v = 0
-        #         self.modeStartTime = time.time()
-        #     else:
-                
-        #         if (time.time() - self.modeStartTime > 0.5):
-        #             v = 0.08
-        #             w = 0
-        #         else:
-        #             v, w = 0, 0
-        #             self.modeStartTime = time.time()
-        #             self.stateMode = SAMPLE_DROP
-        # else:
-        #     v, w = 0, 0
-        #     self.modeStartTime = time.time()
-        #     self.stateMode = SEARCH_LANDER
         return v, w 
         
- ## THIS HASNT BEEN TESTED 
+
     def dropSample(self, state):
-        print(self.modeStartTime)
-        if (time.time() - self.modeStartTime < 0.5):
-            v = 0.08
-            w = 0 
-            print("go forward")
-        elif (time.time() - self.modeStartTime < 1):
-            self.rotState = OPEN
-            v = 0.07
-            w = 0
-            print("opening ROT")
-        elif (time.time() - self.modeStartTime < 1.5):
-            self.rotState = OPEN
-            v = - 0.07
-            w = 0
-            print("going backward")
+        if (state.sampleCollected):
+            if (time.time() - self.modeStartTime < 0.5):
+                v = 0.08
+                w = 0 
+                print("go forward")
+            elif (time.time() - self.modeStartTime < 1):
+                self.rotState = OPEN
+                v = 0.07
+                w = 0
+                print("opening ROT")
+            elif (time.time() - self.modeStartTime < 1.5):
+                self.rotState = OPEN
+                v = - 0.07
+                w = 0
+                print("going backward")
+            else:
+                v, w = 0, 0
+                self.modeStartTime = time.time()
         else:
-            v, w = 0, 0
-            self.stateMode = self.searchSample
+            self.modeStartTime = time.time()
+            self.stateMode = SEARCH_SAMPLE
         return v, w
 #help
 
