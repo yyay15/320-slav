@@ -378,14 +378,14 @@ class Navigation:
 
 
 
-        if (not self.isEmpty(state.holeRB)):
-             v = 0.06
-             w = state.holeRB[0][1]
-             self.modeStartTime = time.time()
-             self.stateMode = SAMPLE_DROP
-        else:
-             v = 0.06
-             w = 0
+        # if (not self.isEmpty(state.holeRB)):
+        #     v = 0.06
+        #     w = state.holeRB[0][1]
+        #     # self.modeStartTime = time.time()
+        #     # self.stateMode = SAMPLE_DROP
+        # else:
+        #     v = 0.06
+        #     w = 0
 
 
         # v, w = 0, 0
@@ -525,14 +525,14 @@ class Navigation:
  ## THIS HASNT BEEN TESTED 
     def dropSample(self, state):
         
-        if (time.time() - self.modeStartTime < 0.1):
+        if (time.time() - self.modeStartTime > 0.1):
             v = 0.08
             w = 0 
-        elif (time.time() - self.modeStartTime < 0.5):
+        elif (time.time() - self.modeStartTime > 0.5):
             self.rotState = OPEN
             v = 0.07
             w = 0
-        elif (time.time() - self.modeStartTime < 1):
+        elif (time.time() - self.modeStartTime > 1):
             self.rotState = OPEN
             v = - 0.07
             w = 0
