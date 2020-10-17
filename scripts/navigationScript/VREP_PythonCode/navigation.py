@@ -355,10 +355,14 @@ class Navigation:
             if (time.time() - self.modeStartTime < 1.5): #used to be 1.6
                 v = 0.07
                 w = 0
-            else:
+            elif (1.5 < time.time() - self.modeStartTime < 1.7):
                 print("closing rot")
                 v, w = 0, 0
                 self.rotState = HARD_CLOSE
+            elif (1.7 < time.time() - self.modeStartTime < 2.7):
+                v = -0.5
+                w = 0
+            else:
                 self.isBlind = False
         elif (not self.isBlind):
             self.rotState = HARD_CLOSE
@@ -452,11 +456,14 @@ class Navigation:
                 v = - 0.075
                 w = 0
                 print("going backward")
+            elif(5 < time.time() - self.modeStartTime < 6):
+                v, w = 0, 0
             else:
                 v, w = 0, 0
                 self.modeStartTime = time.time()
         else:
             v, w = 0, 0
+            self.onLander = True
             self.numSampleCollected += 1
             self.modeStartTime = time.time()
             self.rockObstacle = True
