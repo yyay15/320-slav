@@ -43,9 +43,9 @@ LANDER_SWITCH_RANGE = 0.32
 
 # OBSTACLE AVOIDANCE GAINS 
 KV_ATTRACT = 0.5 #0.5
-KW_ATTRACT = 1.3    #1.5 #0.8
+KW_ATTRACT = 1.2    #1.5 #0.8
 KV_REPULSE = 0.3
-KW_REPULSE = 0.1
+KW_REPULSE = 0.08
 
 class Navigation:
     def __init__(self):
@@ -61,7 +61,7 @@ class Navigation:
         self.isBlind = False
         self.centering = False
         self.attemptFlip = False
-        self.onLander = True
+        self.onLander = False
         self.numSampleCollected = 0
         self.prevLanderAreaDiff = 0
 
@@ -113,21 +113,15 @@ class Navigation:
                 print("obstacle seen")
                 self.stateMode = NAV_SAMPLE
             elif (time.time() - self.modeStartTime >= FULL_ROTATION):
-                if (not self.isEmpty(state.obstaclesRB)):
-                    print("nav to obstacle")
-                    v, w = self.navObsAvoidRock(state)
-                    if (state.obstaclesRB[0][0] < 0.3):
-                        self.modeStartTime = time.time()
+                print("moving around away from wall")
+                if (not self.isEmpty(state.wallRB)):
+                    w = 1 * self.turnDir
                 else:
-                    print("moving around away from wall")
-                    if (not self.isEmpty(state.wallRB)):
-                        w = 1 * self.turnDir
-                    else:
-                        v, w = self.navigate([0.2, 0], state)
-                    if (time.time() - self.modeStartTime - FULL_ROTATION >= 5):
-                        print("return to spin")
-                        self.turnDir = self.turnDir * -1 
-                        self.modeStartTime = time.time()
+                    v, w = self.navigate([0.2, 0], state)
+                if (time.time() - self.modeStartTime - FULL_ROTATION >= 5):
+                    print("return to spin")
+                    self.turnDir = self.turnDir * -1 
+                    self.modeStartTime = time.time()
             else:
                 v = 0
                 w = 0.55 * self.turnDir
@@ -501,7 +495,7 @@ class Navigation:
             for obs in obstacles:
                 wTemp = 0
                 if obs[0] < 0.5:
-                    wTemp = np.sign(obs[1])* 0.5 * (1/obs[0] - 1/0.05)**2 * KW_REPULSE
+                    wTemp = np.sign(obs[1])* 0.5 * (1/obs[0] - 1/0.1)**2 * KW_REPULSE
                 #break potential fields and turn away 
                 if obs[0] < 0.08:
                     print("breaking potential fields just turning away!!")
@@ -512,10 +506,7 @@ class Navigation:
             for obs in rocks:
                 wTemp = 0
                 if obs[0] < 0.6:
-                    #wTemp =  (np.sign(obs[1]) * (0.5 - obs[0]) * (3 - abs(obs[1]))* KW_REPULSE * 1.1)
-                    
-                    wTemp = wTemp = np.sign(obs[1])* 0.5 * (1/obs[0] - 1/0.05)**2 * KW_REPULSE 
-                    #vRep =  (0.5 - obs[0]) * 0.2
+                    wTemp = wTemp = np.sign(obs[1])* 0.5 * (1/obs[0] - 1/0.1)**2 * KW_REPULSE 
                 wRep += wTemp
         return vRep, wRep
 
