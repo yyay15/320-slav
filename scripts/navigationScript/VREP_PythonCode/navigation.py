@@ -346,6 +346,7 @@ class Navigation:
                 self.modeStartTime = time.time()
             else:
                 # Open ROT
+                self.centering = False
                 if (self.rotState != HARD_OPEN):
                     print("Lock and loaded")
                     self.rotState = HARD_OPEN
