@@ -55,7 +55,7 @@ class Collection:
         if self.currentState != self.prevState:
             self.stateTime = time.time()
             self.count = 0
-        
+
         if self.currentState == 0:
             pass
         elif self.currentState == 1:
@@ -113,7 +113,7 @@ class Collection:
     def Open_ROT(self):
         timeElapsed = time.time() - self.stateTime
         print("I'm Open Rot")
-        print(timeElapsed)
+        print("Open ROT ", timeElapsed)
         if timeElapsed < 0.4:
             if self.count <1:
                 self.servoPWM.ChangeDutyCycle(7.2)
@@ -131,7 +131,7 @@ class Collection:
     def Close_ROT(self):
         timeElapsed = time.time() - self.stateTime
         print("I'm Close Rot")
-        print(timeElapsed)
+        print("Close Rot ",timeElapsed)
         if timeElapsed < 0.35:
             if self.count <1:
                 self.servoPWM.ChangeDutyCycle(3.0)
