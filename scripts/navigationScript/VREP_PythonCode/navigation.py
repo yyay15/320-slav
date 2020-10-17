@@ -340,10 +340,15 @@ class Navigation:
     def acquireSample(self, state):
         # centre sample
         if (not self.isEmpty(state.sampleRB) and not (-0.05 <= state.sampleRB[0][1] <= 0.05)):
-            print("centering")
-            self.centering = True
-            w = state.sampleRB[0][1] 
-            v = 0
+            if (not (-0.1 <=state.sampleRB[0][1] <= 0.1):
+                print("big centering")
+                v = 0
+                w = state.sampleRB[0][1]
+            elif (not -0.05 <= state.sampleRB[0][1] <= 0.05):
+                print("centering")
+                self.centering = True
+                w = state.sampleRB[0][1] 
+                v = 0
         elif (not self.isEmpty(state.sampleRB) and not self.isBlind):
             self.centering = False
             print("opening rot")
@@ -459,34 +464,12 @@ class Navigation:
             self.stateMode = SEARCH_ROCK
         return v, w
 
-
-    # depreciate unless 👀👀
-    def holeAlign(self, state):
-        print("I am aligning to da hoe")
-        v, w = 0, 0
-        if (state.sampleCollected):
-            print("we gonna kobe into the hole")
-            print("This is the kobe traj: ",state.holeRB)
-            if(not self.isEmpty(state.holeRB)):
-                hole = state.holeRB[0]
-                v = 0.1
-                w = hole[1]*1.3
-            else:
-                print("Here we go again")
-                self.stateMode = UP_LANDER
-        else:
-            print("Gotta look for some orange spheres")
-            self.stateMode = SEARCH_SAMPLE
-
-        return v, w 
-        
-
     def dropSample(self, state):
         if (state.sampleCollected):
             self.checkSampleTime = time.time()
             haveSample = True
         else:
-            if time.time() - self.checkSampleTime < 0.7:
+            if time.time() - self.checkSampleTime < 1.1:
                 haveSample = True
             else:
                 haveSample = False
