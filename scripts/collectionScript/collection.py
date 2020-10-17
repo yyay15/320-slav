@@ -128,12 +128,12 @@ class Collection:
         timeElapsed = time.time() - self.stateTime
         print("I'm Open Rot")
         print("Open ROT ", timeElapsed)
-        if timeElapsed < 0.8:
+        if timeElapsed < 0.5:
             if self.count <1:
                 self.servoPWM.ChangeDutyCycle(7.7)
                 self.count+=1
                 print("Open")
-        elif 0.8 < timeElapsed < 1.25:
+        elif 0.5 < timeElapsed < 0.8:
             if self.count <2:
                 self.servoPWM.ChangeDutyCycle(0)
                 self.count+=1
@@ -146,12 +146,12 @@ class Collection:
         timeElapsed = time.time() - self.stateTime
         print("I'm Close Rot")
         print("Close Rot ",timeElapsed)
-        if timeElapsed < 0.7:
+        if timeElapsed < 0.6:
             if self.count <1:
                 self.servoPWM.ChangeDutyCycle(3.85)
                 self.count+=1
                 print("Close")
-        elif 0.7 < timeElapsed < 1.10:
+        elif 0.6 < timeElapsed < 1.0:
             if self.count <2:
                 self.servoPWM.ChangeDutyCycle(0)
                 self.count+=1
@@ -164,12 +164,12 @@ class Collection:
         timeElapsed = time.time() - self.stateTime
         print("I'm Lander")
         print(timeElapsed)
-        if timeElapsed < 0.8:
+        if timeElapsed < 0.6:
             if self.count <1:
                 self.servoPWM.ChangeDutyCycle(5.6)
                 self.count+=1
                 print("Lander Angled Up")
-        elif 0.8 < timeElapsed < 1.25:
+        elif 0.6 < timeElapsed < 1.25:
             if self.count <2:
                 self.servoPWM.ChangeDutyCycle(0)
                 self.count+=1
