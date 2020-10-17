@@ -24,11 +24,14 @@ FLIP_CHECK = 14
 # State 1 = Open
 # State 2 = Close
 # State 3 = Slight Open
+# State 4 = Hard Close
+# State 5 = Drop Sample
 PASS_STATE = 0
 OPEN = 1
 CLOSE = 2
 SLIGHT_OPEN = 3
 HARD_CLOSE = 4
+DROP_SAMPLE = 5
 
 # DISTANCE/TIME VARIABLES
 ROT_DISTANCE = 0.22 #collect distance 
@@ -455,7 +458,7 @@ class Navigation:
                 w = 0
                 print("opening ROT")
             elif (2 < time.time() - self.modeStartTime < 4):
-                self.rotState = OPEN
+                self.rotState = DROP_SAMPLE
                 v = - 0.075
                 w = 0
                 print("going backward")
