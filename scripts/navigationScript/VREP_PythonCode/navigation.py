@@ -338,11 +338,11 @@ class Navigation:
     
     def acquireSample(self, state):
         # centre sample
-        if (not self.isEmpty(state.sampleRB) and not (-0.1 <= state.sampleRB[0][1] <= 0.1)):
-            if not (-0.1 <=state.sampleRB[0][1] <= 0.1):
+        if (not self.isEmpty(state.sampleRB) and not (-0.2 <= state.sampleRB[0][1] <= 0.2)):
+            if not (-0.2 <=state.sampleRB[0][1] <= 0.2):
                 print("big centering")
                 v = 0
-                w = state.sampleRB[0][1]
+                w = state.sampleRB[0][1] * 1.1
             elif (not -0.05 <= state.sampleRB[0][1] <= 0.05):
                 print("centering")
                 self.centering = True
@@ -527,7 +527,7 @@ class Navigation:
                     wTemp =  (np.sign(obs[1]) * (0.5 - obs[0]) * (3 - abs(obs[1]))* KW_REPULSE)
                     vRep =  (0.5 - obs[0]) * 0.2
                 #break potential fields and turn away 
-                if obs[0] < 0.15:
+                if obs[0] < 0.12:
                     wRep = 1.7 * wTemp
                     return vRep, wRep
                 wRep += wTemp
