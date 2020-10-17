@@ -205,6 +205,7 @@ class Navigation:
             if (currSample[0] < ROT_DISTANCE):
                 print("acquiring sample")
                 v, w = 0, 0
+                self.isBlind = False
                 self.modeStartTime = time.time()
                 self.stateMode = ACQUIRE_SAMPLE
                 self.rotState = CLOSE
@@ -338,7 +339,7 @@ class Navigation:
         print("Check target location: ", state.sampleRB)
         # Check if sample is there:
 
-        if (not self.isEmpty(state.sampleRB)):
+        if (not self.isEmpty(state.sampleRB) and not self.isBlind):
             # Centre Sample
             if not (-0.06 <= state.sampleRB[0][1] <= 0.04):
                 print("target acquired")
@@ -346,42 +347,42 @@ class Navigation:
                 self.centering = True
                 w = state.sampleRB[0][1] 
                 v = 0
-                self.modeStartTime = time.time()
             elif state.sampleRB[0][0] > ROT_DISTANCE:
                 v = 0.07
                 w = 0
-                self.modeStartTime = time.time()
             else:
-                # Open ROT
-                self.centering = False
-                if (self.rotState != HARD_OPEN):
-                    print("Lock and loaded")
-                    self.rotState = HARD_OPEN
-                # Drive forward
-                if (time.time() - self.modeStartTime <= 1.8):
-                    print("Fire in the hole")
-                    #w = state.sampleRB[0][1]
+                self.isBlind = True
+                self.modeStartTime = time.time()
+        elif (self.isBlind)
+            self.centering = False
+            if (self.rotState != HARD_OPEN):
+                print("Lock and loaded")
+                self.rotState = HARD_OPEN
+            # Drive forward
+            if (time.time() - self.modeStartTime <= 1.8):
+                print("Fire in the hole")
+                #w = state.sampleRB[0][1]
+                w = 0
+                v = 0.065
+            else:
+                # Close ROT
+                print("friendly fire")
+                if (self.rotState != HARD_CLOSE):
+                    self.rotState = HARD_CLOSE
+                # Drive backward (1/3)
+                if (1.8 <= time.time() - self.modeStartTime <= 2.0):
+                    print("retreat")
                     w = 0
-                    v = 0.065
+                    v = -0.065
                 else:
-                    # Close ROT
-                    print("friendly fire")
-                    if (self.rotState != HARD_CLOSE):
-                        self.rotState = HARD_CLOSE
-                    # Drive backward (1/3)
-                    if (1.5 <= time.time() - self.modeStartTime <= 2.0):
-                        print("retreat")
-                        w = 0
-                        v = -0.065
+                    print("gimme money")
+                    # Do Check for states
+                    if (state.sampleCollected):
+                        self.stateMode = SEARCH_LANDER
+                        self.modeStartTime = time.time()
                     else:
-                        print("gimme money")
-                        # Do Check for states
-                        if (state.sampleCollected):
-                            self.stateMode = SEARCH_LANDER
-                            self.modeStartTime = time.time()
-                        else:
-                            self.stateMode = SEARCH_SAMPLE                        
-                            self.modeStartTime = time.time()
+                        self.stateMode = SEARCH_SAMPLE                        
+                        self.modeStartTime = time.time()
         else:
             self.modeStartTime = time.time()
             self.stateMode = SEARCH_SAMPLE
