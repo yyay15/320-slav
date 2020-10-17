@@ -449,11 +449,11 @@ class Navigation:
                 self.rotState = OPEN
                 v = 0
                 w = 0
-            elif (1 < time.time() - self.modeStartTime < 2.5):
+            elif (1 < time.time() - self.modeStartTime < 3):
                 v = 0.075
                 w = 0
                 print("opening ROT")
-            elif (2.5 < time.time() - self.modeStartTime < 3.5):
+            elif (3 < time.time() - self.modeStartTime < 4):
                 self.rotState = DROP_SAMPLE
                 v = - 0.075
                 w = 0
