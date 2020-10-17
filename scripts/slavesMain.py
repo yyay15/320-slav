@@ -66,6 +66,12 @@ def ledSetup():
     GPIO.setup(LED_RED, GPIO.OUT) 
 
 
+
+#---------------#
+# Debug Logger
+#---------------#
+
+
 class Tee(object):
     def __init__(self, *files):
         self.files = files
