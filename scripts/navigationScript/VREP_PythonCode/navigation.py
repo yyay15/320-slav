@@ -385,7 +385,7 @@ class Navigation:
     def driveUpLander(self,state):        
         self.rotState = SLIGHT_OPEN
         self.onLander = True
-        haveSample = debounceSensor(state, 1.5)
+        haveSample = self.debounceSensor(state, 1.5)
         # Lets chill for a little bit 
         if (time.time() - self.modeStartTime > 1):
             print("Lets chill and vibe for a bit")
