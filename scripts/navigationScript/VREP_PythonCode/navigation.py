@@ -335,9 +335,13 @@ class Navigation:
         v, w = 0, 0
         print("Check target location: ", state.sampleRB)
         # Check if sample is there:
+
         if (not self.isEmpty(state.sampleRB)):
             # Centre Sample
-            if not (-0.06 <= state.sampleRB[0][1] <= 0.04):
+            if not state.sampleRB[0][0] < ROT_DISTANCE:
+                v = 0.07
+                w = 0
+            elif not (-0.06 <= state.sampleRB[0][1] <= 0.04):
                 print("target acquired")
                 # Make sure PWM dosent go minimal
                 self.centering = True
@@ -526,6 +530,7 @@ class Navigation:
     def navigate(self, goal, state):
         vRep, wRep = 0, 0
         v = KV_ATTRACT * goal[0] 
+        v = max(v, 0.12)
         w = 0.5 * KW_ATTRACT * goal[0]**2 * goal[1]
         vRep, wRep = self.avoidObstacles(state)
         v = v - vRep
