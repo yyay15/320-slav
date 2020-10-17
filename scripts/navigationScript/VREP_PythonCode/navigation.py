@@ -132,7 +132,7 @@ class Navigation:
                         self.modeStartTime = time.time()
             else:
                 v = 0
-                w = 0.5 * self.turnDir
+                w = 0.55 * self.turnDir
         return v, w
 
     # robot spins, moves forward, spins again
@@ -338,7 +338,7 @@ class Navigation:
             self.isBlind = True
             self.modeStartTime = time.time()
         elif (self.isBlind):
-            if (time.time() - self.modeStartTime < 1): #used to be 1.6
+            if (time.time() - self.modeStartTime < 1.15): #used to be 1.6
                 v = 0.07
                 w = 0
             else:
@@ -366,10 +366,17 @@ class Navigation:
     def driveUpLander(self,state):        
         self.rotState = SLIGHT_OPEN
         self.onLander = True
+
+        # Lets chill for a little bit 
+        if (time.time() - self.modeStartTime > 1):
+            print("Lets chill and vibe for a bit")
+            v, w = 0, 0 
+
+
         if (state.sampleCollected):
             if (not self.isEmpty(state.holeRB)):
                 self.stateMode = HOLE_ALIGN
-            if (time.time() - self.modeStartTime > 2.5):
+            if (time.time() - self.modeStartTime > 4.5):
                 print("Im LOST PLEASE HELP")
                 v, w = 0, 0
                 self.stateMode = SEARCH_LANDER
