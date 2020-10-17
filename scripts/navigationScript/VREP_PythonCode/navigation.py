@@ -296,6 +296,7 @@ class Navigation:
 
     def navLander(self, state):
         self.rotState = CLOSE
+        v, w = 0, 0
         if (not state.sampleCollected):
             self.rotState = HARD_CLOSE
             v, w = 0, 0
@@ -310,6 +311,7 @@ class Navigation:
         else:
             if (state.landerRB[0][0] < LANDER_SWITCH_RANGE):
                 if (-0.05 <= state.landerRB[0][1] <= 0.05):
+                    v, w = 0, 0
                     print("switching to  align lander")
                     self.modeStartTime = time.time()
                     self.stateMode = UP_LANDER
