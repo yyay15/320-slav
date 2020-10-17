@@ -481,7 +481,7 @@ class Navigation:
     def navigate(self, goal, state):
         vRep, wRep = 0, 0
         v = KV_ATTRACT * goal[0] 
-        w = KW_ATTRACT * goal[1]
+        w = 0.5 * KW_ATTRACT * goal[0]**2 * goal[1]
         vRep, wRep = self.avoidObstacles(state)
         v = v - vRep
         w = w - wRep
