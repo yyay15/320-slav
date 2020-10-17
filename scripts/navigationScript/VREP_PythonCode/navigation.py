@@ -81,7 +81,6 @@ class Navigation:
             7: self.acquireSample,
             8: self.driveUpLander,
             9: self.flipRock,
-            10: self.holeAlign,
             11: self.dropSample,
             12: self.alignRock,
             13: self.alignLander,
@@ -325,8 +324,8 @@ class Navigation:
             landerR = state.landerRB[0][0] * 2
             landerB = state.landerRB[0][1]  * 2
             if (not self.isEmpty(state.obstaclesRB)):
-                if state.obstaclesRB[0][0] < 0.3:
-                    landerR = state.landerRB[0][0]
+                if state.obstaclesRB[0][0] < 0.1:
+                    landerR = state.landerRB[0][0] 
                     landerB = state.landerRB[0][1] 
 
             v, w = self.navigate([landerR, landerB], state)
@@ -339,11 +338,16 @@ class Navigation:
     
     def acquireSample(self, state):
         # centre sample
-        if (not self.isEmpty(state.sampleRB) and not (-0.05 <= state.sampleRB[0][1] <= 0.05)):
-            print("centering")
-            self.centering = True
-            w = state.sampleRB[0][1] 
-            v = 0
+        if (not self.isEmpty(state.sampleRB) and not (-0.2 <= state.sampleRB[0][1] <= 0.2)):
+            if not (-0.2 <=state.sampleRB[0][1] <= 0.2):
+                print("big centering")
+                v = 0
+                w = state.sampleRB[0][1] * 1.1
+            elif (not -0.05 <= state.sampleRB[0][1] <= 0.05):
+                print("centering")
+                self.centering = True
+                w = state.sampleRB[0][1] 
+                v = 0
         elif (not self.isEmpty(state.sampleRB) and not self.isBlind):
             self.centering = False
             print("opening rot")
@@ -353,7 +357,7 @@ class Navigation:
             self.modeStartTime = time.time()
         elif (self.isBlind):
             print("driving straight, cover open")
-            if (time.time() - self.modeStartTime < 1.15): #used to be 1.6
+            if (time.time() - self.modeStartTime < 1.3): #used to be 1.6
                 v = 0.07
                 w = 0
             else:
@@ -459,34 +463,12 @@ class Navigation:
             self.stateMode = SEARCH_ROCK
         return v, w
 
-
-    # depreciate unless 👀👀
-    def holeAlign(self, state):
-        print("I am aligning to da hoe")
-        v, w = 0, 0
-        if (state.sampleCollected):
-            print("we gonna kobe into the hole")
-            print("This is the kobe traj: ",state.holeRB)
-            if(not self.isEmpty(state.holeRB)):
-                hole = state.holeRB[0]
-                v = 0.1
-                w = hole[1]*1.3
-            else:
-                print("Here we go again")
-                self.stateMode = UP_LANDER
-        else:
-            print("Gotta look for some orange spheres")
-            self.stateMode = SEARCH_SAMPLE
-
-        return v, w 
-        
-
     def dropSample(self, state):
         if (state.sampleCollected):
             self.checkSampleTime = time.time()
             haveSample = True
         else:
-            if time.time() - checkSampleTime < 0.7:
+            if time.time() - self.checkSampleTime < 1.1:
                 haveSample = True
             else:
                 haveSample = False
@@ -495,12 +477,12 @@ class Navigation:
                 v = 0.085
                 w = 0 
                 print("go forward")
-            elif (0.5 < time.time() - self.modeStartTime < 2):
+            elif (0.5 < time.time() - self.modeStartTime < 2.5):
                 self.rotState = OPEN
                 v = 0.075
                 w = 0
                 print("opening ROT")
-            elif (2 < time.time() - self.modeStartTime < 3):
+            elif (2.5 < time.time() - self.modeStartTime < 3.5):
                 self.rotState = DROP_SAMPLE
                 v = - 0.075
                 w = 0
@@ -545,8 +527,8 @@ class Navigation:
                     wTemp =  (np.sign(obs[1]) * (0.5 - obs[0]) * (3 - abs(obs[1]))* KW_REPULSE)
                     vRep =  (0.5 - obs[0]) * 0.2
                 #break potential fields and turn away 
-                if obs[0] < 0.15:
-                    wRep = 2 * wTemp
+                if obs[0] < 0.12:
+                    wRep = 1.7 * wTemp
                     return vRep, wRep
                 wRep += wTemp
         if not self.isEmpty(rocks) and self.rockObstacle:
