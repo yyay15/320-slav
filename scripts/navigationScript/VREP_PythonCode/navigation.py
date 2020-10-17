@@ -333,6 +333,7 @@ class Navigation:
         if (not self.isEmpty(state.sampleRB) and not (-0.05 <= state.sampleRB[0][1] <= 0.05)):
             sample = state.sampleRB[0]
             if (not -0.1 <= sample[1] < 0.1):
+                print("large centering")
                 v = 0
                 w = sample[1]
             elif (not (-0.05 <= sample[1] <= 0.05)):
@@ -348,10 +349,12 @@ class Navigation:
             self.isBlind = True
             self.modeStartTime = time.time()
         elif (self.isBlind):
+            print("driving straight, cover open")
             if (time.time() - self.modeStartTime < 1.15): #used to be 1.6
                 v = 0.07
                 w = 0
             else:
+                print("closing rot")
                 v, w = 0, 0
                 self.rotState = HARD_CLOSE
                 self.isBlind = False
