@@ -331,7 +331,7 @@ class Navigation:
     
     def acquireSample(self, state):
         v, w = 0, 0
-        print()
+        print("Check target location: ", state.sampleRB)
         # Check if sample is there:
         if (not self.isEmpty(state.sampleRB)):
             # Centre Sample
@@ -339,7 +339,7 @@ class Navigation:
                 print("target acquired")
                 # Make sure PWM dosent go minimal
                 self.centering = True
-                w = state.sampleRB[0][1]
+                w = state.sampleRB[0][1] * 1.1
                 v = 0
                 self.modeStartTime = time.time()
             else:
@@ -350,7 +350,7 @@ class Navigation:
                 # Drive forward
                 if (time.time() - self.modeStartTime <= 1.25):
                     print("Fire in the hole")
-                    w = 0
+                    w = state.sampleRB[0][1]
                     v = 0.065
                 else:
                     # Close ROT
