@@ -49,7 +49,7 @@ def ledIndicator(state):
         GPIO.output(LED_YELLOW, GPIO.HIGH)
         GPIO.output(LED_GREEN, GPIO.LOW)
         GPIO.output(LED_RED, GPIO.LOW)
-    elif (state == 5 or state == 6):
+    elif (state == 5 or state == 6 or state == 8 or state == 11):
         GPIO.output(LED_GREEN, GPIO.HIGH)
         GPIO.output(LED_RED, GPIO.LOW)
         GPIO.output(LED_YELLOW, GPIO.LOW)

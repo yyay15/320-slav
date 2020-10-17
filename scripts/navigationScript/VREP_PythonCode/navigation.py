@@ -16,7 +16,6 @@ FLIP_ROCK = 9
 HOLE_ALIGN = 10
 SAMPLE_DROP = 11
 ROCK_ALIGN = 12
-ALIGN_LANDER = 13
 FLIP_CHECK = 14
 
 #ROT CONSTANTS
@@ -61,9 +60,7 @@ class Navigation:
         self.rotState = CLOSE            # state for sample collection
         self.isBlind = False
         self.centering = False
-        self.commandnav = False
         self.attemptFlip = False
-        self.landerHoleSeen = False
         self.onLander = True
         self.numSampleCollected = 0
         self.prevLanderAreaDiff = 0
@@ -83,7 +80,6 @@ class Navigation:
             9: self.flipRock,
             11: self.dropSample,
             12: self.alignRock,
-            13: self.alignLander,
             14: self.checkFlip
         }
         return switchState.get(stateNum, self.searchSample)
@@ -410,8 +406,6 @@ class Navigation:
             print("Jobs Done")
             self.stateMode = SEARCH_SAMPLE
 
-
-
         if (not self.isEmpty(state.holeRB)):
              v = 0.06
              w = state.holeRB[0][1]
@@ -423,28 +417,6 @@ class Navigation:
 
         return v, w
         
-    def alignLander(self, state):
-        self.rotState = SLIGHT_OPEN
-        v, w = 0, 0
-        # if (time.time() - self.modeStartTime > 0.1):
-        #     v =0.15
-        #     w = 0
-        # else:
-        if (not self.isEmpty(state.landerRB)):
-            landerDiff = state.landerArea - state.prevLanderArea
-            if (landerDiff < 0 and self.prevLanderAreaDiff > 0):
-                self.prevLanderAreaDiff = 0
-                self.modeStartTime = time.time()
-                self.stateMode = UP_LANDER
-            else:
-                v = 0
-                w = 0.3
-                self.prevLanderAreaDiff = landerDiff
-        else:
-            print("align lander -> search lander")
-            self.modeStartTime = time.time()
-            self.stateMode = SEARCH_LANDER
-        return v, w
 
     def alignRock(self,state):
         print("aligning rock")
@@ -537,8 +509,6 @@ class Navigation:
                 if obs[0] < 0.6:
                     wTemp =  (np.sign(obs[1]) * (0.5 - obs[0]) * (3 - abs(obs[1]))* KW_REPULSE * 1.1)
                     vRep =  (0.5 - obs[0]) * 0.2
-                    # if closeObs[0] < 0.15:
-                    #     wTemp = 1.75 * wTemp
                 wRep += wTemp
         return vRep, wRep
 
@@ -576,47 +546,3 @@ class Navigation:
             empty = objectIn.size == 0
         return empty
 
-    def ROTCollect(self, state):
-        self.rotState = OPEN
-        v = 0.05
-        w = 0
-
-        return v, w
-
-
-
-    def driveForward(self):
-        print("drive forward")
-        driveStart = time.time()
-        if (time.time() - driveStart < 2):
-            v = 0.2
-            w = 0
-        else:
-            v = 0
-            w = 0
-        return v, w
-    def driveBack(self):
-        print("drive reverse")
-        if (time.time() - self.modeStartTime < 2):
-            v = -0.2
-            w = 0
-        else:
-            v = 0
-            w = 0
-        return v, w
-
-
-
-    def driveOffLander(self, state):
-        v = 0.2
-        w = 0
-        if(time.time() - self.modeStartTime >= DRIVE_OFF_TIME):
-            v = 0
-            w = 0
-            self.modeStartTime = time.time()
-            state.onLander = False
-        return v, w
-
-
-# nav = Navigation()
-# nav.navAndAvoid([[0, 1]], [[1, 2]])
