@@ -385,14 +385,14 @@ class Navigation:
     def driveUpLander(self,state):        
         self.rotState = SLIGHT_OPEN
         self.onLander = True
-
+        haveSample = debounceSensor(state, 1.5)
         # Lets chill for a little bit 
         if (time.time() - self.modeStartTime > 1):
             print("Lets chill and vibe for a bit")
             v, w = 0, 0 
 
 
-        if (state.sampleCollected):
+        if (haveSample):
             if (not self.isEmpty(state.holeRB)):
                 self.stateMode = HOLE_ALIGN
             if (time.time() - self.modeStartTime > 4.5):
@@ -409,7 +409,7 @@ class Navigation:
             print("Jobs Done")
             self.stateMode = SEARCH_SAMPLE
 
-        if (not self.isEmpty(state.holeRB)):
+        if (not self.isEmpty(state.holeRB) and haveSample):
              v = 0.06
              w = state.holeRB[0][1]
              self.modeStartTime = time.time()
@@ -439,14 +439,7 @@ class Navigation:
         return v, w
 
     def dropSample(self, state):
-        if (state.sampleCollected):
-            self.checkSampleTime = time.time()
-            haveSample = True
-        else:
-            if time.time() - self.checkSampleTime < 1.1:
-                haveSample = True
-            else:
-                haveSample = False
+        haveSample = self.debounceSensor(state, 1.1)
         if (haveSample):
             if (time.time() - self.modeStartTime < 0.5):
                 v = 0.085
@@ -506,6 +499,7 @@ class Navigation:
                     vRep =  (0.5 - obs[0]) * 0.2
                 #break potential fields and turn away 
                 if obs[0] < 0.12:
+                    print("breaking potential fields just turning away!!")
                     wRep = 1.7 * wTemp
                     return vRep, wRep
                 wRep += wTemp
@@ -551,4 +545,15 @@ class Navigation:
         else:
             empty = objectIn.size == 0
         return empty
+
+    def debounceSensor(self, state, waitTime):
+        if (state.sampleCollected):
+            self.checkSampleTime = time.time()
+            haveSample = True
+        else:
+            if time.time() - self.checkSampleTime < waitTime:
+                haveSample = True
+            else:
+                haveSample = False
+        return haveSample
 
