@@ -41,7 +41,7 @@ ROCK_ALIGN_DISTANCE = 0.25
 FULL_ROTATION = 13
 ROT_ACQUIRE_SAMPLE = 0.9
 DRIVE_OFF_TIME = 6
-LANDER_SWITCH_RANGE = 0.32
+LANDER_SWITCH_RANGE = 0.27
 
 # OBSTACLE AVOIDANCE GAINS 
 KV_ATTRACT = 0.5 #0.5
@@ -360,7 +360,7 @@ class Navigation:
                 print("closing rot")
                 v, w = 0, 0
                 self.rotState = HARD_CLOSE
-            elif (1.7 < time.time() - self.modeStartTime < 3.5):
+            elif (1.7 < time.time() - self.modeStartTime < 3.7):
                 self.rotState = CLOSE
                 v = -0.05
                 w = 0
