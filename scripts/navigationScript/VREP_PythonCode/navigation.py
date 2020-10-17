@@ -330,7 +330,7 @@ class Navigation:
         return v,w
     
     def acquireSample(self, state):
-        v, w = 0
+        v, w = 0, 0
         print()
         # Check if sample is there:
         if (not self.isEmpty(state.sampleRB)):
