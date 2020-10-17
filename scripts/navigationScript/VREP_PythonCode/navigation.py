@@ -40,7 +40,7 @@ ROCK_ALIGN_DISTANCE = 0.25
 FULL_ROTATION = 15
 ROT_ACQUIRE_SAMPLE = 0.9
 DRIVE_OFF_TIME = 6
-LANDER_SWITCH_RANGE = 0.3
+LANDER_SWITCH_RANGE = 0.32
 
 # OBSTACLE AVOIDANCE GAINS 
 KV_ATTRACT = 0.5 #0.5
@@ -129,11 +129,12 @@ class Navigation:
                         self.modeStartTime = time.time()
             else:
                 v = 0
-                w = 0.5 * self.turnDir
+                w = 0.55 * self.turnDir
         return v, w
 
     # robot spins, moves forward, spins again
     def searchLander(self, state):
+        v, w = 0, 0
         self.rotState = CLOSE
         self.rockObstacle = True
         if (not self.isEmpty(state.prevLanderRB)):
@@ -143,8 +144,13 @@ class Navigation:
             v, w = 0, 0
             self.stateMode = NAV_LANDER
         elif (time.time() - self.modeStartTime >= FULL_ROTATION): 
-            print("moving around")
-            v, w = self.navigate([0.2, 0], state)
+            if (not self.isEmpty(state.wallRB)):
+                if (state.wallRB[0][0] < 0.3):
+                    w = 0.9 * self.turnDir
+                else:
+                    v, w = self.navigate([0.1, 0], state)
+            else:           
+                v, w = self.navigate([0.2, 0], state)
             if (time.time() - self.modeStartTime - FULL_ROTATION >= 1.5):
                 print("return to spin")
                 self.modeStartTime = time.time()
@@ -354,10 +360,17 @@ class Navigation:
     def driveUpLander(self,state):        
         self.rotState = SLIGHT_OPEN
         self.onLander = True
+
+        # Lets chill for a little bit 
+        if (time.time() - self.modeStartTime > 1):
+            print("Lets chill and vibe for a bit")
+            v, w = 0, 0 
+
+
         if (state.sampleCollected):
             if (not self.isEmpty(state.holeRB)):
                 self.stateMode = HOLE_ALIGN
-            if (time.time() - self.modeStartTime > 2.5):
+            if (time.time() - self.modeStartTime > 4.5):
                 print("Im LOST PLEASE HELP")
                 v, w = 0, 0
                 self.stateMode = SEARCH_LANDER
@@ -448,7 +461,7 @@ class Navigation:
 
     def dropSample(self, state):
         if (state.sampleCollected):
-            if (time.time() - self.modeStartTime < 1):
+            if (time.time() - self.modeStartTime < 0.5):
                 v = 0.085
                 w = 0 
                 print("go forward")
@@ -457,7 +470,7 @@ class Navigation:
                 v = 0.075
                 w = 0
                 print("opening ROT")
-            elif (2 < time.time() - self.modeStartTime < 4):
+            elif (2 < time.time() - self.modeStartTime < 3):
                 self.rotState = DROP_SAMPLE
                 v = - 0.075
                 w = 0
