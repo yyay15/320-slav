@@ -94,12 +94,12 @@ class Collection:
         timeElapsed = time.time() - self.stateTime
         print("I'm Releasing Sample")
         print(timeElapsed)
-        if timeElapsed < 1:
+        if timeElapsed < 0.8:
             if self.count <1:
                 self.servoPWM.ChangeDutyCycle(8.0)
                 self.count+=1
                 print("Releasing")
-        elif 1 < timeElapsed < 1.5:
+        elif 0.8 < timeElapsed < 1.25:
             if self.count <2:
                 self.servoPWM.ChangeDutyCycle(0)
                 self.count+=1
@@ -128,12 +128,12 @@ class Collection:
         timeElapsed = time.time() - self.stateTime
         print("I'm Open Rot")
         print("Open ROT ", timeElapsed)
-        if timeElapsed < 1:
+        if timeElapsed < 0.8:
             if self.count <1:
                 self.servoPWM.ChangeDutyCycle(7.7)
                 self.count+=1
                 print("Open")
-        elif 1 < timeElapsed < 1.5:
+        elif 0.8 < timeElapsed < 1.25:
             if self.count <2:
                 self.servoPWM.ChangeDutyCycle(0)
                 self.count+=1
@@ -146,12 +146,12 @@ class Collection:
         timeElapsed = time.time() - self.stateTime
         print("I'm Close Rot")
         print("Close Rot ",timeElapsed)
-        if timeElapsed < 1:
+        if timeElapsed < 0.8:
             if self.count <1:
                 self.servoPWM.ChangeDutyCycle(3.95)
                 self.count+=1
                 print("Close")
-        elif 1 < timeElapsed < 1.5:
+        elif 0.8 < timeElapsed < 1.25:
             if self.count <2:
                 self.servoPWM.ChangeDutyCycle(0)
                 self.count+=1
@@ -164,12 +164,12 @@ class Collection:
         timeElapsed = time.time() - self.stateTime
         print("I'm Lander")
         print(timeElapsed)
-        if timeElapsed < 1:
+        if timeElapsed < 0.8:
             if self.count <1:
                 self.servoPWM.ChangeDutyCycle(5.4)
                 self.count+=1
                 print("Lander Angled Up")
-        elif 1 < timeElapsed < 1.5:
+        elif 0.8 < timeElapsed < 1.25:
             if self.count <2:
                 self.servoPWM.ChangeDutyCycle(0)
                 self.count+=1
