@@ -129,7 +129,7 @@ class Navigation:
                         self.modeStartTime = time.time()
             else:
                 v = 0
-                w = 0.5 * self.turnDir
+                w = 0.55 * self.turnDir
         return v, w
 
     # robot spins, moves forward, spins again
