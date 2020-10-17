@@ -326,7 +326,7 @@ class Navigation:
             self.isBlind = True
             self.modeStartTime = time.time()
         elif (self.isBlind):
-            if (time.time() - self.modeStartTime < 1): #used to be 1.6
+            if (time.time() - self.modeStartTime < 1.15): #used to be 1.6
                 v = 0.07
                 w = 0
             else:
