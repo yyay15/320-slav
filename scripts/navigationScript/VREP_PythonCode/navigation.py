@@ -338,15 +338,16 @@ class Navigation:
 
         if (not self.isEmpty(state.sampleRB)):
             # Centre Sample
-            if not state.sampleRB[0][0] < ROT_DISTANCE:
-                v = 0.07
-                w = 0
-            elif not (-0.06 <= state.sampleRB[0][1] <= 0.04):
+            if not (-0.06 <= state.sampleRB[0][1] <= 0.04):
                 print("target acquired")
                 # Make sure PWM dosent go minimal
                 self.centering = True
                 w = state.sampleRB[0][1] 
                 v = 0
+                self.modeStartTime = time.time()
+            elif state.sampleRB[0][0] > ROT_DISTANCE:
+                v = 0.07
+                w = 0
                 self.modeStartTime = time.time()
             else:
                 # Open ROT
