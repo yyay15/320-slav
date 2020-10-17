@@ -339,7 +339,7 @@ class Navigation:
                 print("target acquired")
                 # Make sure PWM dosent go minimal
                 self.centering = True
-                w = self.sampleRB[0][1]
+                w = state.sampleRB[0][1]
                 v = 0
                 self.modeStartTime = time.time()
             else:
