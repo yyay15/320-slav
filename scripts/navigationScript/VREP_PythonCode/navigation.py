@@ -45,7 +45,7 @@ LANDER_SWITCH_RANGE = 0.32
 KV_ATTRACT = 0.5 #0.5
 KW_ATTRACT = 1.3    #1.5 #0.8
 KV_REPULSE = 0.3
-KW_REPULSE = 1.25
+KW_REPULSE = 1.1
 
 class Navigation:
     def __init__(self):
@@ -337,18 +337,18 @@ class Navigation:
     
     def acquireSample(self, state):
         # centre sample
-        if (not self.isEmpty(state.sampleRB) and not (-0.2 <= state.sampleRB[0][1] <= 0.2)):
-            if not (-0.2 <=state.sampleRB[0][1] <= 0.2):
-                print("big centering")
-                v = 0
-                w = state.sampleRB[0][1] * 1.1
-            elif (not -0.05 <= state.sampleRB[0][1] <= 0.05):
-                print("centering")
-                self.centering = True
-                w = state.sampleRB[0][1] 
-                v = 0
+        if (not self.isEmpty(state.sampleRB) and not (-0.05 <= state.sampleRB[0][1] <= 0.05)):
+            # if 
+            # if not (-0.2 <=state.sampleRB[0][1] <= 0.2):
+            #     print("big centering")
+            #     v = 0
+            #     w = state.sampleRB[0][1] * 1.1
+            # elif (not -0.05 <= state.sampleRB[0][1] <= 0.05):
+            print("centering")
+            self.centering = True
+            w = state.sampleRB[0][1] 
+            v = 0
         elif (not self.isEmpty(state.sampleRB) and not self.isBlind):
-            self.centering = False
             print("opening rot")
             v, w = 0, 0
             self.rotState = OPEN
@@ -391,7 +391,6 @@ class Navigation:
             print("Lets chill and vibe for a bit")
             v, w = 0, 0 
 
-
         if (haveSample):
             if (not self.isEmpty(state.holeRB)):
                 self.stateMode = HOLE_ALIGN
@@ -409,7 +408,7 @@ class Navigation:
             print("Jobs Done")
             self.stateMode = SEARCH_SAMPLE
 
-        if (not self.isEmpty(state.holeRB) and haveSample):
+        if (not self.isEmpty(state.holeRB) and not self.isEmpty(state.landerRB) and haveSample):
              v = 0.06
              w = state.holeRB[0][1]
              self.modeStartTime = time.time()
