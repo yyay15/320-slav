@@ -342,7 +342,7 @@ class Navigation:
             w = state.sampleRB[0][1] 
             v = 0
         elif (not self.isEmpty(state.sampleRB) and state.sampleRB[0][0] > ROT_DISTANCE):
-            v = 0.07
+            v = 0.05
             w = 0
         elif (not self.isEmpty(state.sampleRB) and not self.isBlind):
             print("opening rot")
@@ -352,7 +352,7 @@ class Navigation:
             self.modeStartTime = time.time()
         elif (self.isBlind):
             print("driving straight, cover open")
-            if (time.time() - self.modeStartTime < 1.3): #used to be 1.6
+            if (time.time() - self.modeStartTime < 1.5): #used to be 1.6
                 v = 0.07
                 w = 0
             else:
