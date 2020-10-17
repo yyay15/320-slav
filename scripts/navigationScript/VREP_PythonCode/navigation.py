@@ -357,7 +357,7 @@ class Navigation:
                 print("closing rot")
                 v, w = 0, 0
                 self.rotState = HARD_CLOSE
-            elif (1.7 < time.time() - self.modeStartTime < 2.5):
+            elif (1.7 < time.time() - self.modeStartTime < 3.5):
                 self.rotState = CLOSE
                 v = -0.05
                 w = 0
@@ -451,11 +451,11 @@ class Navigation:
                 v = 0.075
                 w = 0
                 print("opening ROT")
-            elif (3.5 < time.time() - self.modeStartTime <4.5):
-                v = - 0.075
+            elif (3.5 < time.time() - self.modeStartTime <4):
+                v = - 0.095
                 w = 0
                 print("going backward")
-            elif(4.5 < time.time() - self.modeStartTime < 5.5):
+            elif(4 < time.time() - self.modeStartTime < 5):
                 v, w = 0, 0
             else:
                 v, w = 0, 0
