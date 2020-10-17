@@ -342,6 +342,9 @@ class Navigation:
                 print("big centering")
                 v = 0
                 w = state.sampleRB[0][1] * 1.1
+            else: 
+                print("HELL NAW IM PASSING!")
+                pass
         elif (not self.isEmpty(state.sampleRB) and not -0.05 <= state.sampleRB[0][1] <= 0.05):
              print("centering")
              self.centering = True
