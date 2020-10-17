@@ -311,11 +311,13 @@ class Navigation:
         else:
             if (state.landerRB[0][0] < LANDER_SWITCH_RANGE):
                 if (-0.05 <= state.landerRB[0][1] <= 0.05):
+                    self.centering = False
                     print("switching to  align lander")
                     self.modeStartTime = time.time()
                     self.stateMode = UP_LANDER
                 else:
                     print("alignig lander")
+                    self.centering = TRUE
                     v = 0
                     w = state.landerRB[0][1] * 0.5
             elif (state.landerRB[0][0] < (LANDER_SWITCH_RANGE + 0.1)):
