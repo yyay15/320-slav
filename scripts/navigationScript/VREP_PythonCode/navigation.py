@@ -40,7 +40,7 @@ ROCK_ALIGN_DISTANCE = 0.25
 FULL_ROTATION = 15
 ROT_ACQUIRE_SAMPLE = 0.9
 DRIVE_OFF_TIME = 6
-LANDER_SWITCH_RANGE = 0.3
+LANDER_SWITCH_RANGE = 0.32
 
 # OBSTACLE AVOIDANCE GAINS 
 KV_ATTRACT = 0.5 #0.5
@@ -448,7 +448,7 @@ class Navigation:
 
     def dropSample(self, state):
         if (state.sampleCollected):
-            if (time.time() - self.modeStartTime < 1):
+            if (time.time() - self.modeStartTime < 0.5):
                 v = 0.085
                 w = 0 
                 print("go forward")
@@ -457,7 +457,7 @@ class Navigation:
                 v = 0.075
                 w = 0
                 print("opening ROT")
-            elif (2 < time.time() - self.modeStartTime < 4):
+            elif (2 < time.time() - self.modeStartTime < 3):
                 self.rotState = DROP_SAMPLE
                 v = - 0.075
                 w = 0
