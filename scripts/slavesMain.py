@@ -68,6 +68,24 @@ def ledSetup():
 
 
 #---------------#
+# Debug Logger
+#---------------#
+
+
+class Tee(object):
+    def __init__(self, *files):
+        self.files = files
+    def write(self, obj):
+        for f in self.files:
+            f.write(obj)
+
+f = open('logfile', 'w')
+backup = sys.stdout
+sys.stdout = Tee(sys.stdout, f)
+
+
+
+#---------------#
 # Flask Function
 #---------------#
 
