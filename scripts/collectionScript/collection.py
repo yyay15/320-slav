@@ -105,7 +105,7 @@ class Collection:
                 self.count+=1
 
     def Hard_Close_ROT(self):
-        self.servoPWM.ChangeDutyCycle(3.95)    
+        self.servoPWM.ChangeDutyCycle(3.85)    
         print("HARD CLOSE")
         time.sleep(1)
         self.servoPWM.ChangeDutyCycle(0)
@@ -148,7 +148,7 @@ class Collection:
         print("Close Rot ",timeElapsed)
         if timeElapsed < 0.8:
             if self.count <1:
-                self.servoPWM.ChangeDutyCycle(3.95)
+                self.servoPWM.ChangeDutyCycle(3.85)
                 self.count+=1
                 print("Close")
         elif 0.8 < timeElapsed < 1.25:
