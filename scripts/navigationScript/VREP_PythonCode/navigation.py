@@ -353,7 +353,7 @@ class Navigation:
             else:
                 self.isBlind = True
                 self.modeStartTime = time.time()
-        elif (self.isBlind)
+        elif (self.isBlind):
             self.centering = False
             if (self.rotState != HARD_OPEN):
                 print("Lock and loaded")
