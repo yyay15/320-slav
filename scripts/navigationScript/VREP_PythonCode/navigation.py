@@ -335,7 +335,7 @@ class Navigation:
         # Check if sample is there:
         if (not self.isEmpty(state.sampleRB)):
             # Centre Sample
-            if (-0.05 <= state.sampleRB[0][1] >= 0.05):
+            if (-0.04 <= state.sampleRB[0][1] >= 0.04):
                 print("target acquired")
                 # Make sure PWM dosent go minimal
                 self.centering = True
@@ -348,20 +348,20 @@ class Navigation:
                     print("Lock and loaded")
                     self.rotState = OPEN
                 # Drive forward
-                if (time.time() - self.modeStartTime <= 1.25 ):
+                if (time.time() - self.modeStartTime <= 1.25):
                     print("Fire in the hole")
                     w = 0
-                    v = 0.07
+                    v = 0.06
                 else:
                     # Close ROT
                     print("friendly fire")
                     if (self.rotState != HARD_CLOSE):
                         self.rotState = HARD_CLOSE
                     # Drive backward (1/3)
-                    if (1.25 <= time.time() - self.modeStartTime <= 1.75):
+                    if (1.25 <= time.time() - self.modeStartTime <= 1.6):
                         print("retreat")
                         w = 0
-                        v = -0.07
+                        v = -0.06
                     else:
                         print("gimme money")
                         # Do Check for states
