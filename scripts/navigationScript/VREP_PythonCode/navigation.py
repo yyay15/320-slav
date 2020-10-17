@@ -322,7 +322,7 @@ class Navigation:
                 v =  state.landerRB[0][0] * 2
                 w  = state.landerRB[0][1]  * 2
             else:
-                v, w = self.navigate([landerR, landerB], state)
+                v, w = self.navigate(state.landerRB[0], state)
 
             # Alan: Adjust for slower velo and faster omega
             v = v * 0.69 
