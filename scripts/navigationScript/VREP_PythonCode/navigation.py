@@ -338,7 +338,7 @@ class Navigation:
     
     def acquireSample(self, state):
         # centre sample
-        if (not self.isEmpty(state.sampleRB) and not (-0.05 <= state.sampleRB[0][1] <= 0.05)):
+        if (not self.isEmpty(state.sampleRB) and not (-0.1 <= state.sampleRB[0][1] <= 0.1)):
             if not (-0.1 <=state.sampleRB[0][1] <= 0.1):
                 print("big centering")
                 v = 0
