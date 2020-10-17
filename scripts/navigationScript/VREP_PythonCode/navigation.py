@@ -134,6 +134,7 @@ class Navigation:
 
     # robot spins, moves forward, spins again
     def searchLander(self, state):
+        v, w = 0, 0
         self.rotState = CLOSE
         self.rockObstacle = True
         if (not self.isEmpty(state.prevLanderRB)):
@@ -143,8 +144,13 @@ class Navigation:
             v, w = 0, 0
             self.stateMode = NAV_LANDER
         elif (time.time() - self.modeStartTime >= FULL_ROTATION): 
-            print("moving around")
-            v, w = self.navigate([0.2, 0], state)
+            if (not self.isEmpty(state.wallRB)):
+                if (state.wallRB[0][0] < 0.3):
+                    w = 0.9 * self.turnDir
+                else:
+                    v, w = self.navigate([0.1, 0], state)
+            else:           
+                v, w = self.navigate([0.2, 0], state)
             if (time.time() - self.modeStartTime - FULL_ROTATION >= 1.5):
                 print("return to spin")
                 self.modeStartTime = time.time()
