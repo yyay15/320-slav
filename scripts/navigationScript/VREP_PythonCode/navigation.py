@@ -330,8 +330,7 @@ class Navigation:
     
     def acquireSample(self, state):
         # centre sample
-        v, w = 0, 0
-        if (not self.isEmpty(state.sampleRB)):
+        if (not self.isEmpty(state.sampleRB) and not (-0.05 <= state.sampleRB[0][1] <= 0.05)):
             sample = state.sampleRB[0]
             if (not -0.1 <= sample[1] < 0.1):
                 v = 0
