@@ -359,8 +359,8 @@ class Navigation:
                 print("closing rot")
                 v, w = 0, 0
                 self.rotState = HARD_CLOSE
-            elif (1.7 < time.time() - self.modeStartTime < 2.7):
-                v = -0.5
+            elif (1.7 < time.time() - self.modeStartTime < 2.5):
+                v = -0.05
                 w = 0
             else:
                 self.isBlind = False
@@ -452,11 +452,11 @@ class Navigation:
                 v = 0.075
                 w = 0
                 print("opening ROT")
-            elif (3.5 < time.time() - self.modeStartTime <5):
+            elif (3.5 < time.time() - self.modeStartTime <4.5):
                 v = - 0.075
                 w = 0
                 print("going backward")
-            elif(5 < time.time() - self.modeStartTime < 6):
+            elif(4.5 < time.time() - self.modeStartTime < 5.5):
                 v, w = 0, 0
             else:
                 v, w = 0, 0
@@ -499,10 +499,10 @@ class Navigation:
                 if obs[0] < 0.6:
                     wTemp = np.sign(obs[1])* 0.5 * (1/obs[0] - 1/0.1)**2 * KW_REPULSE
                 #break potential fields and turn away 
-                if obs[0] < 0.1:
-                    print("breaking potential fields just turning away!!")
-                    wRep = 1.5 * wTemp
-                    return vRep, wRep
+                # if obs[0] < 0.08:
+                #     print("breaking potential fields just turning away!!")
+                #     wRep = 1.2 * wTemp
+                #     return vRep, wRep
                 wRep += wTemp
         if not self.isEmpty(rocks) and self.rockObstacle:
             for obs in rocks:
