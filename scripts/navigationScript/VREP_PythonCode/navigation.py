@@ -354,10 +354,17 @@ class Navigation:
     def driveUpLander(self,state):        
         self.rotState = SLIGHT_OPEN
         self.onLander = True
+
+        # Lets chill for a little bit 
+        if (time.time() - self.modeStartTime > 1):
+            print("Lets chill and vibe for a bit")
+            v, w = 0, 0 
+
+
         if (state.sampleCollected):
             if (not self.isEmpty(state.holeRB)):
                 self.stateMode = HOLE_ALIGN
-            if (time.time() - self.modeStartTime > 2.5):
+            if (time.time() - self.modeStartTime > 4.5):
                 print("Im LOST PLEASE HELP")
                 v, w = 0, 0
                 self.stateMode = SEARCH_LANDER
