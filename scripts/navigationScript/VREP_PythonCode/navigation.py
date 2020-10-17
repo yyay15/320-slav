@@ -63,7 +63,7 @@ class Navigation:
         self.isBlind = False
         self.centering = False
         self.attemptFlip = False
-        self.onLander = False
+        self.onLander = True
         self.numSampleCollected = 0
         self.prevLanderAreaDiff = 0
 
@@ -318,14 +318,9 @@ class Navigation:
                 else:
                     v = 0
                     w = w = state.landerRB[0][1] * 0.5
-
+    
             landerR = state.landerRB[0][0] * 2
             landerB = state.landerRB[0][1]  * 2
-            if (not self.isEmpty(state.obstaclesRB)):
-                if state.obstaclesRB[0][0] < 0.1:
-                    landerR = state.landerRB[0][0] 
-                    landerB = state.landerRB[0][1] 
-
             v, w = self.navigate([landerR, landerB], state)
 
             # Alan: Adjust for slower velo and faster omega
@@ -360,6 +355,7 @@ class Navigation:
                 v, w = 0, 0
                 self.rotState = HARD_CLOSE
             elif (1.7 < time.time() - self.modeStartTime < 2.5):
+                self.rotState = CLOSE
                 v = -0.05
                 w = 0
             else:
