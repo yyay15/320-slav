@@ -167,7 +167,7 @@ if __name__ == '__main__':
     # Try Loading And running
     try:
         print("beforeWhile...")
-        collection.Lander()
+        collection.ROT_BOOT()
 
         while(1):
             print("""
@@ -213,25 +213,12 @@ if __name__ == '__main__':
             elif userSelect == "t":
                 print("testing")
                 while True:
-                    collection.Open_ROT()
+                    collection.Hard_Open_ROT()
                     time.sleep(2)
-                    collection.Close_ROT()
+                    collection.Hard_Close_ROT()
                     time.sleep(1)
-                    collection.Lander()
-                    time.sleep(1)
-                    drive.drive(0.08,0, False)
-                    time.sleep(1.5)
-                    drive.drive(0,0, False)
-                    break
-                    drive.drive(0.07, 0, False)
-                    time.sleep(1)
-                    drive.drive(0, 0, False)
-                    collection.Close_ROT()
-                    drive.drive(0.1, 0, False)
-                    time.sleep(1)
-                    drive.drive(0, 0, False)
-
-                app.run(host='0.0.0.0',port=6969,debug=False)
+    
+                    app.run(host='0.0.0.0',port=6969,debug=False)
             elif userSelect == "q":
                 drive.gpioClean()
                 break
