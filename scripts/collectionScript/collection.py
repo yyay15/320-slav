@@ -106,13 +106,13 @@ class Collection:
 
     def Hard_Close_ROT(self):
         self.servoPWM.ChangeDutyCycle(3.3)    
-        print("Close")
+        print("HARD CLOSE")
         time.sleep(1)
         self.servoPWM.ChangeDutyCycle(0)
     
     def Hard_Open_ROT(self):
         self.servoPWM.ChangeDutyCycle(7.3)    
-        print("Close")
+        print("HARD OPEN")
         time.sleep(1)
         self.servoPWM.ChangeDutyCycle(0)
 
