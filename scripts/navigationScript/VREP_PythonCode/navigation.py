@@ -342,21 +342,24 @@ class Navigation:
                 print("big centering")
                 v = 0
                 w = state.sampleRB[0][1] * 1.1
-            elif (not -0.05 <= state.sampleRB[0][1] <= 0.05):
-                print("centering")
-                self.centering = True
-                w = state.sampleRB[0][1] 
-                v = 0
+        elif (not self.isEmpty(state.sampleRB) and not -0.05 <= state.sampleRB[0][1] <= 0.05):
+             print("centering")
+             self.centering = True
+             w = state.sampleRB[0][1] 
+             v = 0
         elif (not self.isEmpty(state.sampleRB) and not self.isBlind):
             self.centering = False
             print("opening rot")
             v, w = 0, 0
-            self.rotState = OPEN
+            if self.rotState != OPEN:
+                self.rotState = OPEN
+            else:
+                pass
             self.isBlind = True
             self.modeStartTime = time.time()
         elif (self.isBlind):
             print("driving straight, cover open")
-            if (time.time() - self.modeStartTime < 1.3): #used to be 1.6
+            if (time.time() - self.modeStartTime < 1.4): #used to be 1.6
                 v = 0.07
                 w = 0
             else:
