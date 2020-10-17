@@ -157,7 +157,7 @@ class Navigation:
                 self.modeStartTime = time.time()
         else:
             v = 0
-            w = 0.5 * self.turnDir
+            w = 0.55 * self.turnDir
         return v, w
 
     def searchRock(self, state):
@@ -169,15 +169,17 @@ class Navigation:
             self.rockObstacle = False
             self.stateMode = NAV_ROCK
         elif (time.time() -self.modeStartTime >= FULL_ROTATION):
-            print("moving around")
-            v = 0.5
-            w = 0
+            print("moving around away from wall")
+            if (not self.isEmpty(state.wallRB)):
+                w = 1 * self.turnDir
+            else:           
+                v, w = self.navigate([0.2, 0], state)
             if (time.time() - self.modeStartTime - FULL_ROTATION >= 2):
                 print("return to spin")
                 self.modeStartTime = time.time()
         else:
             v = 0
-            w = 0.5 * self.turnDir
+            w = 0.55 * self.turnDir
         return v, w
 
     def navSample(self, state):
@@ -215,11 +217,19 @@ class Navigation:
         v, w = 0, 0
         print("nav to  rock ")
         if (self.isEmpty(state.rocksRB)):
-            if (not self.isEmpty(state.prevRocksRB)):
-                self.turnDir = np.sign(state.prevRocksRB[0][1])
-            print("returning to rock search")
-            self.modeStartTime = time.time()
-            self.stateMode = SEARCH_ROCK
+            if self.onLander:
+                if time.time() - self.modeStartTime < 2.5:
+                    v = 0.08
+                    w = 0
+                else:
+                    v, w = 0, 0
+                    self.onLander = False
+            else:
+                if (not self.isEmpty(state.prevRocksRB)):
+                    self.turnDir = np.sign(state.prevRocksRB[0][1])
+                print("returning to rock search")
+                self.modeStartTime = time.time()
+                self.stateMode = SEARCH_ROCK
         else:
             if not self.isEmpty(state.rocksRB):
                 currRock = state.rocksRB[0]
@@ -320,6 +330,7 @@ class Navigation:
     
     def acquireSample(self, state):
         # centre sample
+        v, w = 0, 0
         if (not self.isEmpty(state.sampleRB)):
             sample = state.sampleRB[0]
             if (not -0.1 <= sample[1] < 0.1):
@@ -546,7 +557,7 @@ class Navigation:
     def navObsAvoidRock(self, state):
         vRep, wRep = 0, 0
         v = state.obstaclesRB[0][0] * KV_ATTRACT
-        w = state.obstaclesRB[0][1] * 0.5 #dont go to centre of obstacle
+        w = state.obstaclesRB[0][1] * 0.7 #dont go to centre of obstacle
         if (not self.isEmpty(state.rocksRB)):
             if state.rocksRB[0][0] < 0.8:
                 closeObs = state.rocksRB[0]
@@ -556,16 +567,6 @@ class Navigation:
         w = w -wRep
         return v, w
 
-    # def navAndAvoid(self, goal, obstacle):
-    #     vRep, wRep = 0, 0
-    #     v = KV_ATTRACT * goal[0][0] * 0.2
-    #     w = KW_ATTRACT * goal[0][1] * 3
-    #     if not self.isEmpty(obstacle):
-    #         vRep = (0.5 - obstacle[0][0]) * 0.1 
-    #         wRep = np.sign(obstacle[0][1]) * (0.5 - obstacle[0][0]) * (3 - abs(obstacle[0][1]))
-    #     v = v - vRep * 1.2
-    #     w = w - wRep * 1.2
-    #     return v, w
 
 #-----------------------#
 # Helper functions
