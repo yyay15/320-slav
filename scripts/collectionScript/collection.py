@@ -151,7 +151,7 @@ class Collection:
                 self.servoPWM.ChangeDutyCycle(3.85)
                 self.count+=1
                 print("Close")
-        elif 0.7 < timeElapsed < 1.0:
+        elif 0.7 < timeElapsed < 1.10:
             if self.count <2:
                 self.servoPWM.ChangeDutyCycle(0)
                 self.count+=1
@@ -166,7 +166,7 @@ class Collection:
         print(timeElapsed)
         if timeElapsed < 0.8:
             if self.count <1:
-                self.servoPWM.ChangeDutyCycle(5.55)
+                self.servoPWM.ChangeDutyCycle(5.6)
                 self.count+=1
                 print("Lander Angled Up")
         elif 0.8 < timeElapsed < 1.25:
