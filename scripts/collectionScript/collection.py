@@ -69,7 +69,7 @@ class Collection:
             self.currentState = 2
         elif self.currentState == 5:
             self.Sample_Release()
-        elif self.currentState = 6:
+        elif self.currentState == 6:
             self.Hard_Open_ROT()
 
         self.prevState = self.currentState
