@@ -81,7 +81,6 @@ class Navigation:
             7: self.acquireSample,
             8: self.driveUpLander,
             9: self.flipRock,
-            10: self.holeAlign,
             11: self.dropSample,
             12: self.alignRock,
             13: self.alignLander,
