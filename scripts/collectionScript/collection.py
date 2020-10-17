@@ -27,6 +27,7 @@ servoPin = 17
 # State 2 = Close
 # State 3 = Slight Open
 # State 4 = Hard Close
+# State 5 = Drop Sample
 
 
 ################################################################
@@ -60,13 +61,14 @@ class Collection:
         elif self.currentState == 1:
             self.Open_ROT2()
         elif self.currentState == 2:
-            print("close rot")
             self.Close_ROT2()
         elif self.currentState == 3:
             self.Lander2()
         elif self.currentState == 4: 
-            self.Close_ROT()
+            self.Hard_Close_ROT()
             self.currentState = 2
+        elif self.currentState == 5:
+            self.Sample_Release()
 
         self.prevState = self.currentState
         
@@ -81,24 +83,25 @@ class Collection:
         
              
 
-    def Open_ROT(self):
-        self.servoPWM.ChangeDutyCycle(6.8)
-        print("Open")
-        time.sleep(1)
-        self.servoPWM.ChangeDutyCycle(0)
+    def Sample_Release(self):
+        timeElapsed = time.time() - self.stateTime
+        print("I'm Releasing Sample")
+        print(timeElapsed)
+        if timeElapsed < 0.4:
+            if self.count <1:
+                self.servoPWM.ChangeDutyCycle(8.0)
+                self.count+=1
+                print("Releasing")
+        elif 0.4 < timeElapsed < 1:
+            if self.count <2:
+                self.servoPWM.ChangeDutyCycle(0)
+                self.count+=1
 
-    def Close_ROT(self):
+    def Hard_Close_ROT(self):
         self.servoPWM.ChangeDutyCycle(3.3)    
         print("Close")
         time.sleep(1)
         self.servoPWM.ChangeDutyCycle(0)
-
-    def Lander(self):
-        self.servoPWM.ChangeDutyCycle(4.9)
-        print("Releasing Ball")
-        time.sleep(1)
-        self.servoPWM.ChangeDutyCycle(0)
-
 
     def commandCentreCollectionControl(self,command):
         if command == "o":
