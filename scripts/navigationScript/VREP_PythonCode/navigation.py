@@ -331,10 +331,11 @@ class Navigation:
     
     def acquireSample(self, state):
         v, w = 0
+        print()
         # Check if sample is there:
         if (not self.isEmpty(state.sampleRB)):
             # Centre Sample
-            if (-0.05 <= self.sampleRB[0][1] >= 0.05):
+            if (-0.05 <= state.sampleRB[0][1] >= 0.05):
                 print("target acquired")
                 # Make sure PWM dosent go minimal
                 self.centering = True
