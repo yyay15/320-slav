@@ -486,7 +486,7 @@ class Navigation:
             self.checkSampleTime = time.time()
             haveSample = True
         else:
-            if time.time() - checkSampleTime < 0.7:
+            if time.time() - self.checkSampleTime < 0.7:
                 haveSample = True
             else:
                 haveSample = False
@@ -546,7 +546,7 @@ class Navigation:
                     vRep =  (0.5 - obs[0]) * 0.2
                 #break potential fields and turn away 
                 if obs[0] < 0.15:
-                    wRep = 2 * wTemp
+                    wRep = 1.7 * wTemp
                     return vRep, wRep
                 wRep += wTemp
         if not self.isEmpty(rocks) and self.rockObstacle:
