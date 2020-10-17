@@ -325,8 +325,8 @@ class Navigation:
             landerR = state.landerRB[0][0] * 2
             landerB = state.landerRB[0][1]  * 2
             if (not self.isEmpty(state.obstaclesRB)):
-                if state.obstaclesRB[0][0] < 0.3:
-                    landerR = state.landerRB[0][0]
+                if state.obstaclesRB[0][0] < 0.1:
+                    landerR = state.landerRB[0][0] 
                     landerB = state.landerRB[0][1] 
 
             v, w = self.navigate([landerR, landerB], state)
@@ -353,7 +353,7 @@ class Navigation:
             self.modeStartTime = time.time()
         elif (self.isBlind):
             print("driving straight, cover open")
-            if (time.time() - self.modeStartTime < 1.15): #used to be 1.6
+            if (time.time() - self.modeStartTime < 1.3): #used to be 1.6
                 v = 0.07
                 w = 0
             else:
