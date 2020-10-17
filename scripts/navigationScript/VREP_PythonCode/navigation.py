@@ -161,6 +161,7 @@ class Navigation:
         return v, w
 
     def searchRock(self, state):
+        v, w = 0,0
         print("searching for rock")
         if (self.rotState == OPEN or self.rotState == CLOSE):
             self.rotState = SLIGHT_OPEN
@@ -183,6 +184,7 @@ class Navigation:
         return v, w
 
     def navSample(self, state):
+        v, w = 0, 0
         print("nav to sample ")
         if (self.isEmpty(state.sampleRB)):
             if (self.onLander):
