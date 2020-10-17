@@ -351,7 +351,7 @@ class Navigation:
                 if (time.time() - self.modeStartTime <= 1.25):
                     print("Fire in the hole")
                     w = 0
-                    v = 0.06
+                    v = 0.065
                 else:
                     # Close ROT
                     print("friendly fire")
@@ -361,7 +361,7 @@ class Navigation:
                     if (1.25 <= time.time() - self.modeStartTime <= 1.6):
                         print("retreat")
                         w = 0
-                        v = -0.06
+                        v = -0.065
                     else:
                         print("gimme money")
                         # Do Check for states
