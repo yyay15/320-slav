@@ -190,13 +190,12 @@ if __name__ == '__main__':
                 # CHUCK THAT CHUNK HERE
                 while True:
                     print("==========================================")
-                    print("This is the state rn lel: ",nav.stateMode)
+                    print("State:",nav.stateMode, "Samples", nav.numSampleCollected)
                     print("==========================================")
                     # vision.updateVisionState(nav.stateMode)
                     objects = vision.GetDetectedObjects(nav.stateMode)
                     sampleCollected = vision.sampleCollected()
                     state.updateState(objects,sampleCollected, vision.landerArea)
-                    print("Wall range", state.wallRB)
                     v, w = nav.updateVelocities(state)
                     loc.getWheelAngVel(v, w)
                     ledIndicator(nav.stateMode)

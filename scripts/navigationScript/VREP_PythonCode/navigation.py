@@ -1,7 +1,6 @@
 import time
 import numpy as np
 from math import * 
-#import matplotlib.pyplot as plt
 
 # STATES
 SEARCH_ALL = 0
@@ -97,9 +96,6 @@ class Navigation:
         if (time.time() - self.overallTime  < 120 or self.numSampleCollected >= 1):
             self.stateMode = SEARCH_ROCK
             self.modeStartTime = time.time()
-        # elif (time.time() - self.searchTime > 60):
-        #     self.stateMode = SEARCH_ROCK
-        #     self.modeStartTime = time.time()
         else:
             self.stateMode = SEARCH_SAMPLE
             self.modeStartTime = time.time()
@@ -469,6 +465,7 @@ class Navigation:
                 self.modeStartTime = time.time()
         else:
             v, w = 0, 0
+            self.numSampleCollected += 1
             self.modeStartTime = time.time()
             self.rockObstacle = True
             self.stateMode = SEARCH_SAMPLE
