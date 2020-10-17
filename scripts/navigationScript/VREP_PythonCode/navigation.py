@@ -323,8 +323,7 @@ class Navigation:
             self.isBlind = True
             self.modeStartTime = time.time()
         elif (self.isBlind):
-            if (time.time() - self.modeStartTime < 1.6):
-                print("trying to drive straight YEEEEETTTT")
+            if (time.time() - self.modeStartTime < 1): #used to be 1.6
                 v = 0.07
                 w = 0
             else:
@@ -499,8 +498,10 @@ class Navigation:
                 if obs[0] < 0.5:
                     wTemp =  (np.sign(obs[1]) * (0.5 - obs[0]) * (3 - abs(obs[1]))* KW_REPULSE)
                     vRep =  (0.5 - obs[0]) * 0.2
+                #break potential fields and turn away 
                 if obs[0] < 0.15:
-                    wTemp = 2 * wTemp
+                    wRep = 2 * wTemp
+                    return vRep, wRep
                 wRep += wTemp
         if not self.isEmpty(rocks) and self.rockObstacle:
             for obs in rocks:
@@ -523,7 +524,7 @@ class Navigation:
     def navObsAvoidRock(self, state):
         vRep, wRep = 0, 0
         v = state.obstaclesRB[0][0] * KV_ATTRACT
-        w = state.obstaclesRB[0][1] + state.obstaclesRB[0][1] * 1.1 #dont go to centre of obstacle
+        w = state.obstaclesRB[0][1] * 0.5 #dont go to centre of obstacle
         if (not self.isEmpty(state.rocksRB)):
             if state.rocksRB[0][0] < 0.8:
                 closeObs = state.rocksRB[0]
@@ -533,19 +534,16 @@ class Navigation:
         w = w -wRep
         return v, w
 
-    def navAndAvoid(self, goal, obstacle):
-        vRep, wRep = 0, 0
-        # maybe limit high speeds when far away target
-        # if (goal[0][0] > 0.6):
-        #     v = 0.5
-        v = KV_ATTRACT * goal[0][0] * 0.2
-        w = KW_ATTRACT * goal[0][1] * 3
-        if not self.isEmpty(obstacle):
-            vRep = (0.5 - obstacle[0][0]) * 0.1 
-            wRep = np.sign(obstacle[0][1]) * (0.5 - obstacle[0][0]) * (3 - abs(obstacle[0][1]))
-        v = v - vRep * 1.2
-        w = w - wRep * 1.2
-        return v, w
+    # def navAndAvoid(self, goal, obstacle):
+    #     vRep, wRep = 0, 0
+    #     v = KV_ATTRACT * goal[0][0] * 0.2
+    #     w = KW_ATTRACT * goal[0][1] * 3
+    #     if not self.isEmpty(obstacle):
+    #         vRep = (0.5 - obstacle[0][0]) * 0.1 
+    #         wRep = np.sign(obstacle[0][1]) * (0.5 - obstacle[0][0]) * (3 - abs(obstacle[0][1]))
+    #     v = v - vRep * 1.2
+    #     w = w - wRep * 1.2
+    #     return v, w
 
 #-----------------------#
 # Helper functions
