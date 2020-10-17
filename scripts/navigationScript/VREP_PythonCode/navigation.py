@@ -495,8 +495,10 @@ class Navigation:
             for obs in obstacles:
                 wTemp = 0
                 if obs[0] < 0.5:
-                    wTemp =  (np.sign(obs[1]) * (0.5 - obs[0]) * (3 - abs(obs[1]))* KW_REPULSE)
-                    vRep =  (0.5 - obs[0]) * 0.2
+                    #wTemp =  (np.sign(obs[1]) * (0.5 - obs[0]) * (3 - abs(obs[1]))* KW_REPULSE)
+                    #wTemp = (1/0.05 - 1/obs[0]) * 1/(obs[0]**2) * 
+                    wTemp = 0.5 * (1/obs[0] - 1/0.05)**2 * KW_REPULSE
+                    #vRep =  (0.5 - obs[0]) * 0.2
                 #break potential fields and turn away 
                 if obs[0] < 0.12:
                     print("breaking potential fields just turning away!!")
@@ -507,8 +509,10 @@ class Navigation:
             for obs in rocks:
                 wTemp = 0
                 if obs[0] < 0.6:
-                    wTemp =  (np.sign(obs[1]) * (0.5 - obs[0]) * (3 - abs(obs[1]))* KW_REPULSE * 1.1)
-                    vRep =  (0.5 - obs[0]) * 0.2
+                    #wTemp =  (np.sign(obs[1]) * (0.5 - obs[0]) * (3 - abs(obs[1]))* KW_REPULSE * 1.1)
+                    
+                    wTemp = wTemp = 0.5 * (1/obs[0] - 1/0.05)**2 * KW_REPULSE * 1.1
+                    #vRep =  (0.5 - obs[0]) * 0.2
                 wRep += wTemp
         return vRep, wRep
 
