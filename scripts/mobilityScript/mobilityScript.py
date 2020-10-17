@@ -22,10 +22,10 @@ import time
 # Pin configurations
 PWMA = 27
 PWMB = 6
-A1 = 10
-A2 = 22
-B1 = 11
-B2 = 5
+A1 = 22
+A2 = 10
+B1 = 5
+B2 = 11
 STBY = 9
 
 # Wheel Parameters
