@@ -25,12 +25,14 @@ FLIP_CHECK = 14
 # State 3 = Slight Open
 # State 4 = Hard Close
 # State 5 = Drop Sample
+# State 6 = Hard Open
 PASS_STATE = 0
 OPEN = 1
 CLOSE = 2
 SLIGHT_OPEN = 3
 HARD_CLOSE = 4
 DROP_SAMPLE = 5
+HARD_OPEN = 6
 
 # DISTANCE/TIME VARIABLES
 ROT_DISTANCE = 0.22 #collect distance 
@@ -344,9 +346,9 @@ class Navigation:
                 self.modeStartTime = time.time()
             else:
                 # Open ROT
-                if (self.rotState != OPEN):
+                if (self.rotState != HARD_OPEN):
                     print("Lock and loaded")
-                    self.rotState = OPEN
+                    self.rotState = HARD_OPEN
                 # Drive forward
                 if (time.time() - self.modeStartTime <= 1.5):
                     print("Fire in the hole")
