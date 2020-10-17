@@ -121,8 +121,11 @@ class Navigation:
                     if (state.obstaclesRB[0][0] < 0.3):
                         self.modeStartTime = time.time()
                 else:
-                    print("moving around")
-                    v, w = self.navigate([0.2, 0], state)
+                    print("moving around away from wall")
+                    if (not self.isEmpty(state.wallRB)):
+                        w = 1 * self.turnDir
+                    else:
+                        v, w = self.navigate([0.2, 0], state)
                     if (time.time() - self.modeStartTime - FULL_ROTATION >= 1.5):
                         print("return to spin")
                         self.turnDir = self.turnDir * -1 
@@ -144,11 +147,9 @@ class Navigation:
             v, w = 0, 0
             self.stateMode = NAV_LANDER
         elif (time.time() - self.modeStartTime >= FULL_ROTATION): 
+            # turn away from wall when driving around
             if (not self.isEmpty(state.wallRB)):
-                if (state.wallRB[0][0] < 0.3):
-                    w = 0.9 * self.turnDir
-                else:
-                    v, w = self.navigate([0.1, 0], state)
+                w = 1 * self.turnDir
             else:           
                 v, w = self.navigate([0.2, 0], state)
             if (time.time() - self.modeStartTime - FULL_ROTATION >= 1.5):
@@ -206,6 +207,7 @@ class Navigation:
                 v, w = 0, 0
                 self.modeStartTime = time.time()
                 self.stateMode = ACQUIRE_SAMPLE
+                self.rotState = CLOSE
                 self.onLander = False
         return v, w
 
@@ -318,12 +320,16 @@ class Navigation:
     
     def acquireSample(self, state):
         # centre sample
-        if (not self.isEmpty(state.sampleRB) and not (-0.05 <= state.sampleRB[0][1] <= 0.05)):
-            print("centering")
-            self.centering = True
+        if (not self.isEmpty(state.sampleRB)):
             sample = state.sampleRB[0]
-            w = sample[1] 
-            v = 0
+            if (not -0.1 <= sample[1] < 0.1):
+                v = 0
+                w = sample[1]
+            elif (not (-0.05 <= sample[1] <= 0.05)):
+                print("centering")
+                self.centering = True
+                w = sample[1] 
+                v = 0
         elif (not self.isEmpty(state.sampleRB) and not self.isBlind):
             self.centering = False
             print("opening rot")
