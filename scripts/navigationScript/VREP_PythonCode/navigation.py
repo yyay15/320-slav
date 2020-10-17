@@ -517,7 +517,7 @@ class Navigation:
     def navigate(self, goal, state):
         vRep, wRep = 0, 0
         v = KV_ATTRACT * goal[0] 
-        w = KW_ATTRACT * goal[1]
+        w = 0.5 * KW_ATTRACT * goal[0]**2 * goal[1]
         vRep, wRep = self.avoidObstacles(state)
         v = v - vRep
         w = w - wRep
@@ -530,12 +530,12 @@ class Navigation:
         if not self.isEmpty(obstacles):
             for obs in obstacles:
                 wTemp = 0
-                if obs[0] < 0.5:
+                if obs[0] < 0.6:
                     wTemp = np.sign(obs[1])* 0.5 * (1/obs[0] - 1/0.1)**2 * KW_REPULSE
                 #break potential fields and turn away 
-                if obs[0] < 0.08:
+                if obs[0] < 0.1:
                     print("breaking potential fields just turning away!!")
-                    wRep = 1.7 * wTemp
+                    wRep = 1.5 * wTemp
                     return vRep, wRep
                 wRep += wTemp
         if not self.isEmpty(rocks) and self.rockObstacle:
