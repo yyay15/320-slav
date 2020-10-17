@@ -333,7 +333,7 @@ class Navigation:
         if (not self.isEmpty(state.sampleRB) and not (-0.05 <= state.sampleRB[0][1] <= 0.05)):
             print("centering")
             self.centering = True
-            w = sample[1] * 1.1
+            w = state.sampleRB[0][1] * 1.1
             v = 0
         elif (not self.isEmpty(state.sampleRB) and not self.isBlind):
             self.centering = False
