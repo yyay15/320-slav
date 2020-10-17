@@ -477,12 +477,12 @@ class Navigation:
                 v = 0.085
                 w = 0 
                 print("go forward")
-            elif (0.5 < time.time() - self.modeStartTime < 2):
+            elif (0.5 < time.time() - self.modeStartTime < 2.5):
                 self.rotState = OPEN
                 v = 0.075
                 w = 0
                 print("opening ROT")
-            elif (2 < time.time() - self.modeStartTime < 3):
+            elif (2.5 < time.time() - self.modeStartTime < 3.5):
                 self.rotState = DROP_SAMPLE
                 v = - 0.075
                 w = 0
