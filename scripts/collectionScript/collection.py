@@ -116,6 +116,13 @@ class Collection:
         time.sleep(1)
         self.servoPWM.ChangeDutyCycle(0)
 
+    def ROT_BOOT(self):
+        self.servoPWM.ChangeDutyCycle(5.0)    
+        print("Boot Seq - ROT")
+        time.sleep(1)
+        self.servoPWM.ChangeDutyCycle(0)
+
+
 
     def Open_ROT(self):
         timeElapsed = time.time() - self.stateTime
