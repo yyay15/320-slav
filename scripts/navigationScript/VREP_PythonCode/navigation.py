@@ -24,11 +24,14 @@ FLIP_CHECK = 14
 # State 1 = Open
 # State 2 = Close
 # State 3 = Slight Open
+# State 4 = Hard Close
+# State 5 = Drop Sample
 PASS_STATE = 0
 OPEN = 1
 CLOSE = 2
 SLIGHT_OPEN = 3
 HARD_CLOSE = 4
+DROP_SAMPLE = 5
 
 # DISTANCE/TIME VARIABLES
 ROT_DISTANCE = 0.22 #collect distance 
@@ -37,7 +40,7 @@ ROCK_ALIGN_DISTANCE = 0.25
 FULL_ROTATION = 15
 ROT_ACQUIRE_SAMPLE = 0.9
 DRIVE_OFF_TIME = 6
-LANDER_SWITCH_RANGE = 0.3
+LANDER_SWITCH_RANGE = 0.32
 
 # OBSTACLE AVOIDANCE GAINS 
 KV_ATTRACT = 0.5 #0.5
@@ -452,17 +455,17 @@ class Navigation:
     def dropSample(self, state):
         if (state.sampleCollected):
             if (time.time() - self.modeStartTime < 0.5):
-                v = 0.08
+                v = 0.085
                 w = 0 
                 print("go forward")
             elif (0.5 < time.time() - self.modeStartTime < 2):
                 self.rotState = OPEN
-                v = 0.07
+                v = 0.075
                 w = 0
                 print("opening ROT")
             elif (2 < time.time() - self.modeStartTime < 3):
-                self.rotState = OPEN
-                v = - 0.07
+                self.rotState = DROP_SAMPLE
+                v = - 0.075
                 w = 0
                 print("going backward")
             else:
