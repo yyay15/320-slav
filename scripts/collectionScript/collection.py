@@ -59,11 +59,11 @@ class Collection:
         if self.currentState == 0:
             pass
         elif self.currentState == 1:
-            self.Open_ROT2()
+            self.Open_ROT()
         elif self.currentState == 2:
-            self.Close_ROT2()
+            self.Close_ROT()
         elif self.currentState == 3:
-            self.Lander2()
+            self.Lander()
         elif self.currentState == 4: 
             self.Hard_Close_ROT()
             self.currentState = 2
@@ -80,7 +80,14 @@ class Collection:
             print(x/2)
             time.sleep(2)
         
-        
+    def commandCentreCollectionControl(self,command):
+        if command == "o":
+            self.Open_ROT2()
+        elif command == "p":
+            self.Hard_Close_ROT()
+        elif command == "l":
+            self.Lander()
+      
              
 
     def Sample_Release(self):
@@ -103,15 +110,7 @@ class Collection:
         time.sleep(1)
         self.servoPWM.ChangeDutyCycle(0)
 
-    def commandCentreCollectionControl(self,command):
-        if command == "o":
-            self.Open_ROT()
-        elif command == "p":
-            self.Close_ROT()
-        elif command == "l":
-            self.Lander()
-
-    def Open_ROT2(self):
+    def Open_ROT(self):
         timeElapsed = time.time() - self.stateTime
         print("I'm Open Rot")
         print(timeElapsed)
@@ -120,7 +119,7 @@ class Collection:
                 self.servoPWM.ChangeDutyCycle(7.2)
                 self.count+=1
                 print("Open")
-        elif 0.4 < timeElapsed < 1:
+        elif 0.4 < timeElapsed < 1.5
             if self.count <2:
                 self.servoPWM.ChangeDutyCycle(0)
                 self.count+=1
@@ -129,7 +128,7 @@ class Collection:
             pass
             print("I'm passing Open Rot")
 
-    def Close_ROT2(self):
+    def Close_ROT(self):
         timeElapsed = time.time() - self.stateTime
         print("I'm Close Rot")
         print(timeElapsed)
@@ -147,7 +146,7 @@ class Collection:
             print("I'm passing Close Rot")
 
 
-    def Lander2(self):
+    def Lander(self):
         timeElapsed = time.time() - self.stateTime
         print("I'm Lander")
         print(timeElapsed)
