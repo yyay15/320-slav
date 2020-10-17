@@ -448,18 +448,18 @@ class Navigation:
 
     def dropSample(self, state):
         if (state.sampleCollected):
-            if (time.time() - self.modeStartTime < 0.5):
-                v = 0.08
+            if (time.time() - self.modeStartTime < 1):
+                v = 0.085
                 w = 0 
                 print("go forward")
             elif (0.5 < time.time() - self.modeStartTime < 2):
                 self.rotState = OPEN
-                v = 0.07
+                v = 0.075
                 w = 0
                 print("opening ROT")
-            elif (2 < time.time() - self.modeStartTime < 3):
+            elif (2 < time.time() - self.modeStartTime < 4):
                 self.rotState = DROP_SAMPLE
-                v = - 0.07
+                v = - 0.075
                 w = 0
                 print("going backward")
             else:
