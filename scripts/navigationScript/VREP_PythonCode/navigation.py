@@ -103,6 +103,8 @@ class Navigation:
 
     def searchSample(self, state):      
         v, w = 0, 0   
+        if (not self.onLander and (self.rotState != CLOSE or self.rotState != HARD_CLOSE)):
+            self.rotState = CLOSE
         if (state.sampleCollected):
             print("searching lander")
             self.rotState = CLOSE
