@@ -218,7 +218,7 @@ class Navigation:
         print("nav to  rock ")
         if (self.isEmpty(state.rocksRB)):
             if self.onLander:
-                if time.time() - self.modeStartTime < 2.5:
+                if time.time() - self.modeStartTime < 3:
                     v = 0.08
                     w = 0
                 else:
