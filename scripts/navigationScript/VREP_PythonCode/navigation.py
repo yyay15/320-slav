@@ -458,8 +458,8 @@ class Navigation:
                 w = 0
                # if self.rotState != DROP_SAMPLE:
                 #    self.rotState = DROP_SAMPLE
-                else:
-                    pass
+               # else:
+               #     pass
                 print("going backward")
             else:
                 v, w = 0, 0
