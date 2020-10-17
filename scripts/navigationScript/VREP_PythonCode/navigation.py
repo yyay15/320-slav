@@ -330,9 +330,45 @@ class Navigation:
         return v,w
     
     def acquireSample(self, state):
+        v, w = 0
 
         # Centre Sample
-
+        if (-0.05 <= self.sampleRB[0][1] >= 0.05):
+            print("target acquired")
+            # Make sure PWM dosent go minimal
+            self.centering = True
+            w = self.sampleRB[0][1]
+            v = 0
+            self.modeStartTime = time.time()
+        else:
+            # Open ROT
+            if (self.rotState != OPEN):
+                print("Lock and loaded")
+                self.rotState = OPEN
+            # Drive forward
+            if (time.time() - self.modeStartTime <= 1.25 ):
+                print("Fire in the hole")
+                w = 0
+                v = 0.07
+            else:
+                # Close ROT
+                print("friendly fire")
+                if (self.rotState != HARD_CLOSE):
+                    self.rotState = HARD_CLOSE
+                # Drive backward (1/3)
+                if (1.25 <= time.time() - self.modeStartTime <= 1.75):
+                    print("retreat")
+                    w = 0
+                    v = -0.07
+                else:
+                    print("gimme money")
+                    # Do Check for states
+                    if (state.sampleCollected):
+                        self.stateMode = SEARCH_LANDER
+                        self.modeStartTime = time.time()
+                    else:
+                        self.stateMode = SEARCH_SAMPLE                        
+                        self.modeStartTime = time.time()
 
         # # centre sample
         # if (not self.isEmpty(state.sampleRB) and not (-0.05 <= state.sampleRB[0][1] <= 0.05)):
