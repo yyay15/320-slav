@@ -336,100 +336,45 @@ class Navigation:
     
     def acquireSample(self, state):
         v, w = 0, 0
-        print("Check target location: ", state.sampleRB)
-        # Check if sample is there:
-
-        if (not self.isEmpty(state.sampleRB) and not self.isBlind):
-            # Centre Sample
-            if not (-0.06 <= state.sampleRB[0][1] <= 0.04):
-                print("target acquired")
-                # Make sure PWM dosent go minimal
-                self.centering = True
-                w = state.sampleRB[0][1] 
-                v = 0
-            elif state.sampleRB[0][0] > ROT_DISTANCE:
+        if (not self.isEmpty(state.sampleRB) and not (-0.05 <= state.sampleRB[0][1] <= 0.05)):
+            print("centering")
+            self.centering = True
+            w = state.sampleRB[0][1] 
+            v = 0
+        elif (not self.isEmpty(state.sampleRB) and state.sampleRB[0][0] > ROT_DISTANCE):
+            v = 0.07
+            w = 0
+        elif (not self.isEmpty(state.sampleRB) and not self.isBlind):
+            print("opening rot")
+            v, w = 0, 0
+            self.rotState = OPEN
+            self.isBlind = True
+            self.modeStartTime = time.time()
+        elif (self.isBlind):
+            print("driving straight, cover open")
+            if (time.time() - self.modeStartTime < 1.3): #used to be 1.6
                 v = 0.07
                 w = 0
             else:
-                self.isBlind = True
+                print("closing rot")
+                v, w = 0, 0
+                self.rotState = HARD_CLOSE
+                self.isBlind = False
+        elif (not self.isBlind):
+            self.rotState = HARD_CLOSE
+            if (state.sampleCollected):
+                print("sample collected, search lander")
+                v, w = 0, 0
+                self.rockObstacle = True
                 self.modeStartTime = time.time()
-        elif (self.isBlind):
-            self.centering = False
-            if (self.rotState != HARD_OPEN):
-                print("Lock and loaded")
-                self.rotState = HARD_OPEN
-            # Drive forward
-            if (time.time() - self.modeStartTime <= 1.8):
-                print("Fire in the hole")
-                #w = state.sampleRB[0][1]
-                w = 0
-                v = 0.065
+                self.stateMode = SEARCH_LANDER
             else:
-                # Close ROT
-                print("friendly fire")
-                if (self.rotState != HARD_CLOSE):
-                    self.rotState = HARD_CLOSE
-                # Drive backward (1/3)
-                if (1.8 <= time.time() - self.modeStartTime <= 2.0):
-                    print("retreat")
-                    w = 0
-                    v = -0.065
-                else:
-                    print("gimme money")
-                    # Do Check for states
-                    if (state.sampleCollected):
-                        self.stateMode = SEARCH_LANDER
-                        self.modeStartTime = time.time()
-                    else:
-                        self.stateMode = SEARCH_SAMPLE                        
-                        self.modeStartTime = time.time()
-        else:
-            self.modeStartTime = time.time()
-            self.stateMode = SEARCH_SAMPLE
-
-        # # centre sample
-        # if (not self.isEmpty(state.sampleRB) and not (-0.05 <= state.sampleRB[0][1] <= 0.05)):
-        #     # if 
-        #     # if not (-0.2 <=state.sampleRB[0][1] <= 0.2):
-        #     #     print("big centering")
-        #     #     v = 0
-        #     #     w = state.sampleRB[0][1] * 1.1
-        #     # elif (not -0.05 <= state.sampleRB[0][1] <= 0.05):
-        #     print("centering")
-        #     self.centering = True
-        #     w = state.sampleRB[0][1] 
-        #     v = 0
-        # elif (not self.isEmpty(state.sampleRB) and not self.isBlind):
-        #     print("opening rot")
-        #     v, w = 0, 0
-        #     self.rotState = OPEN
-        #     self.isBlind = True
-        #     self.modeStartTime = time.time()
-        # elif (self.isBlind):
-        #     print("driving straight, cover open")
-        #     if (time.time() - self.modeStartTime < 1.3): #used to be 1.6
-        #         v = 0.07
-        #         w = 0
-        #     else:
-        #         print("closing rot")
-        #         v, w = 0, 0
-        #         self.rotState = HARD_CLOSE
-        #         self.isBlind = False
-        # elif (not self.isBlind):
-        #     self.rotState = HARD_CLOSE
-        #     if (state.sampleCollected):
-        #         print("sample collected, search lander")
-        #         v, w = 0, 0
-        #         self.rockObstacle = True
-        #         self.modeStartTime = time.time()
-        #         self.stateMode = SEARCH_LANDER
-        #     else:
-        #         print("sample lost, searching sample")
-        #         v, w = 0, 0
-        #         if (not self.isEmpty(state.prevSampleRB)):
-        #             self.turnDir = np.sign(state.prevSampleRB[0][1]) 
-        #         self.modeStartTime = time.time()
-        #         self.stateMode = SEARCH_SAMPLE
+                print("sample lost, searching sample")
+                v, w = 0, 0
+                if (not self.isEmpty(state.prevSampleRB)):
+                    self.turnDir = np.sign(state.prevSampleRB[0][1]) 
+                self.modeStartTime = time.time()
+                self.stateMode = SEARCH_SAMPLE
         return v, w
 
 # !!!!!!!!FUNCTION TO DRIVE TO THE TOP OF THE LANDER !!!!!!#
