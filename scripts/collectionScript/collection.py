@@ -166,7 +166,7 @@ class Collection:
         print(timeElapsed)
         if timeElapsed < 1:
             if self.count <1:
-                self.servoPWM.ChangeDutyCycle(5.2)
+                self.servoPWM.ChangeDutyCycle(5.5)
                 self.count+=1
                 print("Lander Angled Up")
         elif 1 < timeElapsed < 1.5:
