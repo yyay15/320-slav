@@ -45,7 +45,7 @@ LANDER_SWITCH_RANGE = 0.32
 KV_ATTRACT = 0.5 #0.5
 KW_ATTRACT = 1.3    #1.5 #0.8
 KV_REPULSE = 0.3
-KW_REPULSE = 2.5
+KW_REPULSE = 1.5
 
 class Navigation:
     def __init__(self):
@@ -218,7 +218,7 @@ class Navigation:
         print("nav to  rock ")
         if (self.isEmpty(state.rocksRB)):
             if self.onLander:
-                if time.time() - self.modeStartTime < 2.5:
+                if time.time() - self.modeStartTime < 3:
                     v = 0.08
                     w = 0
                 else:
@@ -385,7 +385,7 @@ class Navigation:
     def driveUpLander(self,state):        
         self.rotState = SLIGHT_OPEN
         self.onLander = True
-        haveSample = debounceSensor(state, 1.5)
+        haveSample = self.debounceSensor(state, 1.5)
         # Lets chill for a little bit 
         if (time.time() - self.modeStartTime > 1):
             print("Lets chill and vibe for a bit")
@@ -495,8 +495,10 @@ class Navigation:
             for obs in obstacles:
                 wTemp = 0
                 if obs[0] < 0.5:
-                    wTemp =  (np.sign(obs[1]) * (0.5 - obs[0]) * (3 - abs(obs[1]))* KW_REPULSE)
-                    vRep =  (0.5 - obs[0]) * 0.2
+                    #wTemp =  (np.sign(obs[1]) * (0.5 - obs[0]) * (3 - abs(obs[1]))* KW_REPULSE)
+                    #wTemp = (1/0.05 - 1/obs[0]) * 1/(obs[0]**2) * 
+                    wTemp = np.sign(obs[1])* 0.5 * (1/obs[0] - 1/0.05)**2 * KW_REPULSE
+                    #vRep =  (0.5 - obs[0]) * 0.2
                 #break potential fields and turn away 
                 if obs[0] < 0.12:
                     print("breaking potential fields just turning away!!")
@@ -507,8 +509,10 @@ class Navigation:
             for obs in rocks:
                 wTemp = 0
                 if obs[0] < 0.6:
-                    wTemp =  (np.sign(obs[1]) * (0.5 - obs[0]) * (3 - abs(obs[1]))* KW_REPULSE * 1.1)
-                    vRep =  (0.5 - obs[0]) * 0.2
+                    #wTemp =  (np.sign(obs[1]) * (0.5 - obs[0]) * (3 - abs(obs[1]))* KW_REPULSE * 1.1)
+                    
+                    wTemp = wTemp = np.sign(obs[1])* 0.5 * (1/obs[0] - 1/0.05)**2 * KW_REPULSE * 1.1
+                    #vRep =  (0.5 - obs[0]) * 0.2
                 wRep += wTemp
         return vRep, wRep
 
