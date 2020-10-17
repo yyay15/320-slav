@@ -452,10 +452,7 @@ class Navigation:
                 w = 0 
                 print("go forward")
             elif (0.5 < time.time() - self.modeStartTime <1):
-                if self.rotState != DROP_SAMPLE:
-                    self.rotState = DROP_SAMPLE
-                else:
-                    pass
+                self.rotState = DROP_SAMPLE
                 v = 0
                 w = 0
             elif (1 < time.time() - self.modeStartTime < 3):
