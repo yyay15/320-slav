@@ -357,10 +357,8 @@ class Navigation:
             v, w = 0, 0
             if self.rotState != OPEN:
                 self.rotState = OPEN
-            else:
-                pass
-            self.isBlind = True
-            self.modeStartTime = time.time()
+                self.isBlind = True
+                self.modeStartTime = time.time()
             
             if (self.isBlind):
                 print("driving straight, cover open")
