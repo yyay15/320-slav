@@ -102,12 +102,15 @@ class Navigation:
     def searchSample(self, state):      
         v, w = 0, 0   
         if (state.sampleCollected):
+            print("searching lander")
             self.rotState = CLOSE
             self.modeStartTime = time.time()
             self.stateMode =  SEARCH_LANDER
         else:
+            print("searching sample")
             self.rotState = SLIGHT_OPEN
             if (not self.isEmpty(state.sampleRB)):
+                print("obstacle seen")
                 self.stateMode = NAV_SAMPLE
             elif (time.time() - self.modeStartTime >= FULL_ROTATION):
                 if (not self.isEmpty(state.obstaclesRB)):
@@ -449,8 +452,11 @@ class Navigation:
                 v = 0.085
                 w = 0 
                 print("go forward")
-            elif (0.5 < time.time() - self.modeStartTime < 2.5):
+            elif (0.5 < time.time() - self.modeStartTime <1):
                 self.rotState = OPEN
+                v = 0
+                w = 0
+            elif (1 < time.time() - self.modeStartTime < 2.5):
                 v = 0.075
                 w = 0
                 print("opening ROT")
