@@ -500,7 +500,7 @@ class Navigation:
                     wTemp = np.sign(obs[1])* 0.5 * (1/obs[0] - 1/0.05)**2 * KW_REPULSE
                     #vRep =  (0.5 - obs[0]) * 0.2
                 #break potential fields and turn away 
-                if obs[0] < 0.12:
+                if obs[0] < 0.08:
                     print("breaking potential fields just turning away!!")
                     wRep = 1.7 * wTemp
                     return vRep, wRep
@@ -530,7 +530,7 @@ class Navigation:
         if (not self.isEmpty(state.rocksRB)):
             if state.rocksRB[0][0] < 0.8:
                 closeObs = state.rocksRB[0]
-                wRep =  (np.sign(closeObs[1]) * (0.5 - closeObs[0]) * (3 - abs(closeObs[1]))* KW_REPULSE)
+                wTemp = wTemp = np.sign(obs[1])* 0.5 * (1/obs[0] - 1/0.05)**2 * KW_REPULSE * 1.1
                 vRep =  (0.5 - closeObs[0]) * 0.2
         v = v - vRep
         w = w -wRep
