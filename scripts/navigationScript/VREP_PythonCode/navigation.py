@@ -45,7 +45,7 @@ LANDER_SWITCH_RANGE = 0.32
 KV_ATTRACT = 0.5 #0.5
 KW_ATTRACT = 1.3    #1.5 #0.8
 KV_REPULSE = 0.3
-KW_REPULSE = 0.6
+KW_REPULSE = 0.1
 
 class Navigation:
     def __init__(self):
