@@ -33,7 +33,8 @@ WHEELRADIUS = 0.03 # Metres
 WHEELBASE = 0.14    # Metres
 
 # Motor Parameters
-maxLin = 0.1666
+# maxLin = 0.16
+maxLin = 0.185
 maxAngWheel = maxLin/WHEELRADIUS 
 maxAngBase = (maxLin)/(WHEELBASE/2)
 
