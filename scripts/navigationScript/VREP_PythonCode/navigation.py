@@ -121,7 +121,7 @@ class Navigation:
                 if (not self.isEmpty(state.wallRB)):
                     w = 1 * self.turnDir
                 else:
-                    v, w = self.navigate([0.2, 0], state)
+                    v, w = self.navigate([0.25, 0], state)
                 if (time.time() - self.modeStartTime - FULL_ROTATION >= 5):
                     print("return to spin")
                     self.turnDir = self.turnDir * -1 
@@ -147,7 +147,7 @@ class Navigation:
             if (not self.isEmpty(state.wallRB)):
                 w = 1 * self.turnDir
             else:           
-                v, w = self.navigate([0.2, 0], state)
+                v, w = self.navigate([0.25, 0], state)
             if (time.time() - self.modeStartTime - FULL_ROTATION >= 5):
                 print("return to spin")
                 self.modeStartTime = time.time()
@@ -170,7 +170,7 @@ class Navigation:
             if (not self.isEmpty(state.wallRB)):
                 w = 1 * self.turnDir
             else:           
-                v, w = self.navigate([0.2, 0], state)
+                v, w = self.navigate([0.25, 0], state)
             if (time.time() - self.modeStartTime - FULL_ROTATION >= 5):
                 print("return to spin")
                 self.modeStartTime = time.time()
@@ -444,17 +444,13 @@ class Navigation:
                 self.rotState = DROP_SAMPLE
                 v = 0
                 w = 0
-            elif (1 < time.time() - self.modeStartTime < 3):
+            elif (1 < time.time() - self.modeStartTime < 3.5):
                 v = 0.075
                 w = 0
                 print("opening ROT")
-            elif (3 < time.time() - self.modeStartTime < 4):
+            elif (3.5 < time.time() - self.modeStartTime <5):
                 v = - 0.075
                 w = 0
-               # if self.rotState != DROP_SAMPLE:
-                #    self.rotState = DROP_SAMPLE
-               # else:
-               #     pass
                 print("going backward")
             else:
                 v, w = 0, 0
