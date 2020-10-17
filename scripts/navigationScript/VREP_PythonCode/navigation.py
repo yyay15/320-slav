@@ -304,11 +304,9 @@ class Navigation:
             v, w = 0, 0
             if (not self.isEmpty(state.prevLanderRB)):
                 self.turnDir = np.sign(state.prevLanderRB[0][1])
-
             print("searching for lander")
             self.modeStartTime = time.time()
             self.stateMode = SEARCH_LANDER
-
         else:
             if (state.landerRB[0][0] < LANDER_SWITCH_RANGE):
                 if (-0.05 <= state.landerRB[0][1] <= 0.05):
@@ -317,8 +315,8 @@ class Navigation:
                     self.stateMode = UP_LANDER
                 else:
                     v = 0
-                    w = w = state.landerRB[0][1] * 0.5
-            elif (state.landerRB[0][0] < LANDER_SWITCH_RANGE + 0.1):
+                    w = state.landerRB[0][1] * 0.5
+            elif (state.landerRB[0][0] < (LANDER_SWITCH_RANGE + 0.1)):
                 v =  state.landerRB[0][0] * 2
                 w  = state.landerRB[0][1]  * 2
             else:
