@@ -109,6 +109,13 @@ class Collection:
         print("Close")
         time.sleep(1)
         self.servoPWM.ChangeDutyCycle(0)
+    
+    def Hard_Open_ROT(self):
+        self.servoPWM.ChangeDutyCycle(7.3)    
+        print("Close")
+        time.sleep(1)
+        self.servoPWM.ChangeDutyCycle(0)
+
 
     def Open_ROT(self):
         timeElapsed = time.time() - self.stateTime

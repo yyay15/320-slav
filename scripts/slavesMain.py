@@ -213,9 +213,9 @@ if __name__ == '__main__':
             elif userSelect == "t":
                 print("testing")
                 while True:
-                    collection.Open_ROT()
+                    collection.Hard_Open_ROT()
                     time.sleep(2)
-                    collection.Close_ROT()
+                    collection.Hard_Close_ROT()
                     time.sleep(1)
     
                     app.run(host='0.0.0.0',port=6969,debug=False)
