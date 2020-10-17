@@ -348,7 +348,7 @@ class Navigation:
                     print("Lock and loaded")
                     self.rotState = OPEN
                 # Drive forward
-                if (time.time() - self.modeStartTime <= 1.25):
+                if (time.time() - self.modeStartTime <= 1.5):
                     print("Fire in the hole")
                     w = state.sampleRB[0][1]
                     v = 0.065
@@ -358,7 +358,7 @@ class Navigation:
                     if (self.rotState != HARD_CLOSE):
                         self.rotState = HARD_CLOSE
                     # Drive backward (1/3)
-                    if (1.25 <= time.time() - self.modeStartTime <= 1.6):
+                    if (1.5 <= time.time() - self.modeStartTime <= 2.0):
                         print("retreat")
                         w = 0
                         v = -0.065
