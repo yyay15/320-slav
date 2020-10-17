@@ -342,49 +342,43 @@ class Navigation:
                 print("big centering")
                 v = 0
                 w = state.sampleRB[0][1] * 1.1
-            else: 
-                print("HELL NAW IM PASSING!")
-                pass
-        elif (not self.isEmpty(state.sampleRB) and not -0.05 <= state.sampleRB[0][1] <= 0.05):
-             print("centering")
-             self.centering = True
-             w = state.sampleRB[0][1] 
-             v = 0
-        #elif: (not self.isEmpty(state.sampleRB) and not self.isBlind):
-        else:
+            elif (not -0.05 <= state.sampleRB[0][1] <= 0.05):
+                print("centering")
+                self.centering = True
+                w = state.sampleRB[0][1] 
+                v = 0
+        elif (not self.isEmpty(state.sampleRB) and not self.isBlind):
             self.centering = False
             print("opening rot")
             v, w = 0, 0
-            if self.rotState != OPEN:
-                self.rotState = OPEN
-                self.isBlind = True
-                self.modeStartTime = time.time()
-            
-            if (self.isBlind):
-                print("driving straight, cover open")
-                if (time.time() - self.modeStartTime < 1.4): #used to be 1.6
-                    v = 0.07
-                    w = 0
-                else:
-                    print("closing rot")
-                    v, w = 0, 0
-                    self.rotState = HARD_CLOSE
-                    self.isBlind = False
-            elif (not self.isBlind):
+            self.rotState = OPEN
+            self.isBlind = True
+            self.modeStartTime = time.time()
+        elif (self.isBlind):
+            print("driving straight, cover open")
+            if (time.time() - self.modeStartTime < 1.3): #used to be 1.6
+                v = 0.07
+                w = 0
+            else:
+                print("closing rot")
+                v, w = 0, 0
                 self.rotState = HARD_CLOSE
-                if (state.sampleCollected):
-                    print("sample collected, search lander")
-                    v, w = 0, 0
-                    self.rockObstacle = True
-                    self.modeStartTime = time.time()
-                    self.stateMode = SEARCH_LANDER
-                else:
-                    print("sample lost, searching sample")
-                    v, w = 0, 0
-                    if (not self.isEmpty(state.prevSampleRB)):
-                        self.turnDir = np.sign(state.prevSampleRB[0][1]) 
-                    self.modeStartTime = time.time()
-                    self.stateMode = SEARCH_SAMPLE
+                self.isBlind = False
+        elif (not self.isBlind):
+            self.rotState = HARD_CLOSE
+            if (state.sampleCollected):
+                print("sample collected, search lander")
+                v, w = 0, 0
+                self.rockObstacle = True
+                self.modeStartTime = time.time()
+                self.stateMode = SEARCH_LANDER
+            else:
+                print("sample lost, searching sample")
+                v, w = 0, 0
+                if (not self.isEmpty(state.prevSampleRB)):
+                    self.turnDir = np.sign(state.prevSampleRB[0][1]) 
+                self.modeStartTime = time.time()
+                self.stateMode = SEARCH_SAMPLE
         return v, w
 
 # !!!!!!!!FUNCTION TO DRIVE TO THE TOP OF THE LANDER !!!!!!#
