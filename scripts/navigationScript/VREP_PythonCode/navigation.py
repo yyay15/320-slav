@@ -310,7 +310,8 @@ class Navigation:
             self.stateMode = SEARCH_LANDER
         else:
             if (state.landerRB[0][0] < LANDER_SWITCH_RANGE):
-                self.rotState = OPEN
+                if (self.rotState != SLIGHT_OPEN): 
+                    self.rotState = SLIGHT_OPEN
                 if (-0.05 <= state.landerRB[0][1] <= 0.05):
                     self.centering = False
                     print("switching to  align lander")
@@ -353,14 +354,14 @@ class Navigation:
             self.modeStartTime = time.time()
         elif (self.isBlind):
             print("driving straight, cover open")
-            if (time.time() - self.modeStartTime < 1.5): #used to be 1.6
+            if (time.time() - self.modeStartTime < 1.6): #used to be 1.6
                 v = 0.07
                 w = 0
-            elif (1.5 < time.time() - self.modeStartTime < 1.7):
+            elif (1.6 < time.time() - self.modeStartTime < 1.8):
                 print("closing rot")
                 v, w = 0, 0
                 self.rotState = HARD_CLOSE
-            elif (1.7 < time.time() - self.modeStartTime < 3.7):
+            elif (1.8 < time.time() - self.modeStartTime < 4):
                 self.rotState = CLOSE
                 v = -0.05
                 w = 0
