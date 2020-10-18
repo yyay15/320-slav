@@ -310,30 +310,38 @@ class Navigation:
             self.modeStartTime = time.time()
             self.stateMode = SEARCH_LANDER
         else:
-            if (state.landerRB[0][0] < LANDER_SWITCH_RANGE):
-                if (self.rotState != SLIGHT_OPEN): 
-                    self.rotState = SLIGHT_OPEN
-                if (-0.05 <= state.landerRB[0][1] <= 0.05):
-                    self.centering = False
-                    print("switching to  align lander")
-                    self.modeStartTime = time.time()
-                    self.stateMode = UP_LANDER
-                else:
-                    print("alignig lander")
-                    self.centering = True
-                    v = 0
-                    w = state.landerRB[0][1] * 1.1
-            elif (state.landerRB[0][0] < (LANDER_SWITCH_RANGE + 0.1)):
-                print("fake nav")
-                v =  state.landerRB[0][0] * 2
-                w  = state.landerRB[0][1]  * 2
+            if not (self.isEmpty(state.obstaclesRB)):
+                if (state.obstaclesRB[0][0] < 0.3):
+                    landerR = state.landerRB[0][0] * 0.5
+                    landerB = state.landerRB[0][0] * 0.5
+                    v, w = self.navigate([landerR, landerB])
             else:
-                print("actual nav")
-                v, w = self.navigate(state.landerRB[0], state)
+                if (state.landerRB[0][0] < LANDER_SWITCH_RANGE):
+                    if (self.rotState != SLIGHT_OPEN): 
+                        self.rotState = SLIGHT_OPEN
+                    if (-0.05 <= state.landerRB[0][1] <= 0.05):
+                        self.centering = False
+                        print("switching to  align lander")
+                        self.modeStartTime = time.time()
+                        self.stateMode = UP_LANDER
+                    else:
+                        print("alignig lander")
+                        self.centering = True
+                        v = 0
+                        w = state.landerRB[0][1] * 1.1
+                elif (state.landerRB[0][0] < (LANDER_SWITCH_RANGE + 0.05)):
+                    print("fake nav")
+                    v =  state.landerRB[0][0] * 2
+                    w  = state.landerRB[0][1]  * 2
+                else:
+                    v, w = self.navigate(state.landerRB[0], state)
+                    if not (self.isEmpty(state.obstaclesRB)):
+                        if (state.obstaclesRB[0][0] < 0.3):
+                            v, w = self.navigate(state.lander)
 
             # Alan: Adjust for slower velo and faster omega
-            v = v * 0.69 
-            w = w * 1.25
+            # v = v * 0.69 
+            # w = w * 1.25
 
         return v,w
     
