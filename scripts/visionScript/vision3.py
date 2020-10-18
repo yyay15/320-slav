@@ -403,7 +403,7 @@ class Vision:
     def sampleCollected(self):
         a=self.sensor.proximity
         print("sensor proximity",a)
-        if a>=13:
+        if a>=17:
             SamplePresent=True
         else:
             SamplePresent=False
