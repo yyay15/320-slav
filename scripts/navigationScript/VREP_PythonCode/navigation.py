@@ -317,7 +317,7 @@ class Navigation:
                     landerB = state.landerRB[0][1] * 0.5
                     v, w = self.navigate([landerR, landerB], state)
                     print("alan-test2")
-                else: 
+                elif (0.3 <= state.obstaclesRB[0][0] < 0.6): 
                     landerR = state.landerRB[0][0] * 0.4
                     landerB = state.landerRB[0][1] * 0.4
                     v, w = self.navigate([landerR, landerB], state)
