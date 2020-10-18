@@ -500,16 +500,18 @@ class Navigation:
                 wTemp = 0
                 if obs[0] < 0.6:
                     wTemp = np.sign(obs[1])* 0.5 * (1/obs[0] - 1/0.1)**2 * KW_REPULSE
+                    print("obs repulsion", wTemp)
                 #break potential fields and turn away 
-                # if obs[0] < 0.08:
-                #     print("breaking potential fields just turning away!!")
-                #     wRep = 1.2 * wTemp
-                #     return vRep, wRep
+                if obs[0] < 0.08:
+                    print("breaking potential fields just turning away!!")
+                    wRep = 1.5 * wTemp
+                    return vRep, wRep
                 wRep += wTemp
         if not self.isEmpty(rocks) and self.rockObstacle:
             for obs in rocks:
                 wTemp = 0
                 if obs[0] < 0.6:
+                    print("rock repulsion", wTemp)
                     wTemp = wTemp = np.sign(obs[1])* 0.5 * (1/obs[0] - 1/0.1)**2 * KW_REPULSE 
                 wRep += wTemp
         return vRep, wRep
