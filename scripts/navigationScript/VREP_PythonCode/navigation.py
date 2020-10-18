@@ -314,9 +314,15 @@ class Navigation:
                 print("alan-test1")
                 if (state.obstaclesRB[0][0] < 0.3):
                     landerR = state.landerRB[0][0] * 0.5
-                    landerB = state.landerRB[0][0] * 0.5
+                    landerB = state.landerRB[0][1] * 0.5
                     v, w = self.navigate([landerR, landerB], state)
                     print("alan-test2")
+                else: 
+                    landerR = state.landerRB[0][0] * 0.4
+                    landerB = state.landerRB[0][1] * 0.4
+                    v, w = self.navigate([landerR, landerB], state)
+                    print("alan-test2fix")
+
             else:
                 if (state.landerRB[0][0] < LANDER_SWITCH_RANGE):
                     if (self.rotState != SLIGHT_OPEN): 
