@@ -310,29 +310,50 @@ class Navigation:
             self.modeStartTime = time.time()
             self.stateMode = SEARCH_LANDER
         else:
-            if (state.landerRB[0][0] < LANDER_SWITCH_RANGE):
-                self.rotState = OPEN
-                if (-0.05 <= state.landerRB[0][1] <= 0.05):
-                    self.centering = False
-                    print("switching to  align lander")
-                    self.modeStartTime = time.time()
-                    self.stateMode = UP_LANDER
-                else:
-                    print("alignig lander")
-                    self.centering = True
-                    v = 0
-                    w = state.landerRB[0][1] * 1.1
-            elif (state.landerRB[0][0] < (LANDER_SWITCH_RANGE + 0.1)):
-                print("fake nav")
-                v =  state.landerRB[0][0] * 2
-                w  = state.landerRB[0][1]  * 2
+            if not (self.isEmpty(state.obstaclesRB)):
+                print("alan-test1")
+                if (state.obstaclesRB[0][0] < 0.3):
+                    landerR = state.landerRB[0][0] * 0.5
+                    landerB = state.landerRB[0][1] * 0.5
+                    v, w = self.navigate([landerR, landerB], state)
+                    print("alan-test2")
+                else: 
+                    landerR = state.landerRB[0][0] * 0.4
+                    landerB = state.landerRB[0][1] * 0.4
+                    v, w = self.navigate([landerR, landerB], state)
+                    print("alan-test2fix")
+
             else:
-                print("actual nav")
-                v, w = self.navigate(state.landerRB[0], state)
+                if (state.landerRB[0][0] < LANDER_SWITCH_RANGE):
+                    if (self.rotState != SLIGHT_OPEN): 
+                        self.rotState = SLIGHT_OPEN
+                        print("alan-test3")
+                    if (-0.05 <= state.landerRB[0][1] <= 0.05):
+                        self.centering = False
+                        print("switching to  align lander")
+                        self.modeStartTime = time.time()
+                        self.stateMode = UP_LANDER
+                    else:
+                        print("alignig lander")
+                        self.centering = True
+                        v = 0
+                        w = state.landerRB[0][1] * 1.1
+                elif (state.landerRB[0][0] < (LANDER_SWITCH_RANGE + 0.05)):
+                    print("fake nav")
+                    v =  state.landerRB[0][0] * 2
+                    w  = state.landerRB[0][1]  * 2
+                else:
+                    v, w = self.navigate(state.landerRB[0], state)
+                    print("alan-test4")
+                    if not (self.isEmpty(state.obstaclesRB)):
+                        print("alan-test5")
+                        if (state.obstaclesRB[0][0] < 0.3):
+                            v, w = self.navigate(state.lander)
+                            print("alan-test6")
 
             # Alan: Adjust for slower velo and faster omega
-            v = v * 0.69 
-            w = w * 1.25
+            # v = v * 0.69 
+            # w = w * 1.25
 
         return v,w
     
@@ -354,16 +375,16 @@ class Navigation:
             self.modeStartTime = time.time()
         elif (self.isBlind):
             print("driving straight, cover open")
-            if (time.time() - self.modeStartTime < 1.5): #used to be 1.6
+            if (time.time() - self.modeStartTime < 1.6): #used to be 1.6
                 v = 0.07
                 w = 0
-            elif (1.5 < time.time() - self.modeStartTime < 1.7):
+            elif (1.6 < time.time() - self.modeStartTime < 1.8):
                 print("closing rot")
                 v, w = 0, 0
                 self.rotState = HARD_CLOSE
-            elif (1.7 < time.time() - self.modeStartTime < 3.7):
+            elif (1.8 < time.time() - self.modeStartTime < 4.5):
                 self.rotState = CLOSE
-                v = -0.05
+                v = -0.065
                 w = 0
             else:
                 self.isBlind = False
@@ -407,7 +428,7 @@ class Navigation:
                 w = 0
         else:
             v, w = 0, 0
-            self.rotState = OPEN
+            self.rotState = DROP_SAMPLE
             print("Jobs Done")
             self.stateMode = SEARCH_SAMPLE
 
@@ -451,15 +472,15 @@ class Navigation:
                 self.rotState = DROP_SAMPLE
                 v = 0
                 w = 0
-            elif (1 < time.time() - self.modeStartTime < 3.5):
+            elif (1 < time.time() - self.modeStartTime < 3):
                 v = 0.075
                 w = 0
                 print("opening ROT")
-            elif (3.5 < time.time() - self.modeStartTime <4):
+            elif (3 < time.time() - self.modeStartTime <3.5):
                 v = - 0.095
                 w = 0
                 print("going backward")
-            elif(4 < time.time() - self.modeStartTime < 5):
+            elif(3.5 < time.time() - self.modeStartTime < 5):
                 v, w = 0, 0
             else:
                 v, w = 0, 0
