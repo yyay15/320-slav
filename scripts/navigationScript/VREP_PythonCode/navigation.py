@@ -134,7 +134,8 @@ class Navigation:
     # robot spins, moves forward, spins again
     def searchLander(self, state):
         v, w = 0, 0
-        self.rotState = CLOSE
+        if self.rotState != CLOSE:
+            self.rotState = CLOSE
         self.rockObstacle = True
         if (not self.isEmpty(state.prevLanderRB)):
             self.turnDir = np.sign(state.prevLanderRB[0][1]) 
