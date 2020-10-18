@@ -408,7 +408,7 @@ class Navigation:
                 w = 0
         else:
             v, w = 0, 0
-            self.rotState = OPEN
+            self.rotState = DROP_SAMPLE
             print("Jobs Done")
             self.stateMode = SEARCH_SAMPLE
 
