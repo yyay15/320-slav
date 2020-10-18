@@ -314,7 +314,7 @@ class Navigation:
                 if (state.obstaclesRB[0][0] < 0.3):
                     landerR = state.landerRB[0][0] * 0.5
                     landerB = state.landerRB[0][0] * 0.5
-                    v, w = self.navigate([landerR, landerB])
+                    v, w = self.navigate([landerR, landerB], state)
             else:
                 if (state.landerRB[0][0] < LANDER_SWITCH_RANGE):
                     if (self.rotState != SLIGHT_OPEN): 
