@@ -311,14 +311,17 @@ class Navigation:
             self.stateMode = SEARCH_LANDER
         else:
             if not (self.isEmpty(state.obstaclesRB)):
+                print("alan-test1")
                 if (state.obstaclesRB[0][0] < 0.3):
                     landerR = state.landerRB[0][0] * 0.5
                     landerB = state.landerRB[0][0] * 0.5
                     v, w = self.navigate([landerR, landerB], state)
+                    print("alan-test2")
             else:
                 if (state.landerRB[0][0] < LANDER_SWITCH_RANGE):
                     if (self.rotState != SLIGHT_OPEN): 
                         self.rotState = SLIGHT_OPEN
+                        print("alan-test3")
                     if (-0.05 <= state.landerRB[0][1] <= 0.05):
                         self.centering = False
                         print("switching to  align lander")
@@ -335,9 +338,12 @@ class Navigation:
                     w  = state.landerRB[0][1]  * 2
                 else:
                     v, w = self.navigate(state.landerRB[0], state)
+                    print("alan-test4")
                     if not (self.isEmpty(state.obstaclesRB)):
+                        print("alan-test5")
                         if (state.obstaclesRB[0][0] < 0.3):
                             v, w = self.navigate(state.lander)
+                            print("alan-test6")
 
             # Alan: Adjust for slower velo and faster omega
             # v = v * 0.69 
