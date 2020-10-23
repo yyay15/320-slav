@@ -159,6 +159,22 @@ def video_feed():
 
 
 
+# Wheel Parameters
+WHEELRADIUS = 0.03 # Metres
+WHEELBASE = 0.14    # Metres
+
+# Motor Parameters
+# maxLin = 0.16
+maxLin = 0.185
+maxAngWheel = maxLin/WHEELRADIUS 
+maxAngBase = (maxLin)/(WHEELBASE/2)
+
+
+# Speed Constant
+LOWSPEED = 35
+MEDIUMSPEED = 50
+FULLSPEED = 100
+
 def manualControl():
     print("""
     Manual Control Mode:
