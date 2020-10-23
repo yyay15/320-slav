@@ -159,97 +159,6 @@ def video_feed():
 
 
 
-#---------------#
-# Initialise
-#---------------#
-
-# Initialise Functions and Classes
-# Subsystem
-drive = mobilityScript.Mobility()
-vision = vision3.Vision()
-collection = collection.Collection()
-
-# nav
-
-ledSetup() #nav
-
-#---------------#
-# MainScript
-#---------------#
-print("beforemain")
-if __name__ == '__main__':
-    # Initialise States for All System
-    v = 0
-    w = 0
-
-    # Try Loading And running
-    try:
-        print("beforeWhile...")
-        collection.ROT_BOOT()
-
-        while(1):
-            print("""
-            Please select Drive Mode
-            a    Automatic
-            m    Manual - Discrete (Enter Button)
-            n    Manual - Continuous (Hold button)
-            c    CommandCentre (TESTING)
-            t    Playspace ;) 
-            q    quit
-            """)
-            userSelect = input()
-            if  userSelect == "a":
-                print("Choose starting state, 0 - 13")
-                startState = int(input())
-                loc = localisation.Localisation()
-                nav = navigation.Navigation() 
-                state = state.State()
-                nav.stateMode = startState
-                # CHUCK THAT CHUNK HERE
-                while True:
-                    print("==========================================")
-                    print("State:",nav.stateMode, "Samples", nav.numSampleCollected)
-                    print("==========================================")
-                    # vision.updateVisionState(nav.stateMode)
-                    objects = vision.GetDetectedObjects(nav.stateMode)
-                    sampleCollected = vision.sampleCollected()
-                    state.updateState(objects,sampleCollected, vision.landerArea)
-                    v, w = nav.updateVelocities(state)
-                    loc.getWheelAngVel(v, w)
-                    ledIndicator(nav.stateMode)
-                    collection.sampleManage(nav.rotState)
-                    drive.drive(v, w, nav.centering) # not in navMain
-                
-            elif userSelect == "m":
-                collection.Lander()
-                manualControl()
-            elif userSelect == "n":
-                drive.continuousControl()
-            elif userSelect == "c":
-                print("Starting Command Centre ...")
-                app.run(host='0.0.0.0',port=6969,debug=False)
-            elif userSelect == "t":
-                print("testing")
-                while True:
-                    collection.Hard_Open_ROT()
-                    time.sleep(2)
-                    collection.Hard_Close_ROT()
-                    time.sleep(1)
-    
-                    app.run(host='0.0.0.0',port=6969,debug=False)
-            elif userSelect == "q":
-                drive.gpioClean()
-                break
-            else:
-                print("Unknown Command")
-    # Clean up when closing        
-    except KeyboardInterrupt:
-        drive.gpioClean()
-        print("CleanergoVRMMM...")
-
-
-
-
 def manualControl():
     print("""
     Manual Control Mode:
@@ -346,3 +255,95 @@ def manualControl():
             collection.Hard_Open_ROT()
         else:
             print("Unknown Command")
+
+
+#---------------#
+# Initialise
+#---------------#
+
+# Initialise Functions and Classes
+# Subsystem
+drive = mobilityScript.Mobility()
+vision = vision3.Vision()
+collection = collection.Collection()
+
+# nav
+
+ledSetup() #nav
+
+#---------------#
+# MainScript
+#---------------#
+print("beforemain")
+if __name__ == '__main__':
+    # Initialise States for All System
+    v = 0
+    w = 0
+
+    # Try Loading And running
+    try:
+        print("beforeWhile...")
+        collection.ROT_BOOT()
+
+        while(1):
+            print("""
+            Please select Drive Mode
+            a    Automatic
+            m    Manual - Discrete (Enter Button)
+            n    Manual - Continuous (Hold button)
+            c    CommandCentre (TESTING)
+            t    Playspace ;) 
+            q    quit
+            """)
+            userSelect = input()
+            if  userSelect == "a":
+                print("Choose starting state, 0 - 13")
+                startState = int(input())
+                loc = localisation.Localisation()
+                nav = navigation.Navigation() 
+                state = state.State()
+                nav.stateMode = startState
+                # CHUCK THAT CHUNK HERE
+                while True:
+                    print("==========================================")
+                    print("State:",nav.stateMode, "Samples", nav.numSampleCollected)
+                    print("==========================================")
+                    # vision.updateVisionState(nav.stateMode)
+                    objects = vision.GetDetectedObjects(nav.stateMode)
+                    sampleCollected = vision.sampleCollected()
+                    state.updateState(objects,sampleCollected, vision.landerArea)
+                    v, w = nav.updateVelocities(state)
+                    loc.getWheelAngVel(v, w)
+                    ledIndicator(nav.stateMode)
+                    collection.sampleManage(nav.rotState)
+                    drive.drive(v, w, nav.centering) # not in navMain
+                
+            elif userSelect == "m":
+                collection.Lander()
+                manualControl()
+            elif userSelect == "n":
+                drive.continuousControl()
+            elif userSelect == "c":
+                print("Starting Command Centre ...")
+                app.run(host='0.0.0.0',port=6969,debug=False)
+            elif userSelect == "t":
+                print("testing")
+                while True:
+                    collection.Hard_Open_ROT()
+                    time.sleep(2)
+                    collection.Hard_Close_ROT()
+                    time.sleep(1)
+    
+                    app.run(host='0.0.0.0',port=6969,debug=False)
+            elif userSelect == "q":
+                drive.gpioClean()
+                break
+            else:
+                print("Unknown Command")
+    # Clean up when closing        
+    except KeyboardInterrupt:
+        drive.gpioClean()
+        print("CleanergoVRMMM...")
+
+
+
