@@ -39,11 +39,11 @@ class Collection:
     def __init__(self):
         # Set up GPIO Pins
         GPIO.setmode(GPIO.BCM)				
-        #GPIO.setup(servoPin, GPIO.OUT)			
+        GPIO.setup(servoPin, GPIO.OUT)			
         # Initialise PWM
-        #self.servoPWM = GPIO.PWM(servoPin, 50)
+        self.servoPWM = GPIO.PWM(servoPin, 50)
         # Initial Condition
-        #self.servoPWM.start(2.5)
+        self.servoPWM.start(2.5)
         self.currentState = 0 
         self.prevState = 0
         self.stateTime = 0
