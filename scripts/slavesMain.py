@@ -159,120 +159,6 @@ def video_feed():
 
 
 
-# Wheel Parameters
-WHEELRADIUS = 0.03 # Metres
-WHEELBASE = 0.14    # Metres
-
-# Motor Parameters
-# maxLin = 0.16
-maxLin = 0.185
-maxAngWheel = maxLin/WHEELRADIUS 
-maxAngBase = (maxLin)/(WHEELBASE/2)
-
-
-# Speed Constant
-LOWSPEED = 35
-MEDIUMSPEED = 50
-FULLSPEED = 100
-
-def manualControl():
-    print("""
-    Manual Control Mode:
-    This control mode allows the user to press a button and enter it whilst the action will run indefintely.
-    w     Move Forward
-    s     Move Backward
-    a     Turn Left
-    d     Turn Right
-    r     Rotate on spot
-    c     Stop motors
-    i     Custom Speed Setting (v,w)
-    j     Custom Speed Setting (l,r)
-    1     Low Speed Setting (35% PWM)
-    2     Medium Speed Setting (50% PWM)
-    3     Full Speed Setting (100% PWM)
-    q     Exit Mode\n""")
-    while (True):            
-        key = input(">> ") 
-        if key == 'w':
-            print("Moving Forwards")
-            drive.drivePower(drive.speedLeft, drive.speedRight,False)
-        elif key == 's':
-            print("Moving Backwards")
-            drive.drivePower(-drive.speedLeft, -drive.speedRight,False)
-        elif key == 'a':
-            print("Turning Left")
-            drive.drivePower(0, drive.speedRight,False)
-        elif key == 'd':
-            print("Turning Right")
-            drive.drivePower(drive.speedLeft, 0,False)
-        elif key == 'r':
-            print("Rotating")
-            drive.drivePower(-drive.speedLeft, drive.speedRight,False)
-        elif key == 'c':
-            print("Stopping Motors")
-            drive.drivePower(0, 0,False)
-        elif key == 'i':
-            drive.drivePower(0, 0,False)
-            print("Input speed in format 'velocity,angularVelocity': ", end='')
-            speedInput = input()
-            # Split commas
-            speedInput = speedInput.split(',')
-            if len(speedInput) != 2:
-                print("Error: Incorrect Input")
-                continue            
-            # Parse numbers
-            try:
-                drive.speedLeft, drive.speedRight = drive.SetTargetVelocities(float(speedInput[0]), float(speedInput[1]))
-                print("--------\n")
-                print(drive.speedLeft)
-                print(drive.speedRight)
-                print("--------\n")
-            except ValueError:
-                print("Error: Incorrect Input")
-                continue
-        elif key == 'j':
-            drive.drivePower(0, 0,False)
-            print("Input speed in format 'leftPower,rightPower': ", end='')
-            speedInput = input()
-            # Split commas
-            speedInput = speedInput.split(',')
-            if len(speedInput) != 2:
-                print("Error: Incorrect Input")
-                continue            
-            # Parse numbers
-            try:
-                drive.speedLeft = int(speedInput[0])
-                drive.speedRight = int(speedInput[1])
-            except ValueError:
-                print("Error: Incorrect Input")
-                continue
-        elif key == '1':
-            print("Setting LowSpeed")
-            print(LOWSPEED)
-            drive.speedLeft = LOWSPEED
-            drive.speedRight = LOWSPEED
-        elif key == '2':
-            print("Setting MediumSpeed")
-            print(MEDIUMSPEED)
-            drive.speedLeft = MEDIUMSPEED
-            drive.speedRight = MEDIUMSPEED
-        elif key == '3':
-            print("Setting FullSpeed")
-            print(FULLSPEED)
-            drive.speedLeft = FULLSPEED
-            drive.speedRight = FULLSPEED
-        elif key == 'q':
-            print("Quitting ...")
-            GPIO.cleanup()
-            break
-        elif key == 'z':
-            collection.Hard_Close_ROT()
-        elif key == 'x':
-            collection.Hard_Open_ROT()
-        else:
-            print("Unknown Command")
-
-
 #---------------#
 # Initialise
 #---------------#
@@ -336,7 +222,7 @@ if __name__ == '__main__':
                 
             elif userSelect == "m":
                 collection.Lander()
-                manualControl()
+                drive.manualControl()
             elif userSelect == "n":
                 drive.continuousControl()
             elif userSelect == "c":
@@ -360,6 +246,5 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         drive.gpioClean()
         print("CleanergoVRMMM...")
-
 
 
