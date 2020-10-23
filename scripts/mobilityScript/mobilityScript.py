@@ -27,6 +27,8 @@ A2 = 10
 B1 = 5
 B2 = 11
 STBY = 9
+servoPin = 17
+
 
 # Wheel Parameters
 WHEELRADIUS = 0.03 # Metres
@@ -114,6 +116,16 @@ class Mobility:
         GPIO.output(A2,GPIO.LOW)
         GPIO.output(B1,GPIO.HIGH)
         GPIO.output(B2,GPIO.LOW) 		
+
+        GPIO.setup(servoPin, GPIO.OUT)			
+
+        self.servoPWM = GPIO.PWM(servoPin, 50)
+        # Initial Condition
+        self.servoPWM.start(2.5)
+        self.currentState = 0 
+        self.prevState = 0
+        self.stateTime = 0
+
         # Initialise PWM
         self.motorPWM = [GPIO.PWM(PWMA, 100),GPIO.PWM(PWMB, 100)]
         # Initialise MotorDir
@@ -283,6 +295,12 @@ class Mobility:
                 print(FULLSPEED)
                 self.speedLeft = FULLSPEED
                 self.speedRight = FULLSPEED
+            elif key == 'z':
+                print("OpenROT")
+                self.Hard_Open_ROT()
+            elif key == 'x':
+                print("CloseROT")
+                self.Hard_Close_ROT()
             elif key == 'q':
                 print("Quitting ...")
                 GPIO.cleanup()
@@ -437,3 +455,17 @@ class Mobility:
     def gpioClean(self):
         self.drive(0, 0, False)
         GPIO.cleanup()
+
+
+
+    def Hard_Close_ROT(self):
+        self.servoPWM.ChangeDutyCycle(3.85)    
+        print("HARD CLOSE")
+        time.sleep(1)
+        self.servoPWM.ChangeDutyCycle(0)
+    
+    def Hard_Open_ROT(self):
+        self.servoPWM.ChangeDutyCycle(7.7)    
+        print("HARD OPEN")
+        time.sleep(1)
+        self.servoPWM.ChangeDutyCycle(0)
