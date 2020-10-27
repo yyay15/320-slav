@@ -160,7 +160,10 @@ def video_feed():
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 2b33547... manual constant
 def manualControl():
     print("""
     Manual Control Mode:
