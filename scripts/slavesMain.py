@@ -158,15 +158,6 @@ def video_feed():
     return Response(gen(),mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> parent of 2b33547... manual constant
-=======
->>>>>>> parent of 2b33547... manual constant
 def manualControl():
     print("""
     Manual Control Mode:
@@ -264,8 +255,6 @@ def manualControl():
         else:
             print("Unknown Command")
 
-
->>>>>>> parent of 2b33547... manual constant
 #---------------#
 # Initialise
 #---------------#
